@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -60,15 +61,24 @@ const Contact = () => {
           
           <div className="grid md:grid-cols-2 gap-12">
             <div className="bg-gray-50 p-8 rounded-lg shadow-sm">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Get in Touch</h2>
+              <div className="flex items-center space-x-4 mb-6">
+                <Avatar className="h-16 w-16 border-2 border-white shadow-md">
+                  <AvatarImage src="/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png" alt="Luciano Tumminello" />
+                  <AvatarFallback>LT</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-900">Luciano Tumminello</h2>
+                  <p className="text-gray-600">Product Designer & Developer</p>
+                </div>
+              </div>
               
               <div className="space-y-6">
                 <div className="flex items-start">
                   <Mail className="h-5 w-5 text-primary mt-1 mr-3" />
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">Email</h3>
-                    <a href="mailto:hello@johndoe.com" className="text-gray-600 hover:text-primary">
-                      hello@johndoe.com
+                    <a href="mailto:hello@lucianotumminello.com" className="text-gray-600 hover:text-primary">
+                      hello@lucianotumminello.com
                     </a>
                   </div>
                 </div>
@@ -95,7 +105,7 @@ const Contact = () => {
               <div className="mt-8 pt-8 border-t">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Follow Me</h3>
                 <div className="flex space-x-4">
-                  <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="p-2 bg-white rounded-full shadow-sm">
+                  <a href="https://linkedin.com/in/lucianotumminello" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="p-2 bg-white rounded-full shadow-sm">
                     <svg className="h-5 w-5 text-gray-700" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                     </svg>

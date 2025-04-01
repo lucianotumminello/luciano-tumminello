@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
             <p className="text-sm text-gray-600">
-              © {currentYear} John Doe. All rights reserved.
+              © {currentYear} Luciano Tumminello. All rights reserved.
             </p>
           </div>
           
@@ -40,7 +40,7 @@ const Footer = () => {
               Contact
             </a>
             <a 
-              href="https://linkedin.com/in/yourprofile" 
+              href="https://linkedin.com/in/lucianotumminello" 
               target="_blank" 
               rel="noreferrer"
             >

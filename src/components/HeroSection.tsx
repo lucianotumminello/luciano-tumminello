@@ -15,7 +15,7 @@ const HeroSection = () => {
       <div className="container mx-auto max-w-5xl">
         <div className="space-y-6 text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
-            <span className="block">Hello, I'm John Doe</span>
+            <span className="block">Hello, I'm Luciano Tumminello</span>
             <span className="text-primary">Product Designer & Developer</span>
           </h1>
           

@@ -31,7 +31,7 @@ const Header = () => {
     <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm border-b">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold tracking-tight">John Doe</span>
+          <span className="text-xl font-bold tracking-tight">Luciano Tumminello</span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -44,7 +44,7 @@ const Header = () => {
         
         <div className="flex items-center">
           <a 
-            href="https://linkedin.com/in/yourprofile" 
+            href="https://linkedin.com/in/lucianotumminello" 
             target="_blank" 
             rel="noreferrer"
             className="ml-4"
