@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowDownIcon } from "lucide-react";
+import { ArrowDownIcon, FileTextIcon } from "lucide-react";
 
 const HeroSection = () => {
   const scrollToWork = () => {
@@ -16,26 +16,34 @@ const HeroSection = () => {
         <div className="space-y-6 text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
             <span className="block">Hello, I'm Luciano Tumminello</span>
-            <span className="text-primary">Marketing & Operations Expert</span>
+            <span className="text-primary">Chief Operating Officer</span>
           </h1>
           
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto md:mx-0">
-            I help businesses optimize their marketing strategies and streamline operations to drive growth and maximize efficiency.
+            15+ years driving growth across Asia-Pacific with expertise in operations, 
+            marketing, and digital transformation. Currently leading strategic initiatives 
+            at Spartan Health in the health and wellness industry.
           </p>
           
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button size="lg" className="min-w-[160px]">
-              View Portfolio
-            </Button>
             <Button 
               onClick={scrollToWork}
-              variant="outline" 
               size="lg" 
-              className="min-w-[160px] group"
+              className="min-w-[160px]"
             >
-              Services
-              <ArrowDownIcon className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
+              My Expertise
+              <ArrowDownIcon className="ml-2 h-4 w-4" />
             </Button>
+            <a href="/about">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="min-w-[160px] group"
+              >
+                View Resume
+                <FileTextIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </a>
           </div>
         </div>
       </div>

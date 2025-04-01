@@ -1,5 +1,5 @@
 
-import { Linkedin, Mail, Briefcase } from "lucide-react";
+import { Linkedin, Mail, Briefcase, Globe } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,11 +10,22 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
             <p className="text-sm text-gray-600">
-              © {currentYear} Luciano Tumminello | Marketing & Operations Expert
+              © {currentYear} Luciano Tumminello | Chief Operating Officer at Spartan Health
             </p>
           </div>
           
-          <nav className="flex items-center space-x-8">
+          <div className="flex flex-col items-center md:items-end space-y-4 md:space-y-2">
+            <div className="flex items-center space-x-2">
+              <Briefcase className="h-4 w-4 text-gray-600" />
+              <span className="text-sm text-gray-600">15+ Years of Experience in Marketing & Operations</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Globe className="h-4 w-4 text-gray-600" />
+              <span className="text-sm text-gray-600">Working Remotely with Teams Across Asia-Pacific</span>
+            </div>
+          </div>
+          
+          <nav className="flex items-center space-x-8 mt-4 md:mt-0">
             <a 
               href="/" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
