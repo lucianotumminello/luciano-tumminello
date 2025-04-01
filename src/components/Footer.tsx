@@ -1,5 +1,5 @@
 
-import { Linkedin } from "lucide-react";
+import { Linkedin, Mail, Briefcase } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
             <p className="text-sm text-gray-600">
-              © {currentYear} Luciano Tumminello. All rights reserved.
+              © {currentYear} Luciano Tumminello | Marketing & Operations Expert
             </p>
           </div>
           
@@ -39,13 +39,22 @@ const Footer = () => {
             >
               Contact
             </a>
-            <a 
-              href="https://linkedin.com/in/lucianotumminello" 
-              target="_blank" 
-              rel="noreferrer"
-            >
-              <Linkedin className="h-4 w-4 text-gray-600 hover:text-primary transition-colors" />
-            </a>
+            <div className="flex space-x-3">
+              <a 
+                href="https://linkedin.com/in/lucianotumminello" 
+                target="_blank" 
+                rel="noreferrer"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-4 w-4 text-gray-600 hover:text-primary transition-colors" />
+              </a>
+              <a 
+                href="mailto:hello@lucianotumminello.com" 
+                aria-label="Email"
+              >
+                <Mail className="h-4 w-4 text-gray-600 hover:text-primary transition-colors" />
+              </a>
+            </div>
           </nav>
         </div>
       </div>

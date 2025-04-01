@@ -13,29 +13,29 @@ const About = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
               <img 
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                alt="John Doe" 
+                src="/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png" 
+                alt="Luciano Tumminello" 
                 className="rounded-lg shadow-md w-full aspect-square object-cover"
               />
             </div>
             
             <div className="md:col-span-2 space-y-6">
               <p className="text-lg text-gray-700 leading-relaxed">
-                Hello! I'm John, a product designer and developer with over 5 years of experience creating digital experiences for brands and startups.
+                Hello! I'm Luciano, a marketing and operations expert with over 8 years of experience helping businesses optimize their processes and grow their market presence.
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                My journey began at Design Academy where I studied Interactive Design. Since then, I've worked with various clients ranging from small businesses to Fortune 500 companies.
+                My journey began with a degree in Business Administration with a focus on Marketing. Since then, I've worked with organizations ranging from startups to established enterprises across various industries.
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                I specialize in creating clean, functional, and user-focused designs. My approach combines aesthetic sensibility with practical functionality to deliver exceptional digital products.
+                I specialize in developing comprehensive marketing strategies, streamlining operational workflows, and implementing data-driven approaches to business growth. My goal is to help businesses maximize efficiency while creating meaningful connections with their audience.
               </p>
               
               <div className="pt-4">
-                <h2 className="text-xl font-semibold mb-3 text-gray-900">Skills</h2>
+                <h2 className="text-xl font-semibold mb-3 text-gray-900">Expertise</h2>
                 <div className="flex flex-wrap gap-2">
-                  {["UI/UX Design", "Frontend Development", "Prototyping", "User Research", "Design Systems", "React", "Figma", "Tailwind CSS"].map((skill) => (
+                  {["Strategic Planning", "Digital Marketing", "Content Strategy", "Operations Management", "Process Optimization", "Market Research", "Project Management", "Data Analysis", "CRM Implementation", "Team Leadership"].map((skill) => (
                     <span key={skill} className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full">
                       {skill}
                     </span>

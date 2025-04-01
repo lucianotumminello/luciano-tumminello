@@ -16,16 +16,16 @@ const HeroSection = () => {
         <div className="space-y-6 text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
             <span className="block">Hello, I'm Luciano Tumminello</span>
-            <span className="text-primary">Product Designer & Developer</span>
+            <span className="text-primary">Marketing & Operations Expert</span>
           </h1>
           
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto md:mx-0">
-            I create thoughtful digital experiences and beautiful interfaces that help people and businesses achieve their goals.
+            I help businesses optimize their marketing strategies and streamline operations to drive growth and maximize efficiency.
           </p>
           
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
             <Button size="lg" className="min-w-[160px]">
-              View Work
+              View Portfolio
             </Button>
             <Button 
               onClick={scrollToWork}
@@ -33,7 +33,7 @@ const HeroSection = () => {
               size="lg" 
               className="min-w-[160px] group"
             >
-              Learn More
+              Services
               <ArrowDownIcon className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
             </Button>
           </div>
