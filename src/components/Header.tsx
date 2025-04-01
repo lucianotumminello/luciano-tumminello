@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const Header = () => {
@@ -48,10 +47,13 @@ const Header = () => {
             target="_blank" 
             rel="noreferrer"
             className="ml-4"
+            aria-label="LinkedIn Profile"
           >
-            <Button variant="ghost" size="icon" aria-label="LinkedIn Profile">
-              <Linkedin className="h-5 w-5 text-gray-600 hover:text-primary" />
-            </Button>
+            <img 
+              src="/lovable-uploads/be682824-4e6b-4af4-9c53-aa9a47040326.png" 
+              alt="LinkedIn" 
+              className="h-8 w-8 rounded transition-transform hover:scale-110"
+            />
           </a>
           
           {/* Mobile Menu Button */}
@@ -122,6 +124,23 @@ const Header = () => {
             >
               Contact Me
             </Link>
+            
+            <div className="px-3 py-2 flex items-center">
+              <a 
+                href="https://linkedin.com/in/lucianotumminello" 
+                target="_blank" 
+                rel="noreferrer"
+                aria-label="LinkedIn Profile"
+                className="flex items-center space-x-2"
+              >
+                <img 
+                  src="/lovable-uploads/be682824-4e6b-4af4-9c53-aa9a47040326.png" 
+                  alt="LinkedIn" 
+                  className="h-6 w-6 rounded"
+                />
+                <span className="text-sm">LinkedIn Profile</span>
+              </a>
+            </div>
           </div>
         </div>
       )}
