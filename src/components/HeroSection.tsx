@@ -19,11 +19,6 @@ const HeroSection = () => {
           </h2>
         </div>
         <div className="space-y-6 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
-            <span className="block">Hello, I'm Luciano Tumminello</span>
-            <span className="text-primary">Chief Operating Officer</span>
-          </h1>
-          
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto md:mx-0">
             15+ years driving growth across Asia-Pacific with expertise in operations, 
             marketing, and digital transformation. Currently leading strategic initiatives 
