@@ -2,7 +2,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
-import SelectedWork from "@/components/SelectedWork";
+import ProfileImage from "@/components/ProfileImage";
 
 const Index = () => {
   return (
@@ -10,7 +10,7 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <HeroSection />
-        <SelectedWork />
+        <ProfileImage />
       </main>
       <Footer />
     </div>

@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowDownIcon, FileTextIcon } from "lucide-react";
 
 const HeroSection = () => {
-  const scrollToWork = () => {
-    const workSection = document.getElementById("selected-work");
-    if (workSection) {
-      workSection.scrollIntoView({ behavior: "smooth" });
+  const scrollToProfile = () => {
+    const profileSection = document.querySelector('section:nth-of-type(2)');
+    if (profileSection) {
+      profileSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -27,7 +27,7 @@ const HeroSection = () => {
           
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
             <Button 
-              onClick={scrollToWork}
+              onClick={scrollToProfile}
               size="lg" 
               className="min-w-[160px]"
             >
