@@ -43,7 +43,7 @@ const Header = () => {
         
         <div className="flex items-center">
           <a 
-            href="https://linkedin.com/in/lucianotumminello" 
+            href="https://www.linkedin.com/in/lucianotumminello10101981/" 
             target="_blank" 
             rel="noreferrer"
             className="ml-4"
@@ -127,7 +127,7 @@ const Header = () => {
             
             <div className="px-3 py-2 flex items-center">
               <a 
-                href="https://linkedin.com/in/lucianotumminello" 
+                href="https://www.linkedin.com/in/lucianotumminello10101981/" 
                 target="_blank" 
                 rel="noreferrer"
                 aria-label="LinkedIn Profile"

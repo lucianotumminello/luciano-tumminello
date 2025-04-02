@@ -1,5 +1,5 @@
 
-import { Linkedin, Mail, Briefcase, Globe } from "lucide-react";
+import { Mail, Globe } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,19 +10,8 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
             <p className="text-sm text-gray-600">
-              © {currentYear} Luciano Tumminello | Chief Operating Officer at Spartan Health
+              © {currentYear} Luciano Tumminello
             </p>
-          </div>
-          
-          <div className="flex flex-col items-center md:items-end space-y-4 md:space-y-2">
-            <div className="flex items-center space-x-2">
-              <Briefcase className="h-4 w-4 text-gray-600" />
-              <span className="text-sm text-gray-600">15+ Years of Experience in Marketing & Operations</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Globe className="h-4 w-4 text-gray-600" />
-              <span className="text-sm text-gray-600">Working Remotely with Teams Across Asia-Pacific</span>
-            </div>
           </div>
           
           <nav className="flex items-center space-x-8 mt-4 md:mt-0">
@@ -52,12 +41,16 @@ const Footer = () => {
             </a>
             <div className="flex space-x-3">
               <a 
-                href="https://linkedin.com/in/lucianotumminello" 
+                href="https://www.linkedin.com/in/lucianotumminello10101981/" 
                 target="_blank" 
                 rel="noreferrer"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="h-4 w-4 text-gray-600 hover:text-primary transition-colors" />
+                <img 
+                  src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
+                  alt="LinkedIn" 
+                  className="h-8 w-8 transition-transform hover:scale-110" 
+                />
               </a>
               <a 
                 href="mailto:hello@lucianotumminello.com" 
