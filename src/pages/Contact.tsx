@@ -63,12 +63,12 @@ const Contact = () => {
             <div className="bg-gray-50 p-8 rounded-lg shadow-sm">
               <div className="flex items-center space-x-4 mb-6">
                 <Avatar className="h-16 w-16 border-2 border-white shadow-md">
-                  <AvatarImage src="/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png" alt="Luciano Tumminello" />
+                  <AvatarImage src="/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png" alt="Luciano Tumminello" />
                   <AvatarFallback>LT</AvatarFallback>
                 </Avatar>
                 <div>
                   <h2 className="text-2xl font-semibold text-gray-900">Luciano Tumminello</h2>
-                  <p className="text-gray-600">Product Designer & Developer</p>
+                  <p className="text-gray-600">Marketing & Operations Leader</p>
                 </div>
               </div>
               
