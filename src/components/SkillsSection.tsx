@@ -47,7 +47,14 @@ const SkillsSection = () => {
       skills: [
         "Operational Optimization",
         "Process Automation",
-        "Project Management"
+        "Project Management",
+        "Digital Transformation",
+        "Supply Chain Management",
+        "Resource Allocation",
+        "Lean Methodologies",
+        "Workflow Optimization",
+        "Performance Metrics & KPIs",
+        "Technology Integration"
       ]
     },
     {
@@ -56,8 +63,12 @@ const SkillsSection = () => {
       skills: [
         "Strategic Planning",
         "Revenue Growth",
-        "Digital Transformation",
-        "Financial Acumen"
+        "Financial Acumen",
+        "Market Analysis",
+        "Budgeting & Cost Control",
+        "Strategic Partnerships & Alliances",
+        "Business Development",
+        "Negotiations"
       ]
     }
   ];
