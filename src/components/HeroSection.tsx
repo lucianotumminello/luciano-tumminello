@@ -13,8 +13,8 @@ const HeroSection = () => {
   return (
     <section className="relative py-20 md:py-32 px-4">
       <div className="container mx-auto max-w-5xl">
-        <div className="text-center md:text-left mb-8">
-          <h2 className="text-xl md:text-2xl font-medium tracking-wide text-primary uppercase">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center">
             MARKETING & OPERATIONS LEADER
           </h2>
         </div>

@@ -56,7 +56,7 @@ const Footer = () => {
                 href="mailto:hello@lucianotumminello.com" 
                 aria-label="Email"
               >
-                <Mail className="h-4 w-4 text-gray-600 hover:text-primary transition-colors" />
+                <Mail className="h-8 w-8 text-gray-600 hover:text-primary transition-colors" />
               </a>
             </div>
           </nav>
