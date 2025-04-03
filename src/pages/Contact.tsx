@@ -77,8 +77,8 @@ const Contact = () => {
                   <Mail className="h-5 w-5 text-primary mt-1 mr-3" />
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">Email</h3>
-                    <a href="mailto:hello@lucianotumminello.com" className="text-gray-600 hover:text-primary">
-                      hello@lucianotumminello.com
+                    <a href="mailto:lucianotumminello@gmail.com" className="text-gray-600 hover:text-primary">
+                      lucianotumminello@gmail.com
                     </a>
                   </div>
                 </div>
@@ -87,9 +87,14 @@ const Contact = () => {
                   <Phone className="h-5 w-5 text-primary mt-1 mr-3" />
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">Phone</h3>
-                    <a href="tel:+1234567890" className="text-gray-600 hover:text-primary">
-                      +1 (234) 567-890
-                    </a>
+                    <div className="flex flex-col">
+                      <a href="tel:+66809937091" className="text-gray-600 hover:text-primary">
+                        +66 80 993 7091
+                      </a>
+                      <a href="tel:+393287478677" className="text-gray-600 hover:text-primary">
+                        +39 328 747 8677
+                      </a>
+                    </div>
                   </div>
                 </div>
                 
@@ -97,7 +102,7 @@ const Contact = () => {
                   <MapPin className="h-5 w-5 text-primary mt-1 mr-3" />
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">Location</h3>
-                    <p className="text-gray-600">San Francisco, CA</p>
+                    <p className="text-gray-600">Bangkok, Thailand</p>
                   </div>
                 </div>
               </div>
@@ -105,10 +110,12 @@ const Contact = () => {
               <div className="mt-8 pt-8 border-t">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Follow Me</h3>
                 <div className="flex space-x-4">
-                  <a href="https://linkedin.com/in/lucianotumminello" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="p-2 bg-white rounded-full shadow-sm">
-                    <svg className="h-5 w-5 text-gray-700" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
+                  <a href="https://linkedin.com/in/lucianotumminello10101981" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="p-2 bg-white rounded-full shadow-sm">
+                    <img 
+                      src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
+                      alt="LinkedIn" 
+                      className="h-5 w-5 transition-transform hover:scale-110" 
+                    />
                   </a>
                   {/* Add other social icons as needed */}
                 </div>
