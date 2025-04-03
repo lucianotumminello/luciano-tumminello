@@ -2,48 +2,62 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { BriefcaseIcon, BarChartIcon, UsersIcon, ListChecksIcon, CodeIcon } from "lucide-react";
+import { BarChartIcon, BriefcaseIcon, UsersIcon, ListChecksIcon, CodeIcon, LightbulbIcon } from "lucide-react";
 
 const SkillsSection = () => {
   const skillCategories = [
     {
-      title: "Marketing Expertise",
+      title: "Marketing & Growth Skills",
       icon: <BarChartIcon className="h-8 w-8 text-primary" />,
-      skills: ["Digital Marketing Expertise", "Data-Driven Marketing Strategies"]
+      skills: [
+        "Google Analytics",
+        "Data Analysis",
+        "SEO",
+        "SEM",
+        "Social Media Marketing",
+        "Video Ads",
+        "Display Ads",
+        "Programmatic Advertising",
+        "Digital Marketing",
+        "Data-Driven Marketing Strategies",
+        "B2B Marketing",
+        "B2C Marketing",
+        "AI and Automation Proficiency",
+        "ROI Optimization"
+      ]
     },
     {
-      title: "Leadership Skills",
+      title: "Strategic Leadership Skills",
       icon: <UsersIcon className="h-8 w-8 text-primary" />,
       skills: [
-        "Team Leadership and Development", 
-        "Leadership & Team Development", 
-        "Strategic Vision & Soft Skills", 
-        "Digital Transformation", 
-        "Operational Optimization and Process Automation"
+        "Client Relationship Management",
+        "Cross-Functional Project Leadership",
+        "International Marketing Leadership",
+        "Strategic Data-Driven Decision Making",
+        "Team Leadership",
+        "Team Development",
+        "Strategic Vision",
+        "Change Management",
+        "Emotional Intelligence"
       ]
     },
     {
-      title: "Project Management",
+      title: "Operational Efficiency Skills",
       icon: <ListChecksIcon className="h-8 w-8 text-primary" />,
       skills: [
-        "Client Relationship Management", 
-        "Cross-Functional Project Leadership", 
-        "Strategic Planning Technical Skills",
-        "Google Analytics", 
-        "Data Analysis", 
-        "SEO, SEM", 
-        "Social Media-Marketing", 
-        "Video Ads, Display Ads", 
-        "Programmatic Advertising"
+        "Operational Optimization",
+        "Process Automation",
+        "Project Management"
       ]
     },
     {
-      title: "Business Growth",
-      icon: <BriefcaseIcon className="h-8 w-8 text-primary" />,
+      title: "Business Strategy & Financial Skills",
+      icon: <LightbulbIcon className="h-8 w-8 text-primary" />,
       skills: [
-        "Revenue Growth and ROI Optimization", 
-        "International Marketing Leadership", 
-        "Strategic Data-Driven Decision Making"
+        "Strategic Planning",
+        "Revenue Growth",
+        "Digital Transformation",
+        "Financial Acumen"
       ]
     }
   ];
