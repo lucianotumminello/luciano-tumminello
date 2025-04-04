@@ -18,14 +18,14 @@ const HeroSection = () => {
             MARKETING & OPERATIONS LEADER
           </h2>
         </div>
-        <div className="space-y-6 text-center md:text-left">
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto md:mx-0">
+        <div className="space-y-6">
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto text-center text-justify">
             15+ years driving growth across Asia-Pacific with expertise in operations, 
             marketing, and digital transformation. Currently leading strategic initiatives 
             at Spartan Health in the health and wellness industry.
           </p>
           
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <Button 
               onClick={scrollToProfile}
               size="lg" 

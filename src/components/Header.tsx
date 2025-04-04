@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import LanguageSelector from "./LanguageSelector";
 
 const Header = () => {
   const location = useLocation();
@@ -42,6 +43,8 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center">
+          <LanguageSelector />
+          
           <a 
             href="https://www.linkedin.com/in/lucianotumminello10101981/" 
             target="_blank" 
@@ -125,21 +128,24 @@ const Header = () => {
               Contact Me
             </Link>
             
-            <div className="px-3 py-2 flex items-center">
-              <a 
-                href="https://www.linkedin.com/in/lucianotumminello10101981/" 
-                target="_blank" 
-                rel="noreferrer"
-                aria-label="LinkedIn Profile"
-                className="flex items-center space-x-2"
-              >
-                <img 
-                  src="/lovable-uploads/be682824-4e6b-4af4-9c53-aa9a47040326.png" 
-                  alt="LinkedIn" 
-                  className="h-6 w-6 rounded"
-                />
-                <span className="text-sm">LinkedIn Profile</span>
-              </a>
+            <div className="px-3 py-2 flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <LanguageSelector />
+                <a 
+                  href="https://www.linkedin.com/in/lucianotumminello10101981/" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  aria-label="LinkedIn Profile"
+                  className="flex items-center space-x-2"
+                >
+                  <img 
+                    src="/lovable-uploads/be682824-4e6b-4af4-9c53-aa9a47040326.png" 
+                    alt="LinkedIn" 
+                    className="h-6 w-6 rounded"
+                  />
+                  <span className="text-sm">LinkedIn Profile</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
