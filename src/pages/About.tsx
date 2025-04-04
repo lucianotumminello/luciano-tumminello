@@ -2,14 +2,27 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Briefcase, GraduationCap, Globe, Award, LineChart, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useRef } from "react";
+import TranslatedText from "@/components/TranslatedText";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const About = () => {
+  const journeyRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
+  
+  const scrollToJourney = () => {
+    journeyRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h1 className="text-4xl font-bold mb-8 text-gray-900">About Me</h1>
+          <h1 className="text-4xl font-bold mb-8 text-gray-900">
+            <TranslatedText textKey="about.title" />
+          </h1>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="md:col-span-1">
@@ -22,20 +35,37 @@ const About = () => {
               <div className="mt-6 space-y-3">
                 <div className="flex items-center gap-3">
                   <Briefcase className="h-5 w-5 text-primary" />
-                  <span className="text-gray-700">Chief Operating Officer</span>
+                  <span className="text-gray-700">
+                    <TranslatedText textKey="about.role" />
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Globe className="h-5 w-5 text-primary" />
-                  <span className="text-gray-700">Remote, Spartan Health</span>
+                  <span className="text-gray-700">
+                    <TranslatedText textKey="about.location" />
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <GraduationCap className="h-5 w-5 text-primary" />
-                  <span className="text-gray-700">Dual Master's in Commerce & Advertising</span>
+                  <span className="text-gray-700">
+                    <TranslatedText textKey="about.education" />
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Users className="h-5 w-5 text-primary" />
-                  <span className="text-gray-700">15+ Years Experience</span>
+                  <span className="text-gray-700">
+                    <TranslatedText textKey="about.experience" />
+                  </span>
                 </div>
+              </div>
+              
+              <div className="mt-6">
+                <Button 
+                  onClick={scrollToJourney}
+                  className="w-full"
+                >
+                  <TranslatedText textKey="about.viewResume" />
+                </Button>
               </div>
             </div>
             
@@ -63,10 +93,10 @@ const About = () => {
           </div>
           
           <div className="space-y-12">
-            <section>
+            <section ref={journeyRef}>
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 flex items-center">
                 <LineChart className="mr-2 h-6 w-6 text-primary" />
-                Professional Journey
+                <TranslatedText textKey="about.journey" />
               </h2>
               <div className="space-y-6">
                 <div className="relative pl-8 border-l-2 border-gray-200 pb-6">
@@ -123,40 +153,72 @@ const About = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 flex items-center">
                 <Award className="mr-2 h-6 w-6 text-primary" />
-                Core Competencies
+                <TranslatedText textKey="about.competencies" />
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Strategic Leadership</h3>
-                  <p className="text-sm text-gray-700">Leading diverse, cross-functional teams and scaling businesses for growth</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.strategy" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.strategy.desc" />
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Results-Driven Marketing</h3>
-                  <p className="text-sm text-gray-700">Developing and executing data-driven strategies with measurable results</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.marketing" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.marketing.desc" />
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Operational Efficiency</h3>
-                  <p className="text-sm text-gray-700">Streamlining workflows and implementing tools to enhance productivity</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.operations" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.operations.desc" />
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Business Development</h3>
-                  <p className="text-sm text-gray-700">Identifying growth opportunities and building strong client relationships</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.business" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.business.desc" />
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Digital Transformation</h3>
-                  <p className="text-sm text-gray-700">Implementing new technologies including AI to modernize operations</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.digital" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.digital.desc" />
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Data-Driven Decision-Making</h3>
-                  <p className="text-sm text-gray-700">Leveraging analytics to measure and optimize business outcomes</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.data" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.data.desc" />
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Sustainability Leadership</h3>
-                  <p className="text-sm text-gray-700">Integrating purpose and sustainability into business strategy</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.sustainability" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.sustainability.desc" />
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-primary">Cross-Cultural Competence</h3>
-                  <p className="text-sm text-gray-700">Working effectively across diverse markets and multicultural teams</p>
+                  <h3 className="font-semibold text-primary">
+                    <TranslatedText textKey="skills.cultural" />
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    <TranslatedText textKey="skills.cultural.desc" />
+                  </p>
                 </div>
               </div>
             </section>

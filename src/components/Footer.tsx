@@ -1,8 +1,11 @@
 
 import { Mail, Globe } from "lucide-react";
+import TranslatedText from "./TranslatedText";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
   
   return (
     <footer className="border-t py-8 px-4 bg-white">
@@ -19,25 +22,25 @@ const Footer = () => {
               href="/" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
             >
-              Home
+              <TranslatedText textKey="nav.home" />
             </a>
             <a 
               href="/about" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
             >
-              About
+              <TranslatedText textKey="nav.about" />
             </a>
             <a 
               href="/blog" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
             >
-              Blog
+              <TranslatedText textKey="nav.blog" />
             </a>
             <a 
               href="/contact" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
             >
-              Contact
+              <TranslatedText textKey="nav.contact" />
             </a>
             <div className="flex space-x-3">
               <a 
@@ -60,6 +63,23 @@ const Footer = () => {
               </a>
             </div>
           </nav>
+        </div>
+        
+        <div className="mt-6 pt-6 border-t text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start space-y-2 md:space-y-0 md:space-x-4">
+            <a 
+              href="/privacy-policy" 
+              className="text-xs text-gray-500 hover:text-primary transition-colors"
+            >
+              <TranslatedText textKey="footer.privacy" />
+            </a>
+            <a 
+              href="/cookie-policy" 
+              className="text-xs text-gray-500 hover:text-primary transition-colors"
+            >
+              <TranslatedText textKey="footer.cookies" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
