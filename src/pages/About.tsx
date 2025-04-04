@@ -14,7 +14,7 @@ const About = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="md:col-span-1">
               <img 
-                src="/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png" 
+                src="/lovable-uploads/fac95ca8-e4dc-4409-ac6b-37cecd18116f.png" 
                 alt="Luciano Tumminello" 
                 className="rounded-lg shadow-md w-full aspect-square object-cover"
               />
@@ -40,16 +40,24 @@ const About = () => {
             </div>
             
             <div className="md:col-span-2 space-y-6">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                I am currently working remotely as the Chief Operating Officer for Spartan Health, an Italian company in the health and wellness industry. My primary focus is on driving the company's strategic direction by streamlining operations and maximizing efficiency and productivity.
+              <p className="text-gray-700 leading-relaxed">
+                My story begins in Palermo, Sicily. Growing up on this southern Italian island in the 1980s sparked my interest in the world beyond. Learning English from age three equipped me with one of the main tools that would eventually allow me to travel the world and leave Italy and Europe. 
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                With dual Master's degrees in Commerce and Advertising from RMIT University in Melbourne (Australia) and a solid foundation in International Communication and International Relations, I have built a 15+ year career delivering measurable results, driving growth, and leading transformative strategies across Asia-Pacific.
+                My academic journey began with Bachelor Degrees in International Communications and International Relations at the University for Foreigners of Perugia. In 2007, seeking wider horizons, I embarked for Australia. Melbourne, with its vibrant energy, became my home as I earned dual Master's degrees in Commerce and Advertising from RMIT University, setting the stage for my journey in the dynamic world of marketing.
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                At Spartan Health, I'm leading our digital transformation efforts, which includes implementing new software and Artificial Intelligence across every department to increase efficiency and productivity, as well as leveraging data to improve decision-making.
+                The allure of Southeast Asia beckoned in 2013, immersing me in the region's diverse markets where I navigated the complexities of marketing and advertising across Singapore, Malaysia, Indonesia, and Thailand. These years in senior regional positions, both agency and client-side, served as a masterclass in driving strategic growth and achieving tangible results across varied cultural landscapes. My professional journey was further enriched by co-founding and building a full-scope digital agency from the ground up. This venture encompassed web and app development, creative services, and performance marketing, serving dozens of clients with offices in Bangkok and Phuket and a team of approximately 30 professionals. This entrepreneurial chapter provided invaluable insight into the intricacies of business development and leadership, solidifying my ability to transform vision into measurable success.
+              </p>
+              
+              <p className="text-gray-700 leading-relaxed">
+                Today, I reside in Bangkok, channeling my experience remotely as the Chief Operating Officer for Spartan Health, an Italian company dedicated to health and wellness. My focus here is on strategic direction, streamlining operations, and fostering a culture of efficiency through redesigned workflows. I am particularly passionate about leading our digital transformation, integrating cutting-edge software and AI to enhance productivity and leverage data for insightful decision-making.
+              </p>
+              
+              <p className="text-gray-700 leading-relaxed">
+                Besides my professional duties, I cultivate discipline and well-being through bodybuilding and fitness, a non-negotiable part of my daily life. I find inspiration and rejuvenation in exploring the diverse landscapes of Asia and Europe, with a particular fondness for the serenity of tropical islands. And, of course, a quiet moment spent delving into the intricacies of geopolitics or savoring a perfectly brewed espresso, a nod to my Italian heritage, brings me a sense of balance. It's in this interplay of professional rigor and personal passion that I find my equilibrium.
               </p>
             </div>
           </div>
