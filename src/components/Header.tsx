@@ -4,16 +4,18 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import LanguageSelector from "./LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Header = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  const NavLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
+  const NavLink = ({ to, textKey }: { to: string; textKey: string }) => (
     <Link
       to={to}
       className={cn(
@@ -23,7 +25,7 @@ const Header = () => {
           : "text-muted-foreground hover:text-primary"
       )}
     >
-      {children}
+      {t(textKey)}
     </Link>
   );
 
@@ -36,10 +38,10 @@ const Header = () => {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/about">About Me</NavLink>
-          <NavLink to="/blog">Blog</NavLink>
-          <NavLink to="/contact">Contact Me</NavLink>
+          <NavLink to="/" textKey="nav.home" />
+          <NavLink to="/about" textKey="nav.about" />
+          <NavLink to="/blog" textKey="nav.blog" />
+          <NavLink to="/contact" textKey="nav.contact" />
         </nav>
         
         <div className="flex items-center">
@@ -95,7 +97,7 @@ const Header = () => {
               )}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Home
+              {t("nav.home")}
             </Link>
             <Link 
               to="/about" 
@@ -105,7 +107,7 @@ const Header = () => {
               )}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              About Me
+              {t("nav.about")}
             </Link>
             <Link 
               to="/blog" 
@@ -115,7 +117,7 @@ const Header = () => {
               )}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Blog
+              {t("nav.blog")}
             </Link>
             <Link 
               to="/contact" 
@@ -125,7 +127,7 @@ const Header = () => {
               )}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Contact Me
+              {t("nav.contact")}
             </Link>
             
             <div className="px-3 py-2 flex items-center justify-between">

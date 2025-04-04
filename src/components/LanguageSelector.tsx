@@ -1,17 +1,14 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-type Language = "en" | "it";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LanguageSelector = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>("en");
+  const { language, setLanguage } = useLanguage();
 
-  const handleLanguageChange = (language: Language) => {
-    setCurrentLanguage(language);
-    // Here you would normally handle the language change logic
-    console.log(`Changed language to: ${language}`);
+  const handleLanguageChange = (newLanguage: "en" | "it") => {
+    setLanguage(newLanguage);
+    console.log(`Changed language to: ${newLanguage}`);
   };
 
   return (
@@ -21,7 +18,7 @@ const LanguageSelector = () => {
         size="icon"
         className={cn(
           "p-0 h-8 w-8 rounded overflow-hidden transition-all",
-          currentLanguage === "en" && "ring-2 ring-primary ring-offset-1"
+          language === "en" && "ring-2 ring-primary ring-offset-1"
         )}
         onClick={() => handleLanguageChange("en")}
         aria-label="Switch to English"
@@ -38,7 +35,7 @@ const LanguageSelector = () => {
         size="icon"
         className={cn(
           "p-0 h-8 w-8 rounded overflow-hidden transition-all",
-          currentLanguage === "it" && "ring-2 ring-primary ring-offset-1"
+          language === "it" && "ring-2 ring-primary ring-offset-1"
         )}
         onClick={() => handleLanguageChange("it")}
         aria-label="Switch to Italian"
