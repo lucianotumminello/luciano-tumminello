@@ -3,11 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { BarChartIcon, BriefcaseIcon, UsersIcon, ListChecksIcon, CodeIcon, LightbulbIcon } from "lucide-react";
+import TranslatedText from "./TranslatedText";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SkillsSection = () => {
+  const { t } = useLanguage();
+  
   const skillCategories = [
     {
-      title: "Marketing & Growth Skills",
+      titleKey: "skills.marketing.title",
       icon: <BarChartIcon className="h-8 w-8 text-primary" />,
       skills: [
         "Google Analytics",
@@ -27,7 +31,7 @@ const SkillsSection = () => {
       ]
     },
     {
-      title: "Strategic Leadership Skills",
+      titleKey: "skills.leadership.title",
       icon: <UsersIcon className="h-8 w-8 text-primary" />,
       skills: [
         "Client Relationship Management",
@@ -42,7 +46,7 @@ const SkillsSection = () => {
       ]
     },
     {
-      title: "Operational Efficiency Skills",
+      titleKey: "skills.operational.title",
       icon: <ListChecksIcon className="h-8 w-8 text-primary" />,
       skills: [
         "Operational Optimization",
@@ -58,7 +62,7 @@ const SkillsSection = () => {
       ]
     },
     {
-      title: "Business Strategy & Financial Skills",
+      titleKey: "skills.business.title",
       icon: <LightbulbIcon className="h-8 w-8 text-primary" />,
       skills: [
         "Strategic Planning",
@@ -77,7 +81,9 @@ const SkillsSection = () => {
     <section className="py-20 px-4 bg-white">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold tracking-tight">Expertise & Skills</h2>
+          <h2 className="text-3xl font-bold tracking-tight">
+            <TranslatedText textKey="skills.section.title" />
+          </h2>
           <Separator className="w-24 h-1 mx-auto mt-4 bg-primary" />
         </div>
         
@@ -87,7 +93,9 @@ const SkillsSection = () => {
               <CardHeader className="pb-2 bg-gray-50">
                 <div className="flex items-center gap-3">
                   {category.icon}
-                  <CardTitle>{category.title}</CardTitle>
+                  <CardTitle>
+                    <TranslatedText textKey={category.titleKey} />
+                  </CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="pt-4">
@@ -98,7 +106,7 @@ const SkillsSection = () => {
                       variant="outline"
                       className="bg-gray-50 hover:bg-gray-100 text-gray-700 py-1.5 font-medium"
                     >
-                      {skill}
+                      {t(`skills.${category.titleKey.split('.')[1]}.skill${skillIndex + 1}`)}
                     </Badge>
                   ))}
                 </div>
