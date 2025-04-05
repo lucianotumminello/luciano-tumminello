@@ -40,26 +40,13 @@ const Header = () => {
         <nav className="hidden md:flex items-center space-x-6">
           <NavLink to="/" textKey="nav.home" />
           <NavLink to="/about" textKey="nav.about" />
+          <NavLink to="/journey" textKey="nav.journey" />
           <NavLink to="/blog" textKey="nav.blog" />
           <NavLink to="/contact" textKey="nav.contact" />
         </nav>
         
         <div className="flex items-center">
           <LanguageSelector />
-          
-          <a 
-            href="https://www.linkedin.com/in/lucianotumminello10101981/" 
-            target="_blank" 
-            rel="noreferrer"
-            className="ml-4"
-            aria-label="LinkedIn Profile"
-          >
-            <img 
-              src="/lovable-uploads/be682824-4e6b-4af4-9c53-aa9a47040326.png" 
-              alt="LinkedIn" 
-              className="h-8 w-8 rounded transition-transform hover:scale-110"
-            />
-          </a>
           
           {/* Mobile Menu Button */}
           <button
@@ -110,6 +97,16 @@ const Header = () => {
               {t("nav.about")}
             </Link>
             <Link 
+              to="/journey" 
+              className={cn(
+                "px-3 py-2 text-sm",
+                isActive("/journey") ? "font-semibold bg-gray-100 rounded-md" : ""
+              )}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {t("nav.journey")}
+            </Link>
+            <Link 
               to="/blog" 
               className={cn(
                 "px-3 py-2 text-sm",
@@ -130,24 +127,8 @@ const Header = () => {
               {t("nav.contact")}
             </Link>
             
-            <div className="px-3 py-2 flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <LanguageSelector />
-                <a 
-                  href="https://www.linkedin.com/in/lucianotumminello10101981/" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  aria-label="LinkedIn Profile"
-                  className="flex items-center space-x-2"
-                >
-                  <img 
-                    src="/lovable-uploads/be682824-4e6b-4af4-9c53-aa9a47040326.png" 
-                    alt="LinkedIn" 
-                    className="h-6 w-6 rounded"
-                  />
-                  <span className="text-sm">LinkedIn Profile</span>
-                </a>
-              </div>
+            <div className="px-3 py-2 flex items-center">
+              <LanguageSelector />
             </div>
           </div>
         </div>
