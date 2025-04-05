@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { LineChart } from "lucide-react";
 import TranslatedText from "@/components/TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
+import CoreCompetencies from "@/components/CoreCompetencies";
 
 const ProfessionalJourney = () => {
   const { t } = useLanguage();
@@ -88,6 +89,9 @@ const ProfessionalJourney = () => {
               </div>
             </div>
           </section>
+          
+          {/* Core Competencies section added below career journey */}
+          <CoreCompetencies />
         </div>
       </main>
       <Footer />
