@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the language type
@@ -17,6 +16,7 @@ export const translations: TranslationData = {
     // Navigation
     "nav.home": "Home",
     "nav.about": "About Me",
+    "nav.journey": "Professional Journey",
     "nav.blog": "Blog",
     "nav.contact": "Contact Me",
     
@@ -132,6 +132,7 @@ export const translations: TranslationData = {
     // Navigation
     "nav.home": "Home",
     "nav.about": "Chi Sono",
+    "nav.journey": "Percorso Professionale",
     "nav.blog": "Blog",
     "nav.contact": "Contattami",
     

@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import { LineChart } from "lucide-react";
 import TranslatedText from "@/components/TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
-import SkillsSection from "@/components/SkillsSection";
 
 const ProfessionalJourney = () => {
   const { t } = useLanguage();
@@ -89,10 +88,6 @@ const ProfessionalJourney = () => {
               </div>
             </div>
           </section>
-          
-          <div className="mt-16">
-            <SkillsSection />
-          </div>
         </div>
       </main>
       <Footer />

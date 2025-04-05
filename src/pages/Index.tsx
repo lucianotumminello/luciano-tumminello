@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import ProfileImage from "@/components/ProfileImage";
-import SkillsSection from "@/components/SkillsSection";
+import CoreCompetencies from "@/components/CoreCompetencies";
 
 const Index = () => {
   return (
@@ -12,7 +12,7 @@ const Index = () => {
       <main className="flex-1">
         <HeroSection />
         <ProfileImage />
-        <SkillsSection />
+        <CoreCompetencies />
       </main>
       <Footer />
     </div>
