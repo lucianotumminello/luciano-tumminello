@@ -81,23 +81,23 @@ const About = () => {
             
             <div className="md:col-span-2 space-y-6">
               <p className="text-gray-700 leading-relaxed">
-                <TranslatedText textKey="about.story" />
+                <TranslatedText textKey="about.me.para1" />
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                <TranslatedText textKey="about.academic" />
+                <TranslatedText textKey="about.me.para2" />
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                <TranslatedText textKey="about.asia" />
+                <TranslatedText textKey="about.me.para3" />
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                <TranslatedText textKey="about.today" />
+                <TranslatedText textKey="about.me.para4" />
               </p>
               
               <p className="text-gray-700 leading-relaxed">
-                <TranslatedText textKey="about.personal" />
+                <TranslatedText textKey="about.me.para5" />
               </p>
             </div>
           </div>
