@@ -41,6 +41,7 @@ const Header = () => {
           <NavLink to="/" textKey="nav.home" />
           <NavLink to="/about" textKey="nav.about" />
           <NavLink to="/journey" textKey="nav.journey" />
+          <NavLink to="/education" textKey="nav.education" />
           <NavLink to="/blog" textKey="nav.blog" />
           <NavLink to="/contact" textKey="nav.contact" />
         </nav>
@@ -105,6 +106,16 @@ const Header = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {t("nav.journey")}
+            </Link>
+            <Link 
+              to="/education" 
+              className={cn(
+                "px-3 py-2 text-sm",
+                isActive("/education") ? "font-semibold bg-gray-100 rounded-md" : ""
+              )}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {t("nav.education")}
             </Link>
             <Link 
               to="/blog" 

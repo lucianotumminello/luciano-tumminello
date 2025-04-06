@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the language type
@@ -24,6 +23,7 @@ const en = {
   "nav.home": "Home",
   "nav.about": "About Me",
   "nav.journey": "Career",
+  "nav.education": "Education",
   "nav.blog": "Blog",
   "nav.contact": "Contact",
   
@@ -56,6 +56,28 @@ const en = {
   "competencies.sustainability.desc": "Guiding efforts to integrate sustainability into business strategy",
   "competencies.cultural": "Cross-Cultural Competence",
   "competencies.cultural.desc": "Working effectively across diverse markets and multicultural teams",
+  
+  // Education Page
+  "education.title": "Education & Professional Development",
+  "education.university.title": "University Education",
+  "education.masters.title": "Dual Master's in Advertising & Commerce",
+  "education.masters.institution": "RMIT University, Melbourne",
+  "education.masters.period": "2010 - 2012",
+  "education.masters.description": "Completed dual Master's degrees focusing on marketing strategy, consumer behavior, and international commerce. Graduated with high distinction.",
+  
+  "education.bachelors.title": "Bachelor Degrees in International Communications & International Relations",
+  "education.bachelors.institution": "University for Foreigners, Perugia",
+  "education.bachelors.period": "2003 - 2007",
+  "education.bachelors.description": "Foundational education in global communications strategies, multicultural dynamics, and international policy.",
+  
+  "education.professional.title": "Professional Development",
+  "education.certification1.title": "Digital Marketing Certification",
+  "education.certification1.institution": "Google",
+  "education.certification1.year": "2018",
+  
+  "education.certification2.title": "Leadership & Management Program",
+  "education.certification2.institution": "LinkedIn Learning",
+  "education.certification2.year": "2020",
   
   // About Page
   "about.title": "About Me",
@@ -170,6 +192,7 @@ const it = {
   "nav.home": "Home",
   "nav.about": "Chi Sono",
   "nav.journey": "Carriera",
+  "nav.education": "Istruzione",
   "nav.blog": "Blog",
   "nav.contact": "Contatti",
   
@@ -202,6 +225,28 @@ const it = {
   "competencies.sustainability.desc": "Guidare gli sforzi per integrare la sostenibilità nella strategia aziendale",
   "competencies.cultural": "Competenza Interculturale",
   "competencies.cultural.desc": "Lavorare efficacemente in mercati diversi e con team multiculturali",
+  
+  // Education Page
+  "education.title": "Istruzione e Sviluppo Professionale",
+  "education.university.title": "Formazione Universitaria",
+  "education.masters.title": "Doppio Master in Pubblicità e Commercio",
+  "education.masters.institution": "RMIT University, Melbourne",
+  "education.masters.period": "2010 - 2012",
+  "education.masters.description": "Completato doppi master incentrati sulla strategia di marketing, sul comportamento dei consumatori e sul commercio internazionale. Laureato con alto merito.",
+  
+  "education.bachelors.title": "Lauree in Comunicazioni Internazionali e Relazioni Internazionali",
+  "education.bachelors.institution": "Università per Stranieri, Perugia",
+  "education.bachelors.period": "2003 - 2007",
+  "education.bachelors.description": "Formazione di base in strategie di comunicazione globale, dinamiche multiculturali e politica internazionale.",
+  
+  "education.professional.title": "Sviluppo Professionale",
+  "education.certification1.title": "Certificazione in Marketing Digitale",
+  "education.certification1.institution": "Google",
+  "education.certification1.year": "2018",
+  
+  "education.certification2.title": "Programma di Leadership e Gestione",
+  "education.certification2.institution": "LinkedIn Learning",
+  "education.certification2.year": "2020",
   
   // About Page
   "about.title": "Chi Sono",
