@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const About = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   const navigateToJourney = () => {
     navigate('/journey');
@@ -35,7 +35,9 @@ const About = () => {
               <div className="mt-6 space-y-3">
                 <div className="flex items-center gap-3">
                   <Briefcase className="h-5 w-5 text-primary" />
-                  <span className="text-gray-700">Chief Operating Officer, Spartan Health</span>
+                  <span className="text-gray-700">
+                    {language === "it" ? "Direttore Operativo, Spartan Health" : "Chief Operating Officer, Spartan Health"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Globe className="h-5 w-5 text-primary" />
