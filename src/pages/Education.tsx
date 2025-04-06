@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "@/components/TranslatedText";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Education = () => {
   const { t } = useLanguage();
@@ -12,79 +13,322 @@ const Education = () => {
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-12 md:py-16">
-        <section className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold tracking-tight mb-6">
+        <section className="max-w-5xl mx-auto">
+          <h1 className="text-4xl font-bold tracking-tight mb-8">
             <TranslatedText textKey="education.title" />
           </h1>
           
-          <div className="space-y-8">
+          <div className="space-y-12">
             {/* University Education */}
-            <div className="bg-white rounded-lg shadow-md p-6 border">
-              <h2 className="text-2xl font-semibold mb-4">
-                <TranslatedText textKey="education.university.title" />
-              </h2>
+            <Card>
+              <CardHeader className="bg-muted/50">
+                <CardTitle>
+                  <TranslatedText textKey="education.university.title" />
+                </CardTitle>
+              </CardHeader>
               
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-medium text-primary">
-                    <TranslatedText textKey="education.masters.title" />
-                  </h3>
-                  <p className="text-gray-500 mb-2">
-                    <TranslatedText textKey="education.masters.institution" />
+              <CardContent className="pt-6 space-y-8">
+                {/* Master in Commerce */}
+                <div className="border-b pb-6">
+                  <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
+                    <h3 className="text-xl font-bold text-primary">
+                      <TranslatedText textKey="education.masters.commerce.title" />
+                    </h3>
+                    <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full">
+                      <TranslatedText textKey="education.masters.commerce.period" />
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <p className="font-medium">
+                      <TranslatedText textKey="education.masters.commerce.institution" />
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      <TranslatedText textKey="education.masters.commerce.location" />
+                    </p>
+                  </div>
+                  <p className="text-muted-foreground">
+                    <TranslatedText textKey="education.masters.commerce.description" />
                   </p>
-                  <p className="text-gray-500 mb-3">
-                    <TranslatedText textKey="education.masters.period" />
-                  </p>
-                  <p><TranslatedText textKey="education.masters.description" /></p>
                 </div>
                 
-                <div>
-                  <h3 className="text-xl font-medium text-primary">
-                    <TranslatedText textKey="education.bachelors.title" />
-                  </h3>
-                  <p className="text-gray-500 mb-2">
-                    <TranslatedText textKey="education.bachelors.institution" />
+                {/* Master in Advertising */}
+                <div className="border-b pb-6">
+                  <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
+                    <h3 className="text-xl font-bold text-primary">
+                      <TranslatedText textKey="education.masters.advertising.title" />
+                    </h3>
+                    <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full">
+                      <TranslatedText textKey="education.masters.advertising.period" />
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <p className="font-medium">
+                      <TranslatedText textKey="education.masters.advertising.institution" />
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      <TranslatedText textKey="education.masters.advertising.location" />
+                    </p>
+                  </div>
+                  <p className="text-muted-foreground">
+                    <TranslatedText textKey="education.masters.advertising.description" />
                   </p>
-                  <p className="text-gray-500 mb-3">
-                    <TranslatedText textKey="education.bachelors.period" />
-                  </p>
-                  <p><TranslatedText textKey="education.bachelors.description" /></p>
                 </div>
-              </div>
-            </div>
+                
+                {/* Bachelor in International Relations */}
+                <div className="border-b pb-6">
+                  <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
+                    <h3 className="text-xl font-bold text-primary">
+                      <TranslatedText textKey="education.bachelors.relations.title" />
+                    </h3>
+                    <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full">
+                      <TranslatedText textKey="education.bachelors.relations.period" />
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <p className="font-medium">
+                      <TranslatedText textKey="education.bachelors.relations.institution" />
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      <TranslatedText textKey="education.bachelors.relations.location" />
+                    </p>
+                  </div>
+                  <p className="text-muted-foreground">
+                    <TranslatedText textKey="education.bachelors.relations.description" />
+                  </p>
+                </div>
+                
+                {/* Bachelor in International Communications */}
+                <div>
+                  <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
+                    <h3 className="text-xl font-bold text-primary">
+                      <TranslatedText textKey="education.bachelors.communications.title" />
+                    </h3>
+                    <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full">
+                      <TranslatedText textKey="education.bachelors.communications.period" />
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <p className="font-medium">
+                      <TranslatedText textKey="education.bachelors.communications.institution" />
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      <TranslatedText textKey="education.bachelors.communications.location" />
+                    </p>
+                  </div>
+                  <p className="text-muted-foreground">
+                    <TranslatedText textKey="education.bachelors.communications.description" />
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
             
-            {/* Professional Development */}
-            <div className="bg-white rounded-lg shadow-md p-6 border">
-              <h2 className="text-2xl font-semibold mb-4">
-                <TranslatedText textKey="education.professional.title" />
-              </h2>
+            {/* Professional Certifications */}
+            <Card>
+              <CardHeader className="bg-muted/50">
+                <CardTitle>
+                  <TranslatedText textKey="education.certifications.title" />
+                </CardTitle>
+              </CardHeader>
               
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-medium text-primary">
-                    <TranslatedText textKey="education.certification1.title" />
-                  </h3>
-                  <p className="text-gray-500 mb-2">
-                    <TranslatedText textKey="education.certification1.institution" />
-                  </p>
-                  <p className="text-gray-500 mb-3">
-                    <TranslatedText textKey="education.certification1.year" />
-                  </p>
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* SEMrush SEO Course */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.semrush.seo.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.semrush.seo.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.semrush.seo.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* SEMrush AI-Powered Marketer */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.semrush.ai.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.semrush.ai.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.semrush.ai.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* Generative AI Overview */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.ai.overview.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.ai.overview.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.ai.overview.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* Google Ads Search */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.google.ads.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.google.ads.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.google.ads.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* Google Analytics */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.google.analytics.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.google.analytics.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.google.analytics.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* Content Marketing */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.hubspot.content.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.hubspot.content.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.hubspot.content.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* Email Marketing */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.hubspot.email.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.hubspot.email.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.hubspot.email.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* LinkedIn Content & Creative Design */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.linkedin.content.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.linkedin.content.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.linkedin.content.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* LinkedIn Marketing Solutions */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.linkedin.solutions.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.linkedin.solutions.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.linkedin.solutions.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* LinkedIn Marketing Strategy */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.linkedin.strategy.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.linkedin.strategy.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.linkedin.strategy.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* Social Media Marketing */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.hubspot.social.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.hubspot.social.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.hubspot.social.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* HubSpot Marketing Hub Software */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.hubspot.software.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.hubspot.software.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.hubspot.software.institution" />
+                    </p>
+                  </div>
+                  
+                  {/* Inbound Marketing */}
+                  <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex justify-between mb-1">
+                      <h3 className="font-semibold text-primary">
+                        <TranslatedText textKey="education.certifications.hubspot.inbound.title" />
+                      </h3>
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                        <TranslatedText textKey="education.certifications.hubspot.inbound.date" />
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <TranslatedText textKey="education.certifications.hubspot.inbound.institution" />
+                    </p>
+                  </div>
                 </div>
-                
-                <div>
-                  <h3 className="text-xl font-medium text-primary">
-                    <TranslatedText textKey="education.certification2.title" />
-                  </h3>
-                  <p className="text-gray-500 mb-2">
-                    <TranslatedText textKey="education.certification2.institution" />
-                  </p>
-                  <p className="text-gray-500 mb-3">
-                    <TranslatedText textKey="education.certification2.year" />
-                  </p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
       </main>

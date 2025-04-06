@@ -60,24 +60,83 @@ const en = {
   // Education Page
   "education.title": "Education & Professional Development",
   "education.university.title": "University Education",
-  "education.masters.title": "Dual Master's in Advertising & Commerce",
-  "education.masters.institution": "RMIT University, Melbourne",
-  "education.masters.period": "2010 - 2012",
-  "education.masters.description": "Completed dual Master's degrees focusing on marketing strategy, consumer behavior, and international commerce. Graduated with high distinction.",
   
-  "education.bachelors.title": "Bachelor Degrees in International Communications & International Relations",
-  "education.bachelors.institution": "University for Foreigners, Perugia",
-  "education.bachelors.period": "2003 - 2007",
-  "education.bachelors.description": "Foundational education in global communications strategies, multicultural dynamics, and international policy.",
+  "education.masters.commerce.title": "Master in Commerce",
+  "education.masters.commerce.institution": "Royal Melbourne Institute of Technology",
+  "education.masters.commerce.location": "Melbourne, Australia",
+  "education.masters.commerce.period": "Jun '11 — Dec '11",
+  "education.masters.commerce.description": "Completed a comprehensive program focusing on key business areas, including Business Analytics, Project Management, Marketing Communication Strategy, and Organizational Development. Developed strategic decision-making skills and a global business perspective through industry-relevant courses delivered by experienced academics and industry professionals. Gained practical knowledge applicable to enhancing organizational performance and driving career growth.",
   
-  "education.professional.title": "Professional Development",
-  "education.certification1.title": "Digital Marketing Certification",
-  "education.certification1.institution": "Google",
-  "education.certification1.year": "2018",
+  "education.masters.advertising.title": "Master in Advertising",
+  "education.masters.advertising.institution": "Royal Melbourne Institute of Technology",
+  "education.masters.advertising.location": "Melbourne, Australia",
+  "education.masters.advertising.period": "Jan '10 — Jun '11",
+  "education.masters.advertising.description": "A comprehensive program focusing on leadership, strategic planning, and integrated campaign development in global markets. Gained hands-on experience through practical projects and collaboration with industry professionals, enhancing skills in advertising strategy, creative execution, and communication management. Developed a global perspective through opportunities like international study tours and exchanges.",
   
-  "education.certification2.title": "Leadership & Management Program",
-  "education.certification2.institution": "LinkedIn Learning",
-  "education.certification2.year": "2020",
+  "education.bachelors.relations.title": "Bachelor in International Relations",
+  "education.bachelors.relations.institution": "Università Per Stranieri di Perugia",
+  "education.bachelors.relations.location": "Perugia, Italy",
+  "education.bachelors.relations.period": "Jun '05 — Jul '07",
+  "education.bachelors.relations.description": "Completed a program in international relations, global governance, and sustainable development, gaining expertise in international cooperation projects on economic development, institutional strengthening, sustainability, and human rights. Acquired advanced proficiency in two languages and strong intercultural skills, preparing for roles in diplomacy, international organizations, NGOs, and multinational corporations.",
+  
+  "education.bachelors.communications.title": "Bachelor in International Communications",
+  "education.bachelors.communications.institution": "Università Per Stranieri di Perugia",
+  "education.bachelors.communications.location": "Perugia, Italy",
+  "education.bachelors.communications.period": "Sep '00 — May '05",
+  "education.bachelors.communications.description": "Completed a five-year program specializing in communication strategy, marketing, and advertising. Developed expertise in designing and executing communication plans, managing internal and external communication channels, and creating promotional content for various media platforms. Acquired advanced proficiency in two European Union languages and intercultural communication skills. Prepared for roles in advertising, marketing consultancy, social media management, and events organization.",
+  
+  "education.certifications.title": "Professional Certifications",
+  "education.certifications.semrush.seo.title": "SEMrush SEO Crash Course with Brian Dean",
+  "education.certifications.semrush.seo.institution": "SEMrush",
+  "education.certifications.semrush.seo.date": "Dec '24",
+  
+  "education.certifications.semrush.ai.title": "SEMrush Become An AI-Powered Marketer",
+  "education.certifications.semrush.ai.institution": "SEMrush",
+  "education.certifications.semrush.ai.date": "Dec '24",
+  
+  "education.certifications.ai.overview.title": "Generative AI Overview for Project Managers",
+  "education.certifications.ai.overview.institution": "Project Management Institute",
+  "education.certifications.ai.overview.date": "Jan '25",
+  
+  "education.certifications.google.ads.title": "Google Ads Search Certification",
+  "education.certifications.google.ads.institution": "Google",
+  "education.certifications.google.ads.date": "Jan '25",
+  
+  "education.certifications.google.analytics.title": "Google Analytics Certification",
+  "education.certifications.google.analytics.institution": "Google",
+  "education.certifications.google.analytics.date": "Dec '24",
+  
+  "education.certifications.hubspot.content.title": "Content Marketing",
+  "education.certifications.hubspot.content.institution": "HubSpot Academy",
+  "education.certifications.hubspot.content.date": "Nov '24",
+  
+  "education.certifications.hubspot.email.title": "Email Marketing",
+  "education.certifications.hubspot.email.institution": "HubSpot Academy",
+  "education.certifications.hubspot.email.date": "Nov '24",
+  
+  "education.certifications.linkedin.content.title": "LinkedIn Content & Creative Design",
+  "education.certifications.linkedin.content.institution": "LinkedIn",
+  "education.certifications.linkedin.content.date": "Nov '24",
+  
+  "education.certifications.linkedin.solutions.title": "LinkedIn Marketing Solutions Fundamental",
+  "education.certifications.linkedin.solutions.institution": "LinkedIn",
+  "education.certifications.linkedin.solutions.date": "Nov '24",
+  
+  "education.certifications.linkedin.strategy.title": "LinkedIn Marketing Strategy",
+  "education.certifications.linkedin.strategy.institution": "LinkedIn",
+  "education.certifications.linkedin.strategy.date": "Nov '24",
+  
+  "education.certifications.hubspot.social.title": "Social Media Marketing",
+  "education.certifications.hubspot.social.institution": "HubSpot Academy",
+  "education.certifications.hubspot.social.date": "Nov '24",
+  
+  "education.certifications.hubspot.software.title": "HubSpot Marketing Hub Software",
+  "education.certifications.hubspot.software.institution": "HubSpot Academy",
+  "education.certifications.hubspot.software.date": "Oct '24",
+  
+  "education.certifications.hubspot.inbound.title": "Inbound Marketing",
+  "education.certifications.hubspot.inbound.institution": "HubSpot Academy",
+  "education.certifications.hubspot.inbound.date": "Oct '24",
   
   // About Page
   "about.title": "About Me",
@@ -149,7 +208,7 @@ const en = {
   "job.dwa.vendors": "Sourced vendors and negotiated to maintain low cost and profit margins.",
   "job.dwa.project": "Managed projects including retro-planning, timelines, and budgeting.",
   
-  "job.cadreon": "Spearheaded programmatic advertising across ASEAN markets, contributing to 30% revenue growth for high-profile clients like Microsoft, KFC, and Cathay Pacific.",
+  "job.cadreon": "Spearheaded programmatic advertising across ASEAN markets, contributing to 30% revenue growth for high-profile clients like Microsoft, KFC and Cathay Pacific.",
   "job.sensis": "Optimized over 140 SEM campaigns in Australia, significantly improving performance and client retention.",
   
   // Skills Section
@@ -229,24 +288,83 @@ const it = {
   // Education Page
   "education.title": "Istruzione e Sviluppo Professionale",
   "education.university.title": "Formazione Universitaria",
-  "education.masters.title": "Doppio Master in Pubblicità e Commercio",
-  "education.masters.institution": "RMIT University, Melbourne",
-  "education.masters.period": "2010 - 2012",
-  "education.masters.description": "Completato doppi master incentrati sulla strategia di marketing, sul comportamento dei consumatori e sul commercio internazionale. Laureato con alto merito.",
   
-  "education.bachelors.title": "Lauree in Comunicazioni Internazionali e Relazioni Internazionali",
-  "education.bachelors.institution": "Università per Stranieri, Perugia",
-  "education.bachelors.period": "2003 - 2007",
-  "education.bachelors.description": "Formazione di base in strategie di comunicazione globale, dinamiche multiculturali e politica internazionale.",
+  "education.masters.commerce.title": "Master in Commercio",
+  "education.masters.commerce.institution": "Royal Melbourne Institute of Technology",
+  "education.masters.commerce.location": "Melbourne, Australia",
+  "education.masters.commerce.period": "Giu '11 — Dic '11",
+  "education.masters.commerce.description": "Completato un programma completo incentrato su aree aziendali chiave, tra cui Business Analytics, Project Management, Marketing Communication Strategy e Organizational Development. Sviluppato capacità di processo decisionale strategico e una prospettiva aziendale globale attraverso corsi rilevanti per il settore tenuti da accademici esperti e professionisti del settore. Acquisite conoscenze pratiche applicabili al miglioramento delle prestazioni organizzative e alla crescita professionale.",
   
-  "education.professional.title": "Sviluppo Professionale",
-  "education.certification1.title": "Certificazione in Marketing Digitale",
-  "education.certification1.institution": "Google",
-  "education.certification1.year": "2018",
+  "education.masters.advertising.title": "Master in Pubblicità",
+  "education.masters.advertising.institution": "Royal Melbourne Institute of Technology",
+  "education.masters.advertising.location": "Melbourne, Australia",
+  "education.masters.advertising.period": "Gen '10 — Giu '11",
+  "education.masters.advertising.description": "Un programma completo incentrato sulla leadership, sulla pianificazione strategica e sullo sviluppo di campagne integrate nei mercati globali. Acquisita esperienza pratica attraverso progetti concreti e collaborazione con professionisti del settore, migliorando le competenze in strategia pubblicitaria, esecuzione creativa e gestione della comunicazione. Sviluppata una prospettiva globale attraverso opportunità come tour di studio internazionali e scambi.",
   
-  "education.certification2.title": "Programma di Leadership e Gestione",
-  "education.certification2.institution": "LinkedIn Learning",
-  "education.certification2.year": "2020",
+  "education.bachelors.relations.title": "Laurea in Relazioni Internazionali",
+  "education.bachelors.relations.institution": "Università Per Stranieri di Perugia",
+  "education.bachelors.relations.location": "Perugia, Italia",
+  "education.bachelors.relations.period": "Giu '05 — Lug '07",
+  "education.bachelors.relations.description": "Completato un programma in relazioni internazionali, governance globale e sviluppo sostenibile, acquisendo competenze in progetti di cooperazione internazionale su sviluppo economico, rafforzamento istituzionale, sostenibilità e diritti umani. Acquisita conoscenza avanzata in due lingue e forti competenze interculturali, preparandosi a ruoli nella diplomazia, nelle organizzazioni internazionali, nelle ONG e nelle società multinazionali.",
+  
+  "education.bachelors.communications.title": "Laurea in Comunicazioni Internazionali",
+  "education.bachelors.communications.institution": "Università Per Stranieri di Perugia",
+  "education.bachelors.communications.location": "Perugia, Italia",
+  "education.bachelors.communications.period": "Set '00 — Mag '05",
+  "education.bachelors.communications.description": "Completato un programma quinquennale specializzato in strategia di comunicazione, marketing e pubblicità. Sviluppata esperienza nella progettazione ed esecuzione di piani di comunicazione, nella gestione di canali di comunicazione interni ed esterni e nella creazione di contenuti promozionali per varie piattaforme multimediali. Acquisita conoscenza avanzata in due lingue dell'Unione Europea e competenze di comunicazione interculturale. Preparazione per ruoli nella pubblicità, consulenza di marketing, gestione dei social media e organizzazione di eventi.",
+  
+  "education.certifications.title": "Certificazioni Professionali",
+  "education.certifications.semrush.seo.title": "SEMrush Corso Intensivo SEO con Brian Dean",
+  "education.certifications.semrush.seo.institution": "SEMrush",
+  "education.certifications.semrush.seo.date": "Dic '24",
+  
+  "education.certifications.semrush.ai.title": "SEMrush Diventa un Marketer Potenziato dall'IA",
+  "education.certifications.semrush.ai.institution": "SEMrush",
+  "education.certifications.semrush.ai.date": "Dic '24",
+  
+  "education.certifications.ai.overview.title": "Panoramica sull'IA Generativa per Project Manager",
+  "education.certifications.ai.overview.institution": "Project Management Institute",
+  "education.certifications.ai.overview.date": "Gen '25",
+  
+  "education.certifications.google.ads.title": "Certificazione Google Ads Search",
+  "education.certifications.google.ads.institution": "Google",
+  "education.certifications.google.ads.date": "Gen '25",
+  
+  "education.certifications.google.analytics.title": "Certificazione Google Analytics",
+  "education.certifications.google.analytics.institution": "Google",
+  "education.certifications.google.analytics.date": "Dic '24",
+  
+  "education.certifications.hubspot.content.title": "Content Marketing",
+  "education.certifications.hubspot.content.institution": "HubSpot Academy",
+  "education.certifications.hubspot.content.date": "Nov '24",
+  
+  "education.certifications.hubspot.email.title": "Email Marketing",
+  "education.certifications.hubspot.email.institution": "HubSpot Academy",
+  "education.certifications.hubspot.email.date": "Nov '24",
+  
+  "education.certifications.linkedin.content.title": "LinkedIn Content & Creative Design",
+  "education.certifications.linkedin.content.institution": "LinkedIn",
+  "education.certifications.linkedin.content.date": "Nov '24",
+  
+  "education.certifications.linkedin.solutions.title": "LinkedIn Marketing Solutions Fundamental",
+  "education.certifications.linkedin.solutions.institution": "LinkedIn",
+  "education.certifications.linkedin.solutions.date": "Nov '24",
+  
+  "education.certifications.linkedin.strategy.title": "LinkedIn Marketing Strategy",
+  "education.certifications.linkedin.strategy.institution": "LinkedIn",
+  "education.certifications.linkedin.strategy.date": "Nov '24",
+  
+  "education.certifications.hubspot.social.title": "Social Media Marketing",
+  "education.certifications.hubspot.social.institution": "HubSpot Academy",
+  "education.certifications.hubspot.social.date": "Nov '24",
+  
+  "education.certifications.hubspot.software.title": "HubSpot Marketing Hub Software",
+  "education.certifications.hubspot.software.institution": "HubSpot Academy",
+  "education.certifications.hubspot.software.date": "Ott '24",
+  
+  "education.certifications.hubspot.inbound.title": "Inbound Marketing",
+  "education.certifications.hubspot.inbound.institution": "HubSpot Academy",
+  "education.certifications.hubspot.inbound.date": "Ott '24",
   
   // About Page
   "about.title": "Chi Sono",
