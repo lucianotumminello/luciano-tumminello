@@ -38,7 +38,7 @@ const ContactInfo = () => {
                 </a>
                 <a href="https://wa.me/6680993709" target="_blank" rel="noreferrer">
                   <img 
-                    src="/lovable-uploads/5442caea-b979-458a-afee-771d811502a7.png" 
+                    src="/lovable-uploads/289ae2c8-1500-430b-a72d-16e8bcc0a333.png" 
                     alt="WhatsApp Thai" 
                     className="h-6 w-6" 
                   />
@@ -50,7 +50,7 @@ const ContactInfo = () => {
                 </a>
                 <a href="https://wa.me/393287478677" target="_blank" rel="noreferrer">
                   <img 
-                    src="/lovable-uploads/5442caea-b979-458a-afee-771d811502a7.png" 
+                    src="/lovable-uploads/289ae2c8-1500-430b-a72d-16e8bcc0a333.png" 
                     alt="WhatsApp Italian" 
                     className="h-6 w-6" 
                   />
