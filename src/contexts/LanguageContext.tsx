@@ -37,6 +37,25 @@ const en = {
   "home.expertise": "My Expertise",
   "home.viewResume": "View Resume",
   
+  // Core Competencies
+  "competencies.title": "Core Competencies",
+  "competencies.strategic": "Strategic Leadership",
+  "competencies.strategic.desc": "Guiding diverse cross-functional teams and scaling organizations",
+  "competencies.marketing": "Results-Driven Marketing",
+  "competencies.marketing.desc": "Developing and executing data-driven strategies with measurable impact",
+  "competencies.operational": "Operational Efficiency",
+  "competencies.operational.desc": "Streamlining workflows and implementing tools to enhance productivity",
+  "competencies.business": "Business Development",
+  "competencies.business.desc": "Identifying growth opportunities and building strong client relationships",
+  "competencies.digital": "Digital Transformation",
+  "competencies.digital.desc": "Introducing new technologies including AI to maximize operations",
+  "competencies.data": "Data-Driven Decision-Making",
+  "competencies.data.desc": "Using analytics to measure and optimize business outcomes",
+  "competencies.sustainability": "Sustainability Leadership",
+  "competencies.sustainability.desc": "Guiding efforts to integrate sustainability into business strategy",
+  "competencies.cultural": "Cross-Cultural Competence",
+  "competencies.cultural.desc": "Working effectively across diverse markets and multicultural teams",
+  
   // About Page
   "about.title": "About Luciano",
   "about.story": "With over 15 years of experience in digital marketing and business operations, I've had the privilege of working across multiple industries and markets. My career path has been driven by a passion for innovation, strategic thinking, and delivering impactful results.",
@@ -151,6 +170,25 @@ const it = {
   "home.subtitle": "15+ anni di crescita in Asia-Pacifico con competenza in operazioni, marketing e trasformazione digitale. Attualmente alla guida di iniziative strategiche presso Spartan Health nel settore salute e benessere.",
   "home.expertise": "Le Mie Competenze",
   "home.viewResume": "Visualizza Curriculum",
+  
+  // Core Competencies
+  "competencies.title": "Competenze Principali",
+  "competencies.strategic": "Leadership Strategica",
+  "competencies.strategic.desc": "Guidare team interfunzionali diversificati e organizzazioni in crescita",
+  "competencies.marketing": "Marketing Orientato ai Risultati",
+  "competencies.marketing.desc": "Sviluppare ed eseguire strategie basate sui dati con impatto misurabile",
+  "competencies.operational": "Efficienza Operativa",
+  "competencies.operational.desc": "Semplificare i flussi di lavoro e implementare strumenti per migliorare la produttività",
+  "competencies.business": "Sviluppo del Business",
+  "competencies.business.desc": "Identificare opportunità di crescita e costruire solide relazioni con i clienti",
+  "competencies.digital": "Trasformazione Digitale",
+  "competencies.digital.desc": "Introdurre nuove tecnologie, inclusa l'IA, per massimizzare le operazioni",
+  "competencies.data": "Decisioni Basate sui Dati",
+  "competencies.data.desc": "Utilizzare l'analisi per misurare e ottimizzare i risultati aziendali",
+  "competencies.sustainability": "Leadership nella Sostenibilità",
+  "competencies.sustainability.desc": "Guidare gli sforzi per integrare la sostenibilità nella strategia aziendale",
+  "competencies.cultural": "Competenza Interculturale",
+  "competencies.cultural.desc": "Lavorare efficacemente in mercati diversi e con team multiculturali",
   
   // About Page
   "about.title": "Chi è Luciano",
