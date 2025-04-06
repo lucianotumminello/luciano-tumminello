@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the language type
@@ -152,11 +153,6 @@ const en = {
   
   // About Me Section
   "about.me.title": "My Story",
-  "about.me.para1": "My story begins in Palermo, Sicily. Growing up on this southern Italian island in the 1980s sparked my interest in the world beyond. Learning English from age three equipped me with one of the main tools that would eventually allow me to travel the world and leave Italy and Europe.",
-  "about.me.para2": "My academic journey began with Bachelor Degrees in International Communications and International Relations at the University for Foreigners in Perugia. In 2007, seeking wider horizons, I embarked for Australia. Melbourne, with its vibrant energy, became my home as I earned dual Master's degrees in Commerce and Advertising from RMIT University, setting the stage for my journey in the dynamic world of marketing.",
-  "about.me.para3": "The allure of Southeast Asia beckoned in 2013, immersing me in the region's diverse markets where I navigated the complexities of marketing and advertising across Singapore, Malaysia, Indonesia, and Thailand. These years in various regional positions, both agency and client-side, served as a masterclass in driving strategic growth and achieving tangible results across varied cultural landscapes. My professional journey was further enriched by co-founding and building a full-scope digital agency from the ground up. This venture encompassed web and app development, creative services, and performance marketing, serving dozens of clients with offices in Bangkok and Phuket and a team of approximately 30 professionals. This entrepreneurial chapter provided invaluable insight into the intricacies of business development and leadership, solidifying my ability to transform vision into measurable success.",
-  "about.me.para4": "Today, I reside in Bangkok, channeling my experience remotely as the Chief Operating Officer for Spartan Health, an Italian company dedicated to health and wellness. My focus here is on strategic direction, streamlining operations, and fostering a culture of excellence. My approach combines analytical thinking with creative problem-solving, always keeping user experience and brand integrity at the forefront.",
-  "about.me.para5": "Besides my professional duties, I cultivate discipline and well-being through bodybuilding and fitness, a non-negotiable part of my daily life. I find inspiration and rejuvenation in exploring the diverse landscapes of Asia and Europe, with a particular fondness for the serenity of tropical islands. And, of course, a quiet moment spent delving into the intricacies of geopolitics or savoring a perfectly brewed espresso, a nod to my Italian heritage, provides my sense of balance. It's in this interplay of professional rigor and personal passion that I find fulfillment.",
 };
 
 // Italian translations
@@ -294,11 +290,6 @@ const it = {
   
   // About Me Section
   "about.me.title": "La Mia Storia",
-  "about.me.para1": "La mia storia inizia a Palermo, in Sicilia. Crescere nell'isola italiana meridionale negli anni '80 ha acceso il mio interesse per il mondo oltre i confini nazionali. Imparare l'inglese dall'età di tre anni mi ha fornito uno degli strumenti principali che mi avrebbe permesso di viaggiare per il mondo e lasciare l'Italia e l'Europa.",
-  "about.me.para2": "Il mio percorso accademico è iniziato con lauree in Comunicazioni Internazionali e Relazioni Internazionali presso l'Università per Stranieri di Perugia nel 2007. Alla ricerca di orizzonti più ampi, mi sono trasferito in Australia. Melbourne, con la sua energia vibrante, è diventata la mia casa mentre conseguivo due Master in Commercio e Pubblicità presso l'RMIT University, gettando le basi per il mio percorso nel dinamico mondo del marketing.",
-  "about.me.para3": "Il fascino del Sud-est asiatico mi ha attratto nel 2012, immergendomi nei diversi mercati della regione dove ho navigato tra le complessità del marketing e della pubblicità attraverso Singapore, Malesia, Indonesia e Thailandia. Questi anni in posizioni regionali senior, sia in agenzia che lato cliente, hanno rappresentato una masterclass nel guidare la crescita strategica e raggiungere risultati tangibili attraverso diversi paesaggi culturali. Il mio percorso professionale è stato ulteriormente arricchito dalla co-fondazione e costruzione di un'agenzia digitale a servizio completo da zero. Questa impresa comprendeva sviluppo web e di app, servizi creativi e marketing delle performance, servendo decine di clienti con uffici a Bangkok e Phuket e un team di circa 30 professionisti. Questo capitolo imprenditoriale mi ha fornito una preziosa visione delle complessità dello sviluppo aziendale e della leadership, consolidando la mia capacità di trasformare la visione in successo misurabile.",
-  "about.me.para4": "Oggi risiedo a Bangkok, incanalando la mia esperienza da remoto come Chief Operating Officer di Spartan Health, un'azienda italiana dedicata alla salute e al benessere. Il mio focus qui è sulla direzione strategica, la semplificazione delle operazioni e la promozione di una cultura di efficienza attraverso flussi di lavoro ridisegnati. Sono particolarmente appassionato nel guidare la nostra trasformazione digitale, integrando software all'avanguardia e AI per migliorare la produttività e sfruttare i dati per processi decisionali illuminati.",
-  "about.me.para5": "Oltre ai miei doveri professionali, coltivo disciplina e benessere attraverso il bodybuilding e il fitness, una parte non negoziabile della mia vita quotidiana. Trovo ispirazione e ringiovanimento nell'esplorare i diversi paesaggi dell'Asia e dell'Europa, con una particolare predilezione per la serenità delle isole tropicali. E, naturalmente, un momento tranquillo dedicato ad approfondire le complessità della geopolitica o a gustare un espresso perfettamente preparato, un cenno alla mia eredità italiana, mi porta un senso di equilibrio. È in questa interazione tra rigore professionale e passione personale che trovo il mio equilibrio.",
 };
 
 // Create the provider component
@@ -338,3 +329,4 @@ export const useLanguage = () => {
   }
   return context;
 };
+
