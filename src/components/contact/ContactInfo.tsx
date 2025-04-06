@@ -33,7 +33,7 @@ const ContactInfo = () => {
         <div className="flex items-start">
           <Phone className="h-5 w-5 text-primary mt-1 mr-3" />
           <div>
-            <h3 className="text-sm font-medium text-gray-900">Phone</h3>
+            <h3 className="text-sm font-medium text-gray-900">{language === "it" ? "Numero di Telefono" : "Phone"}</h3>
             <div className="flex flex-col space-y-2">
               <div className="flex items-center">
                 <a href="tel:+66809937091" className="text-gray-600 hover:text-primary mr-2">
