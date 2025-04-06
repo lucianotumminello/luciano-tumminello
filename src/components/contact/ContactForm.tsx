@@ -6,7 +6,6 @@ import { Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import TranslatedText from "@/components/TranslatedText";
 import { 
   Form,
   FormControl,
@@ -49,8 +48,8 @@ const ContactForm = () => {
     // Simulate API call
     setTimeout(() => {
       toast({
-        title: "Message sent!",
-        description: "Thanks for reaching out. I'll get back to you soon.",
+        title: t("contact.success"),
+        description: t("contact.success.description"),
       });
       
       form.reset();
@@ -62,95 +61,103 @@ const ContactForm = () => {
     <div className="bg-white p-8 rounded-lg shadow-md">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-gray-700">
-                  <TranslatedText textKey="contact.name" />
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    {...field} 
-                    placeholder={t("contact.name")}
-                    className="border-gray-300 focus:border-primary"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 text-base font-medium">
+                    {t("contact.name")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      placeholder={t("contact.namePlaceholder")}
+                      className="mt-2 border-gray-300 focus:border-primary"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-gray-700">
-                  <TranslatedText textKey="contact.email" />
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    {...field} 
-                    type="email"
-                    placeholder={t("contact.email")}
-                    className="border-gray-300 focus:border-primary"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 text-base font-medium">
+                    {t("contact.email")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      type="email"
+                      placeholder={t("contact.emailPlaceholder")}
+                      className="mt-2 border-gray-300 focus:border-primary"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           
-          <FormField
-            control={form.control}
-            name="subject"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-gray-700">
-                  <TranslatedText textKey="contact.subject" />
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    {...field} 
-                    placeholder={t("contact.subject")}
-                    className="border-gray-300 focus:border-primary"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div>
+            <FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 text-base font-medium">
+                    {t("contact.subject")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      placeholder={t("contact.subjectPlaceholder")}
+                      className="mt-2 border-gray-300 focus:border-primary"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           
-          <FormField
-            control={form.control}
-            name="message"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-gray-700">
-                  <TranslatedText textKey="contact.message" />
-                </FormLabel>
-                <FormControl>
-                  <Textarea 
-                    {...field} 
-                    placeholder={t("contact.message")}
-                    rows={5}
-                    className="border-gray-300 focus:border-primary resize-none"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div>
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 text-base font-medium">
+                    {t("contact.message")}
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      {...field} 
+                      placeholder={t("contact.messagePlaceholder")}
+                      rows={6}
+                      className="mt-2 border-gray-300 focus:border-primary resize-none"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           
           <Button 
             type="submit" 
             disabled={isSubmitting} 
-            className="w-full bg-primary hover:bg-primary/90"
+            className="w-full bg-[#0f172a] hover:bg-[#1e293b] text-white py-3 h-auto"
           >
-            {isSubmitting ? t("contact.sending") : t("contact.send")}
-            <Send className="ml-2 h-4 w-4" />
+            {isSubmitting ? t("contact.sending") : t("contact.sendMessage")}
+            <Send className="ml-2 h-5 w-5" />
           </Button>
         </form>
       </Form>
