@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LineChart } from "lucide-react";
@@ -61,9 +62,23 @@ const ProfessionalJourney = () => {
               
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg">Leadership Roles at Lion & Lion and Y-Digital Asia</h3>
+                <h3 className="font-bold text-lg">Head of Client Services at Y-Digital</h3>
                 <p className="text-gray-600">
-                  <TranslatedText textKey="job.lion" />
+                  Achieved a 90% client retention rate and 30% average account growth.
+                  <br />
+                  Strengthened relationships with major clients, driving increased revenue and engagement.
+                </p>
+              </div>
+              
+              <div className="relative pl-8 border-l-2 border-gray-200 pb-6">
+                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                <h3 className="font-bold text-lg">Planning Director at Lion & Lion</h3>
+                <p className="text-gray-600">
+                  Spearheaded digital marketing strategies, driving a 65% improvement in pitch close rates by leveraging innovative AdTech solutions.
+                  <br />
+                  Optimized campaigns with data-driven insights, boosting ROI by 18% and improving client retention.
+                  <br />
+                  Optimized marketing with advanced analytics, boosting conversion rates by 25%.
                 </p>
               </div>
               
