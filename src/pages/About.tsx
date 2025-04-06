@@ -35,15 +35,11 @@ const About = () => {
               <div className="mt-6 space-y-3">
                 <div className="flex items-center gap-3">
                   <Briefcase className="h-5 w-5 text-primary" />
-                  <span className="text-gray-700">
-                    <TranslatedText textKey="about.role" />
-                  </span>
+                  <span className="text-gray-700">Chief Operating Officer, Spartan Health</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Globe className="h-5 w-5 text-primary" />
-                  <span className="text-gray-700">
-                    <TranslatedText textKey="about.location" />
-                  </span>
+                  <span className="text-gray-700">Bangkok, Thailand</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <GraduationCap className="h-5 w-5 text-primary" />
@@ -66,6 +62,20 @@ const About = () => {
                 >
                   <TranslatedText textKey="about.viewResume" />
                 </Button>
+              </div>
+              
+              <div className="mt-6 space-y-6">
+                <img 
+                  src="/lovable-uploads/212b1e06-7d89-4391-a1db-16ed8c2249f1.png" 
+                  alt="Luciano Tumminello Office" 
+                  className="rounded-lg shadow-md w-full object-cover"
+                />
+                
+                <img 
+                  src="/lovable-uploads/c55bb2b1-05a5-45ac-bbbf-cc6b91fb736a.png" 
+                  alt="Luciano Tumminello Outdoors" 
+                  className="rounded-lg shadow-md w-full object-cover"
+                />
               </div>
             </div>
             
