@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { BarChartIcon, BriefcaseIcon, UsersIcon, ListChecksIcon, CodeIcon, LightbulbIcon } from "lucide-react";
+import { BarChartIcon, UsersIcon, ListChecksIcon, LightbulbIcon } from "lucide-react";
 import TranslatedText from "./TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -12,7 +12,8 @@ const SkillsSection = () => {
   const skillCategories = [
     {
       titleKey: "skills.marketing.title",
-      icon: <BarChartIcon className="h-8 w-8 text-primary" />,
+      icon: <BarChartIcon className="h-6 w-6 text-primary" />,
+      displayTitle: "Marketing & Growth Skills",
       skills: [
         "Google Analytics",
         "Data Analysis",
@@ -32,7 +33,8 @@ const SkillsSection = () => {
     },
     {
       titleKey: "skills.leadership.title",
-      icon: <UsersIcon className="h-8 w-8 text-primary" />,
+      icon: <UsersIcon className="h-6 w-6 text-primary" />,
+      displayTitle: "Strategic Leadership Skills",
       skills: [
         "Client Relationship Management",
         "Cross-Functional Project Leadership",
@@ -47,7 +49,8 @@ const SkillsSection = () => {
     },
     {
       titleKey: "skills.operational.title",
-      icon: <ListChecksIcon className="h-8 w-8 text-primary" />,
+      icon: <ListChecksIcon className="h-6 w-6 text-primary" />,
+      displayTitle: "Operational Efficiency Skills",
       skills: [
         "Operational Optimization",
         "Process Automation",
@@ -63,7 +66,8 @@ const SkillsSection = () => {
     },
     {
       titleKey: "skills.business.title",
-      icon: <LightbulbIcon className="h-8 w-8 text-primary" />,
+      icon: <LightbulbIcon className="h-6 w-6 text-primary" />,
+      displayTitle: "Business Strategy & Financial Skills",
       skills: [
         "Strategic Planning",
         "Revenue Growth",
@@ -78,35 +82,35 @@ const SkillsSection = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white">
-      <div className="container mx-auto max-w-5xl">
+    <section className="py-16 bg-white">
+      <div className="container mx-auto max-w-6xl px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold tracking-tight">
-            <TranslatedText textKey="skills.section.title" />
+          <h2 className="text-4xl font-bold tracking-tight">
+            Expertise & Skills
           </h2>
-          <Separator className="w-24 h-1 mx-auto mt-4 bg-primary" />
+          <Separator className="w-32 h-1 mx-auto mt-5 mb-12 bg-primary" />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {skillCategories.map((category, index) => (
-            <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-              <CardHeader className="pb-2 bg-gray-50">
+            <Card key={index} className="border shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+              <CardHeader className="pb-4 bg-gray-50">
                 <div className="flex items-center gap-3">
                   {category.icon}
-                  <CardTitle>
-                    <TranslatedText textKey={category.titleKey} />
+                  <CardTitle className="text-xl text-gray-800">
+                    {category.displayTitle}
                   </CardTitle>
                 </div>
               </CardHeader>
-              <CardContent className="pt-4">
+              <CardContent className="pt-4 pb-6 bg-white">
                 <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill, skillIndex) => (
                     <Badge 
                       key={skillIndex}
                       variant="outline"
-                      className="bg-gray-50 hover:bg-gray-100 text-gray-700 py-1.5 font-medium"
+                      className="bg-gray-50 hover:bg-gray-100 text-gray-700 py-1.5 px-3 font-medium border border-gray-200 rounded-full"
                     >
-                      {t(`skills.${category.titleKey.split('.')[1]}.skill${skillIndex + 1}`)}
+                      {skill}
                     </Badge>
                   ))}
                 </div>
