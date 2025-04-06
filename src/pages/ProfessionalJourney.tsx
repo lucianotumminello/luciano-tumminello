@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LineChart } from "lucide-react";
@@ -12,9 +11,9 @@ const ProfessionalJourney = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
-      <main className="flex-1 py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <section id="career-journey">
+      <main className="flex-1 py-16">
+        <div className="container mx-auto max-w-4xl px-4">
+          <section id="career-journey" className="mb-16">
             <h2 className="text-2xl font-semibold mb-6 text-gray-900 flex items-center">
               <LineChart className="mr-2 h-6 w-6 text-primary" />
               <TranslatedText textKey="about.journey" />
@@ -82,7 +81,6 @@ const ProfessionalJourney = () => {
                 </p>
               </div>
               
-              {/* New job position added between Lion & Lion and Cadreon */}
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg">Account Manager at DWA</h3>
@@ -99,7 +97,7 @@ const ProfessionalJourney = () => {
                 </p>
               </div>
               
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6">
+              <div className="relative pl-8 border-l-2 border-gray-200">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg">Programmatic Advertising at Cadreon (IPG Mediabrands)</h3>
                 <p className="text-gray-600">
@@ -116,10 +114,9 @@ const ProfessionalJourney = () => {
               </div>
             </div>
           </section>
-          
-          {/* Core Competencies section added below career journey */}
-          <CoreCompetencies />
         </div>
+        
+        <CoreCompetencies />
       </main>
       <Footer />
     </div>

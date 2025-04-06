@@ -78,8 +78,8 @@ const CoreCompetencies = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white">
-      <div className="container mx-auto max-w-5xl">
+    <section className="py-16 mt-16 bg-gray-50 rounded-lg shadow-inner">
+      <div className="container mx-auto max-w-5xl px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight">
             <TranslatedText textKey="about.competencies" />
@@ -90,7 +90,7 @@ const CoreCompetencies = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {skillCategories.map((category, index) => (
             <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-              <CardHeader className="pb-2 bg-gray-50">
+              <CardHeader className="pb-2 bg-gray-100">
                 <div className="flex items-center gap-3">
                   {category.icon}
                   <CardTitle>
@@ -98,7 +98,7 @@ const CoreCompetencies = () => {
                   </CardTitle>
                 </div>
               </CardHeader>
-              <CardContent className="pt-4">
+              <CardContent className="pt-4 bg-white">
                 <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill, skillIndex) => (
                     <Badge 

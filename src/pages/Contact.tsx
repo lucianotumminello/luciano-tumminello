@@ -7,7 +7,7 @@ import ContactForm from "@/components/contact/ContactForm";
 
 const Contact = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="container mx-auto max-w-5xl">
