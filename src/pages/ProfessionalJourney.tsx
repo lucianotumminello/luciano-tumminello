@@ -64,9 +64,9 @@ const ProfessionalJourney = () => {
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg">Head of Client Services at Y-Digital</h3>
                 <p className="text-gray-600">
-                  Achieved a 90% client retention rate and 30% average account growth.
+                  <TranslatedText textKey="job.ydigital.retention" />
                   <br />
-                  Strengthened relationships with major clients, driving increased revenue and engagement.
+                  <TranslatedText textKey="job.ydigital.relationships" />
                 </p>
               </div>
               
@@ -74,11 +74,11 @@ const ProfessionalJourney = () => {
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg">Planning Director at Lion & Lion</h3>
                 <p className="text-gray-600">
-                  Spearheaded digital marketing strategies, driving a 65% improvement in pitch close rates by leveraging innovative AdTech solutions.
+                  <TranslatedText textKey="job.lion.strategies" />
                   <br />
-                  Optimized campaigns with data-driven insights, boosting ROI by 18% and improving client retention.
+                  <TranslatedText textKey="job.lion.campaigns" />
                   <br />
-                  Optimized marketing with advanced analytics, boosting conversion rates by 25%.
+                  <TranslatedText textKey="job.lion.analytics" />
                 </p>
               </div>
               

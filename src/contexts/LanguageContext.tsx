@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the language type
@@ -82,6 +83,15 @@ export const translations: TranslationData = {
     "job.lion": "Led multi-country teams, improved campaign ROI by 18% and raised client retention rates to over 90%. My leadership efforts drove account growth by 30% annually.",
     "job.cadreon": "Spearheaded programmatic advertising across ASEAN markets, contributing to 30% revenue growth for high-profile clients like Microsoft, KFC, and Cathay Pacific.",
     "job.sensis": "Optimized over 140 SEM campaigns in Australia, significantly improving performance and client retention.",
+    
+    // Y-Digital job descriptions
+    "job.ydigital.retention": "Achieved a 90% client retention rate and 30% average account growth.",
+    "job.ydigital.relationships": "Strengthened relationships with major clients, driving increased revenue and engagement.",
+    
+    // Lion & Lion job descriptions
+    "job.lion.strategies": "Spearheaded digital marketing strategies, driving a 65% improvement in pitch close rates by leveraging innovative AdTech solutions.",
+    "job.lion.campaigns": "Optimized campaigns with data-driven insights, boosting ROI by 18% and improving client retention.",
+    "job.lion.analytics": "Optimized marketing with advanced analytics, boosting conversion rates by 25%.",
     
     // Skills Section
     "skills.section.title": "Expertise & Skills",
@@ -230,6 +240,15 @@ export const translations: TranslationData = {
     "job.lion": "Ho guidato team multinazionali, migliorato il ROI delle campagne del 18% e aumentato i tassi di fidelizzazione dei clienti oltre il 90%. I miei sforzi di leadership hanno portato a una crescita annuale degli account del 30%.",
     "job.cadreon": "Ho guidato la pubblicità programmatica nei mercati ASEAN, contribuendo a una crescita dei ricavi del 30% per clienti di alto profilo come Microsoft, KFC e Cathay Pacific.",
     "job.sensis": "Ho ottimizzato oltre 140 campagne SEM in Australia, migliorando significativamente le prestazioni e la fidelizzazione dei clienti.",
+    
+    // Y-Digital job descriptions
+    "job.ydigital.retention": "Ho raggiunto un tasso di fidelizzazione dei clienti del 90% e una crescita media degli account del 30%.",
+    "job.ydigital.relationships": "Ho rafforzato le relazioni con i principali clienti, aumentando i ricavi e il coinvolgimento.",
+    
+    // Lion & Lion job descriptions
+    "job.lion.strategies": "Ho guidato strategie di marketing digitale, ottenendo un miglioramento del 65% nei tassi di chiusura delle presentazioni sfruttando soluzioni AdTech innovative.",
+    "job.lion.campaigns": "Ho ottimizzato le campagne con approfondimenti basati sui dati, aumentando il ROI del 18% e migliorando la fidelizzazione dei clienti.",
+    "job.lion.analytics": "Ho ottimizzato il marketing con analisi avanzate, aumentando i tassi di conversione del 25%.",
     
     // Skills Section
     "skills.section.title": "Competenze e Specializzazioni",
