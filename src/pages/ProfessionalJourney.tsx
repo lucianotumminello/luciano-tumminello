@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LineChart } from "lucide-react";
@@ -14,10 +13,6 @@ const ProfessionalJourney = () => {
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h1 className="text-4xl font-bold mb-8 text-gray-900">
-            <TranslatedText textKey="journey.title" />
-          </h1>
-          
           <section id="career-journey">
             <h2 className="text-2xl font-semibold mb-6 text-gray-900 flex items-center">
               <LineChart className="mr-2 h-6 w-6 text-primary" />
