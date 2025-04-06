@@ -1,6 +1,7 @@
 
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import TranslatedText from "@/components/TranslatedText";
 
 const ContactInfo = () => {
   return (
@@ -63,14 +64,14 @@ const ContactInfo = () => {
         <div className="flex items-start">
           <MapPin className="h-5 w-5 text-primary mt-1 mr-3" />
           <div>
-            <h3 className="text-sm font-medium text-gray-900">Location</h3>
+            <h3 className="text-sm font-medium text-gray-900"><TranslatedText textKey="contact.location" /></h3>
             <p className="text-gray-600">Bangkok, Thailand</p>
           </div>
         </div>
       </div>
       
       <div className="mt-8 pt-8 border-t">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Follow Me</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4"><TranslatedText textKey="contact.follow" /></h3>
         <div className="flex space-x-4">
           <a href="https://www.linkedin.com/in/lucianotumminello10101981/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
             <img 

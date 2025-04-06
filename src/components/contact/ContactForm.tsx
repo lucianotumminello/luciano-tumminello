@@ -5,9 +5,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
+import TranslatedText from "@/components/TranslatedText";
 
 const ContactForm = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -48,21 +51,21 @@ const ContactForm = () => {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-          Name
+          <TranslatedText textKey="contact.name" />
         </label>
         <Input
           id="name"
           name="name"
           value={formData.name}
           onChange={handleChange}
-          placeholder="Your name"
+          placeholder={t("contact.name")}
           required
         />
       </div>
       
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Email
+          <TranslatedText textKey="contact.email" />
         </label>
         <Input
           id="email"
@@ -70,42 +73,42 @@ const ContactForm = () => {
           type="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Your email address"
+          placeholder={t("contact.email")}
           required
         />
       </div>
       
       <div>
         <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-          Subject
+          <TranslatedText textKey="contact.subject" />
         </label>
         <Input
           id="subject"
           name="subject"
           value={formData.subject}
           onChange={handleChange}
-          placeholder="What is this regarding?"
+          placeholder={t("contact.subject")}
           required
         />
       </div>
       
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-          Message
+          <TranslatedText textKey="contact.message" />
         </label>
         <Textarea
           id="message"
           name="message"
           value={formData.message}
           onChange={handleChange}
-          placeholder="Your message"
+          placeholder={t("contact.message")}
           rows={5}
           required
         />
       </div>
       
       <Button type="submit" disabled={isSubmitting} className="w-full">
-        {isSubmitting ? "Sending..." : "Send Message"}
+        {isSubmitting ? t("contact.sending") : t("contact.send")}
         <Send className="ml-2 h-4 w-4" />
       </Button>
     </form>
