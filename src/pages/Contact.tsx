@@ -96,7 +96,7 @@ const Contact = () => {
                           <img 
                             src="/lovable-uploads/5442caea-b979-458a-afee-771d811502a7.png" 
                             alt="WhatsApp Thai" 
-                            className="h-5 w-5" 
+                            className="h-6 w-6" 
                           />
                         </a>
                       </div>
@@ -132,7 +132,7 @@ const Contact = () => {
                     <img 
                       src="/lovable-uploads/a501a8ca-a665-40f5-ad05-1f32a50b7fbb.png" 
                       alt="LinkedIn" 
-                      className="h-8 w-8 transition-transform hover:scale-110" 
+                      className="h-10 w-10 transition-transform hover:scale-110" 
                     />
                   </a>
                   {/* Add other social icons as needed */}
