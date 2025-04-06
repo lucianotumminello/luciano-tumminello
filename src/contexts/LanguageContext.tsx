@@ -65,7 +65,7 @@ const en = {
   "about.me.para4": "Today, I reside in Bangkok, channeling my experience remotely as the Chief Operating Officer for Spartan Health, an Italian company dedicated to health and wellness. My focus here is on strategic direction, streamlining operations, and fostering a culture of efficiency through redesigned workflows. I am particularly passionate about leading our digital transformation, integrating cutting-edge software and AI to enhance productivity and leverage data for insightful decision-making.",
   "about.me.para5": "Besides my professional duties, I cultivate discipline and well-being through bodybuilding and fitness, a non-negotiable part of my daily life. I find inspiration and rejuvenation in exploring the diverse landscapes of Asia and Europe, with a particular fondness for the serenity of tropical islands. And, of course, a quiet moment spent delving into the intricacies of geopolitics or savoring a perfectly brewed espresso, a nod to my Italian heritage, brings me a sense of balance. It's in this interplay of professional rigor and personal passion that I find my equilibrium.",
   "about.journey": "Professional Journey",
-  "about.education": "Political Science & International Relations",
+  "about.education": "Dual Master's in Advertising & Commerce, RMIT",
   "about.experience": "15+ Years in Marketing & Operations",
   "about.viewResume": "View Professional Journey",
   
@@ -202,7 +202,7 @@ const it = {
   "about.me.para4": "Oggi risiedo a Bangkok, incanalando la mia esperienza da remoto come Chief Operating Officer di Spartan Health, un'azienda italiana dedicata alla salute e al benessere. Il mio focus qui è sulla direzione strategica, la semplificazione delle operazioni e la promozione di una cultura di efficienza attraverso flussi di lavoro ridisegnati. Sono particolarmente appassionato nel guidare la nostra trasformazione digitale, integrando software all'avanguardia e AI per migliorare la produttività e sfruttare i dati per processi decisionali illuminati.",
   "about.me.para5": "Oltre ai miei doveri professionali, coltivo disciplina e benessere attraverso il bodybuilding e il fitness, una parte non negoziabile della mia vita quotidiana. Trovo ispirazione e ringiovanimento nell'esplorare i diversi paesaggi dell'Asia e dell'Europa, con una particolare predilezione per la serenità delle isole tropicali. E, naturalmente, un momento tranquillo dedicato ad approfondire le complessità della geopolitica o a gustare un espresso perfettamente preparato, un cenno alla mia eredità italiana, mi porta un senso di equilibrio. È in questa interazione tra rigore professionale e passione personale che trovo il mio equilibrio.",
   "about.journey": "Percorso Professionale",
-  "about.education": "Scienze Politiche & Relazioni Internazionali",
+  "about.education": "Doppio Master in Pubblicità e Commercio, RMIT",
   "about.experience": "Oltre 15 Anni in Marketing & Operazioni",
   "about.viewResume": "Visualizza Percorso Professionale",
   
@@ -329,4 +329,3 @@ export const useLanguage = () => {
   }
   return context;
 };
-
