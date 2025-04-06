@@ -13,7 +13,7 @@ const SkillsSection = () => {
     {
       titleKey: "skills.marketing.title",
       icon: <BarChartIcon className="h-6 w-6 text-primary" />,
-      displayTitle: "Marketing & Growth Skills",
+      displayTitle: t("skills.marketing.title") || "Marketing & Growth Skills",
       skills: [
         "Google Analytics",
         "Data Analysis",
@@ -34,7 +34,7 @@ const SkillsSection = () => {
     {
       titleKey: "skills.leadership.title",
       icon: <UsersIcon className="h-6 w-6 text-primary" />,
-      displayTitle: "Strategic Leadership Skills",
+      displayTitle: t("skills.leadership.title") || "Strategic Leadership Skills",
       skills: [
         "Client Relationship Management",
         "Cross-Functional Project Leadership",
@@ -50,7 +50,7 @@ const SkillsSection = () => {
     {
       titleKey: "skills.operational.title",
       icon: <ListChecksIcon className="h-6 w-6 text-primary" />,
-      displayTitle: "Operational Efficiency Skills",
+      displayTitle: t("skills.operational.title") || "Operational Efficiency Skills",
       skills: [
         "Operational Optimization",
         "Process Automation",
@@ -67,7 +67,7 @@ const SkillsSection = () => {
     {
       titleKey: "skills.business.title",
       icon: <LightbulbIcon className="h-6 w-6 text-primary" />,
-      displayTitle: "Business Strategy & Financial Skills",
+      displayTitle: t("skills.business.title") || "Business Strategy & Financial Skills",
       skills: [
         "Strategic Planning",
         "Revenue Growth",
@@ -86,7 +86,7 @@ const SkillsSection = () => {
       <div className="container mx-auto max-w-6xl px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold tracking-tight">
-            Expertise & Skills
+            <TranslatedText textKey="skills.section.title" />
           </h2>
           <Separator className="w-32 h-1 mx-auto mt-5 mb-12 bg-primary" />
         </div>

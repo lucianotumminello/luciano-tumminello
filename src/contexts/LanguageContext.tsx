@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the language type
@@ -127,6 +126,10 @@ const en = {
   
   // Skills Section
   "skills.section.title": "Expertise & Skills",
+  "skills.marketing.title": "Marketing & Growth Skills",
+  "skills.leadership.title": "Strategic Leadership Skills",
+  "skills.operational.title": "Operational Efficiency Skills",
+  "skills.business.title": "Business Strategy & Financial Skills",
   
   // Professional Summary Card
   "summary.title": "Professional Summary",
@@ -264,6 +267,10 @@ const it = {
   
   // Skills Section
   "skills.section.title": "Competenze e Specializzazioni",
+  "skills.marketing.title": "Competenze di Marketing e Crescita",
+  "skills.leadership.title": "Competenze di Leadership Strategica",
+  "skills.operational.title": "Competenze di Efficienza Operativa",
+  "skills.business.title": "Competenze di Strategia e Finanza Aziendale",
   
   // Professional Summary Card
   "summary.title": "Profilo Professionale",
