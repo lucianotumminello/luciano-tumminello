@@ -87,13 +87,20 @@ const Contact = () => {
                   <Phone className="h-5 w-5 text-primary mt-1 mr-3" />
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">Phone</h3>
-                    <div className="flex flex-col">
-                      <a href="tel:+66809937091" className="text-gray-600 hover:text-primary">
-                        +66 80 993 7091
-                      </a>
-                      <a href="tel:+393287478677" className="text-gray-600 hover:text-primary">
-                        +39 328 747 8677
-                      </a>
+                    <div className="flex items-center space-x-3">
+                      <div className="flex flex-col">
+                        <a href="tel:+66809937091" className="text-gray-600 hover:text-primary">
+                          +66 80 993 7091
+                        </a>
+                        <a href="tel:+393287478677" className="text-gray-600 hover:text-primary">
+                          +39 328 747 8677
+                        </a>
+                      </div>
+                      <img 
+                        src="/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png" 
+                        alt="WhatsApp" 
+                        className="h-8 w-auto" 
+                      />
                     </div>
                   </div>
                 </div>
@@ -110,11 +117,11 @@ const Contact = () => {
               <div className="mt-8 pt-8 border-t">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Follow Me</h3>
                 <div className="flex space-x-4">
-                  <a href="https://linkedin.com/in/lucianotumminello10101981" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="p-2 bg-white rounded-full shadow-sm">
+                  <a href="https://linkedin.com/in/lucianotumminello10101981" target="_blank" rel="noreferrer" aria-label="LinkedIn">
                     <img 
                       src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
                       alt="LinkedIn" 
-                      className="h-5 w-5 transition-transform hover:scale-110" 
+                      className="h-8 w-8 transition-transform hover:scale-110" 
                     />
                   </a>
                   {/* Add other social icons as needed */}
