@@ -9,36 +9,36 @@ const CompetenciesSummary = () => {
   
   const competencies = [
     {
-      title: "Strategic Leadership",
-      description: "Guiding diverse cross-functional teams and scaling organizations"
+      titleKey: "competencies.strategic",
+      descriptionKey: "competencies.strategic.desc"
     },
     {
-      title: "Results-Driven Marketing",
-      description: "Developing and executing data-driven strategies with measurable impact"
+      titleKey: "competencies.marketing",
+      descriptionKey: "competencies.marketing.desc"
     },
     {
-      title: "Operational Efficiency",
-      description: "Streamlining workflows and implementing tools to enhance productivity"
+      titleKey: "competencies.operational",
+      descriptionKey: "competencies.operational.desc"
     },
     {
-      title: "Business Development",
-      description: "Identifying growth opportunities and building strong client relationships"
+      titleKey: "competencies.business",
+      descriptionKey: "competencies.business.desc"
     },
     {
-      title: "Digital Transformation",
-      description: "Introducing new technologies including AI to maximize operations"
+      titleKey: "competencies.digital",
+      descriptionKey: "competencies.digital.desc"
     },
     {
-      title: "Data-Driven Decision-Making",
-      description: "Using analytics to measure and optimize business outcomes"
+      titleKey: "competencies.data",
+      descriptionKey: "competencies.data.desc"
     },
     {
-      title: "Sustainability Leadership",
-      description: "Guiding efforts to integrate sustainability into business strategy"
+      titleKey: "competencies.sustainability",
+      descriptionKey: "competencies.sustainability.desc"
     },
     {
-      title: "Cross-Cultural Competence",
-      description: "Working effectively across diverse markets and multicultural teams"
+      titleKey: "competencies.cultural",
+      descriptionKey: "competencies.cultural.desc"
     }
   ];
 
@@ -47,14 +47,18 @@ const CompetenciesSummary = () => {
       <div className="container mx-auto max-w-5xl">
         <h2 className="text-2xl font-bold mb-8 flex items-center">
           <CheckCircle className="mr-2 h-6 w-6 text-primary" />
-          Core Competencies
+          <TranslatedText textKey="competencies.title" />
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {competencies.map((competency, index) => (
             <Card key={index} className="bg-gray-50 border-none shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-4">
-                <h3 className="font-bold text-sm text-primary mb-1">{competency.title}</h3>
-                <p className="text-sm text-gray-600">{competency.description}</p>
+                <h3 className="font-bold text-sm text-primary mb-1">
+                  <TranslatedText textKey={competency.titleKey} />
+                </h3>
+                <p className="text-sm text-gray-600">
+                  <TranslatedText textKey={competency.descriptionKey} />
+                </p>
               </CardContent>
             </Card>
           ))}

@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
+import SelectedWork from "@/components/SelectedWork";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
         <HeroSection />
         <ProfileImage />
         <CompetenciesSummary />
+        <SelectedWork />
       </main>
       <Footer />
     </div>
