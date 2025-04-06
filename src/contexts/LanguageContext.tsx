@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the language type
@@ -261,7 +262,7 @@ const it = {
   "hero.cta": "Contattami",
   
   // Home Page
-  "home.title": "LEADER DI MARKETING & OPERAZIONI",
+  "home.title": "MARKETING & OPERATIONS LEADER", // Keep this in English even in Italian version
   "home.subtitle": "15+ anni di crescita in Asia-Pacifico con competenza in operazioni, marketing e trasformazione digitale. Attualmente alla guida di iniziative strategiche presso Spartan Health nel settore salute e benessere.",
   "home.expertise": "Le Mie Competenze",
   "home.viewResume": "Visualizza Curriculum",
@@ -483,6 +484,11 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   
   // Get the correct translation based on the current language
   const t = (key: string): string => {
+    // Special case for home.title - always return English version
+    if (key === "home.title") {
+      return (en as Record<string, string>)[key];
+    }
+    
     if (language === "en") {
       return (en as Record<string, string>)[key] || key;
     } else {
