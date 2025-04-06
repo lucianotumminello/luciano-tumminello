@@ -87,20 +87,31 @@ const Contact = () => {
                   <Phone className="h-5 w-5 text-primary mt-1 mr-3" />
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">Phone</h3>
-                    <div className="flex items-center space-x-3">
-                      <div className="flex flex-col">
-                        <a href="tel:+66809937091" className="text-gray-600 hover:text-primary">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex items-center">
+                        <a href="tel:+66809937091" className="text-gray-600 hover:text-primary mr-2">
                           +66 80 993 7091
                         </a>
-                        <a href="tel:+393287478677" className="text-gray-600 hover:text-primary">
-                          +39 328 747 8677
+                        <a href="https://wa.me/6680993709" target="_blank" rel="noreferrer">
+                          <img 
+                            src="/lovable-uploads/5442caea-b979-458a-afee-771d811502a7.png" 
+                            alt="WhatsApp Thai" 
+                            className="h-5 w-5" 
+                          />
                         </a>
                       </div>
-                      <img 
-                        src="/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png" 
-                        alt="WhatsApp" 
-                        className="h-8 w-auto" 
-                      />
+                      <div className="flex items-center">
+                        <a href="tel:+393287478677" className="text-gray-600 hover:text-primary mr-2">
+                          +39 328 747 8677
+                        </a>
+                        <a href="https://wa.me/393287478677" target="_blank" rel="noreferrer">
+                          <img 
+                            src="/lovable-uploads/40c024b8-784f-4855-8dfe-816c7d417d95.png" 
+                            alt="WhatsApp Italian" 
+                            className="h-5 w-5" 
+                          />
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -117,9 +128,9 @@ const Contact = () => {
               <div className="mt-8 pt-8 border-t">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Follow Me</h3>
                 <div className="flex space-x-4">
-                  <a href="https://linkedin.com/in/lucianotumminello10101981" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/in/lucianotumminello10101981/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
                     <img 
-                      src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
+                      src="/lovable-uploads/a501a8ca-a665-40f5-ad05-1f32a50b7fbb.png" 
                       alt="LinkedIn" 
                       className="h-8 w-8 transition-transform hover:scale-110" 
                     />
