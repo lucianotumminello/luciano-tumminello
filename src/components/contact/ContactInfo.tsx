@@ -50,9 +50,9 @@ const ContactInfo = () => {
                 </a>
                 <a href="https://wa.me/393287478677" target="_blank" rel="noreferrer">
                   <img 
-                    src="/lovable-uploads/40c024b8-784f-4855-8dfe-816c7d417d95.png" 
+                    src="/lovable-uploads/5442caea-b979-458a-afee-771d811502a7.png" 
                     alt="WhatsApp Italian" 
-                    className="h-5 w-5" 
+                    className="h-6 w-6" 
                   />
                 </a>
               </div>
@@ -76,7 +76,7 @@ const ContactInfo = () => {
             <img 
               src="/lovable-uploads/a501a8ca-a665-40f5-ad05-1f32a50b7fbb.png" 
               alt="LinkedIn" 
-              className="h-10 w-10 transition-transform hover:scale-110" 
+              className="h-12 w-12 transition-transform hover:scale-110" 
             />
           </a>
           {/* Add other social icons as needed */}
