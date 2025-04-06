@@ -37,7 +37,7 @@ const ContactInfo = () => {
                 <a href="tel:+66809937091" className="text-gray-600 hover:text-primary mr-2">
                   +66 80 993 7091
                 </a>
-                <a href="https://wa.me/6680993709" target="_blank" rel="noreferrer">
+                <a href="https://wa.me/66809937091" target="_blank" rel="noreferrer">
                   <img 
                     src="/lovable-uploads/289ae2c8-1500-430b-a72d-16e8bcc0a333.png" 
                     alt="WhatsApp Thai" 
