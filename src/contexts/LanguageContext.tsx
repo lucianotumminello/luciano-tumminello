@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the language type
@@ -31,6 +30,12 @@ const en = {
   "hero.title": "Luciano Tumminello",
   "hero.subtitle": "Marketing & Operations Executive",
   "hero.cta": "Get in Touch",
+  
+  // Home Page
+  "home.title": "MARKETING & OPERATIONS LEADER",
+  "home.subtitle": "15+ years driving growth across Asia-Pacific with expertise in operations, marketing and digital transformation. Currently leading strategic initiatives at Spartan Health in the health and wellness industry.",
+  "home.expertise": "My Expertise",
+  "home.viewResume": "View Resume",
   
   // About Page
   "about.title": "About Luciano",
@@ -140,6 +145,12 @@ const it = {
   "hero.title": "Luciano Tumminello",
   "hero.subtitle": "Dirigente Marketing & Operazioni",
   "hero.cta": "Contattami",
+  
+  // Home Page
+  "home.title": "LEADER DI MARKETING & OPERAZIONI",
+  "home.subtitle": "15+ anni di crescita in Asia-Pacifico con competenza in operazioni, marketing e trasformazione digitale. Attualmente alla guida di iniziative strategiche presso Spartan Health nel settore salute e benessere.",
+  "home.expertise": "Le Mie Competenze",
+  "home.viewResume": "Visualizza Curriculum",
   
   // About Page
   "about.title": "Chi è Luciano",
