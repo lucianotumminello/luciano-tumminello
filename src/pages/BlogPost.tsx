@@ -204,7 +204,7 @@ const blogPostsData = {
     category: "AI & Marketing",
     categoryIT: "IA & Marketing",
     imageUrl: "/lovable-uploads/ffe68fb7-1a64-4525-a201-ddbf3a263a2e.png",
-    desktopImageUrl: "/lovable-uploads/cc99a1b6-d065-425e-9a04-99885f675b01.png",
+    desktopImageUrl: "/lovable-uploads/29228284-d1ef-4a73-b210-ef813adf65e1.png",
     readingTime: "8 min read",
     readingTimeIT: "8 min di lettura",
     tags: ["Artificial Intelligence", "Marketing Strategy", "Digital Transformation", "Leadership"],
