@@ -18,6 +18,7 @@ import {
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const blogPostsData = {
   "ai-leadership-revolution": {
@@ -430,7 +431,7 @@ const BlogPost = () => {
                         WhatsApp
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('whatsapp-business')} className="flex items-center gap-2 cursor-pointer">
-                        <WhatsAppBusinessIcon />
+                        <WhatsAppIcon />
                         WhatsApp Business
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
