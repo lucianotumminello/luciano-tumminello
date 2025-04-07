@@ -1,11 +1,13 @@
 
-import { Mail, Globe } from "lucide-react";
+import { Mail, Globe, Linkedin } from "lucide-react";
 import TranslatedText from "./TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   
   return (
     <footer className="border-t py-8 px-4 bg-white">
@@ -48,6 +50,7 @@ const Footer = () => {
                 target="_blank" 
                 rel="noreferrer"
                 aria-label="LinkedIn"
+                className="block"
               >
                 <img 
                   src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
@@ -66,19 +69,43 @@ const Footer = () => {
         </div>
         
         <div className="mt-6 pt-6 border-t text-center md:text-left">
-          <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start space-y-2 md:space-y-0 md:space-x-4">
-            <a 
-              href="/privacy-policy" 
-              className="text-xs text-gray-500 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="footer.privacy" />
-            </a>
-            <a 
-              href="/cookie-policy" 
-              className="text-xs text-gray-500 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="footer.cookies" />
-            </a>
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start space-y-2 md:space-y-0 md:space-x-4 mb-4 md:mb-0">
+              <a 
+                href="/privacy-policy" 
+                className="text-xs text-gray-500 hover:text-primary transition-colors"
+              >
+                <TranslatedText textKey="footer.privacy" />
+              </a>
+              <a 
+                href="/cookie-policy" 
+                className="text-xs text-gray-500 hover:text-primary transition-colors"
+              >
+                <TranslatedText textKey="footer.cookies" />
+              </a>
+            </div>
+            
+            {/* Social links for mobile view */}
+            <div className="flex space-x-4 md:hidden">
+              <a 
+                href="https://www.linkedin.com/in/lucianotumminello10101981/" 
+                target="_blank" 
+                rel="noreferrer"
+                aria-label="LinkedIn"
+              >
+                <img 
+                  src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
+                  alt="LinkedIn" 
+                  className="h-6 w-6 transition-transform hover:scale-110" 
+                />
+              </a>
+              <a 
+                href="mailto:hello@lucianotumminello.com" 
+                aria-label="Email"
+              >
+                <Mail className="h-6 w-6 text-gray-600 hover:text-primary transition-colors" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
