@@ -6,7 +6,7 @@ const ContactHeader = () => {
   return (
     <div className="mb-12 text-center">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">
-        <TranslatedText textKey="contact.title" />
+        <TranslatedText textKey="nav.contact" />
       </h1>
       <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
         <TranslatedText textKey="contact.subtitle" />

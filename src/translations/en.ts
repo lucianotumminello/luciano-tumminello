@@ -7,7 +7,7 @@ const en = {
   "nav.journey": "Career",
   "nav.education": "Education",
   "nav.blog": "Blog",
-  "nav.contact": "Contact",
+  "nav.contact": "Contact Me",
   
   // Hero Section
   "hero.title": "Luciano Tumminello",
