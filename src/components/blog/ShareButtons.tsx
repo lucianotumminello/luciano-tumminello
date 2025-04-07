@@ -35,11 +35,12 @@ const ShareButtons = ({ pageUrl, title, translationPrefix }: ShareButtonsProps) 
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`);
         break;
       case 'whatsapp':
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
+        // Use the standard WhatsApp URL scheme for the regular WhatsApp app
+        window.open(`whatsapp://send?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
         break;
       case 'whatsapp-business':
-        // Updated to use WhatsApp Business app
-        window.open(`https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
+        // Use a specific URL scheme for WhatsApp Business app
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
         break;
       case 'copy':
         navigator.clipboard.writeText(pageUrl);
