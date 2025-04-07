@@ -12,14 +12,15 @@ const Footer = () => {
   return (
     <footer className="border-t py-8 px-4 bg-white">
       <div className="container mx-auto max-w-5xl">
-        <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="mb-4 md:mb-0">
+        {/* Desktop View */}
+        <div className="hidden md:flex md:flex-row items-center justify-between">
+          <div>
             <p className="text-sm text-gray-600">
               © {currentYear} Luciano Tumminello
             </p>
           </div>
           
-          <nav className="flex items-center space-x-8 mt-4 md:mt-0">
+          <nav className="flex items-center space-x-8">
             <a 
               href="/" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
@@ -68,9 +69,39 @@ const Footer = () => {
           </nav>
         </div>
         
-        <div className="mt-6 pt-6 border-t text-center md:text-left">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start space-y-2 md:space-y-0 md:space-x-4 mb-4 md:mb-0">
+        {/* Mobile View - Restructured as requested */}
+        <div className="flex flex-col md:hidden">
+          {/* First line: Navigation links */}
+          <nav className="flex flex-wrap justify-center gap-4 mb-4">
+            <a 
+              href="/" 
+              className="text-sm text-gray-600 hover:text-primary transition-colors"
+            >
+              <TranslatedText textKey="nav.home" />
+            </a>
+            <a 
+              href="/about" 
+              className="text-sm text-gray-600 hover:text-primary transition-colors"
+            >
+              <TranslatedText textKey="nav.about" />
+            </a>
+            <a 
+              href="/blog" 
+              className="text-sm text-gray-600 hover:text-primary transition-colors"
+            >
+              <TranslatedText textKey="nav.blog" />
+            </a>
+            <a 
+              href="/contact" 
+              className="text-sm text-gray-600 hover:text-primary transition-colors"
+            >
+              <TranslatedText textKey="nav.contact" />
+            </a>
+          </nav>
+          
+          {/* Second line: Policies and social links */}
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex space-x-4">
               <a 
                 href="/privacy-policy" 
                 className="text-xs text-gray-500 hover:text-primary transition-colors"
@@ -85,8 +116,7 @@ const Footer = () => {
               </a>
             </div>
             
-            {/* Social links for mobile view */}
-            <div className="flex space-x-4 md:hidden">
+            <div className="flex space-x-4">
               <a 
                 href="https://www.linkedin.com/in/lucianotumminello10101981/" 
                 target="_blank" 
@@ -106,6 +136,13 @@ const Footer = () => {
                 <Mail className="h-6 w-6 text-gray-600 hover:text-primary transition-colors" />
               </a>
             </div>
+          </div>
+          
+          {/* Third line: Copyright */}
+          <div className="text-center mt-2">
+            <p className="text-sm text-gray-600">
+              © {currentYear} Luciano Tumminello
+            </p>
           </div>
         </div>
       </div>
