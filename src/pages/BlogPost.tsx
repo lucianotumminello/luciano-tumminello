@@ -233,6 +233,7 @@ const BlogPost = () => {
   }
 
   const pageUrl = window.location.href;
+  // Use the desktop image URL for sharing preview as it appears above the title
   const fullImageUrl = new URL(post.desktopImageUrl, window.location.origin).href;
 
   const schemaData = {
