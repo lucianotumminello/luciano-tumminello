@@ -15,7 +15,7 @@ const it = {
   
   // Home Page
   // Note: "home.title" is intentionally not translated to keep it in English in both languages
-  "home.subtitle": "15+ anni di crescita in Asia-Pacifico con competenza in operazioni, marketing e trasformazione digitale. Attualmente alla guida di iniziative strategiche presso Spartan Health nel settore salute e benessere.",
+  "home.subtitle": "Oltre 15 anni di esperienza nella guida della crescita in Asia-Pacifico, specializzato in marketing, operazioni e trasformazione digitale, con un focus crescente sull'utilizzo dell'intelligenza artificiale. Ho un comprovato track record nella guida di iniziative strategiche e nel conseguimento di risultati misurabili.",
   "home.expertise": "Le Mie Competenze",
   "home.viewResume": "Visualizza Curriculum",
   
