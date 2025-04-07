@@ -39,8 +39,8 @@ const ShareButtons = ({ pageUrl, title, translationPrefix }: ShareButtonsProps) 
         window.open(`whatsapp://send?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
         break;
       case 'whatsapp-business':
-        // Use a specific URL scheme for WhatsApp Business app
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
+        // Use the specified phone number for WhatsApp Business
+        window.open(`https://wa.me/66809937091?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
         break;
       case 'copy':
         navigator.clipboard.writeText(pageUrl);
