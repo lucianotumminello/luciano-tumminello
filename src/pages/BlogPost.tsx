@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
@@ -232,12 +233,13 @@ const BlogPost = () => {
   }
 
   const pageUrl = window.location.href;
+  const fullImageUrl = new URL(post.desktopImageUrl, window.location.origin).href;
 
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": isItalian ? post.titleIT : post.title,
-    "image": post.imageUrl,
+    "image": fullImageUrl,
     "author": {
       "@type": "Person",
       "name": post.author
@@ -260,14 +262,20 @@ const BlogPost = () => {
         <title>{isItalian ? post.titleIT : post.title} | Luciano Tumminello</title>
         <meta name="description" content={isItalian ? post.excerptIT : post.excerpt} />
         <meta name="keywords" content={(isItalian ? post.tagsIT : post.tags).join(", ")} />
+        
+        {/* Open Graph / Facebook */}
         <meta property="og:title" content={isItalian ? post.titleIT : post.title} />
         <meta property="og:description" content={isItalian ? post.excerptIT : post.excerpt} />
-        <meta property="og:image" content={post.imageUrl} />
+        <meta property="og:image" content={fullImageUrl} />
         <meta property="og:type" content="article" />
+        <meta property="og:url" content={pageUrl} />
+        
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={isItalian ? post.titleIT : post.title} />
         <meta name="twitter:description" content={isItalian ? post.excerptIT : post.excerpt} />
-        <meta name="twitter:image" content={post.imageUrl} />
+        <meta name="twitter:image" content={fullImageUrl} />
+        
         <script type="application/ld+json">
           {JSON.stringify(schemaData)}
         </script>
