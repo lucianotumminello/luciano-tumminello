@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, CalendarIcon, Clock, Share2, User } from "lucide-react";
 import Header from "@/components/Header";
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const blogPostsData = {
   "ai-leadership-revolution": {
@@ -292,12 +294,14 @@ const BlogPost = () => {
             </Link>
             
             <Card className="mb-8 overflow-hidden border-0 shadow-lg">
-              <div className="h-72 md:h-80 w-full overflow-hidden">
-                <img 
-                  src={post.imageUrl} 
-                  alt={isItalian ? post.titleIT : post.title} 
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-                />
+              <div className="w-full">
+                <AspectRatio ratio={16/9} className="bg-gray-100">
+                  <img 
+                    src={post.imageUrl} 
+                    alt={isItalian ? post.titleIT : post.title} 
+                    className="w-full h-full object-contain"
+                  />
+                </AspectRatio>
               </div>
               
               <CardContent className="p-8 bg-white">
