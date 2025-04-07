@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, CalendarIcon, Clock, Share2 } from "lucide-react";
 import Header from "@/components/Header";
@@ -204,7 +205,7 @@ const blogPostsData = {
     dateIT: "7 Aprile 2025",
     category: "AI & Marketing",
     categoryIT: "IA & Marketing",
-    imageUrl: "/lovable-uploads/ffe68fb7-1a64-4525-a201-ddbf3a263a2e.png",
+    imageUrl: "/lovable-uploads/c74c218a-484f-41d3-b0f4-c8275873c98c.png",
     desktopImageUrl: "/lovable-uploads/652ff270-e3e1-4d52-8045-8f0c00abb1bc.png",
     readingTime: "8 min read",
     readingTimeIT: "8 min di lettura",
