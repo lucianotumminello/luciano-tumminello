@@ -1,26 +1,14 @@
-
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CalendarIcon, Clock, Share2, Mail, Copy, Check, MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { toast } from "sonner";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useState } from "react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import LinkedInIcon from "@/components/icons/LinkedInIcon";
+import BlogPostHeader from "@/components/blog/BlogPostHeader";
+import BlogPostContent from "@/components/blog/BlogPostContent";
+import BlogPostFooter from "@/components/blog/BlogPostFooter";
+import ShareButtons from "@/components/blog/ShareButtons";
+import NotFoundMessage from "@/components/blog/NotFoundMessage";
 
 const blogPostsData = {
   "ai-leadership-revolution": {
@@ -230,29 +218,13 @@ const BlogPost = () => {
   const post = slug ? blogPostsData[slug] : null;
   const { language } = useLanguage();
   const isItalian = language === "it";
-  const isMobile = useIsMobile();
-  const [copied, setCopied] = useState(false);
   
   if (!post) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-1 py-16 px-4">
-          <div className="container mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {isItalian ? "Post del Blog Non Trovato" : "Blog Post Not Found"}
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-              {isItalian 
-                ? "Il post del blog che stai cercando non esiste o è stato rimosso." 
-                : "The blog post you're looking for doesn't exist or has been removed."}
-            </p>
-            <Link to="/blog">
-              <Button>
-                {isItalian ? "Torna al Blog" : "Return to Blog"}
-              </Button>
-            </Link>
-          </div>
+          <NotFoundMessage isItalian={isItalian} />
         </main>
         <Footer />
       </div>
@@ -260,34 +232,6 @@ const BlogPost = () => {
   }
 
   const pageUrl = window.location.href;
-  
-  const handleShare = (platform: string) => {
-    switch (platform) {
-      case 'email':
-        const subject = encodeURIComponent(isItalian ? post.titleIT : post.title);
-        const body = encodeURIComponent(`${isItalian ? post.excerptIT : post.excerpt}\n\n${pageUrl}`);
-        window.open(`mailto:?subject=${subject}&body=${body}`);
-        break;
-      case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`);
-        break;
-      case 'whatsapp':
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${isItalian ? post.titleIT : post.title}: ${pageUrl}`)}`);
-        break;
-      case 'whatsapp-business':
-        // Updated to use WhatsApp Business app
-        window.open(`https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(`${isItalian ? post.titleIT : post.title}: ${pageUrl}`)}`);
-        break;
-      case 'copy':
-        navigator.clipboard.writeText(pageUrl);
-        setCopied(true);
-        toast.success(isItalian ? "URL copiato negli appunti!" : "URL copied to clipboard!");
-        setTimeout(() => setCopied(false), 2000);
-        break;
-      default:
-        break;
-    }
-  };
 
   const schemaData = {
     "@context": "https://schema.org",
@@ -333,141 +277,36 @@ const BlogPost = () => {
       
       <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
-          <div className="mb-8">
-            <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              {isItalian ? "Torna al Blog" : "Back to Blog"}
-            </Link>
-            
-            <Card className="mb-8 overflow-hidden border-0 shadow-lg">
-              <div className="w-full">
-                <AspectRatio ratio={16/9} className="bg-gray-100">
-                  <picture>
-                    <source media="(min-width: 768px)" srcSet={post.desktopImageUrl} />
-                    <img 
-                      src={post.imageUrl} 
-                      alt={isItalian ? post.titleIT : post.title} 
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </picture>
-                </AspectRatio>
-              </div>
-              
-              <CardContent className="p-8 bg-white">
-                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-4">
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">
-                    {isItalian ? post.categoryIT : post.category}
-                  </span>
-                  <div className="flex items-center">
-                    <CalendarIcon className="h-3.5 w-3.5 mr-1" />
-                    {isItalian ? post.dateIT : post.date}
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="h-3.5 w-3.5 mr-1" />
-                    {isItalian ? post.readingTimeIT : post.readingTime}
-                  </div>
-                </div>
-                
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                  {isItalian ? post.titleIT : post.title}
-                </h1>
-                
-                <p className="text-xl text-gray-600 mb-4 leading-relaxed">
-                  {isItalian ? post.excerptIT : post.excerpt}
-                </p>
-                
-                <div className="flex items-center mt-6">
-                  <Avatar className="h-10 w-10 mr-3">
-                    <AvatarImage src={post.authorImageUrl} alt={post.author} />
-                    <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <span className="font-medium">{post.author}</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <BlogPostHeader 
+            title={isItalian ? post.titleIT : post.title}
+            excerpt={isItalian ? post.excerptIT : post.excerpt}
+            category={isItalian ? post.categoryIT : post.category}
+            date={isItalian ? post.dateIT : post.date}
+            readingTime={isItalian ? post.readingTimeIT : post.readingTime}
+            author={post.author}
+            authorImageUrl={post.authorImageUrl}
+            imageUrl={post.imageUrl}
+            desktopImageUrl={post.desktopImageUrl}
+          />
           
-          <article className="bg-white rounded-xl shadow-md p-6 md:p-10 mb-12">
-            <div className="prose prose-lg max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-p:text-gray-600 prose-a:text-primary prose-a:font-medium prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-4 prose-blockquote:rounded-md prose-blockquote:text-gray-700 prose-blockquote:italic prose-li:text-gray-600 prose-img:rounded-lg">
-              <div dangerouslySetInnerHTML={{ __html: isItalian ? post.contentIT : post.content }}></div>
-            </div>
-          </article>
+          <BlogPostContent 
+            content={isItalian ? post.contentIT : post.content} 
+          />
           
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-3">{isItalian ? "Argomenti" : "Topics"}</h3>
-              <div className="flex flex-wrap gap-2">
-                {(isItalian ? post.tagsIT : post.tags).map((tag, index) => (
-                  <span key={index} className="bg-gray-100 hover:bg-gray-200 transition-colors px-3 py-2 rounded-full text-sm text-gray-600">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="flex justify-between items-center mb-6">
+            <BlogPostFooter 
+              tags={isItalian ? post.tagsIT : post.tags}
+              authorName={post.author}
+              authorImageUrl={post.authorImageUrl}
+              translationPrefix={isItalian ? "it" : "en"}
+            />
             
-            <Separator className="my-6" />
-            
-            <div className="flex justify-between items-center">
-              <div className="flex items-center">
-                <Avatar className="h-12 w-12 mr-3">
-                  <AvatarImage src={post.authorImageUrl} alt={post.author} />
-                  <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm text-gray-500">{isItalian ? "Scritto da" : "Written by"}</p>
-                  <p className="font-medium">{post.author}</p>
-                </div>
-              </div>
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <Share2 className="h-4 w-4" />
-                    {isItalian ? "Condividi" : "Share"}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  {isMobile ? (
-                    <>
-                      <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="flex items-center gap-2 cursor-pointer">
-                        <WhatsAppIcon />
-                        WhatsApp
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleShare('whatsapp-business')} className="flex items-center gap-2 cursor-pointer">
-                        <WhatsAppIcon />
-                        WhatsApp Business
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
-                        <LinkedInIcon />
-                        LinkedIn
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleShare('email')} className="flex items-center gap-2 cursor-pointer">
-                        <Mail className="h-4 w-4" />
-                        Email
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleShare('copy')} className="flex items-center gap-2 cursor-pointer">
-                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                        {copied ? (isItalian ? "Copiato!" : "Copied!") : (isItalian ? "Copia URL" : "Copy URL")}
-                      </DropdownMenuItem>
-                    </>
-                  ) : (
-                    <>
-                      <DropdownMenuItem onClick={() => handleShare('email')} className="flex items-center gap-2 cursor-pointer">
-                        <Mail className="h-4 w-4" />
-                        Email
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
-                        <LinkedInIcon />
-                        LinkedIn
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleShare('copy')} className="flex items-center gap-2 cursor-pointer">
-                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                        {copied ? (isItalian ? "Copiato!" : "Copied!") : (isItalian ? "Copia URL" : "Copy URL")}
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+            <div className="ml-auto">
+              <ShareButtons 
+                pageUrl={pageUrl}
+                title={isItalian ? post.titleIT : post.title}
+                translationPrefix={isItalian ? "it" : "en"}
+              />
             </div>
           </div>
           
