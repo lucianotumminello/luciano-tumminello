@@ -302,7 +302,7 @@ const BlogPost = () => {
                     <img 
                       src={post.imageUrl} 
                       alt={isItalian ? post.titleIT : post.title} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-top"
                     />
                   </picture>
                 </AspectRatio>

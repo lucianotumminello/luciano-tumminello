@@ -97,11 +97,11 @@ const Blog = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {blogPosts.map((post) => (
               <Card key={post.id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
-                <div className="relative aspect-video overflow-hidden">
+                <div className="relative aspect-[16/9] overflow-hidden">
                   <img 
                     src={post.imageUrl} 
                     alt={isItalian ? post.titleIT : post.title} 
-                    className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+                    className="object-cover w-full h-full object-top transition-transform duration-500 hover:scale-105"
                   />
                 </div>
                 <CardContent className="p-6">
