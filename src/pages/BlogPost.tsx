@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CalendarIcon, Clock, Share2, Mail, Linkedin, Copy, Check, MessageSquare } from "lucide-react";
+import { ArrowLeft, CalendarIcon, Clock, Share2, Mail, Copy, Check, MessageSquare } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
+import LinkedInIcon from "@/components/icons/LinkedInIcon";
 
 const blogPostsData = {
   "ai-leadership-revolution": {
@@ -435,7 +436,7 @@ const BlogPost = () => {
                         WhatsApp Business
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
-                        <Linkedin className="h-4 w-4" />
+                        <LinkedInIcon />
                         LinkedIn
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('email')} className="flex items-center gap-2 cursor-pointer">
@@ -454,7 +455,7 @@ const BlogPost = () => {
                         Email
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
-                        <Linkedin className="h-4 w-4" />
+                        <LinkedInIcon />
                         LinkedIn
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('copy')} className="flex items-center gap-2 cursor-pointer">
