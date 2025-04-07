@@ -116,7 +116,7 @@ const Footer = () => {
               </a>
             </div>
             
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 ml-auto pr-2">
               <a 
                 href="https://www.linkedin.com/in/lucianotumminello10101981/" 
                 target="_blank" 
