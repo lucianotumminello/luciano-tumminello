@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LineChart } from "lucide-react";
@@ -99,7 +100,7 @@ const ProfessionalJourney = () => {
               
               <div className="relative pl-8 border-l-2 border-gray-200">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg">Programmatic Advertising at Cadreon (IPG Mediabrands)</h3>
+                <h3 className="font-bold text-lg">Business Development (ASEAN) at Cadreon (IPG Mediabrands)</h3>
                 <p className="text-gray-600">
                   <TranslatedText textKey="job.cadreon" />
                 </p>
