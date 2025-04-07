@@ -122,18 +122,20 @@ const Footer = () => {
                 target="_blank" 
                 rel="noreferrer"
                 aria-label="LinkedIn"
+                className="flex items-center justify-center"
               >
                 <img 
                   src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
                   alt="LinkedIn" 
-                  className="h-6 w-6 transition-transform hover:scale-110" 
+                  className="h-6 w-6 min-w-6 min-h-6" 
                 />
               </a>
               <a 
                 href="mailto:hello@lucianotumminello.com" 
                 aria-label="Email"
+                className="flex items-center justify-center"
               >
-                <Mail className="h-6 w-6 text-gray-600 hover:text-primary transition-colors" />
+                <Mail className="h-6 w-6 min-w-6 min-h-6 text-gray-600 hover:text-primary transition-colors" />
               </a>
             </div>
           </div>
