@@ -23,7 +23,7 @@ const Blog = () => {
       dateIT: "7 Aprile 2025",
       category: "AI & Marketing",
       categoryIT: "IA & Marketing",
-      imageUrl: "/lovable-uploads/1db0010c-c081-459d-b696-8806b76cd0b5.png",
+      imageUrl: "/lovable-uploads/fd8fe34b-755d-463d-b6ca-42abd81723f5.png",
       slug: "ai-leadership-revolution"
     },
     {

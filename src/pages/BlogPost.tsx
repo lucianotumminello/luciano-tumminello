@@ -1,4 +1,3 @@
-
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, CalendarIcon, Clock, Share2 } from "lucide-react";
 import Header from "@/components/Header";
@@ -119,7 +118,7 @@ const blogPostsData = {
       
       <h3>La Risposta Strategica di OpenAI</h3>
       <p>Nel frattempo, OpenAI non è rimasta statica. Con l'attesa uscita di GPT-5 nel terzo trimestre del 2025, l'azienda continua a spingere i confini negli avanzamenti multimodali dell'IA che integrano perfettamente elaborazione di testo, voce, immagini e video.</p>
-      <p>La loro recente partnership con Adobe per migliorare i flussi di lavoro creativi dimostra come si stiano posizionando non solo come fornitore di IA ma come componente essenziale dello stack tecnologico di marketing.</p>
+      <p>La loro recente partnership con Adobe per migliorare i flussi di lavoro creativi dimostra come si stanno posizionando non solo come fornitore di IA ma come componente essenziale dello stack tecnologico di marketing.</p>
       
       <h2>Tre Modi Critici in cui l'IA Sta Trasformando la Leadership di Marketing nel 2025</h2>
       
@@ -201,7 +200,7 @@ const blogPostsData = {
     dateIT: "7 Aprile 2025",
     category: "AI & Marketing",
     categoryIT: "IA & Marketing",
-    imageUrl: "/lovable-uploads/1db0010c-c081-459d-b696-8806b76cd0b5.png",
+    imageUrl: "/lovable-uploads/fd8fe34b-755d-463d-b6ca-42abd81723f5.png",
     readingTime: "8 min read",
     readingTimeIT: "8 min di lettura",
     tags: ["Artificial Intelligence", "Marketing Strategy", "Digital Transformation", "Leadership"],
