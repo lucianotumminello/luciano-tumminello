@@ -1,6 +1,6 @@
 
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CalendarIcon, Clock, Share2 } from "lucide-react";
+import { ArrowLeft, CalendarIcon, Clock, Share2, Mail, Linkedin, Copy, Check, WhatsApp } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
@@ -10,6 +10,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from "react";
 
 const blogPostsData = {
   "ai-leadership-revolution": {
@@ -219,6 +228,8 @@ const BlogPost = () => {
   const post = slug ? blogPostsData[slug] : null;
   const { language } = useLanguage();
   const isItalian = language === "it";
+  const isMobile = useIsMobile();
+  const [copied, setCopied] = useState(false);
   
   if (!post) {
     return (
@@ -245,6 +256,35 @@ const BlogPost = () => {
       </div>
     );
   }
+
+  const pageUrl = window.location.href;
+  
+  const handleShare = (platform: string) => {
+    switch (platform) {
+      case 'email':
+        const subject = encodeURIComponent(isItalian ? post.titleIT : post.title);
+        const body = encodeURIComponent(`${isItalian ? post.excerptIT : post.excerpt}\n\n${pageUrl}`);
+        window.open(`mailto:?subject=${subject}&body=${body}`);
+        break;
+      case 'linkedin':
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`);
+        break;
+      case 'whatsapp':
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${isItalian ? post.titleIT : post.title}: ${pageUrl}`)}`);
+        break;
+      case 'whatsapp-business':
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${isItalian ? post.titleIT : post.title}: ${pageUrl}`)}`);
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(pageUrl);
+        setCopied(true);
+        toast.success(isItalian ? "URL copiato negli appunti!" : "URL copied to clipboard!");
+        setTimeout(() => setCopied(false), 2000);
+        break;
+      default:
+        break;
+    }
+  };
 
   const schemaData = {
     "@context": "https://schema.org",
@@ -376,10 +416,57 @@ const BlogPost = () => {
                 </div>
               </div>
               
-              <Button variant="outline" className="flex items-center gap-2">
-                <Share2 className="h-4 w-4" />
-                {isItalian ? "Condividi" : "Share"}
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Share2 className="h-4 w-4" />
+                    {isItalian ? "Condividi" : "Share"}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  {isMobile ? (
+                    // Mobile share options
+                    <>
+                      <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="flex items-center gap-2 cursor-pointer">
+                        <WhatsApp className="h-4 w-4" />
+                        WhatsApp
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('whatsapp-business')} className="flex items-center gap-2 cursor-pointer">
+                        <WhatsApp className="h-4 w-4" />
+                        WhatsApp Business
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
+                        <Linkedin className="h-4 w-4" />
+                        LinkedIn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('email')} className="flex items-center gap-2 cursor-pointer">
+                        <Mail className="h-4 w-4" />
+                        Email
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('copy')} className="flex items-center gap-2 cursor-pointer">
+                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                        {copied ? (isItalian ? "Copiato!" : "Copied!") : (isItalian ? "Copia URL" : "Copy URL")}
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    // Desktop share options
+                    <>
+                      <DropdownMenuItem onClick={() => handleShare('email')} className="flex items-center gap-2 cursor-pointer">
+                        <Mail className="h-4 w-4" />
+                        Email
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
+                        <Linkedin className="h-4 w-4" />
+                        LinkedIn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('copy')} className="flex items-center gap-2 cursor-pointer">
+                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                        {copied ? (isItalian ? "Copiato!" : "Copied!") : (isItalian ? "Copia URL" : "Copy URL")}
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           
