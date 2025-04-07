@@ -8,35 +8,35 @@ const Blog = () => {
   const blogPosts = [
     {
       id: 1,
-      title: "Designing for Accessibility: A Practical Guide",
-      excerpt: "Learn how to make your digital products more accessible to all users with these practical tips and techniques.",
+      title: "Coming Soon",
+      excerpt: "Coming Soon",
       date: "April 15, 2023",
       category: "Design",
-      imageUrl: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
       id: 2,
-      title: "The Evolution of UI Design Trends in 2023",
-      excerpt: "Exploring the latest design trends that are shaping user interfaces this year and what they mean for the future.",
+      title: "Coming Soon",
+      excerpt: "Coming Soon",
       date: "March 22, 2023",
       category: "UI Design",
-      imageUrl: "https://images.unsplash.com/photo-1545235617-7a424c1a60cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
       id: 3,
-      title: "Optimizing React Performance for Large Applications",
-      excerpt: "Technical insights on improving the performance of complex React applications through code optimization.",
+      title: "Coming Soon",
+      excerpt: "Coming Soon",
       date: "February 8, 2023",
       category: "Development",
-      imageUrl: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
       id: 4,
-      title: "Building Effective Design Systems from Scratch",
-      excerpt: "A comprehensive guide to creating and implementing design systems that scale across products and teams.",
+      title: "Coming Soon",
+      excerpt: "Coming Soon",
       date: "January 17, 2023",
       category: "Design Systems",
-      imageUrl: "https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     }
   ];
 
