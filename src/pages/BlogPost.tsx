@@ -1,10 +1,13 @@
+
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CalendarIcon, Clock, Share2 } from "lucide-react";
+import { ArrowLeft, CalendarIcon, Clock, Share2, User } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 // Mock blog post data - in a real app, this would come from an API or CMS
 const blogPostsData = {
@@ -240,6 +243,28 @@ const BlogPost = () => {
     );
   }
 
+  // Extract schema markup for SEO
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": isItalian ? post.titleIT : post.title,
+    "image": post.imageUrl,
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Luciano Tumminello",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://luciano-tumminello.com/logo.png"
+      }
+    },
+    "datePublished": post.date,
+    "description": isItalian ? post.excerptIT : post.excerpt
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
@@ -254,68 +279,107 @@ const BlogPost = () => {
         <meta name="twitter:title" content={isItalian ? post.titleIT : post.title} />
         <meta name="twitter:description" content={isItalian ? post.excerptIT : post.excerpt} />
         <meta name="twitter:image" content={post.imageUrl} />
+        <script type="application/ld+json">
+          {JSON.stringify(schemaData)}
+        </script>
       </Helmet>
       
       <Header />
       
-      <main className="flex-1 pt-8 pb-16 px-4">
+      <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
           <div className="mb-8">
-            <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
+            <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
               <ArrowLeft className="h-4 w-4 mr-2" />
               {isItalian ? "Torna al Blog" : "Back to Blog"}
             </Link>
             
-            <div className="flex items-center space-x-3 text-sm text-gray-500 mb-4">
-              <span className="bg-gray-100 px-3 py-1 rounded-full">
-                {isItalian ? post.categoryIT : post.category}
-              </span>
-              <div className="flex items-center">
-                <CalendarIcon className="h-3.5 w-3.5 mr-1" />
-                {isItalian ? post.dateIT : post.date}
+            <Card className="mb-8 overflow-hidden border-0 shadow-lg">
+              <div className="h-72 md:h-80 w-full overflow-hidden">
+                <img 
+                  src={post.imageUrl} 
+                  alt={isItalian ? post.titleIT : post.title} 
+                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                />
               </div>
-              <div className="flex items-center">
-                <Clock className="h-3.5 w-3.5 mr-1" />
-                {isItalian ? post.readingTimeIT : post.readingTime}
-              </div>
+              
+              <CardContent className="p-8 bg-white">
+                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-4">
+                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">
+                    {isItalian ? post.categoryIT : post.category}
+                  </span>
+                  <div className="flex items-center">
+                    <CalendarIcon className="h-3.5 w-3.5 mr-1" />
+                    {isItalian ? post.dateIT : post.date}
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="h-3.5 w-3.5 mr-1" />
+                    {isItalian ? post.readingTimeIT : post.readingTime}
+                  </div>
+                </div>
+                
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                  {isItalian ? post.titleIT : post.title}
+                </h1>
+                
+                <p className="text-xl text-gray-600 mb-4 leading-relaxed">
+                  {isItalian ? post.excerptIT : post.excerpt}
+                </p>
+                
+                <div className="flex items-center mt-6">
+                  <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                    <User className="h-5 w-5 text-gray-500" />
+                  </div>
+                  <span className="font-medium">{post.author}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <article className="bg-white rounded-xl shadow-md p-6 md:p-10 mb-12">
+            <div className="prose prose-lg max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-p:text-gray-600 prose-a:text-primary prose-a:font-medium prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-4 prose-blockquote:rounded-md prose-blockquote:text-gray-700 prose-blockquote:italic prose-li:text-gray-600 prose-img:rounded-lg">
+              <div dangerouslySetInnerHTML={{ __html: isItalian ? post.contentIT : post.content }}></div>
             </div>
-            
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {isItalian ? post.titleIT : post.title}
-            </h1>
-            
-            <p className="text-xl text-gray-600 mb-8">
-              {isItalian ? post.excerptIT : post.excerpt}
-            </p>
-          </div>
-          
-          <div className="rounded-lg overflow-hidden mb-10">
-            <img 
-              src={post.imageUrl} 
-              alt={isItalian ? post.titleIT : post.title} 
-              className="w-full h-auto object-cover"
-            />
-          </div>
-          
-          <article className="prose prose-lg max-w-none mb-12">
-            <div dangerouslySetInnerHTML={{ __html: isItalian ? post.contentIT : post.content }}></div>
           </article>
           
-          <div className="border-t border-gray-200 pt-8">
-            <div className="flex flex-wrap justify-between items-center">
-              <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-3">{isItalian ? "Argomenti" : "Topics"}</h3>
+              <div className="flex flex-wrap gap-2">
                 {(isItalian ? post.tagsIT : post.tags).map((tag, index) => (
-                  <span key={index} className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600">
-                    {tag}
+                  <span key={index} className="bg-gray-100 hover:bg-gray-200 transition-colors px-3 py-2 rounded-full text-sm text-gray-600">
+                    #{tag}
                   </span>
                 ))}
               </div>
+            </div>
+            
+            <Separator className="my-6" />
+            
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                  <User className="h-6 w-6 text-gray-500" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">{isItalian ? "Scritto da" : "Written by"}</p>
+                  <p className="font-medium">{post.author}</p>
+                </div>
+              </div>
               
-              <Button variant="outline" className="flex items-center">
-                <Share2 className="h-4 w-4 mr-2" />
-                {isItalian ? "Condividi Questo Post" : "Share This Post"}
+              <Button variant="outline" className="flex items-center gap-2">
+                <Share2 className="h-4 w-4" />
+                {isItalian ? "Condividi" : "Share"}
               </Button>
             </div>
+          </div>
+          
+          <div className="mt-10 text-center">
+            <Link to="/blog">
+              <Button variant="secondary" className="px-6">
+                {isItalian ? "Leggi Altri Articoli" : "Read More Articles"}
+              </Button>
+            </Link>
           </div>
         </div>
       </main>
