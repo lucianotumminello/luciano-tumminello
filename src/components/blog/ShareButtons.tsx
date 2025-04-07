@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Share2, Mail, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
@@ -35,11 +34,9 @@ const ShareButtons = ({ pageUrl, title, translationPrefix }: ShareButtonsProps) 
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`);
         break;
       case 'whatsapp':
-        // Use the standard WhatsApp URL scheme for the regular WhatsApp app
         window.open(`whatsapp://send?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
         break;
       case 'whatsapp-business':
-        // Use the specified phone number for WhatsApp Business
         window.open(`https://wa.me/66809937091?text=${encodeURIComponent(`${title}: ${pageUrl}`)}`);
         break;
       case 'copy':
@@ -67,10 +64,6 @@ const ShareButtons = ({ pageUrl, title, translationPrefix }: ShareButtonsProps) 
             <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="flex items-center gap-2 cursor-pointer">
               <WhatsAppIcon />
               WhatsApp
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleShare('whatsapp-business')} className="flex items-center gap-2 cursor-pointer">
-              <WhatsAppIcon />
-              WhatsApp Business
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
               <LinkedInIcon />
