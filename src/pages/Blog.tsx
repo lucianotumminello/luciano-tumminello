@@ -3,16 +3,19 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarIcon } from "lucide-react";
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 const Blog = () => {
   const blogPosts = [
     {
       id: 1,
-      title: "Coming Soon",
-      excerpt: "Coming Soon",
-      date: "April 15, 2023",
-      category: "Design",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+      title: "The AI Leadership Revolution: How Marketing Executives Are Navigating the 2025 AI Landscape",
+      excerpt: "The AI race is transforming marketing strategies faster than ever before. Here's how forward-thinking leaders are leveraging these advancements to create competitive advantages in 2025.",
+      date: "April 7, 2025",
+      category: "AI & Marketing",
+      imageUrl: "/lovable-uploads/1db0010c-c081-459d-b696-8806b76cd0b5.png",
+      slug: "ai-leadership-revolution"
     },
     {
       id: 2,
@@ -42,12 +45,17 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <Helmet>
+        <title>Blog | Luciano Tumminello</title>
+        <meta name="description" content="Strategic insights on digital transformation, AI, and data-driven marketing strategies by Luciano Tumminello." />
+        <meta name="keywords" content="marketing blog, AI in marketing, digital transformation, data-driven strategies, Luciano Tumminello" />
+      </Helmet>
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="mb-12 text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
-            <p className="text-lg text-gray-600 md:whitespace-nowrap md:overflow-hidden md:text-ellipsis mx-auto max-w-3xl">
+            <p className="text-lg text-gray-600 mx-auto max-w-3xl">
               Strategic insights on digital transformation, global operations, and data-driven marketing.
             </p>
           </div>
@@ -72,12 +80,20 @@ const Blog = () => {
                     </div>
                   </div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
-                    <a href="#">{post.title}</a>
+                    {post.slug ? (
+                      <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                    ) : (
+                      post.title
+                    )}
                   </h2>
                   <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                  <a href="#" className="text-primary font-medium text-sm hover:underline">
-                    Read More →
-                  </a>
+                  {post.slug ? (
+                    <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
+                      Read More →
+                    </Link>
+                  ) : (
+                    <span className="text-gray-400 font-medium text-sm">Coming Soon...</span>
+                  )}
                 </CardContent>
               </Card>
             ))}

@@ -11,6 +11,7 @@ import About from "./pages/About";
 import ProfessionalJourney from "./pages/ProfessionalJourney";
 import Education from "./pages/Education";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/journey" element={<ProfessionalJourney />} />
               <Route path="/education" element={<Education />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/cookie-policy" element={<CookiePolicy />} />
