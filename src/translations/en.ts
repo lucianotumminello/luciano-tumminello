@@ -20,6 +20,19 @@ const en = {
   "home.expertise": "My Expertise",
   "home.viewResume": "View Resume",
   
+  // Blog Page
+  "blog.title": "Blog",
+  "blog.subtitle": "Strategic insights on digital transformation, global operations, and data-driven marketing.",
+  "blog.readMore": "Read More →",
+  "blog.comingSoon": "Coming Soon...",
+  
+  // Blog Post Page
+  "blogPost.backToBlog": "Back to Blog",
+  "blogPost.notFound": "Blog Post Not Found",
+  "blogPost.notFound.description": "The blog post you're looking for doesn't exist or has been removed.",
+  "blogPost.returnToBlog": "Return to Blog",
+  "blogPost.sharePost": "Share This Post",
+  
   // Core Competencies
   "competencies.title": "Core Competencies",
   "competencies.strategic": "Strategic Leadership",

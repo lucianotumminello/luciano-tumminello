@@ -19,6 +19,19 @@ const it = {
   "home.expertise": "Le Mie Competenze",
   "home.viewResume": "Visualizza Curriculum",
   
+  // Blog Page
+  "blog.title": "Blog",
+  "blog.subtitle": "Approfondimenti strategici sulla trasformazione digitale, le operazioni globali e il marketing basato sui dati.",
+  "blog.readMore": "Leggi di più →",
+  "blog.comingSoon": "Prossimamente...",
+  
+  // Blog Post Page
+  "blogPost.backToBlog": "Torna al Blog",
+  "blogPost.notFound": "Post del Blog Non Trovato",
+  "blogPost.notFound.description": "Il post del blog che stai cercando non esiste o è stato rimosso.",
+  "blogPost.returnToBlog": "Torna al Blog",
+  "blogPost.sharePost": "Condividi Questo Post",
+  
   // Core Competencies
   "competencies.title": "Competenze Principali",
   "competencies.strategic": "Leadership Strategica",
