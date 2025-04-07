@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, CalendarIcon, Clock, Share2, Mail, Copy, Check, MessageSquare } from "lucide-react";
 import Header from "@/components/Header";
@@ -274,7 +275,8 @@ const BlogPost = () => {
         window.open(`https://wa.me/?text=${encodeURIComponent(`${isItalian ? post.titleIT : post.title}: ${pageUrl}`)}`);
         break;
       case 'whatsapp-business':
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${isItalian ? post.titleIT : post.title}: ${pageUrl}`)}`);
+        // Updated to use WhatsApp Business app
+        window.open(`https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(`${isItalian ? post.titleIT : post.title}: ${pageUrl}`)}`);
         break;
       case 'copy':
         navigator.clipboard.writeText(pageUrl);
