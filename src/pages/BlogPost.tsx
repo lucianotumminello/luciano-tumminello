@@ -1,6 +1,5 @@
-
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CalendarIcon, Clock, Share2, User } from "lucide-react";
+import { ArrowLeft, CalendarIcon, Clock, Share2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
@@ -9,6 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const blogPostsData = {
   "ai-leadership-revolution": {
@@ -199,6 +199,7 @@ const blogPostsData = {
       <p class="hashtags text-sm text-gray-500 mt-8">#LeadershipMarketing #StrategiaIA #MarketingIA #FuturoDelMarketing</p>
     `,
     author: "Luciano Tumminello",
+    authorImageUrl: "/lovable-uploads/8acfc057-4507-4e63-b83a-78639ade9695.png",
     date: "April 7, 2025",
     dateIT: "7 Aprile 2025",
     category: "AI & Marketing",
@@ -332,9 +333,10 @@ const BlogPost = () => {
                 </p>
                 
                 <div className="flex items-center mt-6">
-                  <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                    <User className="h-5 w-5 text-gray-500" />
-                  </div>
+                  <Avatar className="h-10 w-10 mr-3">
+                    <AvatarImage src={post.authorImageUrl} alt={post.author} />
+                    <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
+                  </Avatar>
                   <span className="font-medium">{post.author}</span>
                 </div>
               </CardContent>
@@ -363,9 +365,10 @@ const BlogPost = () => {
             
             <div className="flex justify-between items-center">
               <div className="flex items-center">
-                <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                  <User className="h-6 w-6 text-gray-500" />
-                </div>
+                <Avatar className="h-12 w-12 mr-3">
+                  <AvatarImage src={post.authorImageUrl} alt={post.author} />
+                  <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
+                </Avatar>
                 <div>
                   <p className="text-sm text-gray-500">{isItalian ? "Scritto da" : "Written by"}</p>
                   <p className="font-medium">{post.author}</p>
