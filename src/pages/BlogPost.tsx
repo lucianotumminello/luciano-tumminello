@@ -426,11 +426,11 @@ const BlogPost = () => {
                   {isMobile ? (
                     <>
                       <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="flex items-center gap-2 cursor-pointer">
-                        <MessageSquare className="h-4 w-4" />
+                        <WhatsAppIcon />
                         WhatsApp
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('whatsapp-business')} className="flex items-center gap-2 cursor-pointer">
-                        <MessageSquare className="h-4 w-4" />
+                        <WhatsAppBusinessIcon />
                         WhatsApp Business
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
