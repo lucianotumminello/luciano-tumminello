@@ -1,6 +1,5 @@
-
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CalendarIcon, Clock, Share2, Mail, Linkedin, Copy, Check, WhatsApp } from "lucide-react";
+import { ArrowLeft, CalendarIcon, Clock, Share2, Mail, Linkedin, Copy, Check, MessageSquare } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
@@ -425,14 +424,13 @@ const BlogPost = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   {isMobile ? (
-                    // Mobile share options
                     <>
                       <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="flex items-center gap-2 cursor-pointer">
-                        <WhatsApp className="h-4 w-4" />
+                        <MessageSquare className="h-4 w-4" />
                         WhatsApp
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('whatsapp-business')} className="flex items-center gap-2 cursor-pointer">
-                        <WhatsApp className="h-4 w-4" />
+                        <MessageSquare className="h-4 w-4" />
                         WhatsApp Business
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('linkedin')} className="flex items-center gap-2 cursor-pointer">
@@ -449,7 +447,6 @@ const BlogPost = () => {
                       </DropdownMenuItem>
                     </>
                   ) : (
-                    // Desktop share options
                     <>
                       <DropdownMenuItem onClick={() => handleShare('email')} className="flex items-center gap-2 cursor-pointer">
                         <Mail className="h-4 w-4" />
