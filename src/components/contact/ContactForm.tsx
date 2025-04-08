@@ -52,7 +52,7 @@ const ContactForm = () => {
     
     try {
       // Initialize EmailJS with your public key
-      emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+      emailjs.init("SQDNI_KoxNyrhbLAW"); // Updated with the provided public key
 
       const result = await emailjs.send(
         "service_meyy9ti", // Updated with the provided service ID
