@@ -68,7 +68,7 @@ const BlogPostHeader = ({
             {title}
           </h1>
           
-          <p className="text-xl text-gray-600 mb-4 leading-relaxed">
+          <p className="text-xl text-gray-600 mb-4 leading-relaxed text-justify">
             {excerpt}
           </p>
           
