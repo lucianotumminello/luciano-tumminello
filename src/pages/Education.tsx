@@ -46,7 +46,7 @@ const Education = () => {
                       <TranslatedText textKey="education.masters.commerce.location" />
                     </p>
                   </div>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-justify">
                     <TranslatedText textKey="education.masters.commerce.description" />
                   </p>
                 </div>
@@ -69,7 +69,7 @@ const Education = () => {
                       <TranslatedText textKey="education.masters.advertising.location" />
                     </p>
                   </div>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-justify">
                     <TranslatedText textKey="education.masters.advertising.description" />
                   </p>
                 </div>
@@ -92,7 +92,7 @@ const Education = () => {
                       <TranslatedText textKey="education.bachelors.relations.location" />
                     </p>
                   </div>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-justify">
                     <TranslatedText textKey="education.bachelors.relations.description" />
                   </p>
                 </div>
@@ -115,7 +115,7 @@ const Education = () => {
                       <TranslatedText textKey="education.bachelors.communications.location" />
                     </p>
                   </div>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-justify">
                     <TranslatedText textKey="education.bachelors.communications.description" />
                   </p>
                 </div>

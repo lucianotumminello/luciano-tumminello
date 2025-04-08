@@ -11,8 +11,8 @@ const About = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
   
-  const navigateToJourney = () => {
-    navigate('/journey');
+  const navigateToCareer = () => {
+    navigate('/career');
   };
 
   return (
@@ -59,7 +59,7 @@ const About = () => {
               
               <div className="mt-6">
                 <Button 
-                  onClick={navigateToJourney}
+                  onClick={navigateToCareer}
                   className="w-full"
                 >
                   <TranslatedText textKey="about.viewResume" />
@@ -82,23 +82,23 @@ const About = () => {
             </div>
             
             <div className="md:col-span-2 space-y-6">
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed text-justify">
                 <TranslatedText textKey="about.me.para1" />
               </p>
               
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed text-justify">
                 <TranslatedText textKey="about.me.para2" />
               </p>
               
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed text-justify">
                 <TranslatedText textKey="about.me.para3" />
               </p>
               
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed text-justify">
                 <TranslatedText textKey="about.me.para4" />
               </p>
               
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed text-justify">
                 <TranslatedText textKey="about.me.para5" />
               </p>
             </div>

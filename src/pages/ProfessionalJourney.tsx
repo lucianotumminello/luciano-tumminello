@@ -38,7 +38,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Chief Operating Officer at Spartan Health</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.spartan" />
                 </p>
               </div>
@@ -46,7 +46,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Marketing Director at Slow</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.slow" />
                 </p>
               </div>
@@ -54,7 +54,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Co-Founder & Managing Director of 444 Media, Inc.</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.444" />
                 </p>
               </div>
@@ -62,7 +62,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Regional Digital Marketing Consultant at Greenpeace Southeast Asia</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.greenpeace" />
                 </p>
               </div>
@@ -70,7 +70,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Cluster Director of Marketing at Accor</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.accor" />
                 </p>
               </div>
@@ -78,7 +78,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Head of Client Services at Y-Digital</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.ydigital.retention" />
                   <br />
                   <TranslatedText textKey="job.ydigital.relationships" />
@@ -88,7 +88,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Planning Director at Lion & Lion</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.lion.strategies" />
                   <br />
                   <TranslatedText textKey="job.lion.campaigns" />
@@ -100,7 +100,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Account Manager at DWA</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.dwa.strategies" />
                   <br />
                   <TranslatedText textKey="job.dwa.relationships" />
@@ -116,7 +116,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.cadreon" />
                 </p>
               </div>
@@ -124,7 +124,7 @@ const ProfessionalJourney = () => {
               <div className="relative pl-8 border-l-2 border-gray-200" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">SEM Specialist at Sensis</h3>
-                <p className="text-gray-600" itemProp="description">
+                <p className="text-gray-600 text-justify" itemProp="description">
                   <TranslatedText textKey="job.sensis" />
                 </p>
               </div>
