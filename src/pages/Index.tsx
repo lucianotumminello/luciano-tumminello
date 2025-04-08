@@ -20,7 +20,9 @@ const Index = () => {
       <main className="flex-1">
         <HeroSection />
         <ProfileImage />
-        <CompetenciesSummary />
+        <section id="core-competencies">
+          <CompetenciesSummary />
+        </section>
       </main>
       <Footer />
     </div>

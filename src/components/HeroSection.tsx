@@ -4,14 +4,15 @@ import { ArrowDownIcon, FileTextIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "./TranslatedText";
 import { memo, useCallback } from "react";
+import { Link } from "react-router-dom";
 
 const HeroSection = memo(() => {
   const { t } = useLanguage();
   
-  const scrollToProfile = useCallback(() => {
-    const profileSection = document.querySelector('section:nth-of-type(2)');
-    if (profileSection) {
-      profileSection.scrollIntoView({ behavior: "smooth" });
+  const scrollToCompetencies = useCallback(() => {
+    const competenciesSection = document.querySelector('#core-competencies');
+    if (competenciesSection) {
+      competenciesSection.scrollIntoView({ behavior: "smooth" });
     }
   }, []);
 
@@ -30,14 +31,14 @@ const HeroSection = memo(() => {
           
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <Button 
-              onClick={scrollToProfile}
+              onClick={scrollToCompetencies}
               size="lg" 
               className="min-w-[160px]"
             >
               <TranslatedText textKey="home.expertise" />
               <ArrowDownIcon className="ml-2 h-4 w-4" />
             </Button>
-            <a href="/about">
+            <Link to="/journey">
               <Button 
                 variant="outline" 
                 size="lg" 
@@ -46,7 +47,7 @@ const HeroSection = memo(() => {
                 <TranslatedText textKey="home.viewResume" />
                 <FileTextIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
