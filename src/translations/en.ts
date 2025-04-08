@@ -1,4 +1,3 @@
-
 // English translations
 const en = {
   // Navigation
@@ -210,9 +209,53 @@ const en = {
   // Skills Section
   "skills.section.title": "Expertise & Skills",
   "skills.marketing.title": "Marketing & Growth Skills",
+  "skills.marketing.analytics": "Google Analytics",
+  "skills.marketing.dataAnalysis": "Data Analysis",
+  "skills.marketing.seo": "SEO",
+  "skills.marketing.sem": "SEM",
+  "skills.marketing.social": "Social Media Marketing",
+  "skills.marketing.videoAds": "Video Ads",
+  "skills.marketing.displayAds": "Display Ads",
+  "skills.marketing.programmatic": "Programmatic Advertising",
+  "skills.marketing.digital": "Digital Marketing",
+  "skills.marketing.dataStrategies": "Data-Driven Marketing Strategies",
+  "skills.marketing.b2b": "B2B Marketing",
+  "skills.marketing.b2c": "B2C Marketing",
+  "skills.marketing.ai": "AI and Automation Proficiency",
+  "skills.marketing.roi": "ROI Optimization",
+  
   "skills.leadership.title": "Strategic Leadership Skills",
+  "skills.leadership.clientRel": "Client Relationship Management",
+  "skills.leadership.crossFunc": "Cross-Functional Project Leadership",
+  "skills.leadership.international": "International Marketing Leadership",
+  "skills.leadership.strategic": "Strategic Data-Driven Decision Making",
+  "skills.leadership.team": "Team Leadership",
+  "skills.leadership.development": "Team Development",
+  "skills.leadership.vision": "Strategic Vision",
+  "skills.leadership.change": "Change Management",
+  "skills.leadership.emotional": "Emotional Intelligence",
+  
   "skills.operational.title": "Operational Efficiency Skills",
+  "skills.operational.optimization": "Operational Optimization",
+  "skills.operational.automation": "Process Automation",
+  "skills.operational.project": "Project Management",
+  "skills.operational.digital": "Digital Transformation",
+  "skills.operational.supplyChain": "Supply Chain Management",
+  "skills.operational.resource": "Resource Allocation",
+  "skills.operational.lean": "Lean Methodologies",
+  "skills.operational.workflow": "Workflow Optimization",
+  "skills.operational.metrics": "Performance Metrics & KPIs",
+  "skills.operational.tech": "Technology Integration",
+  
   "skills.business.title": "Business Strategy & Financial Skills",
+  "skills.business.planning": "Strategic Planning",
+  "skills.business.revenue": "Revenue Growth",
+  "skills.business.financial": "Financial Acumen",
+  "skills.business.market": "Market Analysis",
+  "skills.business.budgeting": "Budgeting & Cost Control",
+  "skills.business.partnerships": "Strategic Partnerships & Alliances",
+  "skills.business.development": "Business Development",
+  "skills.business.negotiations": "Negotiations",
   
   // Professional Summary Card
   "summary.title": "Professional Summary",

@@ -51,6 +51,57 @@ const it = {
   "competencies.cultural": "Competenza Interculturale",
   "competencies.cultural.desc": "Lavorare efficacemente in mercati diversi e con team multiculturali",
   
+  // Skills Section
+  "skills.section.title": "Competenze e Specializzazioni",
+  "skills.marketing.title": "Competenze di Marketing e Crescita",
+  "skills.marketing.analytics": "Google Analytics",
+  "skills.marketing.dataAnalysis": "Analisi dei Dati",
+  "skills.marketing.seo": "SEO",
+  "skills.marketing.sem": "SEM",
+  "skills.marketing.social": "Social Media Marketing",
+  "skills.marketing.videoAds": "Pubblicità Video",
+  "skills.marketing.displayAds": "Pubblicità Display",
+  "skills.marketing.programmatic": "Pubblicità Programmatica",
+  "skills.marketing.digital": "Marketing Digitale",
+  "skills.marketing.dataStrategies": "Strategie di Marketing Basate sui Dati",
+  "skills.marketing.b2b": "Marketing B2B",
+  "skills.marketing.b2c": "Marketing B2C",
+  "skills.marketing.ai": "Competenza in IA e Automazione",
+  "skills.marketing.roi": "Ottimizzazione del ROI",
+  
+  "skills.leadership.title": "Competenze di Leadership Strategica",
+  "skills.leadership.clientRel": "Gestione delle Relazioni con i Clienti",
+  "skills.leadership.crossFunc": "Leadership di Progetti Interfunzionali",
+  "skills.leadership.international": "Leadership nel Marketing Internazionale",
+  "skills.leadership.strategic": "Processo Decisionale Strategico Basato sui Dati",
+  "skills.leadership.team": "Leadership di Team",
+  "skills.leadership.development": "Sviluppo del Team",
+  "skills.leadership.vision": "Visione Strategica",
+  "skills.leadership.change": "Gestione del Cambiamento",
+  "skills.leadership.emotional": "Intelligenza Emotiva",
+  
+  "skills.operational.title": "Competenze di Efficienza Operativa",
+  "skills.operational.optimization": "Ottimizzazione Operativa",
+  "skills.operational.automation": "Automazione dei Processi",
+  "skills.operational.project": "Project Management",
+  "skills.operational.digital": "Trasformazione Digitale",
+  "skills.operational.supplyChain": "Gestione della Supply Chain",
+  "skills.operational.resource": "Allocazione delle Risorse",
+  "skills.operational.lean": "Metodologie Lean",
+  "skills.operational.workflow": "Ottimizzazione dei Flussi di Lavoro",
+  "skills.operational.metrics": "Metriche di Performance e KPI",
+  "skills.operational.tech": "Integrazione Tecnologica",
+  
+  "skills.business.title": "Competenze di Strategia e Finanza Aziendale",
+  "skills.business.planning": "Pianificazione Strategica",
+  "skills.business.revenue": "Crescita dei Ricavi",
+  "skills.business.financial": "Acume Finanziario",
+  "skills.business.market": "Analisi di Mercato",
+  "skills.business.budgeting": "Budgeting e Controllo dei Costi",
+  "skills.business.partnerships": "Partnership e Alleanze Strategiche",
+  "skills.business.development": "Business Development",
+  "skills.business.negotiations": "Negoziazioni",
+  
   // Education Page
   "education.title": "Istruzione e Sviluppo Professionale",
   "education.university.title": "Formazione Universitaria",
@@ -205,13 +256,6 @@ const it = {
   
   "job.cadreon": "Ho guidato l'espansione della piattaforma Cadreon nei mercati ASEAN per Interpublic Group (IPG Mediabrands). Ho presentato con successo la pubblicità programmatica a importanti clienti tra cui Garuda Airlines, Marlboro, RHB Bank, CIMB Bank e McDonald's, raggiungendo gli obiettivi di vendita e fornendo consulenza strategica sulle esigenze pubblicitarie.",
   "job.sensis": "Ho gestito un portafoglio di oltre 140 campagne SEM su Google AdWords, Yahoo e BidSmart per PMI australiane in diversi settori. Ho condotto ricerche di parole chiave e configurato oltre 100 campagne, migliorando significativamente le prestazioni di campagne sottoperformanti ereditate da personale precedente. Ho potenziato con successo i risultati delle campagne e contribuito a mantenere clienti preziosi.",
-  
-  // Skills Section
-  "skills.section.title": "Competenze e Specializzazioni",
-  "skills.marketing.title": "Competenze di Marketing e Crescita",
-  "skills.leadership.title": "Competenze di Leadership Strategica",
-  "skills.operational.title": "Competenze di Efficienza Operativa",
-  "skills.business.title": "Competenze di Strategia e Finanza Aziendale",
   
   // Professional Summary Card
   "summary.title": "Profilo Professionale",
