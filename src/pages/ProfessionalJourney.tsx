@@ -13,13 +13,13 @@ const ProfessionalJourney = () => {
   
   // Set page title for better SEO
   useEffect(() => {
-    document.title = "Professional Journey | Luciano Tumminello";
+    document.title = "Career | Luciano Tumminello";
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
-        <title>Professional Journey | Luciano Tumminello</title>
+        <title>Career | Luciano Tumminello</title>
         <meta name="description" content="Explore Luciano Tumminello's professional career journey from SEM Specialist at Sensis to Chief Operating Officer at Spartan Health, with expertise in marketing, operations, and digital transformation across APAC." />
         <meta name="keywords" content="Luciano Tumminello, career journey, professional experience, COO, marketing director, digital marketing, operations management" />
         <link rel="canonical" href="https://lucianotumminello.com/journey" />
@@ -29,7 +29,7 @@ const ProfessionalJourney = () => {
       <main className="flex-1 py-16">
         <div className="container mx-auto max-w-4xl px-4">
           <section id="career-journey" className="mb-16">
-            <h1 className="text-3xl font-bold mb-8 text-gray-900">Professional Journey</h1>
+            <h1 className="text-3xl font-bold mb-8 text-gray-900">Career</h1>
             <h2 className="text-2xl font-semibold mb-6 text-gray-900 flex items-center">
               <LineChart className="mr-2 h-6 w-6 text-primary" />
               <TranslatedText textKey="about.journey" />
