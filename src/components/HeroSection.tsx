@@ -10,7 +10,7 @@ const HeroSection = memo(() => {
   const { t } = useLanguage();
   
   const scrollToCompetencies = useCallback(() => {
-    const competenciesSection = document.querySelector('#core-competencies');
+    const competenciesSection = document.getElementById('core-competencies');
     if (competenciesSection) {
       competenciesSection.scrollIntoView({ behavior: "smooth" });
     }
