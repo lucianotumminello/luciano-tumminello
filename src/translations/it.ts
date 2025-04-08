@@ -182,7 +182,7 @@ const it = {
   "core.tech": "MarTech & AdTech",
   
   // Job Descriptions
-  "job.spartan": "Guida all'eccellenza operativa e alla crescita strategica per un'azienda leader nel settore della tecnologia sanitaria nei mercati APAC.",
+  "job.spartan": "Come Chief Operating Officer, guido la direzione strategica ottimizzando le operazioni e implementando la trasformazione digitale in tutti i dipartimenti. Il mio ruolo prevede l'ottimizzazione dei processi, l'implementazione di soluzioni di intelligenza artificiale e l'utilizzo dell'analisi dei dati per migliorare il processo decisionale in questa azienda italiana dedicata alla salute e al benessere.",
   "job.slow": "Ho guidato iniziative di marketing per un marchio di moda sostenibile, implementando campagne eco-consapevoli che hanno aumentato la consapevolezza del marchio del 45% mantenendo l'integrità del brand.",
   "job.444": "Co-fondatore di un'agenzia di media digitali specializzata in automazione marketing e pubblicità programmatica per PMI, con oltre 1,5 milioni di dollari in contratti clienti nel primo anno.",
   "job.greenpeace": "Ho sviluppato ed eseguito strategie di marketing digitale in tutto il Sud-est asiatico, aumentando il coinvolgimento dei sostenitori del 32% e ottimizzando le prestazioni delle campagne.",

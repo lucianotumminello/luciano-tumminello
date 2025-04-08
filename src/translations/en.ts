@@ -182,7 +182,7 @@ const en = {
   "core.tech": "MarTech & AdTech",
   
   // Job Descriptions
-  "job.spartan": "Driving operational excellence and strategic growth for a leading health tech company across APAC markets.",
+  "job.spartan": "As Chief Operating Officer, I lead strategic direction by streamlining operations and implementing digital transformation across all departments. My role involves optimizing processes, implementing AI solutions, and leveraging data analytics to enhance decision-making in this Italian health and wellness company.",
   "job.slow": "Led marketing initiatives for a sustainable fashion brand, implementing eco-conscious campaigns that increased brand awareness by 45% while maintaining brand integrity.",
   "job.444": "Co-founded a digital media agency specializing in marketing automation and programmatic advertising for SMEs, securing over $1.5M in client contracts within the first year.",
   "job.greenpeace": "Developed and executed digital marketing strategies across Southeast Asia, increasing supporter engagement by 32% and optimizing campaign performance.",
