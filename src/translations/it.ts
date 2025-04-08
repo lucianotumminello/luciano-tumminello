@@ -1,4 +1,3 @@
-
 // Italian translations
 const it = {
   // Navigation
@@ -205,7 +204,7 @@ const it = {
   "job.dwa.project": "Ho gestito progetti includendo retro-pianificazione, tempistiche e budget.",
   
   "job.cadreon": "Ho guidato l'espansione della piattaforma Cadreon nei mercati ASEAN per Interpublic Group (IPG Mediabrands). Ho presentato con successo la pubblicità programmatica a importanti clienti tra cui Garuda Airlines, Marlboro, RHB Bank, CIMB Bank e McDonald's, raggiungendo gli obiettivi di vendita e fornendo consulenza strategica sulle esigenze pubblicitarie.",
-  "job.sensis": "Ho ottimizzato oltre 140 campagne SEM in Australia, migliorando significativamente le prestazioni e la fidelizzazione dei clienti.",
+  "job.sensis": "Ho gestito un portafoglio di oltre 140 campagne SEM su Google AdWords, Yahoo e BidSmart per PMI australiane in diversi settori. Ho condotto ricerche di parole chiave e configurato oltre 100 campagne, migliorando significativamente le prestazioni di campagne sottoperformanti ereditate da personale precedente. Ho potenziato con successo i risultati delle campagne e contribuito a mantenere clienti preziosi.",
   
   // Skills Section
   "skills.section.title": "Competenze e Specializzazioni",

@@ -1,4 +1,3 @@
-
 // English translations
 const en = {
   // Navigation
@@ -205,7 +204,7 @@ const en = {
   "job.dwa.project": "Managed projects including retro-planning, timelines, and budgeting.",
   
   "job.cadreon": "Spearheaded the expansion of the Cadreon platform across ASEAN markets for Interpublic Group (IPG Mediabrands). Successfully pitched programmatic advertising to major clients including Garuda Airlines, Marlboro, RHB Bank, CIMB Bank, and McDonald's, achieving sales KPIs while providing strategic counsel on advertising needs.",
-  "job.sensis": "Optimized over 140 SEM campaigns in Australia, significantly improving performance and client retention.",
+  "job.sensis": "Managed a portfolio of over 140 SEM campaigns on Google AdWords, Yahoo, and BidSmart for Australian SMEs across various industries. Conducted keyword research and campaign setup for over 100 campaigns, while significantly improving performance of underperforming campaigns inherited from previous staff. Successfully enhanced campaign results and helped retain valuable clients.",
   
   // Skills Section
   "skills.section.title": "Expertise & Skills",
