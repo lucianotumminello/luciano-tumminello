@@ -48,8 +48,8 @@ const ContactForm = () => {
     console.log('Form values:', values);
     
     try {
-      // Send form data to Formspree
-      const response = await fetch("https://formspree.io/f/meqgryaq", {
+      // Send form data to Formspree with your form ID
+      const response = await fetch("https://formspree.io/f/xanelvgb", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
