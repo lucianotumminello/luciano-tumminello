@@ -22,7 +22,7 @@ const ProfessionalJourney = () => {
         <title>Career | Luciano Tumminello</title>
         <meta name="description" content="Explore Luciano Tumminello's professional career journey from SEM Specialist at Sensis to Chief Operating Officer at Spartan Health, with expertise in marketing, operations, and digital transformation across APAC." />
         <meta name="keywords" content="Luciano Tumminello, career journey, professional experience, COO, marketing director, digital marketing, operations management" />
-        <link rel="canonical" href="https://lucianotumminello.com/journey" />
+        <link rel="canonical" href="https://lucianotumminello.com/career" />
       </Helmet>
       
       <Header />

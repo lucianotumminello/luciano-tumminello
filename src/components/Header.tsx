@@ -40,7 +40,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center space-x-6">
           <NavLink to="/" textKey="nav.home" />
           <NavLink to="/about" textKey="nav.about" />
-          <NavLink to="/journey" textKey="nav.journey" />
+          <NavLink to="/career" textKey="nav.journey" />
           <NavLink to="/education" textKey="nav.education" />
           <NavLink to="/blog" textKey="nav.blog" />
           <NavLink to="/contact" textKey="nav.contact" />
@@ -98,10 +98,10 @@ const Header = () => {
               {t("nav.about")}
             </Link>
             <Link 
-              to="/journey" 
+              to="/career" 
               className={cn(
                 "px-3 py-2 text-sm",
-                isActive("/journey") ? "font-semibold bg-gray-100 rounded-md" : ""
+                isActive("/career") ? "font-semibold bg-gray-100 rounded-md" : ""
               )}
               onClick={() => setIsMobileMenuOpen(false)}
             >
