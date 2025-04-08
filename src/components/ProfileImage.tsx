@@ -12,6 +12,7 @@ const ProfileImage = () => {
               src="/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png" 
               alt="Luciano Tumminello Portrait" 
               className="w-full h-auto object-cover"
+              loading="lazy"
             />
           </div>
         </div>
@@ -21,4 +22,3 @@ const ProfileImage = () => {
 };
 
 export default ProfileImage;
-

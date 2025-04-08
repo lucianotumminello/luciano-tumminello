@@ -1,10 +1,10 @@
-
-import { Mail, Globe, Linkedin } from "lucide-react";
+import { Mail } from "lucide-react";
 import TranslatedText from "./TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { memo } from "react";
 
-const Footer = () => {
+const Footer = memo(() => {
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
@@ -150,6 +150,8 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = "Footer";
 
 export default Footer;

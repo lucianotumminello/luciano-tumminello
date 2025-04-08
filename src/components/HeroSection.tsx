@@ -3,16 +3,17 @@ import { Button } from "@/components/ui/button";
 import { ArrowDownIcon, FileTextIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "./TranslatedText";
+import { memo, useCallback } from "react";
 
-const HeroSection = () => {
+const HeroSection = memo(() => {
   const { t } = useLanguage();
   
-  const scrollToProfile = () => {
+  const scrollToProfile = useCallback(() => {
     const profileSection = document.querySelector('section:nth-of-type(2)');
     if (profileSection) {
       profileSection.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }, []);
 
   return (
     <section className="relative py-20 md:py-32 px-4">
@@ -55,6 +56,8 @@ const HeroSection = () => {
       </div>
     </section>
   );
-};
+});
+
+HeroSection.displayName = "HeroSection";
 
 export default HeroSection;
