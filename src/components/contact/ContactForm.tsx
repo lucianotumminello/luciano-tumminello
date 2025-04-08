@@ -50,22 +50,21 @@ const ContactForm = () => {
     console.log(`Sending email to: ${recipientEmail}`);
     console.log('Form values:', values);
     
-    // EmailJS configuration - you need to set these up in EmailJS dashboard
-    const serviceID = 'default_service'; // Replace with your EmailJS service ID
-    const templateID = 'template_contact_form'; // Replace with your EmailJS template ID
-    const userID = 'YOUR_USER_ID'; // Replace with your EmailJS user ID
-
-    // Prepare the template parameters
-    const templateParams = {
-      from_name: values.name,
-      from_email: values.email,
-      subject: values.subject,
-      message: values.message,
-      to_email: recipientEmail
-    };
-    
     try {
-      const result = await emailjs.send(serviceID, templateID, templateParams, userID);
+      // Initialize EmailJS with your public key
+      emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+
+      const result = await emailjs.send(
+        "service_id", // Replace with your EmailJS service ID
+        "template_id", // Replace with your EmailJS template ID
+        {
+          from_name: values.name,
+          reply_to: values.email,
+          subject: values.subject,
+          message: values.message,
+        }
+      );
+      
       console.log('Email sent successfully:', result.text);
       
       toast({
