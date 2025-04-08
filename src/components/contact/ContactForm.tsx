@@ -56,7 +56,7 @@ const ContactForm = () => {
 
       const result = await emailjs.send(
         "service_meyy9ti", // Updated with the provided service ID
-        "template_id", // Replace with your EmailJS template ID
+        "template_80qmm2z", // Updated with the provided template ID
         {
           from_name: values.name,
           reply_to: values.email,
