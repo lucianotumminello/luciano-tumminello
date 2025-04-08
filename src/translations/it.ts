@@ -192,9 +192,9 @@ const it = {
   "job.ydigital.relationships": "Ho servito come account lead principale per Mattel e i loro 9 brand di giocattoli, lavorando direttamente con il CEO Regionale dell'Asia. Ho identificato opportunità di crescita, rafforzato le relazioni con clienti chiave e guidato presentazioni commerciali che hanno portato a un aumento del 30% di nuovi clienti.",
   
   // Lion & Lion job descriptions
-  "job.lion.strategies": "Ho guidato strategie di marketing digitale, ottenendo un miglioramento del 65% nei tassi di chiusura delle presentazioni sfruttando soluzioni AdTech innovative.",
-  "job.lion.campaigns": "Ho ottimizzato le campagne con approfondimenti basati sui dati, aumentando il ROI del 18% e migliorando la fidelizzazione dei clienti.",
-  "job.lion.analytics": "Ho ottimizzato il marketing con analisi avanzate, aumentando i tassi di conversione del 25%.",
+  "job.lion.strategies": "Ho supervisionato il team di Strategia e Pianificazione dell'agenzia composto da 12 persone in 6 paesi asiatici. Ho guidato lo sviluppo di strategie di marketing digitale per nuove proposte commerciali, migliorando i tassi di chiusura delle presentazioni del 65%.",
+  "job.lion.campaigns": "Ho sintetizzato dati qualitativi e quantitativi da tutte le fonti per fornire approfondimenti strategici, risultando in un aumento medio del 18% del ROI delle campagne.",
+  "job.lion.analytics": "Ho rafforzato le relazioni con DSP, partner e fornitori di Social Media e AdTech per migliorare le capacità di marketing.",
   
   // DWA job descriptions
   "job.dwa.strategies": "Ho sviluppato strategie di marketing B2B, proposte e preventivi per presentazioni ai clienti o in risposta alle loro richieste.",

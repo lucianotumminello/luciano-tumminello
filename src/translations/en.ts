@@ -192,9 +192,9 @@ const en = {
   "job.ydigital.relationships": "Served as primary account lead for Mattel and their 9 toy brands, working directly with the Asia Regional CEO. Identified growth opportunities, strengthened key client relationships, and led sales pitches that resulted in a 30% increase in new clients.",
   
   // Lion & Lion job descriptions
-  "job.lion.strategies": "Spearheaded digital marketing strategies, driving a 65% improvement in pitch close rates by leveraging innovative AdTech solutions.",
-  "job.lion.campaigns": "Optimized campaigns with data-driven insights, boosting ROI by 18% and improving client retention.",
-  "job.lion.analytics": "Optimized marketing with advanced analytics, boosting conversion rates by 25%.",
+  "job.lion.strategies": "Oversaw the agency's Strategy & Planning team of 12 people across 6 Asian countries. Led development of digital marketing strategies for new business proposals, improving pitch close rates by 65%.",
+  "job.lion.campaigns": "Synthesized qualitative and quantitative data from all sources to provide strategic insights, resulting in an 18% average increase in campaign ROI.",
+  "job.lion.analytics": "Strengthened relationships with DSPs, Social Media and AdTech partners and vendors to enhance marketing capabilities.",
   
   // DWA job descriptions
   "job.dwa.strategies": "Developed B2B marketing strategies, proposals and quotations for pitching to clients or in response to their briefs.",
