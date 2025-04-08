@@ -1,4 +1,3 @@
-
 // Italian translations
 const it = {
   // Navigation
@@ -183,7 +182,7 @@ const it = {
   
   // Job Descriptions
   "job.spartan": "Come Direttore Operativo, guido la direzione strategica ottimizzando le operazioni e implementando la trasformazione digitale in tutti i dipartimenti. Il mio ruolo prevede l'ottimizzazione dei processi, l'implementazione di soluzioni di intelligenza artificiale e l'utilizzo dell'analisi dei dati per migliorare il processo decisionale in questa azienda italiana dedicata alla salute e al benessere.",
-  "job.slow": "Ho guidato iniziative di marketing per un marchio di moda sostenibile, implementando campagne eco-consapevoli che hanno aumentato la consapevolezza del marchio del 45% mantenendo l'integrità del brand.",
+  "job.slow": "Come Direttore Marketing di Slow, un'azienda alimentare sostenibile con sede a Copenhagen, guido team di marketing in Europa e Asia. Supervisiono il branding, la leadership di pensiero, la creazione di contenuti e strategie di marketing orientate alla sostenibilità che hanno aumentato la consapevolezza del marchio del 20%. Ho implementato iniziative digitali tra cui SlowTV e strumenti di marketing basati sull'IA, promuovendo la collaborazione interculturale che ha migliorato la produttività del team del 40%.",
   "job.444": "Co-fondatore di un'agenzia di media digitali specializzata in automazione marketing e pubblicità programmatica per PMI, con oltre 1,5 milioni di dollari in contratti clienti nel primo anno.",
   "job.greenpeace": "Ho sviluppato ed eseguito strategie di marketing digitale in tutto il Sud-est asiatico, aumentando il coinvolgimento dei sostenitori del 32% e ottimizzando le prestazioni delle campagne.",
   "job.accor": "Ho diretto le operazioni di marketing per un gruppo di hotel premium, supervisionando branding, promozioni e iniziative di marketing digitale che hanno portato a un aumento del 25% dei ricavi.",
@@ -242,4 +241,3 @@ const it = {
 };
 
 export default it;
-
