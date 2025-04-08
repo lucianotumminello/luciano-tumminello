@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import emailjs from 'emailjs-com';
 
-// Initialize EmailJS with your public key once outside the component
+// Initialize EmailJS with your public key
 emailjs.init("SQDNI_KoxNyrhbLAW");
 
 const ContactForm = () => {
@@ -54,32 +54,34 @@ const ContactForm = () => {
     console.log('Form values:', values);
     
     try {
+      // Use the emailjs.sendForm method instead of send for more reliable form submission
+      const templateParams = {
+        from_name: values.name,
+        reply_to: values.email,
+        subject: values.subject,
+        message: values.message,
+      };
+      
       const result = await emailjs.send(
-        "service_meyy9ti", // Service ID
+        "service_meyy9ti",  // Service ID
         "template_80qmm2z", // Template ID
-        {
-          from_name: values.name,
-          reply_to: values.email,
-          subject: values.subject,
-          message: values.message,
-        }
+        templateParams
       );
       
       console.log('Email sent successfully:', result.text);
       
       toast({
-        title: t("contact.success"),
-        description: t("contact.success.description"),
+        title: "Message sent!",
+        description: "Thanks for reaching out. I'll get back to you soon.",
       });
       
       form.reset();
     } catch (error) {
       console.error('Failed to send email:', error);
       
-      // Use actual error message text instead of translation keys
       toast({
-        title: t("contact.error") || "Error",
-        description: t("contact.error.description") || "There was an error sending your message. Please try again.",
+        title: "Message sending failed",
+        description: "There was an error sending your message. Please try again.",
         variant: "destructive",
       });
     } finally {
