@@ -60,7 +60,7 @@ const Footer = () => {
                 />
               </a>
               <a 
-                href="mailto:hello@lucianotumminello.com" 
+                href="mailto:lucianotumminello@gmail.com" 
                 aria-label="Email"
               >
                 <Mail className="h-8 w-8 text-gray-600 hover:text-primary transition-colors" />
@@ -131,7 +131,7 @@ const Footer = () => {
                 />
               </a>
               <a 
-                href="mailto:hello@lucianotumminello.com" 
+                href="mailto:lucianotumminello@gmail.com" 
                 aria-label="Email"
                 className="flex items-center justify-center"
               >

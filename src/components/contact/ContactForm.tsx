@@ -45,6 +45,15 @@ const ContactForm = () => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
+    // In a real implementation, you would send this data to a backend
+    // For now we'll simulate it with a delay
+    // The recipient email would be lucianotumminello@gmail.com
+    const recipientEmail = "lucianotumminello@gmail.com";
+    
+    // Log the submission details (for demonstration purposes)
+    console.log(`Sending email to: ${recipientEmail}`);
+    console.log('Form values:', values);
+    
     // Simulate API call
     setTimeout(() => {
       toast({
