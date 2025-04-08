@@ -17,10 +17,6 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import emailjs from 'emailjs-com';
-
-// Initialize EmailJS with your public key
-emailjs.init("SQDNI_KoxNyrhbLAW");
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -49,35 +45,37 @@ const ContactForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    const recipientEmail = "lucianotumminello@gmail.com";
-    console.log(`Sending email to: ${recipientEmail}`);
     console.log('Form values:', values);
     
     try {
-      // Use the emailjs.sendForm method instead of send for more reliable form submission
-      const templateParams = {
-        from_name: values.name,
-        reply_to: values.email,
-        subject: values.subject,
-        message: values.message,
-      };
-      
-      const result = await emailjs.send(
-        "service_meyy9ti",  // Service ID
-        "template_80qmm2z", // Template ID
-        templateParams
-      );
-      
-      console.log('Email sent successfully:', result.text);
-      
-      toast({
-        title: "Message sent!",
-        description: "Thanks for reaching out. I'll get back to you soon.",
+      // Send form data to Formspree
+      const response = await fetch("https://formspree.io/f/meqgryaq", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          subject: values.subject,
+          message: values.message,
+        }),
       });
       
-      form.reset();
+      if (response.ok) {
+        console.log('Form submitted successfully');
+        
+        toast({
+          title: "Message sent!",
+          description: "Thanks for reaching out. I'll get back to you soon.",
+        });
+        
+        form.reset();
+      } else {
+        throw new Error('Form submission failed');
+      }
     } catch (error) {
-      console.error('Failed to send email:', error);
+      console.error('Failed to send message:', error);
       
       toast({
         title: "Message sending failed",
