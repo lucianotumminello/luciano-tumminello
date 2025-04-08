@@ -1,3 +1,4 @@
+
 // Italian translations
 const it = {
   // Navigation
@@ -60,12 +61,12 @@ const it = {
   "skills.marketing.sem": "SEM",
   "skills.marketing.social": "Social Media Marketing",
   "skills.marketing.videoAds": "Pubblicità Video",
-  "skills.marketing.displayAds": "Pubblicità Display",
-  "skills.marketing.programmatic": "Pubblicità Programmatica",
+  "skills.marketing.displayAds": "Display Advertising",
+  "skills.marketing.programmatic": "Programmatic Advertising",
   "skills.marketing.digital": "Marketing Digitale",
   "skills.marketing.dataStrategies": "Strategie di Marketing Basate sui Dati",
-  "skills.marketing.b2b": "Marketing B2B",
-  "skills.marketing.b2c": "Marketing B2C",
+  "skills.marketing.b2b": "B2B Marketing",
+  "skills.marketing.b2c": "B2C Marketing",
   "skills.marketing.ai": "Competenza in IA e Automazione",
   "skills.marketing.roi": "Ottimizzazione del ROI",
   

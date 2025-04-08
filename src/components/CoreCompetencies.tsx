@@ -78,7 +78,7 @@ const CoreCompetencies = () => {
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section id="core-competencies" className="py-16 bg-white">
       <div className="container mx-auto max-w-6xl px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold tracking-tight">
