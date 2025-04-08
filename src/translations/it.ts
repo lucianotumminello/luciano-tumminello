@@ -1,3 +1,4 @@
+
 // Italian translations
 const it = {
   // Navigation
@@ -203,7 +204,7 @@ const it = {
   "job.dwa.vendors": "Ho ricercato fornitori e negoziato per mantenere bassi costi e margini di profitto.",
   "job.dwa.project": "Ho gestito progetti includendo retro-pianificazione, tempistiche e budget.",
   
-  "job.cadreon": "Ho guidato la pubblicità programmatica nei mercati ASEAN, contribuendo a una crescita dei ricavi del 30% per clienti di alto profilo come Microsoft, KFC e Cathay Pacific.",
+  "job.cadreon": "Ho guidato l'espansione della piattaforma Cadreon nei mercati ASEAN per Interpublic Group (IPG Mediabrands). Ho presentato con successo la pubblicità programmatica a importanti clienti tra cui Garuda Airlines, Marlboro, RHB Bank, CIMB Bank e McDonald's, raggiungendo gli obiettivi di vendita e fornendo consulenza strategica sulle esigenze pubblicitarie.",
   "job.sensis": "Ho ottimizzato oltre 140 campagne SEM in Australia, migliorando significativamente le prestazioni e la fidelizzazione dei clienti.",
   
   // Skills Section

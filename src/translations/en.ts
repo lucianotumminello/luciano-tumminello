@@ -1,3 +1,4 @@
+
 // English translations
 const en = {
   // Navigation
@@ -203,7 +204,7 @@ const en = {
   "job.dwa.vendors": "Sourced vendors and negotiated to maintain low cost and profit margins.",
   "job.dwa.project": "Managed projects including retro-planning, timelines, and budgeting.",
   
-  "job.cadreon": "Spearheaded programmatic advertising across ASEAN markets, contributing to 30% revenue growth for high-profile clients like Microsoft, KFC and Cathay Pacific.",
+  "job.cadreon": "Spearheaded the expansion of the Cadreon platform across ASEAN markets for Interpublic Group (IPG Mediabrands). Successfully pitched programmatic advertising to major clients including Garuda Airlines, Marlboro, RHB Bank, CIMB Bank, and McDonald's, achieving sales KPIs while providing strategic counsel on advertising needs.",
   "job.sensis": "Optimized over 140 SEM campaigns in Australia, significantly improving performance and client retention.",
   
   // Skills Section

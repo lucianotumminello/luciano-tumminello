@@ -113,7 +113,7 @@ const ProfessionalJourney = () => {
                 </p>
               </div>
               
-              <div className="relative pl-8 border-l-2 border-gray-200" itemScope itemType="https://schema.org/WorkPosition">
+              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
                 <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                 <h3 className="font-bold text-lg" itemProp="jobTitle">Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)</h3>
                 <p className="text-gray-600" itemProp="description">
