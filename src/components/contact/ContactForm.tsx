@@ -17,6 +17,7 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import emailjs from 'emailjs-com';
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -42,28 +43,48 @@ const ContactForm = () => {
     }
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    // In a real implementation, you would send this data to a backend
-    // For now we'll simulate it with a delay
-    // The recipient email would be lucianotumminello@gmail.com
     const recipientEmail = "lucianotumminello@gmail.com";
-    
-    // Log the submission details (for demonstration purposes)
     console.log(`Sending email to: ${recipientEmail}`);
     console.log('Form values:', values);
     
-    // Simulate API call
-    setTimeout(() => {
+    // EmailJS configuration - you need to set these up in EmailJS dashboard
+    const serviceID = 'default_service'; // Replace with your EmailJS service ID
+    const templateID = 'template_contact_form'; // Replace with your EmailJS template ID
+    const userID = 'YOUR_USER_ID'; // Replace with your EmailJS user ID
+
+    // Prepare the template parameters
+    const templateParams = {
+      from_name: values.name,
+      from_email: values.email,
+      subject: values.subject,
+      message: values.message,
+      to_email: recipientEmail
+    };
+    
+    try {
+      const result = await emailjs.send(serviceID, templateID, templateParams, userID);
+      console.log('Email sent successfully:', result.text);
+      
       toast({
         title: t("contact.success"),
         description: t("contact.success.description"),
       });
       
       form.reset();
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      
+      toast({
+        title: t("contact.error") || "Error",
+        description: t("contact.error.description") || "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
