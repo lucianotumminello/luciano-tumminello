@@ -1,3 +1,4 @@
+
 // Italian translations
 const it = {
   // Navigation
@@ -159,7 +160,8 @@ const it = {
   "contact.sending": "Inviando...",
   "contact.success": "Messaggio inviato!",
   "contact.success.description": "Grazie per avermi contattato. Ti risponderò al più presto.",
-  "contact.error": "Si è verificato un errore nell'invio del messaggio. Per favore riprova.",
+  "contact.error": "Invio messaggio fallito",
+  "contact.error.description": "Si è verificato un errore nell'invio del messaggio. Per favore riprova.",
   "contact.info.title": "Informazioni di Contatto",
   "contact.info.email": "Email",
   "contact.info.location": "Posizione",

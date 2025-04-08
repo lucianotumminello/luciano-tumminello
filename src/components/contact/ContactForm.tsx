@@ -19,6 +19,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import emailjs from 'emailjs-com';
 
+// Initialize EmailJS with your public key once outside the component
+emailjs.init("SQDNI_KoxNyrhbLAW");
+
 const ContactForm = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -51,12 +54,9 @@ const ContactForm = () => {
     console.log('Form values:', values);
     
     try {
-      // Initialize EmailJS with your public key
-      emailjs.init("SQDNI_KoxNyrhbLAW"); // Updated with the provided public key
-
       const result = await emailjs.send(
-        "service_meyy9ti", // Updated with the provided service ID
-        "template_80qmm2z", // Updated with the provided template ID
+        "service_meyy9ti", // Service ID
+        "template_80qmm2z", // Template ID
         {
           from_name: values.name,
           reply_to: values.email,
@@ -76,6 +76,7 @@ const ContactForm = () => {
     } catch (error) {
       console.error('Failed to send email:', error);
       
+      // Use actual error message text instead of translation keys
       toast({
         title: t("contact.error") || "Error",
         description: t("contact.error.description") || "There was an error sending your message. Please try again.",
