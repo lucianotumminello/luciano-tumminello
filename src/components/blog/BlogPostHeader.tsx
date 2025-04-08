@@ -1,4 +1,3 @@
-
 import { ArrowLeft, CalendarIcon, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
