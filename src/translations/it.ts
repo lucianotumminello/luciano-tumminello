@@ -1,4 +1,3 @@
-
 // Italian translations
 const it = {
   // Navigation
@@ -189,8 +188,8 @@ const it = {
   "job.accor": "Ho guidato le operazioni di marketing digitale per un cluster di 5 hotel Accor in Thailandia, gestendo un team di 15 esperti digitali. Ho collaborato con diversi dipartimenti per creare campagne integrate e sviluppato una strategia di e-commerce di successo che ha aumentato le entrate online del 20%. Ho sfruttato canali digitali innovativi per incrementare le prenotazioni, rafforzare la consapevolezza del marchio e migliorare la soddisfazione dei clienti.",
   
   // Y-Digital job descriptions
-  "job.ydigital.retention": "Ho raggiunto un tasso di fidelizzazione dei clienti del 90% e una crescita media degli account del 30%.",
-  "job.ydigital.relationships": "Ho rafforzato le relazioni con i principali clienti, aumentando i ricavi e il coinvolgimento.",
+  "job.ydigital.retention": "Ho guidato e formato un team di 12 professionisti di Client Services, raggiungendo oltre il 90% di fidelizzazione dei clienti e una crescita media degli account del 30%.",
+  "job.ydigital.relationships": "Ho servito come account lead principale per Mattel e i loro 9 brand di giocattoli, lavorando direttamente con il CEO Regionale dell'Asia. Ho identificato opportunità di crescita, rafforzato le relazioni con clienti chiave e guidato presentazioni commerciali che hanno portato a un aumento del 30% di nuovi clienti.",
   
   // Lion & Lion job descriptions
   "job.lion.strategies": "Ho guidato strategie di marketing digitale, ottenendo un miglioramento del 65% nei tassi di chiusura delle presentazioni sfruttando soluzioni AdTech innovative.",
