@@ -4,12 +4,13 @@ import { ArrowDownIcon, FileTextIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "./TranslatedText";
 import { memo, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const HeroSection = memo(() => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   
   const scrollToCompetencies = useCallback(() => {
     const competenciesSection = document.getElementById('core-competencies');
@@ -17,6 +18,10 @@ const HeroSection = memo(() => {
       competenciesSection.scrollIntoView({ behavior: "smooth" });
     }
   }, []);
+
+  const navigateToCareer = useCallback(() => {
+    navigate('/career');
+  }, [navigate]);
 
   return (
     <section className="relative py-20 md:py-32 px-4">
@@ -40,16 +45,12 @@ const HeroSection = memo(() => {
               <TranslatedText textKey="home.expertise" />
               <ArrowDownIcon className="ml-2 h-4 w-4" />
             </Button>
-            <Link to="/journey">
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="min-w-[160px] group"
-              >
-                <TranslatedText textKey="home.viewResume" />
-                <FileTextIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <Button 
+              onClick={navigateToCareer}
+              className="min-w-[160px]"
+            >
+              <TranslatedText textKey="home.viewResume" />
+            </Button>
           </div>
         </div>
       </div>
