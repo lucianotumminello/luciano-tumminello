@@ -4,9 +4,11 @@ import TranslatedText from "@/components/TranslatedText";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Education = () => {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
 
   return (
     <div className="min-h-screen flex flex-col">
