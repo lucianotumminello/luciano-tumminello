@@ -141,7 +141,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.semrush.seo.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.semrush.seo.date" />
                       </Badge>
                     </div>
@@ -156,7 +156,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.semrush.ai.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.semrush.ai.date" />
                       </Badge>
                     </div>
@@ -171,7 +171,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.ai.overview.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.ai.overview.date" />
                       </Badge>
                     </div>
@@ -186,7 +186,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.google.ads.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.google.ads.date" />
                       </Badge>
                     </div>
@@ -201,7 +201,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.google.analytics.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.google.analytics.date" />
                       </Badge>
                     </div>
@@ -216,7 +216,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.content.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.hubspot.content.date" />
                       </Badge>
                     </div>
@@ -231,7 +231,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.email.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.hubspot.email.date" />
                       </Badge>
                     </div>
@@ -246,7 +246,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.linkedin.content.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.linkedin.content.date" />
                       </Badge>
                     </div>
@@ -261,7 +261,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.linkedin.solutions.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.linkedin.solutions.date" />
                       </Badge>
                     </div>
@@ -276,7 +276,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.linkedin.strategy.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.linkedin.strategy.date" />
                       </Badge>
                     </div>
@@ -291,7 +291,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.social.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.hubspot.social.date" />
                       </Badge>
                     </div>
@@ -306,7 +306,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.software.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.hubspot.software.date" />
                       </Badge>
                     </div>
@@ -321,7 +321,7 @@ const Education = () => {
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.inbound.title" />
                       </h3>
-                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 flex items-center justify-center py-1 rounded-full">
+                      <Badge variant="outline" className="bg-muted/70 hover:bg-muted w-24 h-8 flex items-center justify-center text-center rounded-full">
                         <TranslatedText textKey="education.certifications.hubspot.inbound.date" />
                       </Badge>
                     </div>
