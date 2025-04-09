@@ -49,7 +49,7 @@ const HeroSection = memo(() => {
               onClick={navigateToCareer}
               className="min-w-[160px]"
             >
-              <TranslatedText textKey="home.viewResume" />
+              <TranslatedText textKey="home.professionalJourney" />
             </Button>
           </div>
         </div>

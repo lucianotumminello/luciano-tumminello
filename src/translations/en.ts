@@ -18,6 +18,7 @@ const en = {
   "home.subtitle": "Over 15 years of experience driving growth across Asia-Pacific, specializing in marketing, operations, and digital transformation, with a growing focus on leveraging artificial intelligence. I have a proven track record of leading strategic initiatives and delivering measurable results.",
   "home.expertise": "My Expertise",
   "home.viewResume": "View Resume",
+  "home.professionalJourney": "View Professional Journey",
   
   // Blog Page
   "blog.title": "Blog",
