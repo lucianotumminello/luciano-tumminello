@@ -5,9 +5,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "./TranslatedText";
 import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const HeroSection = memo(() => {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   
   const scrollToCompetencies = useCallback(() => {
     const competenciesSection = document.getElementById('core-competencies');
@@ -25,7 +27,7 @@ const HeroSection = memo(() => {
           </h2>
         </div>
         <div className="space-y-6">
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto text-center text-justify">
+          <p className={`text-lg md:text-xl text-gray-600 max-w-3xl mx-auto ${isMobile ? 'text-center' : 'text-justify'}`}>
             <TranslatedText textKey="home.subtitle" />
           </p>
           
