@@ -134,11 +134,11 @@ const Education = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* SEMrush SEO Course */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.semrush.seo.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.semrush.seo.date" />
                       </span>
                     </div>
@@ -149,11 +149,11 @@ const Education = () => {
                   
                   {/* SEMrush AI-Powered Marketer */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.semrush.ai.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.semrush.ai.date" />
                       </span>
                     </div>
@@ -164,11 +164,11 @@ const Education = () => {
                   
                   {/* Generative AI Overview */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.ai.overview.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.ai.overview.date" />
                       </span>
                     </div>
@@ -179,11 +179,11 @@ const Education = () => {
                   
                   {/* Google Ads Search */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.google.ads.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.google.ads.date" />
                       </span>
                     </div>
@@ -194,11 +194,11 @@ const Education = () => {
                   
                   {/* Google Analytics */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.google.analytics.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.google.analytics.date" />
                       </span>
                     </div>
@@ -209,11 +209,11 @@ const Education = () => {
                   
                   {/* Content Marketing */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.content.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.hubspot.content.date" />
                       </span>
                     </div>
@@ -224,11 +224,11 @@ const Education = () => {
                   
                   {/* Email Marketing */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.email.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.hubspot.email.date" />
                       </span>
                     </div>
@@ -239,11 +239,11 @@ const Education = () => {
                   
                   {/* LinkedIn Content & Creative Design */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.linkedin.content.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.linkedin.content.date" />
                       </span>
                     </div>
@@ -254,11 +254,11 @@ const Education = () => {
                   
                   {/* LinkedIn Marketing Solutions */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.linkedin.solutions.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.linkedin.solutions.date" />
                       </span>
                     </div>
@@ -269,11 +269,11 @@ const Education = () => {
                   
                   {/* LinkedIn Marketing Strategy */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.linkedin.strategy.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.linkedin.strategy.date" />
                       </span>
                     </div>
@@ -284,11 +284,11 @@ const Education = () => {
                   
                   {/* Social Media Marketing */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.social.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.hubspot.social.date" />
                       </span>
                     </div>
@@ -299,11 +299,11 @@ const Education = () => {
                   
                   {/* HubSpot Marketing Hub Software */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.software.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.hubspot.software.date" />
                       </span>
                     </div>
@@ -314,11 +314,11 @@ const Education = () => {
                   
                   {/* Inbound Marketing */}
                   <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
-                    <div className="flex justify-between mb-1">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className="font-semibold text-primary">
                         <TranslatedText textKey="education.certifications.hubspot.inbound.title" />
                       </h3>
-                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded w-20 text-center">
                         <TranslatedText textKey="education.certifications.hubspot.inbound.date" />
                       </span>
                     </div>
