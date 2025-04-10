@@ -1,3 +1,4 @@
+
 import { Mail } from "lucide-react";
 import TranslatedText from "./TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -22,28 +23,16 @@ const Footer = memo(() => {
           
           <nav className="flex items-center space-x-8">
             <a 
-              href="/" 
+              href="/privacy-policy" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
             >
-              <TranslatedText textKey="nav.home" />
+              <TranslatedText textKey="footer.privacy" />
             </a>
             <a 
-              href="/about" 
+              href="/cookie-policy" 
               className="text-sm text-gray-600 hover:text-primary transition-colors"
             >
-              <TranslatedText textKey="nav.about" />
-            </a>
-            <a 
-              href="/blog" 
-              className="text-sm text-gray-600 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="nav.blog" />
-            </a>
-            <a 
-              href="/contact" 
-              className="text-sm text-gray-600 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="nav.contact" />
+              <TranslatedText textKey="footer.cookies" />
             </a>
             <div className="flex space-x-3">
               <a 
@@ -69,36 +58,8 @@ const Footer = memo(() => {
           </nav>
         </div>
         
-        {/* Mobile View - Restructured as requested */}
+        {/* Mobile View - No navigation links */}
         <div className="flex flex-col md:hidden">
-          {/* First line: Navigation links */}
-          <nav className="flex flex-wrap justify-center gap-4 mb-4">
-            <a 
-              href="/" 
-              className="text-sm text-gray-600 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="nav.home" />
-            </a>
-            <a 
-              href="/about" 
-              className="text-sm text-gray-600 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="nav.about" />
-            </a>
-            <a 
-              href="/blog" 
-              className="text-sm text-gray-600 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="nav.blog" />
-            </a>
-            <a 
-              href="/contact" 
-              className="text-sm text-gray-600 hover:text-primary transition-colors"
-            >
-              <TranslatedText textKey="nav.contact" />
-            </a>
-          </nav>
-          
           {/* Second line: Policies and social links */}
           <div className="flex justify-between items-center mb-4">
             <div className="flex space-x-4">
