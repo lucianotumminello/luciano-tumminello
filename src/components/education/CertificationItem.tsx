@@ -21,7 +21,7 @@ const CertificationItem: React.FC<CertificationItemProps> = ({
         </h3>
         <Badge 
           variant="outline" 
-          className="bg-muted/70 hover:bg-muted min-w-24 w-24 h-8 flex items-center justify-center text-center rounded-full truncate px-2"
+          className="bg-muted/70 hover:bg-muted h-6 flex items-center justify-center text-center rounded-full truncate px-3 text-xs"
         >
           <TranslatedText textKey={dateKey} />
         </Badge>
