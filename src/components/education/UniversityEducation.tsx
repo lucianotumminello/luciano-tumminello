@@ -18,7 +18,7 @@ const UniversityEducation = () => {
             <h3 className="text-xl font-bold text-primary">
               <TranslatedText textKey="education.masters.commerce.title" />
             </h3>
-            <span className="text-xs font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
+            <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
               <TranslatedText textKey="education.masters.commerce.period" />
             </span>
           </div>
@@ -41,7 +41,7 @@ const UniversityEducation = () => {
             <h3 className="text-xl font-bold text-primary">
               <TranslatedText textKey="education.masters.advertising.title" />
             </h3>
-            <span className="text-xs font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
+            <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
               <TranslatedText textKey="education.masters.advertising.period" />
             </span>
           </div>
@@ -64,7 +64,7 @@ const UniversityEducation = () => {
             <h3 className="text-xl font-bold text-primary">
               <TranslatedText textKey="education.bachelors.relations.title" />
             </h3>
-            <span className="text-xs font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
+            <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
               <TranslatedText textKey="education.bachelors.relations.period" />
             </span>
           </div>
@@ -87,7 +87,7 @@ const UniversityEducation = () => {
             <h3 className="text-xl font-bold text-primary">
               <TranslatedText textKey="education.bachelors.communications.title" />
             </h3>
-            <span className="text-xs font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
+            <span className="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full h-6 flex items-center justify-center text-center mt-1 md:mt-0">
               <TranslatedText textKey="education.bachelors.communications.period" />
             </span>
           </div>
