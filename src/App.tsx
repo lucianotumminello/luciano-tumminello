@@ -3,10 +3,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { HelmetProvider } from 'react-helmet-async';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
+import { trackPageView } from "./utils/analytics";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -33,6 +34,19 @@ const queryClient = new QueryClient({
   },
 });
 
+// Analytics tracker component
+const RouteChangeTracker = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    const path = location.pathname + location.search;
+    const title = document.title;
+    trackPageView(path, title);
+  }, [location]);
+  
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -41,6 +55,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <RouteChangeTracker />
             <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
               <Routes>
                 <Route path="/" element={<Index />} />
