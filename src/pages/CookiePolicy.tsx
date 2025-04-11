@@ -52,7 +52,7 @@ const CookiePolicy = () => {
                 
                 <h2 className="text-2xl font-semibold mt-6 mb-4">More Information</h2>
                 <p>
-                  If you are looking for more information about our cookie policy, you can contact us at hello@lucianotumminello.com.
+                  If you are looking for more information about our cookie policy, you can contact us at lucianotumminello@gmail.com.
                 </p>
               </>
             ) : (
@@ -90,7 +90,7 @@ const CookiePolicy = () => {
                 
                 <h2 className="text-2xl font-semibold mt-6 mb-4">Maggiori Informazioni</h2>
                 <p>
-                  Se stai cercando maggiori informazioni sulla nostra politica sui cookie, puoi contattarci all'indirizzo hello@lucianotumminello.com.
+                  Se stai cercando maggiori informazioni sulla nostra politica sui cookie, puoi contattarci all'indirizzo lucianotumminello@gmail.com.
                 </p>
               </>
             )}

@@ -58,7 +58,7 @@ const PrivacyPolicy = () => {
                 
                 <h2 className="text-2xl font-semibold mt-6 mb-4">Contact Us</h2>
                 <p>
-                  For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by e-mail at hello@lucianotumminello.com.
+                  For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by e-mail at lucianotumminello@gmail.com.
                 </p>
               </>
             ) : (
@@ -102,7 +102,7 @@ const PrivacyPolicy = () => {
                 
                 <h2 className="text-2xl font-semibold mt-6 mb-4">Contattaci</h2>
                 <p>
-                  Per maggiori informazioni sulle nostre pratiche sulla privacy, se hai domande o se desideri presentare un reclamo, contattaci via e-mail all'indirizzo hello@lucianotumminello.com.
+                  Per maggiori informazioni sulle nostre pratiche sulla privacy, se hai domande o se desideri presentare un reclamo, contattaci via e-mail all'indirizzo lucianotumminello@gmail.com.
                 </p>
               </>
             )}
