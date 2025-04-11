@@ -283,6 +283,11 @@ const it = {
   
   // About Me Section
   "about.me.title": "La Mia Storia",
+  
+  // Cookie Consent
+  "consent.message": "Questo sito utilizza i cookie per migliorare la tua esperienza.",
+  "consent.decline": "Rifiuta",
+  "consent.accept": "Accetta",
 };
 
 export default it;

@@ -283,6 +283,11 @@ const en = {
   
   // About Me Section
   "about.me.title": "My Story",
+  
+  // Cookie Consent
+  "consent.message": "This website uses cookies to enhance your experience.",
+  "consent.decline": "Decline",
+  "consent.accept": "Accept",
 };
 
 export default en;
