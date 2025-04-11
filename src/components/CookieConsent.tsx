@@ -17,22 +17,32 @@ const CookieConsent = () => {
       // Show banner after a short delay for better UX
       const timer = setTimeout(() => setVisible(true), 1000);
       return () => clearTimeout(timer);
+    } else if (hasConsent === 'accepted') {
+      // Enable Google Analytics if user previously accepted
+      window.gtag && window.gtag('consent', 'update', {
+        'analytics_storage': 'granted'
+      });
     }
   }, []);
 
   const acceptCookies = () => {
     localStorage.setItem('cookieConsent', 'accepted');
     trackEvent('cookie_consent_accepted');
+    // Update consent state for Google Analytics
+    window.gtag && window.gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+    });
     setVisible(false);
   };
 
   const declineCookies = () => {
     localStorage.setItem('cookieConsent', 'declined');
     trackEvent('cookie_consent_declined');
+    // Update consent state for Google Analytics
+    window.gtag && window.gtag('consent', 'update', {
+      'analytics_storage': 'denied'
+    });
     setVisible(false);
-    
-    // You might want to disable analytics here
-    // or set a different tracking permission
   };
 
   if (!visible) return null;

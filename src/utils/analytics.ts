@@ -5,23 +5,18 @@
 
 // Track a page view
 export const trackPageView = (path: string, title: string) => {
-  if (window.dataLayer) {
-    window.dataLayer.push({
-      event: 'page_view',
-      page: {
-        path,
-        title
-      }
+  if (window.gtag) {
+    window.gtag('event', 'page_view', {
+      page_path: path,
+      page_title: title,
+      send_to: 'G-W020BWHW4V'
     });
   }
 };
 
 // Track a custom event
 export const trackEvent = (eventName: string, eventParams: Record<string, any> = {}) => {
-  if (window.dataLayer) {
-    window.dataLayer.push({
-      event: eventName,
-      ...eventParams
-    });
+  if (window.gtag) {
+    window.gtag('event', eventName, eventParams);
   }
 };
