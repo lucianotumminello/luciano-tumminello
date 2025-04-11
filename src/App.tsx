@@ -8,6 +8,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
+import CookieConsent from "./components/CookieConsent";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -71,6 +72,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
+            <CookieConsent />
           </BrowserRouter>
         </HelmetProvider>
       </LanguageProvider>
