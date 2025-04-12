@@ -1,3 +1,4 @@
+
 import { ArrowLeft, CalendarIcon, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -42,7 +43,7 @@ const BlogPostHeader = ({
               <img 
                 src={imageUrl} 
                 alt={title} 
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover"
               />
             </picture>
           </AspectRatio>

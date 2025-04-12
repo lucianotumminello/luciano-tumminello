@@ -7,25 +7,27 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "@/components/TranslatedText";
+import blogPostsData from "@/data/blogPostsData";
 
 const Blog = () => {
   const { language } = useLanguage();
   const isItalian = language === "it";
   
-  const blogPosts = [
-    {
-      id: 1,
-      title: "The AI Leadership Revolution: How Marketing Executives Are Navigating the 2025 AI Landscape",
-      titleIT: "La Rivoluzione della Leadership nell'IA: Come i Dirigenti Marketing Stanno Navigando il Panorama dell'IA nel 2025",
-      excerpt: "The AI race is transforming marketing strategies faster than ever before. Here's how forward-thinking leaders are leveraging these advancements to create competitive advantages in 2025.",
-      excerptIT: "La corsa all'IA sta trasformando le strategie di marketing più rapidamente che mai. Ecco come i leader lungimiranti stanno sfruttando questi progressi per creare vantaggi competitivi nel 2025.",
-      date: "April 7, 2025",
-      dateIT: "7 Aprile 2025",
-      category: "AI & Marketing",
-      categoryIT: "IA & Marketing",
-      imageUrl: "/lovable-uploads/fd8fe34b-755d-463d-b6ca-42abd81723f5.png",
-      slug: "ai-leadership-revolution"
-    },
+  // Convert the blogPostsData object to an array and sort by date (most recent first)
+  const blogPosts = Object.entries(blogPostsData)
+    .map(([slug, post]) => ({
+      ...post,
+      slug
+    }))
+    .sort((a, b) => {
+      // Parse the dates and sort in descending order (newest first)
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
+  
+  // Add remaining placeholder blog posts
+  const placeholderPosts = [
     {
       id: 2,
       title: "Coming Soon",
@@ -63,6 +65,12 @@ const Blog = () => {
       imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     }
   ];
+  
+  // Create combined array with real and placeholder posts
+  const allPosts = [
+    ...blogPosts,
+    ...placeholderPosts.filter((_, index) => index < Math.max(0, 4 - blogPosts.length))
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -95,13 +103,13 @@ const Blog = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {blogPosts.map((post) => (
-              <Card key={post.id} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
+            {allPosts.map((post, index) => (
+              <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <img 
-                    src={post.imageUrl} 
+                    src={post.imageUrl || post.desktopImageUrl} 
                     alt={isItalian ? post.titleIT : post.title} 
-                    className="object-cover w-full h-full object-top transition-transform duration-500 hover:scale-105"
+                    className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
                   />
                 </div>
                 <CardContent className="p-6">
