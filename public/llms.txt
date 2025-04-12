@@ -1,0 +1,27 @@
+
+# Luciano Tumminello
+<!-- Linee guida per i Large Language Models -->
+<!-- Ultimo aggiornamento: 2025-04-12 -->
+<!-- Generato con File llms.txt powered by Tuurbo.ai -->
+
+> Descrizione del sito
+The website www.lucianotumminello.com showcases Luciano Tumminello's professional background in marketing and operations. It highlights his expertise across key areas including marketing strategy, operations, digital transformation, artificial intelligence, and leadership. The site serves as his personal portfolio, detailing his skills and certifications.
+
+## Contenuti principali
+[Home](https://www.lucianotumminello.com/): The homepage of Luciano Tumminello's website highlights his role as a marketing and operations leader. It emphasizes his experience in building businesses and helping them scale. Key content includes his professional background, services, and a call to action for collaboration or consultation.
+
+[About ](https://www.lucianotumminello.com/about): The "About" page of Luciano Tumminello shares his journey from growing up in Palermo, Sicily, to building a career in marketing and business development across Australia and Southeast Asia. It highlights his academic background, entrepreneurial experience, and current role as COO for Spartan Health, while also offering insight into his personal interests in fitness, geopolitics, and travel.
+
+## Contenuti opzionali
+[Career](https://www.lucianotumminello.com/career): The "Career" page on Luciano Tumminello's website details his extensive professional journey. It highlights his current role as Chief Operating Officer at Spartan Health, where he leads digital transformation and operational optimization. The page also covers his past leadership positions, including Marketing Director at Slow, Co-Founder & Managing Director of 444 Media, and roles at Greenpeace, Accor, Y-Digital, and others. The content emphasizes his achievements in marketing, business development, and digital strategy, showcasing his expertise in various industries and his skills in leadership, data analysis, and digital marketing.
+
+[Education](https://www.lucianotumminello.com/education): The "Education" page on Luciano Tumminello's website outlines his academic background and professional development. It details his Master's degrees in Commerce and Advertising from the Royal Melbourne Institute of Technology (RMIT) in Australia, as well as his Bachelor's degrees in International Relations and International Communications from the University for Foreigners in Perugia, Italy. The page also highlights his numerous professional certifications in digital marketing, SEO, Google Ads, content marketing, and other areas, showcasing his ongoing commitment to professional growth and expertise.
+
+[Blog](https://www.lucianotumminello.com/blog): The "Blog" page on Luciano Tumminello's website is designed to serve as a space for sharing insights, articles, and updates related to marketing, operations, artificial intelligence, business, and personal development. The blog offers valuable resources and perspectives for readers interested in these topics.
+
+[AI Leadership Revolution - blog](https://www.lucianotumminello.com/blog/ai-leadership-revolution): The blog post titled "The AI Leadership Revolution: How Marketing Executives Are Navigating the 2025 AI Landscape" on Luciano Tumminello's website explores how AI advancements are reshaping marketing strategies and leadership in 2025. It covers the competitive dynamics between AI players like DeepSeek and OpenAI, and how marketing leaders are leveraging AI for hyper-personalization, content creation, and decision-making. The post emphasizes the importance of combining AI efficiency with human creativity, maintaining ethical oversight, and integrating AI fluency across organizations. It provides actionable insights for marketing executives looking to adapt to the rapidly evolving AI-driven landscape.
+
+[Contact](https://www.lucianotumminello.com/contact): The "Contact" page on Luciano Tumminello's website provides various ways to reach out for discussions regarding new projects, opportunities, or partnerships. It includes his email, phone numbers (for both Thai and Italian WhatsApp), and his location in Bangkok, Thailand. The page also features links to his LinkedIn profile and includes a contact form for visitors to fill out with their name, email, subject, and message.
+
+## Contatti
+[Contatto](mailto:lucianotumminello@gmail.com): I'm always open to discussing new projects, opportunities, or partnerships.
