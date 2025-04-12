@@ -18,6 +18,8 @@ const Index = () => {
       </Helmet>
       <Header />
       <main className="flex-1">
+        {/* Adding visually hidden h1 for SEO, as the design uses h2 in HeroSection */}
+        <h1 className="sr-only">Luciano Tumminello | Marketing & Operations Leader</h1>
         <HeroSection />
         <ProfileImage />
         <section id="core-competencies">

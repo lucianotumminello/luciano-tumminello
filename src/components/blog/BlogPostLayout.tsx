@@ -51,6 +51,8 @@ const BlogPostLayout = ({
       <Header />
       
       <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
+        {/* Adding fallback h1 in case the BlogPostHeader component doesn't provide one */}
+        <h1 className="sr-only">{title}</h1>
         <div className="container mx-auto max-w-4xl">
           {children}
         </div>
