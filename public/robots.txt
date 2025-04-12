@@ -1,34 +1,56 @@
 
-# Allow all web crawlers to access all pages
+# robots.txt for https://lucianotumminello.com/
+
+# Allow all web crawlers to access most content
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*?*
 
 # Specific allowances for major search engines
 User-agent: Googlebot
 Allow: /
+Disallow: /api/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
 
 User-agent: Slurp
 Allow: /
+Disallow: /api/
 
 User-agent: DuckDuckBot
 Allow: /
+Disallow: /api/
 
+# Social media crawlers
 User-agent: Twitterbot
 Allow: /
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
 
 User-agent: facebookexternalhit
 Allow: /
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
 
 User-agent: LinkedInBot
 Allow: /
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+
+# Crawl-delay directive (in seconds) for bots that respect it
+Crawl-delay: 10
 
 # Sitemap location
 Sitemap: https://lucianotumminello.com/sitemap.xml
-
-# Discourage crawling of certain files
-Disallow: /*.json$
-Disallow: /*.js$
-Disallow: /*.css$
