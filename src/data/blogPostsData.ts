@@ -224,7 +224,7 @@ const blogPostsData: BlogPostsData = {
       <p class="mb-4">I dati del settore mostrano che i clienti in realtà preferiscono interazioni assistite dall'IA per molti servizi quando le organizzazioni rendono l'esperienza sia potente che affidabile. Secondo la Consumer Intelligence Series 2025 di PwC, questo richiede:</p>
       <ul class="list-disc pl-5 mb-4">
         <li>Comunicazione chiara su quando e come viene utilizzata l'IA (apprezzata dall'86% dei consumatori)</li>
-        <li>Spiegazioni trasparenti di come vengono generate le raccomandazioni dell'IA (importante per il 79% dei consumatori)</li>
+        <li>Spiegazioni trasparenti di come vengono generate le raccomandazioni dell'IA (importanti per il 79% dei consumatori)</li>
         <li>Meccanismi di supervisione umana a cui i clienti possono accedere quando lo desiderano (attesi dal 74% dei consumatori)</li>
         <li>Revisioni etiche regolari con risultati pubblicati (costruisce fiducia per il 68% dei consumatori)</li>
       </ul>
@@ -288,8 +288,8 @@ const blogPostsData: BlogPostsData = {
     dateIT: "13 Aprile 2025",
     category: "Digital Transformation",
     categoryIT: "Trasformazione Digitale",
-    imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-    desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
+    imageUrl: "/lovable-uploads/b54c64a6-9eca-4784-8a67-e286753d3ff8.png",
+    desktopImageUrl: "/lovable-uploads/d5e53ad5-630b-4df0-9d29-2387c6c6137b.png",
     readingTime: "15 min read",
     readingTimeIT: "15 min di lettura",
     tags: ["AI", "Artificial Intelligence", "Digital Transformation", "MarTech", "Operational Excellence", "Leadership", "Insights"],
