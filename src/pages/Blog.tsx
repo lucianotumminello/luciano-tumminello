@@ -38,7 +38,8 @@ const Blog = () => {
       dateIT: "22 Marzo 2023",
       category: "UI Design",
       categoryIT: "UI Design",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
+      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
       id: 3,
@@ -50,7 +51,8 @@ const Blog = () => {
       dateIT: "8 Febbraio 2023",
       category: "Development",
       categoryIT: "Sviluppo",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
+      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
       id: 4,
@@ -62,7 +64,8 @@ const Blog = () => {
       dateIT: "17 Gennaio 2023",
       category: "Design Systems",
       categoryIT: "Sistemi di Design",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
+      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     }
   ];
   
@@ -107,7 +110,7 @@ const Blog = () => {
               <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <img 
-                    src={post.imageUrl || post.desktopImageUrl} 
+                    src={post.imageUrl || (post.desktopImageUrl || "")} 
                     alt={isItalian ? post.titleIT : post.title} 
                     className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
                   />
@@ -124,14 +127,14 @@ const Blog = () => {
                     </div>
                   </div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
-                    {post.slug ? (
+                    {'slug' in post ? (
                       <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
                     ) : (
                       isItalian ? post.titleIT : post.title
                     )}
                   </h2>
                   <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
-                  {post.slug ? (
+                  {'slug' in post ? (
                     <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
                       {isItalian ? "Leggi di più →" : "Read More →"}
                     </Link>

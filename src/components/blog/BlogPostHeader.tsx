@@ -41,7 +41,7 @@ const BlogPostHeader = ({
             <picture>
               <source media="(min-width: 768px)" srcSet={desktopImageUrl} />
               <img 
-                src={imageUrl} 
+                src={imageUrl || desktopImageUrl} 
                 alt={title} 
                 className="w-full h-full object-cover"
               />
