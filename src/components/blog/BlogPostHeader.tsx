@@ -39,11 +39,14 @@ const BlogPostHeader = ({
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
             <picture>
+              {/* Desktop image (displayed at 768px and above) */}
               <source media="(min-width: 768px)" srcSet={desktopImageUrl} />
+              {/* Mobile image (displayed below 768px) */}
               <img 
-                src={imageUrl || desktopImageUrl} 
+                src={imageUrl} 
                 alt={title} 
                 className="w-full h-full object-cover"
+                loading="eager"
               />
             </picture>
           </AspectRatio>
