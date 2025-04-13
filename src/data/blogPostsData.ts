@@ -1,3 +1,4 @@
+
 import { BlogPost } from "@/types";
 
 interface BlogPostsData {
@@ -124,10 +125,10 @@ const blogPostsData: BlogPostsData = {
     `,
     author: "Luciano Tumminello",
     authorImageUrl: "/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png",
-    date: "April 5, 2025",
-    dateIT: "5 Aprile 2025",
-    category: "AI Strategy",
-    categoryIT: "Strategia IA",
+    date: "April 7, 2025",
+    dateIT: "7 Aprile 2025",
+    category: "AI & Marketing",
+    categoryIT: "IA & Marketing",
     imageUrl: "/lovable-uploads/38513ffd-d6a5-419a-9b5b-ae9c7a7f1854.png",
     desktopImageUrl: "/lovable-uploads/8f0b1321-5895-44a0-94fc-6dc7a17f5979.png",
     readingTime: "8 min read",

@@ -53,16 +53,18 @@ const BlogPostHeader = ({
         </div>
         
         <CardContent className="p-8 bg-white">
-          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-4">
-            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">
+          <div className="flex flex-wrap items-center gap-4 mb-6 border-b border-gray-100 pb-6">
+            <span className="inline-block bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-medium">
               {category}
             </span>
-            <div className="flex items-center">
-              <CalendarIcon className="h-3.5 w-3.5 mr-1" />
+            
+            <div className="flex items-center text-gray-500">
+              <CalendarIcon className="h-4 w-4 mr-2" />
               {date}
             </div>
-            <div className="flex items-center">
-              <Clock className="h-3.5 w-3.5 mr-1" />
+            
+            <div className="flex items-center text-gray-500">
+              <Clock className="h-4 w-4 mr-2" />
               {readingTime}
             </div>
           </div>
