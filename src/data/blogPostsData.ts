@@ -188,6 +188,11 @@ const blogPostsData: BlogPostsData = {
       
       <p class="mb-4 italic">"Il divario di intelligenza emotiva tra implementazioni IA di base e avanzate sta diventando un importante fattore differenziante competitivo. Le aziende leader in quest'area stanno vedendo significativi miglioramenti nella fedeltà perché i clienti si sentono realmente compresi." — Maya Johnson, Chief Customer Experience Officer presso Deloitte Digital</p>
       
+      <picture class="block my-8">
+        <source media="(min-width: 768px)" srcset="/lovable-uploads/c4062ec3-b032-4d3a-a275-e52b26e339a8.png">
+        <img src="/lovable-uploads/3e7edc57-2857-421c-b5ae-eed64394fbe0.png" alt="Marketing Transformation: From Automation to Strategic Intelligence" class="mx-auto rounded-lg shadow-md w-full">
+      </picture>
+      
       <h2 class="text-2xl font-bold mb-4">Trasformazione delle Operazioni: Intelligenza Decisionale su Scala Aziendale</h2>
       <p class="mb-4">L'impatto operativo è stato altrettanto significativo, con tre aree di miglioramento di spicco:</p>
       
