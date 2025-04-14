@@ -382,48 +382,24 @@ const blogPostsData: BlogPostsData = {
     tagsIT: ["IA", "Leadership Marketing", "Trasformazione Digitale", "Strategia Esecutiva", "Adozione Tecnologica"]
   },
   "beyond-pattern-recognition": {
-    title: "Beyond Pattern Recognition: The Future of AI in Marketing",
-    titleIT: "Oltre il Riconoscimento di Pattern: Il Futuro dell'IA nel Marketing",
-    excerpt: "Explore how AI is evolving beyond simple pattern recognition to drive deeper customer understanding and marketing innovation.",
-    excerptIT: "Scopri come l'IA si sta evolvendo oltre il semplice riconoscimento di pattern per guidare una comprensione più profonda del cliente e l'innovazione del marketing.",
-    content: `
-      <h2 class="text-2xl font-bold mb-4">The Evolution of AI in Marketing</h2>
-      <p class="mb-4">AI's role in marketing has traditionally been focused on pattern recognition. However, the future holds much more.</p>
-      <h3 class="text-xl font-semibold mb-2">Moving Beyond Traditional AI</h3>
-      <p class="mb-4">New AI technologies are enabling marketers to gain deeper insights into customer behavior and preferences.</p>
-      <ul class="list-disc pl-5 mb-4">
-        <li>Predictive analytics for personalized marketing campaigns</li>
-        <li>AI-driven content creation and optimization</li>
-        <li>Enhanced customer experience through AI-powered chatbots</li>
-      </ul>
-      <h2 class="text-2xl font-bold mb-4">Case Studies</h2>
-      <p class="mb-4">Examples of companies successfully implementing advanced AI strategies in their marketing efforts.</p>
-    `,
-    contentIT: `
-      <h2 class="text-2xl font-bold mb-4">L'Evoluzione dell'IA nel Marketing</h2>
-      <p class="mb-4">Il ruolo dell'IA nel marketing si è tradizionalmente concentrato sul riconoscimento di pattern. Tuttavia, il futuro riserva molto di più.</p>
-      <h3 class="text-xl font-semibold mb-2">Andare Oltre l'IA Tradizionale</h3>
-      <p class="mb-4">Le nuove tecnologie AI stanno consentendo ai marketer di ottenere approfondimenti più profondi sul comportamento e le preferenze dei clienti.</p>
-      <ul class="list-disc pl-5 mb-4">
-        <li>Analisi predittiva per campagne di marketing personalizzate</li>
-        <li>Creazione e ottimizzazione di contenuti guidata dall'IA</li>
-        <li>Miglioramento dell'esperienza del cliente attraverso chatbot potenziati dall'IA</li>
-      </ul>
-      <h2 class="text-2xl font-bold mb-4">Casi di Studio</h2>
-      <p class="mb-4">Esempi di aziende che implementano con successo strategie avanzate di AI nei loro sforzi di marketing.</p>
-    `,
+    title: "Coming Soon",
+    titleIT: "Prossimamente",
+    excerpt: "Coming Soon",
+    excerptIT: "Prossimamente",
+    content: `<p>Coming Soon</p>`,
+    contentIT: `<p>Prossimamente</p>`,
     author: "Luciano Tumminello",
     authorImageUrl: "/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png",
     date: "March 15, 2024",
     dateIT: "15 Marzo 2024",
-    category: "AI",
-    categoryIT: "IA",
+    category: "Coming Soon",
+    categoryIT: "Prossimamente",
     imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
     desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-    readingTime: "7 min read",
-    readingTimeIT: "7 min di lettura",
-    tags: ["AI", "Marketing", "Technology"],
-    tagsIT: ["IA", "Marketing", "Tecnologia"]
+    readingTime: "Coming Soon",
+    readingTimeIT: "Prossimamente",
+    tags: ["Coming Soon"],
+    tagsIT: ["Prossimamente"]
   }
 };
 
