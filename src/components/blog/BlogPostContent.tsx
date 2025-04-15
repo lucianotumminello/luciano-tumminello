@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BlogPostContentProps {
   content: string;
@@ -9,7 +9,7 @@ interface BlogPostContentProps {
 
 const BlogPostContent = ({ content }: BlogPostContentProps) => {
   const { language } = useLanguage();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const isItalian = language === "it";
   
   const modifiedContent = React.useMemo(() => {
@@ -46,7 +46,7 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         dangerouslySetInnerHTML={{ __html: modifiedContent }}
       />
       
-      <style jsx global>{`
+      <style jsx>{`
         .prose p {
           text-align: justify;
           color: rgb(75 85 99);
