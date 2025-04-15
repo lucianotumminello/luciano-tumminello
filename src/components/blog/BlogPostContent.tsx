@@ -23,8 +23,10 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     
     // Only proceed if the quote exists in the content
     if (content.includes(quoteToFind)) {
-      // Set the image URL to the newly uploaded image
-      const imageUrl = "/lovable-uploads/244fdcc7-f4a7-44df-a08b-35021c8fa18d.png";
+      // Set the appropriate image URL based on device type
+      const desktopImageUrl = "/lovable-uploads/c58f3f96-294d-41f7-8a9b-4dcefa5823ed.png";
+      const mobileImageUrl = "/lovable-uploads/329dab58-64c7-4a2a-95fc-b22a6742091b.png";
+      const imageUrl = isMobile ? mobileImageUrl : desktopImageUrl;
       
       const imageTag = `
         <div class="my-8">
@@ -49,8 +51,7 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         dangerouslySetInnerHTML={{ __html: modifiedContent }}
       />
       
-      <style>
-        {`
+      <style>{`
         .prose p {
           text-align: justify;
           color: rgb(75 85 99);
@@ -59,8 +60,7 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           text-align: justify;
           color: rgb(75 85 99);
         }
-        `}
-      </style>
+      `}</style>
     </article>
   );
 };
