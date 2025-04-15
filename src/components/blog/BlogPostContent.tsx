@@ -23,10 +23,13 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     
     // Only proceed if the quote exists in the content
     if (content.includes(quoteToFind)) {
+      // Set the image URL to the newly uploaded image
+      const imageUrl = "/lovable-uploads/244fdcc7-f4a7-44df-a08b-35021c8fa18d.png";
+      
       const imageTag = `
         <div class="my-8">
           <img 
-            src="${isMobile ? '/lovable-uploads/967b9111-a691-40f5-ad3f-d35c3981c5ce.png' : '/lovable-uploads/5f69a548-7e6d-43c4-a185-092caea7d41f.png'}" 
+            src="${imageUrl}" 
             alt="Marketing Transformation" 
             class="w-full rounded-lg shadow-md" 
           />
