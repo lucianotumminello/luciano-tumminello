@@ -1,4 +1,3 @@
-
 import { BlogPost } from "@/types";
 
 interface BlogPostsData {
@@ -284,7 +283,7 @@ const blogPostsData: BlogPostsData = {
       <p class="mb-4">Luciano Tumminello ha oltre 15 anni di esperienza nella guida della crescita in Asia-Pacifico, specializzandosi in marketing, operazioni e trasformazione digitale, con un focus crescente sull'utilizzo dell'intelligenza artificiale. Con un comprovato track record di guida di iniziative strategiche e fornitura di risultati misurabili, Luciano aiuta le organizzazioni a navigare la complessa intersezione tra tecnologia e leadership aziendale.</p>
     `,
     author: "Luciano Tumminello",
-    authorImageUrl: "/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png",
+    authorImageUrl: "/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png",
     date: "April 13, 2025",
     dateIT: "13 Aprile 2025",
     category: "Digital Transformation",
@@ -505,7 +504,7 @@ const blogPostsData: BlogPostsData = {
       <p class="mb-4">#LeadershipMarketing #StrategiaIA #MarketingIA #FuturoDelMarketing</p>
     `,
     author: "Luciano Tumminello",
-    authorImageUrl: "/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png",
+    authorImageUrl: "/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png",
     date: "April 7, 2025",
     dateIT: "7 Aprile 2025",
     category: "AI & Marketing",
@@ -525,7 +524,7 @@ const blogPostsData: BlogPostsData = {
     content: `<p>Coming Soon</p>`,
     contentIT: `<p>Prossimamente</p>`,
     author: "Luciano Tumminello",
-    authorImageUrl: "/lovable-uploads/cd29d65a-89e6-42c7-8fd6-92da850c4c24.png",
+    authorImageUrl: "/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png",
     date: "March 15, 2024",
     dateIT: "15 Marzo 2024",
     category: "Coming Soon",
