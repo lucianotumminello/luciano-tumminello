@@ -4,11 +4,15 @@ import TranslatedText from "./TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { memo } from "react";
+import LinkedInIcon from "@/components/icons/LinkedInIcon";
 
 const Footer = memo(() => {
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  
+  // Common icon size for both mobile and desktop
+  const iconSize = isMobile ? 24 : 32;
   
   return (
     <footer className="border-t py-8 px-4 bg-white">
@@ -42,11 +46,7 @@ const Footer = memo(() => {
                 aria-label="LinkedIn"
                 className="block"
               >
-                <img 
-                  src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
-                  alt="LinkedIn" 
-                  className="h-8 w-8 transition-transform hover:scale-110" 
-                />
+                <LinkedInIcon className={`h-8 w-8 transition-transform hover:scale-110`} />
               </a>
               <a 
                 href="mailto:lucianotumminello@gmail.com" 
@@ -58,7 +58,7 @@ const Footer = memo(() => {
           </nav>
         </div>
         
-        {/* Mobile View - No navigation links */}
+        {/* Mobile View */}
         <div className="flex flex-col md:hidden">
           {/* Second line: Policies and social links */}
           <div className="flex justify-between items-center mb-4">
@@ -85,11 +85,7 @@ const Footer = memo(() => {
                 aria-label="LinkedIn"
                 className="flex items-center justify-center"
               >
-                <img 
-                  src="/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png" 
-                  alt="LinkedIn" 
-                  className="h-6 w-6 min-w-6 min-h-6" 
-                />
+                <LinkedInIcon className="h-6 w-6 min-w-6 min-h-6" />
               </a>
               <a 
                 href="mailto:lucianotumminello@gmail.com" 
