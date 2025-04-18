@@ -27,13 +27,14 @@ User-agent: DuckDuckBot
 Allow: /
 Disallow: /api/
 
-# Social media crawlers
+# Social media crawlers - allow image access
 User-agent: Twitterbot
 Allow: /
 Allow: /*.png$
 Allow: /*.jpg$
 Allow: /*.jpeg$
 Allow: /*.gif$
+Allow: /*.webp$
 
 User-agent: facebookexternalhit
 Allow: /
@@ -41,6 +42,7 @@ Allow: /*.png$
 Allow: /*.jpg$
 Allow: /*.jpeg$
 Allow: /*.gif$
+Allow: /*.webp$
 
 User-agent: LinkedInBot
 Allow: /
@@ -48,6 +50,7 @@ Allow: /*.png$
 Allow: /*.jpg$
 Allow: /*.jpeg$
 Allow: /*.gif$
+Allow: /*.webp$
 
 # Crawl-delay directive (in seconds) for bots that respect it
 Crawl-delay: 10

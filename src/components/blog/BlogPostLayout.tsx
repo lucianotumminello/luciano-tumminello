@@ -29,16 +29,19 @@ const BlogPostLayout = ({
         <title>{title} | Luciano Tumminello</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
+        <link rel="canonical" href={pageUrl} />
         
         {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:type" content="article" />
         <meta property="og:url" content={pageUrl} />
+        <meta property="og:site_name" content="Luciano Tumminello" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@luciano_tumminello" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
