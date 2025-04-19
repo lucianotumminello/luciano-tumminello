@@ -65,7 +65,7 @@ export async function generateTags(content: string): Promise<string[]> {
     if (
       word.length > 1 &&
       /^[A-Z]/.test(word) && 
-      !word.toUpperCase() === word && // not ALL CAPS (like acronyms)
+      word.toUpperCase() !== word && // Fix: Changed '===' to '!=='
       !commonWords.has(word.toLowerCase())
     ) {
       potentialTags.add(word.replace(/[.,;:?!()]/g, ''));
