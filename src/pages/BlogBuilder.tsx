@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import { BlogPost } from "@/types";
 import blogPostsData from "@/data/blogPostsData";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
+import { Eye, EyeOff } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type AuthFormData = {
   password: string;
@@ -38,6 +40,9 @@ const ADMIN_PASSWORD = "VanBasten9!";
 const DEFAULT_AUTHOR = Object.values(blogPostsData)[0]?.author || "Luciano Tumminello";
 const DEFAULT_AUTHOR_IMAGE = Object.values(blogPostsData)[0]?.authorImageUrl || "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
 
+// Local storage key for saved password
+const SAVED_PASSWORD_KEY = "blog_builder_password";
+
 const BlogBuilder = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
@@ -46,11 +51,18 @@ const BlogBuilder = () => {
   const [mobileImageFile, setMobileImageFile] = useState<File | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [previewData, setPreviewData] = useState<any>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberPassword, setRememberPassword] = useState(false);
   const desktopImageRef = useRef<HTMLInputElement>(null);
   const mobileImageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const authForm = useForm<AuthFormData>();
+  const authForm = useForm<AuthFormData>({
+    defaultValues: {
+      password: "",
+    }
+  });
+
   const blogForm = useForm<BlogFormData>({
     defaultValues: {
       title: "",
@@ -63,6 +75,24 @@ const BlogBuilder = () => {
       imageUrl: ""
     }
   });
+
+  // Check for saved password on mount
+  useEffect(() => {
+    const savedPassword = localStorage.getItem(SAVED_PASSWORD_KEY);
+    if (savedPassword) {
+      authForm.setValue("password", savedPassword);
+      setRememberPassword(true);
+      
+      // Auto-login if saved password is correct
+      if (savedPassword === ADMIN_PASSWORD) {
+        setIsAuthenticated(true);
+        toast({
+          title: "Authentication successful",
+          description: "Welcome to the blog builder!",
+        });
+      }
+    }
+  }, [authForm]);
 
   // Reset form when switching between create and update modes
   useEffect(() => {
@@ -99,13 +129,16 @@ const BlogBuilder = () => {
     }
   }, [selectedPost, blogForm]);
 
-  // Enhanced authentication checking with console logs to help debug
   const onAuthSubmit = (data: AuthFormData) => {
-    console.log("Password entered:", data.password);
-    console.log("Expected password:", ADMIN_PASSWORD);
-    console.log("Match:", data.password === ADMIN_PASSWORD);
-    
+    // Check exact string match for password
     if (data.password === ADMIN_PASSWORD) {
+      // Save password if remember is checked
+      if (rememberPassword) {
+        localStorage.setItem(SAVED_PASSWORD_KEY, data.password);
+      } else {
+        localStorage.removeItem(SAVED_PASSWORD_KEY);
+      }
+      
       setIsAuthenticated(true);
       toast({
         title: "Authentication successful",
@@ -114,7 +147,7 @@ const BlogBuilder = () => {
     } else {
       toast({
         title: "Authentication failed",
-        description: "Invalid password: " + data.password,
+        description: "Invalid password. Please check your input and try again.",
         variant: "destructive",
       });
     }
@@ -234,6 +267,17 @@ const BlogBuilder = () => {
     setIsUpdateMode(true);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
+  };
+
+  const handleRememberPasswordChange = (checked: boolean) => {
+    setRememberPassword(checked);
+    if (!checked) {
+      localStorage.removeItem(SAVED_PASSWORD_KEY);
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
@@ -250,12 +294,41 @@ const BlogBuilder = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" {...field} />
+                        <div className="relative">
+                          <Input 
+                            type={showPassword ? "text" : "password"} 
+                            {...field} 
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                
+                <div className="flex items-center space-x-2">
+                  <Checkbox 
+                    id="remember" 
+                    checked={rememberPassword} 
+                    onCheckedChange={handleRememberPasswordChange}
+                  />
+                  <label
+                    htmlFor="remember"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Remember my password
+                  </label>
+                </div>
+                
                 <Button type="submit" className="w-full">Login</Button>
               </form>
             </Form>
