@@ -31,7 +31,7 @@ type BlogFormData = {
   imageUrl: string;
 };
 
-// Change the password to the requested one
+// Password is explicitly set to VanBasten9!
 const ADMIN_PASSWORD = "VanBasten9!";
 
 // Extract the default author information from existing blog posts
@@ -99,7 +99,12 @@ const BlogBuilder = () => {
     }
   }, [selectedPost, blogForm]);
 
+  // Enhanced authentication checking with console logs to help debug
   const onAuthSubmit = (data: AuthFormData) => {
+    console.log("Password entered:", data.password);
+    console.log("Expected password:", ADMIN_PASSWORD);
+    console.log("Match:", data.password === ADMIN_PASSWORD);
+    
     if (data.password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
       toast({
@@ -109,7 +114,7 @@ const BlogBuilder = () => {
     } else {
       toast({
         title: "Authentication failed",
-        description: "Invalid password",
+        description: "Invalid password: " + data.password,
         variant: "destructive",
       });
     }
