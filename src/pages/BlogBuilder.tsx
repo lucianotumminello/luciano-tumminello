@@ -78,19 +78,26 @@ const BlogBuilder = () => {
 
   // Check for saved password on mount
   useEffect(() => {
-    const savedPassword = localStorage.getItem(SAVED_PASSWORD_KEY);
-    if (savedPassword) {
-      authForm.setValue("password", savedPassword);
-      setRememberPassword(true);
-      
-      // Auto-login if saved password is correct
-      if (savedPassword === ADMIN_PASSWORD) {
-        setIsAuthenticated(true);
-        toast({
-          title: "Authentication successful",
-          description: "Welcome to the blog builder!",
-        });
+    // Try to get saved password from localStorage
+    try {
+      const savedPassword = localStorage.getItem(SAVED_PASSWORD_KEY);
+      if (savedPassword) {
+        console.log("Found saved password");
+        authForm.setValue("password", savedPassword);
+        setRememberPassword(true);
+        
+        // Auto-login if saved password is correct
+        if (savedPassword === ADMIN_PASSWORD) {
+          console.log("Auto-login with saved password");
+          setIsAuthenticated(true);
+          toast({
+            title: "Authentication successful",
+            description: "Welcome to the blog builder!",
+          });
+        }
       }
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
     }
   }, []);
 
@@ -131,16 +138,28 @@ const BlogBuilder = () => {
 
   const onAuthSubmit = (data: AuthFormData) => {
     console.log("Auth submission with password:", data.password);
-    console.log("Comparing with ADMIN_PASSWORD:", ADMIN_PASSWORD);
-    console.log("Are they equal?", data.password === ADMIN_PASSWORD);
+    console.log("ADMIN_PASSWORD:", ADMIN_PASSWORD);
+    console.log("Password match?", data.password === ADMIN_PASSWORD);
     
     // Check exact string match for password
     if (data.password === ADMIN_PASSWORD) {
+      console.log("Password correct, setting authenticated");
+      
       // Save password if remember is checked
       if (rememberPassword) {
-        localStorage.setItem(SAVED_PASSWORD_KEY, data.password);
+        try {
+          localStorage.setItem(SAVED_PASSWORD_KEY, data.password);
+          console.log("Password saved to localStorage");
+        } catch (error) {
+          console.error("Error saving password to localStorage:", error);
+        }
       } else {
-        localStorage.removeItem(SAVED_PASSWORD_KEY);
+        try {
+          localStorage.removeItem(SAVED_PASSWORD_KEY);
+          console.log("Password removed from localStorage");
+        } catch (error) {
+          console.error("Error removing password from localStorage:", error);
+        }
       }
       
       setIsAuthenticated(true);
@@ -149,6 +168,7 @@ const BlogBuilder = () => {
         description: "Welcome to the blog builder!",
       });
     } else {
+      console.log("Password incorrect");
       toast({
         title: "Authentication failed",
         description: "Invalid password. Please check your input and try again.",
@@ -301,12 +321,13 @@ const BlogBuilder = () => {
                         <div className="relative">
                           <Input 
                             type={showPassword ? "text" : "password"} 
+                            placeholder="Enter password"
                             {...field} 
                           />
                           <Button
                             type="button"
                             variant="ghost"
-                            size="sm"
+                            size="icon"
                             className="absolute right-0 top-0 h-full px-3"
                             onClick={togglePasswordVisibility}
                           >
