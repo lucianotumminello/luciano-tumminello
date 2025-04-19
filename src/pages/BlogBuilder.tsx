@@ -92,7 +92,7 @@ const BlogBuilder = () => {
         });
       }
     }
-  }, [authForm]);
+  }, []);
 
   // Reset form when switching between create and update modes
   useEffect(() => {
@@ -130,6 +130,10 @@ const BlogBuilder = () => {
   }, [selectedPost, blogForm]);
 
   const onAuthSubmit = (data: AuthFormData) => {
+    console.log("Auth submission with password:", data.password);
+    console.log("Comparing with ADMIN_PASSWORD:", ADMIN_PASSWORD);
+    console.log("Are they equal?", data.password === ADMIN_PASSWORD);
+    
     // Check exact string match for password
     if (data.password === ADMIN_PASSWORD) {
       // Save password if remember is checked
