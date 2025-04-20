@@ -17,6 +17,7 @@ import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUt
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { textToHtml, htmlToText } from "@/utils/contentFormatter";
+import { FormattingGuide } from "@/components/FormattingGuide";
 
 type AuthFormData = {
   password: string;
@@ -659,6 +660,8 @@ const BlogBuilder = () => {
               )}
             </DialogContent>
           </Dialog>
+
+          <FormattingGuide />
         </div>
       </main>
       <Footer />
