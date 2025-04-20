@@ -1,22 +1,35 @@
-
 /**
- * Converts plain text to HTML format
+ * Converts plain text to HTML format with advanced formatting
  */
 export function textToHtml(text: string): string {
   if (!text) return '';
   
-  // Split text into paragraphs
-  const paragraphs = text.split('\n\n').filter(p => p.trim());
+  // Split text into sections
+  const sections = text.split('\n\n').filter(s => s.trim());
   
-  // Convert each paragraph to HTML
-  const htmlParagraphs = paragraphs.map(p => {
-    // Preserve line breaks within paragraphs
-    const lines = p.split('\n').filter(line => line.trim());
+  // Convert each section to HTML with advanced formatting
+  const htmlSections = sections.map(section => {
+    // Check if the section starts with a header
+    const headerMatch = section.match(/^(#+)\s(.+)/);
+    if (headerMatch) {
+      const headerLevel = headerMatch[1].length;
+      const headerText = headerMatch[2];
+      const headerClasses = {
+        1: 'text-3xl font-bold mb-6',
+        2: 'text-2xl font-bold mb-4',
+        3: 'text-xl font-semibold mb-2'
+      }[headerLevel] || 'text-lg font-semibold mb-2';
+      
+      return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
+    }
+    
+    // Regular paragraphs
+    const lines = section.split('\n').filter(line => line.trim());
     const formattedLines = lines.join('<br />');
-    return `<p>${formattedLines}</p>`;
+    return `<p class="mb-4">${formattedLines}</p>`;
   });
   
-  return htmlParagraphs.join('\n\n');
+  return htmlSections.join('\n\n');
 }
 
 /**
