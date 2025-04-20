@@ -16,6 +16,7 @@ import blogPostsData from "@/data/blogPostsData";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { textToHtml, htmlToText } from "@/utils/contentFormatter";
 
 type AuthFormData = {
   password: string;
@@ -117,7 +118,7 @@ const BlogBuilder = () => {
       blogForm.reset({
         title: post.title,
         excerpt: post.excerpt,
-        content: post.content,
+        content: htmlToText(post.content),
         date: post.date,
         category: post.category,
         tags: post.tags.join(", "),
@@ -171,15 +172,17 @@ const BlogBuilder = () => {
     });
 
     try {
-      const generatedTags = await generateTags(data.content);
+      const formattedContent = textToHtml(data.content);
+      
+      const generatedTags = await generateTags(formattedContent);
       const tagsToUse = data.tags ? data.tags.split(',').map(tag => tag.trim()) : generatedTags;
       
-      const readingTime = estimateReadingTime(data.content);
+      const readingTime = estimateReadingTime(formattedContent);
       const readingTimeText = `${readingTime} min read`;
 
       const translatedTitle = await translateText(data.title, 'en', 'it');
       const translatedExcerpt = await translateText(data.excerpt, 'en', 'it');
-      const translatedContent = await translateText(data.content, 'en', 'it');
+      const translatedContent = await translateText(formattedContent, 'en', 'it');
       const translatedCategory = await translateText(data.category, 'en', 'it');
       const translatedTags = await Promise.all(tagsToUse.map(tag => translateText(tag, 'en', 'it')));
       const translatedDate = await translateText(data.date, 'en', 'it');
@@ -209,11 +212,11 @@ const BlogBuilder = () => {
         titleIT: translatedTitle,
         excerpt: data.excerpt,
         excerptIT: translatedExcerpt,
-        content: data.content,
+        content: formattedContent,
         contentIT: translatedContent,
         author: DEFAULT_AUTHOR,
         authorImageUrl: DEFAULT_AUTHOR_IMAGE,
-        date: data.date,
+        date: isUpdateMode ? data.date : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
         dateIT: translatedDate,
         category: data.category,
         categoryIT: translatedCategory,
@@ -234,7 +237,7 @@ const BlogBuilder = () => {
           title: "Blog post data copied!",
           description: isUpdateMode 
             ? `Update the ${selectedPost} entry in your blogPostsData.ts file with this data` 
-            : "Create a new entry in your blogPostsData.ts file with this data and an appropriate slug",
+            : "Create a new entry in your blogPostsData.ts file with this data and add it at the beginning of the posts list",
         });
       });
     } catch (error) {
@@ -423,9 +426,13 @@ const BlogBuilder = () => {
                   name="content"
                   render={({ field }) => (
                     <FormItem className="col-span-1 md:col-span-2">
-                      <FormLabel>Content (HTML)</FormLabel>
+                      <FormLabel>Content (Write in plain text, paragraphs will be formatted automatically)</FormLabel>
                       <FormControl>
-                        <Textarea className="min-h-[300px] font-mono text-sm" {...field} />
+                        <Textarea 
+                          className="min-h-[300px] font-sans text-base" 
+                          placeholder="Write your content here... Use double line breaks for new paragraphs"
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
