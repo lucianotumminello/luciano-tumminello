@@ -17,7 +17,7 @@ import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUt
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { textToHtml, htmlToText } from "@/utils/contentFormatter";
-import { FormattingGuide } from "@/components/FormattingGuide";
+import FormattingGuide from "@/components/blog/FormattingGuide";
 
 type AuthFormData = {
   password: string;
