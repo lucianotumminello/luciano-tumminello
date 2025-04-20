@@ -166,6 +166,13 @@ const BlogBuilder = () => {
     }
   };
 
+  const generateSlug = (title: string): string => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
+  };
+
   const onBlogSubmit = async (data: BlogFormData) => {
     toast({
       title: "Processing...",
@@ -174,6 +181,8 @@ const BlogBuilder = () => {
 
     try {
       const formattedContent = textToHtml(data.content);
+      
+      const slug = generateSlug(data.title);
       
       const generatedTags = await generateTags(formattedContent);
       const tagsToUse = data.tags ? data.tags.split(',').map(tag => tag.trim()) : generatedTags;
@@ -209,6 +218,7 @@ const BlogBuilder = () => {
       }
 
       const blogPost = {
+        slug,
         title: data.title,
         titleIT: translatedTitle,
         excerpt: data.excerpt,
@@ -238,7 +248,7 @@ const BlogBuilder = () => {
           title: "Blog post data copied!",
           description: isUpdateMode 
             ? `Update the ${selectedPost} entry in your blogPostsData.ts file with this data` 
-            : "Create a new entry in your blogPostsData.ts file with this data and add it at the beginning of the posts list",
+            : `Create a new entry in your blogPostsData.ts file with the slug "${slug}" and this data`,
         });
       });
     } catch (error) {
@@ -566,7 +576,7 @@ const BlogBuilder = () => {
               </div>
               
               <Button type="submit" size="lg" className="w-full md:w-auto">
-                {isUpdateMode ? "Update Blog Post Data" : "Generate Blog Post Data"}
+                {isUpdateMode ? "Update Blog Post" : "Publish Blog"}
               </Button>
             </form>
           </Form>

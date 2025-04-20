@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,12 +6,22 @@ import { CalendarIcon } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import TranslatedText from "@/components/TranslatedText";
 import blogPostsData from "@/data/blogPostsData";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
+import { useState } from "react";
 
 const Blog = () => {
   const { language } = useLanguage();
   const isItalian = language === "it";
+  const POSTS_PER_PAGE = 4;
+  const [currentPage, setCurrentPage] = useState(1);
   
   const blogPosts = Object.entries(blogPostsData)
     .map(([slug, post]) => ({
@@ -23,6 +34,16 @@ const Blog = () => {
       return dateB.getTime() - dateA.getTime();
     });
   
+  // Calculate total pages needed
+  const totalPosts = blogPosts.length;
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  
+  // Get current page posts
+  const indexOfLastPost = currentPage * POSTS_PER_PAGE;
+  const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
+  const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
+  
+  // Calculate how many placeholder posts we need
   const placeholderPosts = [
     {
       id: 2,
@@ -65,9 +86,10 @@ const Blog = () => {
     }
   ];
   
+  const neededPlaceholders = Math.max(0, POSTS_PER_PAGE - currentPosts.length);
   const allPosts = [
-    ...blogPosts,
-    ...placeholderPosts.filter((_, index) => index < Math.max(0, 4 - blogPosts.length))
+    ...currentPosts,
+    ...placeholderPosts.slice(0, neededPlaceholders)
   ];
 
   return (
@@ -100,7 +122,7 @@ const Blog = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {allPosts.map((post, index) => (
               <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="relative aspect-[16/9] overflow-hidden">
@@ -142,6 +164,38 @@ const Blog = () => {
               </Card>
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <Pagination className="mt-8">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+                
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <PaginationItem key={i + 1}>
+                    <PaginationLink
+                      onClick={() => setCurrentPage(i + 1)}
+                      isActive={currentPage === i + 1}
+                      className="cursor-pointer"
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
         </div>
       </main>
       <div className="container mx-auto max-w-5xl flex justify-end mb-8">
