@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,20 +12,17 @@ const Blog = () => {
   const { language } = useLanguage();
   const isItalian = language === "it";
   
-  // Convert the blogPostsData object to an array and sort by date (most recent first)
   const blogPosts = Object.entries(blogPostsData)
     .map(([slug, post]) => ({
       ...post,
       slug
     }))
     .sort((a, b) => {
-      // Parse the dates and sort in descending order (newest first)
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
       return dateB.getTime() - dateA.getTime();
     });
   
-  // Add remaining placeholder blog posts
   const placeholderPosts = [
     {
       id: 2,
@@ -69,7 +65,6 @@ const Blog = () => {
     }
   ];
   
-  // Create combined array with real and placeholder posts
   const allPosts = [
     ...blogPosts,
     ...placeholderPosts.filter((_, index) => index < Math.max(0, 4 - blogPosts.length))
@@ -149,6 +144,14 @@ const Blog = () => {
           </div>
         </div>
       </main>
+      <div className="container mx-auto max-w-5xl flex justify-end mb-8">
+        <Link 
+          to="/blog-builder"
+          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          LOGIN
+        </Link>
+      </div>
       <Footer />
     </div>
   );

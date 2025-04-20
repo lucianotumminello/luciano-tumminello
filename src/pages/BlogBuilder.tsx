@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -33,14 +32,11 @@ type BlogFormData = {
   imageUrl: string;
 };
 
-// Password is explicitly set to VanBasten9!
 const ADMIN_PASSWORD = "VanBasten9!";
 
-// Extract the default author information from existing blog posts
 const DEFAULT_AUTHOR = Object.values(blogPostsData)[0]?.author || "Luciano Tumminello";
 const DEFAULT_AUTHOR_IMAGE = Object.values(blogPostsData)[0]?.authorImageUrl || "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
 
-// Local storage key for saved password
 const SAVED_PASSWORD_KEY = "blog_builder_password";
 
 const BlogBuilder = () => {
@@ -76,9 +72,7 @@ const BlogBuilder = () => {
     }
   });
 
-  // Check for saved password on mount
   useEffect(() => {
-    // Try to get saved password from localStorage
     try {
       const savedPassword = localStorage.getItem(SAVED_PASSWORD_KEY);
       if (savedPassword) {
@@ -86,7 +80,6 @@ const BlogBuilder = () => {
         authForm.setValue("password", savedPassword);
         setRememberPassword(true);
         
-        // Auto-login if saved password is correct
         if (savedPassword === ADMIN_PASSWORD) {
           console.log("Auto-login with saved password");
           setIsAuthenticated(true);
@@ -101,7 +94,6 @@ const BlogBuilder = () => {
     }
   }, []);
 
-  // Reset form when switching between create and update modes
   useEffect(() => {
     if (!isUpdateMode) {
       blogForm.reset({
@@ -119,7 +111,6 @@ const BlogBuilder = () => {
     }
   }, [isUpdateMode, blogForm]);
 
-  // Load post data when a post is selected for editing
   useEffect(() => {
     if (selectedPost && blogPostsData[selectedPost]) {
       const post = blogPostsData[selectedPost];
@@ -137,28 +128,12 @@ const BlogBuilder = () => {
   }, [selectedPost, blogForm]);
 
   const onAuthSubmit = (data: AuthFormData) => {
-    console.log("Auth submission with password:", data.password);
-    console.log("ADMIN_PASSWORD:", ADMIN_PASSWORD);
-    console.log("Password match?", data.password === ADMIN_PASSWORD);
-    
-    // Check exact string match for password
-    if (data.password === ADMIN_PASSWORD) {
-      console.log("Password correct, setting authenticated");
-      
-      // Save password if remember is checked
+    if (data.password === "VanBasten9!") {
       if (rememberPassword) {
         try {
           localStorage.setItem(SAVED_PASSWORD_KEY, data.password);
-          console.log("Password saved to localStorage");
         } catch (error) {
-          console.error("Error saving password to localStorage:", error);
-        }
-      } else {
-        try {
-          localStorage.removeItem(SAVED_PASSWORD_KEY);
-          console.log("Password removed from localStorage");
-        } catch (error) {
-          console.error("Error removing password from localStorage:", error);
+          console.error("Error saving password:", error);
         }
       }
       
@@ -168,10 +143,9 @@ const BlogBuilder = () => {
         description: "Welcome to the blog builder!",
       });
     } else {
-      console.log("Password incorrect");
       toast({
         title: "Authentication failed",
-        description: "Invalid password. Please check your input and try again.",
+        description: "Invalid password. Please try again.",
         variant: "destructive",
       });
     }
@@ -191,22 +165,18 @@ const BlogBuilder = () => {
   };
 
   const onBlogSubmit = async (data: BlogFormData) => {
-    // Show a loading toast
     toast({
       title: "Processing...",
       description: "Preparing your blog post data",
     });
 
     try {
-      // Extract primary tags from content for automatic tagging
       const generatedTags = await generateTags(data.content);
       const tagsToUse = data.tags ? data.tags.split(',').map(tag => tag.trim()) : generatedTags;
       
-      // Estimate reading time
       const readingTime = estimateReadingTime(data.content);
       const readingTimeText = `${readingTime} min read`;
 
-      // Translate content to Italian
       const translatedTitle = await translateText(data.title, 'en', 'it');
       const translatedExcerpt = await translateText(data.excerpt, 'en', 'it');
       const translatedContent = await translateText(data.content, 'en', 'it');
@@ -215,14 +185,10 @@ const BlogBuilder = () => {
       const translatedDate = await translateText(data.date, 'en', 'it');
       const translatedReadingTime = `${readingTime} min di lettura`;
 
-      // Handle image URLs
       let desktopImageUrl = data.desktopImageUrl;
       let mobileImageUrl = data.imageUrl;
 
-      // If there are new image uploads, create placeholders for them
-      // In a real implementation, you would upload these to a server and get URLs back
       if (desktopImageFile) {
-        // This would be replaced with actual upload logic in production
         desktopImageUrl = URL.createObjectURL(desktopImageFile);
         toast({
           title: "Desktop image ready",
@@ -231,7 +197,6 @@ const BlogBuilder = () => {
       }
 
       if (mobileImageFile) {
-        // This would be replaced with actual upload logic in production
         mobileImageUrl = URL.createObjectURL(mobileImageFile);
         toast({
           title: "Mobile image ready",
@@ -239,7 +204,6 @@ const BlogBuilder = () => {
         });
       }
 
-      // Create the blog post object
       const blogPost = {
         title: data.title,
         titleIT: translatedTitle,
@@ -264,10 +228,7 @@ const BlogBuilder = () => {
       setPreviewData(blogPost);
       setShowPreview(true);
 
-      // Convert to JSON string for copying
       const blogPostJson = JSON.stringify(blogPost, null, 2);
-
-      // Copy to clipboard
       navigator.clipboard.writeText(blogPostJson).then(() => {
         toast({
           title: "Blog post data copied!",
@@ -320,15 +281,15 @@ const BlogBuilder = () => {
                       <FormControl>
                         <div className="relative">
                           <Input 
-                            type={showPassword ? "text" : "password"} 
+                            type={showPassword ? "text" : "password"}
                             placeholder="Enter password"
-                            {...field} 
+                            {...field}
                           />
                           <Button
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="absolute right-0 top-0 h-full px-3"
+                            className="absolute right-2 top-1/2 -translate-y-1/2"
                             onClick={togglePasswordVisibility}
                           >
                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -343,8 +304,8 @@ const BlogBuilder = () => {
                 <div className="flex items-center space-x-2">
                   <Checkbox 
                     id="remember" 
-                    checked={rememberPassword} 
-                    onCheckedChange={handleRememberPasswordChange}
+                    checked={rememberPassword}
+                    onCheckedChange={checked => handleRememberPasswordChange(checked as boolean)}
                   />
                   <label
                     htmlFor="remember"
@@ -354,7 +315,9 @@ const BlogBuilder = () => {
                   </label>
                 </div>
                 
-                <Button type="submit" className="w-full">Login</Button>
+                <Button type="submit" className="w-full">
+                  Login
+                </Button>
               </form>
             </Form>
           </div>
@@ -600,7 +563,6 @@ const BlogBuilder = () => {
             </form>
           </Form>
 
-          {/* Preview Dialog */}
           <Dialog open={showPreview} onOpenChange={setShowPreview}>
             <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
               <DialogHeader>
