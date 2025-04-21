@@ -1,10 +1,21 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TranslatedText from "@/components/TranslatedText";
 import { useIsMobile } from "@/hooks/use-mobile";
 import DegreeCollapsible from "./DegreeCollapsible";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const UniversityEducation = () => {
   const isMobile = useIsMobile();
+  const { language } = useLanguage();
+
+  // Helper function to get the English titles if language is English
+  const getDegreeTitle = (translationKey: string, englishTitle: string) => {
+    if (language === "en") {
+      return englishTitle;
+    }
+    return <TranslatedText textKey={translationKey} />;
+  };
 
   if (isMobile) {
     return (
@@ -17,7 +28,7 @@ const UniversityEducation = () => {
         <CardContent className="pt-4">
           {/* Master of Commerce */}
           <DegreeCollapsible
-            title={<TranslatedText textKey="education.masters.commerce.title" />}
+            title={getDegreeTitle("education.masters.commerce.title", "Master of Commerce")}
             summary={
               <>
                 <TranslatedText textKey="education.masters.commerce.institution" />
@@ -32,7 +43,7 @@ const UniversityEducation = () => {
           </DegreeCollapsible>
           {/* Master of Advertising */}
           <DegreeCollapsible
-            title={<TranslatedText textKey="education.masters.advertising.title" />}
+            title={getDegreeTitle("education.masters.advertising.title", "Master of Advertising")}
             summary={
               <>
                 <TranslatedText textKey="education.masters.advertising.institution" />
@@ -45,9 +56,9 @@ const UniversityEducation = () => {
           >
             <TranslatedText textKey="education.masters.advertising.description" />
           </DegreeCollapsible>
-          {/* Bachelor in International Relations */}
+          {/* Bachelor of International Relations */}
           <DegreeCollapsible
-            title={<TranslatedText textKey="education.bachelors.relations.title" />}
+            title={getDegreeTitle("education.bachelors.relations.title", "Bachelor of International Relations")}
             summary={
               <>
                 <TranslatedText textKey="education.bachelors.relations.institution" />
@@ -60,9 +71,9 @@ const UniversityEducation = () => {
           >
             <TranslatedText textKey="education.bachelors.relations.description" />
           </DegreeCollapsible>
-          {/* Bachelor in International Communications */}
+          {/* Bachelor of International Communications */}
           <DegreeCollapsible
-            title={<TranslatedText textKey="education.bachelors.communications.title" />}
+            title={getDegreeTitle("education.bachelors.communications.title", "Bachelor of International Communications")}
             summary={
               <>
                 <TranslatedText textKey="education.bachelors.communications.institution" />
@@ -89,10 +100,10 @@ const UniversityEducation = () => {
       </CardHeader>
       
       <CardContent className="pt-6 space-y-8">
-        {/* Master in Commerce */}
+        {/* Master of Commerce */}
         <div className="border-b pb-6">
           <h3 className="text-xl font-bold text-primary mb-2">
-            <TranslatedText textKey="education.masters.commerce.title" />
+            {getDegreeTitle("education.masters.commerce.title", "Master of Commerce")}
           </h3>
           <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
             <div className="order-2 md:order-1">
@@ -114,10 +125,10 @@ const UniversityEducation = () => {
           </p>
         </div>
         
-        {/* Master in Advertising */}
+        {/* Master of Advertising */}
         <div className="border-b pb-6">
           <h3 className="text-xl font-bold text-primary mb-2">
-            <TranslatedText textKey="education.masters.advertising.title" />
+            {getDegreeTitle("education.masters.advertising.title", "Master of Advertising")}
           </h3>
           <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
             <div className="order-2 md:order-1">
@@ -139,10 +150,10 @@ const UniversityEducation = () => {
           </p>
         </div>
         
-        {/* Bachelor in International Relations */}
+        {/* Bachelor of International Relations */}
         <div className="border-b pb-6">
           <h3 className="text-xl font-bold text-primary mb-2">
-            <TranslatedText textKey="education.bachelors.relations.title" />
+            {getDegreeTitle("education.bachelors.relations.title", "Bachelor of International Relations")}
           </h3>
           <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
             <div className="order-2 md:order-1">
@@ -164,10 +175,10 @@ const UniversityEducation = () => {
           </p>
         </div>
         
-        {/* Bachelor in International Communications */}
+        {/* Bachelor of International Communications */}
         <div>
           <h3 className="text-xl font-bold text-primary mb-2">
-            <TranslatedText textKey="education.bachelors.communications.title" />
+            {getDegreeTitle("education.bachelors.communications.title", "Bachelor of International Communications")}
           </h3>
           <div className="flex flex-col md:flex-row md:items-start justify-between mb-2">
             <div className="order-2 md:order-1">
