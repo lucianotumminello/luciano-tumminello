@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -7,11 +6,62 @@ import TranslatedText from "@/components/TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
 import CoreCompetencies from "@/components/CoreCompetencies";
 import { Helmet } from "react-helmet-async";
+import { useIsMobile } from "@/hooks/use-mobile";
+import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
+
+const jobs = [
+  {
+    title: "Chief Operating Officer at Spartan Health",
+    descKey: "job.spartan"
+  },
+  {
+    title: "Marketing Director at Slow",
+    descKey: "job.slow"
+  },
+  {
+    title: "Co-Founder & Managing Director of 444 Media, Inc.",
+    descKey: "job.444"
+  },
+  {
+    title: "Regional Digital Marketing Consultant at Greenpeace Southeast Asia",
+    descKey: "job.greenpeace"
+  },
+  {
+    title: "Cluster Director of Marketing at Accor",
+    descKey: "job.accor"
+  },
+  {
+    title: "Head of Client Services at Y-Digital",
+    descKey: ["job.ydigital.retention", "job.ydigital.relationships"]
+  },
+  {
+    title: "Planning Director at Lion & Lion",
+    descKey: ["job.lion.strategies", "job.lion.campaigns", "job.lion.analytics"]
+  },
+  {
+    title: "Account Manager at DWA",
+    descKey: [
+      "job.dwa.strategies",
+      "job.dwa.relationships",
+      "job.dwa.liaison",
+      "job.dwa.vendors",
+      "job.dwa.project"
+    ]
+  },
+  {
+    title: "Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)",
+    descKey: "job.cadreon"
+  },
+  {
+    title: "SEM Specialist at Sensis",
+    descKey: "job.sensis"
+  },
+];
 
 const ProfessionalJourney = () => {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   
-  // Set page title for better SEO
   useEffect(() => {
     document.title = "Career | Luciano Tumminello";
   }, []);
@@ -24,7 +74,6 @@ const ProfessionalJourney = () => {
         <meta name="keywords" content="Luciano Tumminello, career journey, professional experience, COO, marketing director, digital marketing, operations management" />
         <link rel="canonical" href="https://lucianotumminello.com/career" />
       </Helmet>
-      
       <Header />
       <main className="flex-1 py-16">
         <div className="container mx-auto max-w-4xl px-4">
@@ -36,104 +85,119 @@ const ProfessionalJourney = () => {
               <LineChart className="mr-2 h-6 w-6 text-primary" />
               <TranslatedText textKey="about.journey" />
             </h2>
-            <div className="space-y-6">
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Chief Operating Officer at Spartan Health</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.spartan" />
-                </p>
+            {isMobile ? (
+              <div className="space-y-4">
+                {jobs.map((job, i) => (
+                  <MobileCollapsibleSection key={i} title={job.title}>
+                    {Array.isArray(job.descKey) ? (
+                      job.descKey.map((dk, idx) => (
+                        <p className="text-gray-600 text-justify mb-1" key={idx}><TranslatedText textKey={dk} /></p>
+                      ))
+                    ) : (
+                      <p className="text-gray-600 text-justify"><TranslatedText textKey={job.descKey} /></p>
+                    )}
+                  </MobileCollapsibleSection>
+                ))}
               </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Marketing Director at Slow</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.slow" />
-                </p>
+            ) : (
+              <div className="space-y-6">
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Chief Operating Officer at Spartan Health</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.spartan" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Marketing Director at Slow</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.slow" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Co-Founder & Managing Director of 444 Media, Inc.</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.444" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Regional Digital Marketing Consultant at Greenpeace Southeast Asia</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.greenpeace" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Cluster Director of Marketing at Accor</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.accor" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Head of Client Services at Y-Digital</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.ydigital.retention" />
+                    <br />
+                    <TranslatedText textKey="job.ydigital.relationships" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Planning Director at Lion & Lion</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.lion.strategies" />
+                    <br />
+                    <TranslatedText textKey="job.lion.campaigns" />
+                    <br />
+                    <TranslatedText textKey="job.lion.analytics" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Account Manager at DWA</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.dwa.strategies" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.relationships" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.liaison" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.vendors" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.project" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.cadreon" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">SEM Specialist at Sensis</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.sensis" />
+                  </p>
+                </div>
               </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Co-Founder & Managing Director of 444 Media, Inc.</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.444" />
-                </p>
-              </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Regional Digital Marketing Consultant at Greenpeace Southeast Asia</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.greenpeace" />
-                </p>
-              </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Cluster Director of Marketing at Accor</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.accor" />
-                </p>
-              </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Head of Client Services at Y-Digital</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.ydigital.retention" />
-                  <br />
-                  <TranslatedText textKey="job.ydigital.relationships" />
-                </p>
-              </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Planning Director at Lion & Lion</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.lion.strategies" />
-                  <br />
-                  <TranslatedText textKey="job.lion.campaigns" />
-                  <br />
-                  <TranslatedText textKey="job.lion.analytics" />
-                </p>
-              </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Account Manager at DWA</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.dwa.strategies" />
-                  <br />
-                  <TranslatedText textKey="job.dwa.relationships" />
-                  <br />
-                  <TranslatedText textKey="job.dwa.liaison" />
-                  <br />
-                  <TranslatedText textKey="job.dwa.vendors" />
-                  <br />
-                  <TranslatedText textKey="job.dwa.project" />
-                </p>
-              </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.cadreon" />
-                </p>
-              </div>
-              
-              <div className="relative pl-8 border-l-2 border-gray-200" itemScope itemType="https://schema.org/WorkPosition">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                <h3 className="font-bold text-lg" itemProp="jobTitle">SEM Specialist at Sensis</h3>
-                <p className="text-gray-600 text-justify" itemProp="description">
-                  <TranslatedText textKey="job.sensis" />
-                </p>
-              </div>
-            </div>
+            )}
           </section>
         </div>
-        
         <CoreCompetencies />
       </main>
       <Footer />

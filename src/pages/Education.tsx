@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import UniversityEducation from "@/components/education/UniversityEducation";
 import ProfessionalCertifications from "@/components/education/ProfessionalCertifications";
+import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
 
 const Education = () => {
   const { t } = useLanguage();
@@ -20,20 +21,27 @@ const Education = () => {
           <h1 className="text-4xl font-bold tracking-tight mb-8">
             <TranslatedText textKey="education.title" />
           </h1>
-          
           <div className="space-y-12">
-            {/* University Education */}
-            <UniversityEducation />
-            
-            {/* Professional Certifications */}
-            <ProfessionalCertifications />
+            {isMobile ? (
+              <>
+                <MobileCollapsibleSection title={<TranslatedText textKey="education.university.title" />}>
+                  <UniversityEducation />
+                </MobileCollapsibleSection>
+                <MobileCollapsibleSection title={<TranslatedText textKey="education.certifications.title" />}>
+                  <ProfessionalCertifications />
+                </MobileCollapsibleSection>
+              </>
+            ) : (
+              <>
+                <UniversityEducation />
+                <ProfessionalCertifications />
+              </>
+            )}
           </div>
         </section>
       </main>
-      
       <Footer />
     </div>
   );
 };
-
 export default Education;
