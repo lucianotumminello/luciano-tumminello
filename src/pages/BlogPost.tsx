@@ -4,13 +4,13 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import BlogPostLayout from "@/components/blog/BlogPostLayout";
 import BlogPostContainer from "@/components/blog/BlogPostContainer";
 import NotFoundMessage from "@/components/blog/NotFoundMessage";
-import blogPostsData from "@/data/blogPostsData";
 import { useEffect } from "react";
 import { trackPageView } from "@/utils/analytics";
+import { getBlogPost } from "@/utils/blogDataManager";
 
 const BlogPost = () => {
   const { slug } = useParams();
-  const post = slug ? blogPostsData[slug] : null;
+  const post = slug ? getBlogPost(slug) : null;
   const { language } = useLanguage();
   const isItalian = language === "it";
   

@@ -12,12 +12,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import { BlogPost } from "@/types";
-import blogPostsData from "@/data/blogPostsData";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
 import { Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { textToHtml, htmlToText } from "@/utils/contentFormatter";
 import FormattingGuide from "@/components/blog/FormattingGuide";
+import { updateBlogPost, createBlogPost, getAllBlogPosts } from "@/utils/blogDataManager";
+import { useNavigate } from "react-router-dom";
+import blogPostsData from "@/data/blogPostsData";
 
 type AuthFormData = {
   password: string;
@@ -51,9 +53,11 @@ const BlogBuilder = () => {
   const [previewData, setPreviewData] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(false);
+  const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>(getAllBlogPosts());
   const desktopImageRef = useRef<HTMLInputElement>(null);
   const mobileImageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const authForm = useForm<AuthFormData>({
     defaultValues: {
@@ -182,7 +186,7 @@ const BlogBuilder = () => {
     try {
       const formattedContent = textToHtml(data.content);
       
-      const slug = generateSlug(data.title);
+      const slug = isUpdateMode && selectedPost ? selectedPost : generateSlug(data.title);
       
       const generatedTags = await generateTags(formattedContent);
       const tagsToUse = data.tags ? data.tags.split(',').map(tag => tag.trim()) : generatedTags;
@@ -217,7 +221,7 @@ const BlogBuilder = () => {
         });
       }
 
-      const blogPost = {
+      const blogPost: BlogPost = {
         slug,
         title: data.title,
         titleIT: translatedTitle,
@@ -242,15 +246,32 @@ const BlogBuilder = () => {
       setPreviewData(blogPost);
       setShowPreview(true);
 
-      const blogPostJson = JSON.stringify(blogPost, null, 2);
-      navigator.clipboard.writeText(blogPostJson).then(() => {
+      // Update blog data in memory
+      if (isUpdateMode && selectedPost) {
+        updateBlogPost(selectedPost, blogPost);
         toast({
-          title: "Blog post data copied!",
-          description: isUpdateMode 
-            ? `Update the ${selectedPost} entry in your blogPostsData.ts file with this data` 
-            : `Create a new entry in your blogPostsData.ts file with the slug "${slug}" and this data`,
+          title: "Blog post updated!",
+          description: "Changes have been applied successfully.",
         });
-      });
+      } else {
+        createBlogPost(slug, blogPost);
+        toast({
+          title: "Blog post created!",
+          description: `New post "${data.title}" has been created successfully.`,
+        });
+      }
+
+      // Update the local state to reflect changes
+      setBlogPosts(getAllBlogPosts());
+
+      // After a short delay, redirect to the updated blog post
+      setTimeout(() => {
+        navigate(`/blog/${slug}`);
+      }, 1500);
+
+      // Still provide the JSON data for backup/reference purposes
+      const blogPostJson = JSON.stringify(blogPost, null, 2);
+      navigator.clipboard.writeText(blogPostJson);
     } catch (error) {
       toast({
         title: "Error processing blog data",
@@ -264,6 +285,19 @@ const BlogBuilder = () => {
   const selectPostToEdit = (slug: string) => {
     setSelectedPost(slug);
     setIsUpdateMode(true);
+    const post = blogPosts[slug];
+    if (post) {
+      blogForm.reset({
+        title: post.title,
+        excerpt: post.excerpt,
+        content: htmlToText(post.content),
+        date: post.date,
+        category: post.category,
+        tags: post.tags.join(", "),
+        desktopImageUrl: post.desktopImageUrl,
+        imageUrl: post.imageUrl
+      });
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -358,7 +392,7 @@ const BlogBuilder = () => {
                     <SheetTitle>Select a post to edit</SheetTitle>
                   </SheetHeader>
                   <div className="mt-6 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-                    {Object.entries(blogPostsData).map(([slug, post]) => (
+                    {Object.entries(blogPosts).map(([slug, post]) => (
                       <Button 
                         key={slug} 
                         variant="outline" 
@@ -658,12 +692,12 @@ const BlogBuilder = () => {
                         navigator.clipboard.writeText(blogPostJson);
                         toast({
                           title: "Copied again!",
-                          description: "Blog post data copied to clipboard"
+                          description: "Blog post data copied to clipboard (for backup purposes)"
                         });
                       }}
                       className="w-full"
                     >
-                      Copy JSON Again
+                      Copy JSON (For Backup)
                     </Button>
                   </div>
                 </div>
