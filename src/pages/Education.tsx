@@ -24,9 +24,7 @@ const Education = () => {
           <div className="space-y-12">
             {isMobile ? (
               <>
-                <MobileCollapsibleSection title={<TranslatedText textKey="education.university.title" />}>
-                  <UniversityEducation />
-                </MobileCollapsibleSection>
+                <UniversityEducation />
                 <MobileCollapsibleSection title={<TranslatedText textKey="education.certifications.title" />}>
                   <ProfessionalCertifications />
                 </MobileCollapsibleSection>
