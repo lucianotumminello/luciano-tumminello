@@ -1,8 +1,85 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TranslatedText from "@/components/TranslatedText";
+import { useIsMobile } from "@/hooks/use-mobile";
+import DegreeCollapsible from "./DegreeCollapsible";
 
 const UniversityEducation = () => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <Card>
+        <CardHeader className="bg-muted/50">
+          <CardTitle>
+            <TranslatedText textKey="education.university.title" />
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-4">
+          {/* Master of Commerce */}
+          <DegreeCollapsible
+            title={<TranslatedText textKey="education.masters.commerce.title" />}
+            summary={
+              <>
+                <TranslatedText textKey="education.masters.commerce.institution" />
+                <span className="block text-muted-foreground text-xs">
+                  <TranslatedText textKey="education.masters.commerce.location" />
+                </span>
+              </>
+            }
+            period={<TranslatedText textKey="education.masters.commerce.period" />}
+          >
+            <TranslatedText textKey="education.masters.commerce.description" />
+          </DegreeCollapsible>
+          {/* Master of Advertising */}
+          <DegreeCollapsible
+            title={<TranslatedText textKey="education.masters.advertising.title" />}
+            summary={
+              <>
+                <TranslatedText textKey="education.masters.advertising.institution" />
+                <span className="block text-muted-foreground text-xs">
+                  <TranslatedText textKey="education.masters.advertising.location" />
+                </span>
+              </>
+            }
+            period={<TranslatedText textKey="education.masters.advertising.period" />}
+          >
+            <TranslatedText textKey="education.masters.advertising.description" />
+          </DegreeCollapsible>
+          {/* Bachelor in International Relations */}
+          <DegreeCollapsible
+            title={<TranslatedText textKey="education.bachelors.relations.title" />}
+            summary={
+              <>
+                <TranslatedText textKey="education.bachelors.relations.institution" />
+                <span className="block text-muted-foreground text-xs">
+                  <TranslatedText textKey="education.bachelors.relations.location" />
+                </span>
+              </>
+            }
+            period={<TranslatedText textKey="education.bachelors.relations.period" />}
+          >
+            <TranslatedText textKey="education.bachelors.relations.description" />
+          </DegreeCollapsible>
+          {/* Bachelor in International Communications */}
+          <DegreeCollapsible
+            title={<TranslatedText textKey="education.bachelors.communications.title" />}
+            summary={
+              <>
+                <TranslatedText textKey="education.bachelors.communications.institution" />
+                <span className="block text-muted-foreground text-xs">
+                  <TranslatedText textKey="education.bachelors.communications.location" />
+                </span>
+              </>
+            }
+            period={<TranslatedText textKey="education.bachelors.communications.period" />}
+          >
+            <TranslatedText textKey="education.bachelors.communications.description" />
+          </DegreeCollapsible>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader className="bg-muted/50">
