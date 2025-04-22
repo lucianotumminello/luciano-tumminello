@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,7 +12,14 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-const jobs = [
+// Define the Job type to ensure proper typing
+interface Job {
+  title: string;
+  descKey: string | string[];
+  bulletPoints?: string[]; // Make bulletPoints optional
+}
+
+const jobs: Job[] = [
   {
     title: "Chief Operating Officer at Spartan Health",
     descKey: "job.spartan",
@@ -72,7 +80,7 @@ const ProfessionalJourney = () => {
     document.title = "Career | Luciano Tumminello";
   }, []);
 
-  const JobCard = ({ job }: { job: typeof jobs[0] }) => (
+  const JobCard = ({ job }: { job: Job }) => (
     <div className="relative pl-6 mb-6">
       <div className="absolute left-0 top-1 transform -translate-x-1/2">
         <Circle className="text-gray-400 w-4 h-4" />
@@ -82,12 +90,34 @@ const ProfessionalJourney = () => {
           <h3 className="font-bold text-lg text-gray-900">{job.title}</h3>
         </CardHeader>
         <CardContent>
-          {job.bulletPoints.map((point, idx) => (
-            <div key={idx} className="flex items-start mb-2">
-              <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
-              <p className="text-gray-600 text-justify">{point}</p>
-            </div>
-          ))}
+          {job.bulletPoints ? (
+            // Render bullet points if they exist
+            job.bulletPoints.map((point, idx) => (
+              <div key={idx} className="flex items-start mb-2">
+                <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
+                <p className="text-gray-600 text-justify">{point}</p>
+              </div>
+            ))
+          ) : (
+            // Render translated text for jobs without bullet points
+            Array.isArray(job.descKey) ? (
+              job.descKey.map((dk, idx) => (
+                <div key={idx} className="flex items-start mb-2">
+                  <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
+                  <p className="text-gray-600 text-justify">
+                    <TranslatedText textKey={dk} />
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-start mb-2">
+                <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
+                <p className="text-gray-600 text-justify">
+                  <TranslatedText textKey={job.descKey} />
+                </p>
+              </div>
+            )
+          )}
         </CardContent>
       </Card>
     </div>
