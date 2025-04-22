@@ -1,20 +1,24 @@
 import React, { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { LineChart } from "lucide-react";
+import { LineChart, Circle } from "lucide-react";
 import TranslatedText from "@/components/TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
 import CoreCompetencies from "@/components/CoreCompetencies";
 import { Helmet } from "react-helmet-async";
 import { useIsMobile } from "@/hooks/use-mobile";
-import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const jobs = [
   {
     title: "Chief Operating Officer at Spartan Health",
-    descKey: "job.spartan"
+    descKey: "job.spartan",
+    bulletPoints: [
+      "Lead strategic direction by streamlining operations and implementing digital transformation across all departments",
+      "Optimize processes, implement AI solutions, and leverage data analytics to enhance decision-making"
+    ]
   },
   {
     title: "Marketing Director at Slow",
@@ -68,25 +72,25 @@ const ProfessionalJourney = () => {
     document.title = "Career | Luciano Tumminello";
   }, []);
 
-  const JobCard = ({ title, descKey }: { title: string; descKey: string | string[] }) => (
-    <Card className="mb-6 bg-[#F1F1F1] border-gray-200 hover:bg-[#F8F8F8] transition-colors duration-200">
-      <CardHeader>
-        <h3 className="font-bold text-lg text-gray-900">{title}</h3>
-      </CardHeader>
-      <CardContent className="text-gray-600">
-        {Array.isArray(descKey) ? (
-          descKey.map((dk, idx) => (
-            <p className="text-justify mb-2" key={idx}>
-              <TranslatedText textKey={dk} />
-            </p>
-          ))
-        ) : (
-          <p className="text-justify">
-            <TranslatedText textKey={descKey} />
-          </p>
-        )}
-      </CardContent>
-    </Card>
+  const JobCard = ({ job }: { job: typeof jobs[0] }) => (
+    <div className="relative pl-6 mb-6">
+      <div className="absolute left-0 top-1 transform -translate-x-1/2">
+        <Circle className="text-gray-400 w-4 h-4" />
+      </div>
+      <Card className="border-gray-200 bg-[#F1F1F1] hover:bg-[#F8F8F8] transition-colors duration-200">
+        <CardHeader>
+          <h3 className="font-bold text-lg text-gray-900">{job.title}</h3>
+        </CardHeader>
+        <CardContent>
+          {job.bulletPoints.map((point, idx) => (
+            <div key={idx} className="flex items-start mb-2">
+              <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
+              <p className="text-gray-600 text-justify">{point}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
   );
 
   return (
@@ -108,35 +112,11 @@ const ProfessionalJourney = () => {
               <LineChart className="mr-2 h-6 w-6 text-primary" />
               <TranslatedText textKey="about.journey" />
             </h2>
-            {isMobile ? (
-              <div className="space-y-4">
-                {jobs.map((job, i) => (
-                  <MobileCollapsibleSection 
-                    key={i} 
-                    title={job.title}
-                    className="bg-[#F1F1F1] rounded-lg hover:bg-[#F8F8F8] transition-colors duration-200"
-                  >
-                    {Array.isArray(job.descKey) ? (
-                      job.descKey.map((dk, idx) => (
-                        <p className="text-gray-600 text-justify mb-1" key={idx}>
-                          <TranslatedText textKey={dk} />
-                        </p>
-                      ))
-                    ) : (
-                      <p className="text-gray-600 text-justify">
-                        <TranslatedText textKey={job.descKey} />
-                      </p>
-                    )}
-                  </MobileCollapsibleSection>
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {jobs.map((job, index) => (
-                  <JobCard key={index} title={job.title} descKey={job.descKey} />
-                ))}
-              </div>
-            )}
+            <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[calc(2rem-1px)] before:w-[2px] before:bg-gray-200">
+              {jobs.map((job, index) => (
+                <JobCard key={index} job={job} />
+              ))}
+            </div>
           </section>
         </div>
         <CoreCompetencies />
