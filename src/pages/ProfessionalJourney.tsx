@@ -1,32 +1,18 @@
-
 import React, { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { LineChart, Circle } from "lucide-react";
+import { LineChart } from "lucide-react";
 import TranslatedText from "@/components/TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
 import CoreCompetencies from "@/components/CoreCompetencies";
 import { Helmet } from "react-helmet-async";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
 
-// Define the Job type to ensure proper typing
-interface Job {
-  title: string;
-  descKey: string | string[];
-  bulletPoints?: string[]; // Make bulletPoints optional
-}
-
-const jobs: Job[] = [
+const jobs = [
   {
     title: "Chief Operating Officer at Spartan Health",
-    descKey: "job.spartan",
-    bulletPoints: [
-      "Lead strategic direction by streamlining operations and implementing digital transformation across all departments",
-      "Optimize processes, implement AI solutions, and leverage data analytics to enhance decision-making"
-    ]
+    descKey: "job.spartan"
   },
   {
     title: "Marketing Director at Slow",
@@ -80,49 +66,6 @@ const ProfessionalJourney = () => {
     document.title = "Career | Luciano Tumminello";
   }, []);
 
-  const JobCard = ({ job }: { job: Job }) => (
-    <div className="relative pl-6 mb-6">
-      <div className="absolute left-0 top-1 transform -translate-x-1/2">
-        <Circle className="text-gray-400 w-4 h-4" />
-      </div>
-      <Card className="border-gray-200 bg-[#F1F1F1] hover:bg-[#F8F8F8] transition-colors duration-200">
-        <CardHeader>
-          <h3 className="font-bold text-lg text-gray-900">{job.title}</h3>
-        </CardHeader>
-        <CardContent>
-          {job.bulletPoints ? (
-            // Render bullet points if they exist
-            job.bulletPoints.map((point, idx) => (
-              <div key={idx} className="flex items-start mb-2">
-                <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
-                <p className="text-gray-600 text-justify">{point}</p>
-              </div>
-            ))
-          ) : (
-            // Render translated text for jobs without bullet points
-            Array.isArray(job.descKey) ? (
-              job.descKey.map((dk, idx) => (
-                <div key={idx} className="flex items-start mb-2">
-                  <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
-                  <p className="text-gray-600 text-justify">
-                    <TranslatedText textKey={dk} />
-                  </p>
-                </div>
-              ))
-            ) : (
-              <div className="flex items-start mb-2">
-                <Circle className="w-3 h-3 mr-2 mt-1 text-gray-500" />
-                <p className="text-gray-600 text-justify">
-                  <TranslatedText textKey={job.descKey} />
-                </p>
-              </div>
-            )
-          )}
-        </CardContent>
-      </Card>
-    </div>
-  );
-
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
@@ -142,11 +85,117 @@ const ProfessionalJourney = () => {
               <LineChart className="mr-2 h-6 w-6 text-primary" />
               <TranslatedText textKey="about.journey" />
             </h2>
-            <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[calc(2rem-1px)] before:w-[2px] before:bg-gray-200">
-              {jobs.map((job, index) => (
-                <JobCard key={index} job={job} />
-              ))}
-            </div>
+            {isMobile ? (
+              <div className="space-y-4">
+                {jobs.map((job, i) => (
+                  <MobileCollapsibleSection key={i} title={job.title}>
+                    {Array.isArray(job.descKey) ? (
+                      job.descKey.map((dk, idx) => (
+                        <p className="text-gray-600 text-justify mb-1" key={idx}><TranslatedText textKey={dk} /></p>
+                      ))
+                    ) : (
+                      <p className="text-gray-600 text-justify"><TranslatedText textKey={job.descKey} /></p>
+                    )}
+                  </MobileCollapsibleSection>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Chief Operating Officer at Spartan Health</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.spartan" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Marketing Director at Slow</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.slow" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Co-Founder & Managing Director of 444 Media, Inc.</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.444" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Regional Digital Marketing Consultant at Greenpeace Southeast Asia</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.greenpeace" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Cluster Director of Marketing at Accor</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.accor" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Head of Client Services at Y-Digital</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.ydigital.retention" />
+                    <br />
+                    <TranslatedText textKey="job.ydigital.relationships" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Planning Director at Lion & Lion</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.lion.strategies" />
+                    <br />
+                    <TranslatedText textKey="job.lion.campaigns" />
+                    <br />
+                    <TranslatedText textKey="job.lion.analytics" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Account Manager at DWA</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.dwa.strategies" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.relationships" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.liaison" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.vendors" />
+                    <br />
+                    <TranslatedText textKey="job.dwa.project" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.cadreon" />
+                  </p>
+                </div>
+                
+                <div className="relative pl-8 border-l-2 border-gray-200" itemScope itemType="https://schema.org/WorkPosition">
+                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                  <h3 className="font-bold text-lg" itemProp="jobTitle">SEM Specialist at Sensis</h3>
+                  <p className="text-gray-600 text-justify" itemProp="description">
+                    <TranslatedText textKey="job.sensis" />
+                  </p>
+                </div>
+              </div>
+            )}
           </section>
         </div>
         <CoreCompetencies />
