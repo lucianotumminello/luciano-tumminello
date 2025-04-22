@@ -222,7 +222,6 @@ const BlogBuilder = () => {
       }
 
       const blogPost: BlogPost = {
-        slug,
         title: data.title,
         titleIT: translatedTitle,
         excerpt: data.excerpt,

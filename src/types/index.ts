@@ -18,4 +18,5 @@ export interface BlogPost {
   readingTimeIT: string;
   tags: string[];
   tagsIT: string[];
+  slug?: string; // Added slug property as optional
 }

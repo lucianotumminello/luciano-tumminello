@@ -11,7 +11,10 @@ let updatedBlogPosts = { ...blogPostsData };
  * @param blogPostData The updated blog post data
  */
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
-  updatedBlogPosts[slug] = blogPostData;
+  // Create a copy of the blog post data without the slug property
+  const { slug: _, ...blogPostWithoutSlug } = blogPostData;
+  
+  updatedBlogPosts[slug] = blogPostWithoutSlug;
   
   // Log for debugging purposes
   console.log(`Blog post ${slug} updated successfully`);
@@ -23,7 +26,10 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
  * @param blogPostData The blog post data
  */
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
-  updatedBlogPosts[slug] = blogPostData;
+  // Create a copy of the blog post data without the slug property
+  const { slug: _, ...blogPostWithoutSlug } = blogPostData;
+  
+  updatedBlogPosts[slug] = blogPostWithoutSlug;
   
   // Log for debugging purposes
   console.log(`New blog post ${slug} created successfully`);
