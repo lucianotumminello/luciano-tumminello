@@ -6,8 +6,7 @@ import TranslatedText from "@/components/TranslatedText";
 import { useLanguage } from "@/contexts/LanguageContext";
 import CoreCompetencies from "@/components/CoreCompetencies";
 import { Helmet } from "react-helmet-async";
-import { useIsMobile } from "@/hooks/use-mobile";
-import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
+import CareerTimeline from "@/components/career/CareerTimeline";
 
 const jobs = [
   {
@@ -60,7 +59,6 @@ const jobs = [
 
 const ProfessionalJourney = () => {
   const { t } = useLanguage();
-  const isMobile = useIsMobile();
   
   useEffect(() => {
     document.title = "Career | Luciano Tumminello";
@@ -85,47 +83,7 @@ const ProfessionalJourney = () => {
               <LineChart className="mr-2 h-6 w-6 text-primary" />
               <TranslatedText textKey="about.journey" />
             </h2>
-            {isMobile ? (
-              <div className="space-y-4">
-                {jobs.map((job, i) => (
-                  <MobileCollapsibleSection key={i} title={job.title}>
-                    {Array.isArray(job.descKey) ? (
-                      job.descKey.map((dk, idx) => (
-                        <p className="text-gray-600 text-justify mb-1" key={idx}>
-                          <TranslatedText textKey={dk} />
-                        </p>
-                      ))
-                    ) : (
-                      <p className="text-gray-600 text-justify">
-                        <TranslatedText textKey={job.descKey} />
-                      </p>
-                    )}
-                  </MobileCollapsibleSection>
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {jobs.map((job, index) => (
-                  <div key={index} className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                    <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                    <div className="bg-[#F1F1F1] rounded-lg p-6 hover:bg-gray-100 transition-colors">
-                      <h3 className="font-bold text-lg mb-3" itemProp="jobTitle">{job.title}</h3>
-                      {Array.isArray(job.descKey) ? (
-                        job.descKey.map((dk, idx) => (
-                          <p className="text-gray-600 text-justify mb-2" key={idx} itemProp="description">
-                            <TranslatedText textKey={dk} />
-                          </p>
-                        ))
-                      ) : (
-                        <p className="text-gray-600 text-justify" itemProp="description">
-                          <TranslatedText textKey={job.descKey} />
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <CareerTimeline jobs={jobs} />
           </section>
         </div>
         <CoreCompetencies />
