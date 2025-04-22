@@ -2,6 +2,7 @@
 import React from "react";
 import TimelineItem from "./TimelineItem";
 import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
+import TranslatedText from "@/components/TranslatedText";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Job {
