@@ -91,109 +91,39 @@ const ProfessionalJourney = () => {
                   <MobileCollapsibleSection key={i} title={job.title}>
                     {Array.isArray(job.descKey) ? (
                       job.descKey.map((dk, idx) => (
-                        <p className="text-gray-600 text-justify mb-1" key={idx}><TranslatedText textKey={dk} /></p>
+                        <p className="text-gray-600 text-justify mb-1" key={idx}>
+                          <TranslatedText textKey={dk} />
+                        </p>
                       ))
                     ) : (
-                      <p className="text-gray-600 text-justify"><TranslatedText textKey={job.descKey} /></p>
+                      <p className="text-gray-600 text-justify">
+                        <TranslatedText textKey={job.descKey} />
+                      </p>
                     )}
                   </MobileCollapsibleSection>
                 ))}
               </div>
             ) : (
               <div className="space-y-6">
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Chief Operating Officer at Spartan Health</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.spartan" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Marketing Director at Slow</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.slow" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Co-Founder & Managing Director of 444 Media, Inc.</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.444" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Regional Digital Marketing Consultant at Greenpeace Southeast Asia</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.greenpeace" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Cluster Director of Marketing at Accor</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.accor" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Head of Client Services at Y-Digital</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.ydigital.retention" />
-                    <br />
-                    <TranslatedText textKey="job.ydigital.relationships" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Planning Director at Lion & Lion</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.lion.strategies" />
-                    <br />
-                    <TranslatedText textKey="job.lion.campaigns" />
-                    <br />
-                    <TranslatedText textKey="job.lion.analytics" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Account Manager at DWA</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.dwa.strategies" />
-                    <br />
-                    <TranslatedText textKey="job.dwa.relationships" />
-                    <br />
-                    <TranslatedText textKey="job.dwa.liaison" />
-                    <br />
-                    <TranslatedText textKey="job.dwa.vendors" />
-                    <br />
-                    <TranslatedText textKey="job.dwa.project" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.cadreon" />
-                  </p>
-                </div>
-                
-                <div className="relative pl-8 border-l-2 border-gray-200" itemScope itemType="https://schema.org/WorkPosition">
-                  <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                  <h3 className="font-bold text-lg" itemProp="jobTitle">SEM Specialist at Sensis</h3>
-                  <p className="text-gray-600 text-justify" itemProp="description">
-                    <TranslatedText textKey="job.sensis" />
-                  </p>
-                </div>
+                {jobs.map((job, index) => (
+                  <div key={index} className="relative pl-8 border-l-2 border-gray-200 pb-6" itemScope itemType="https://schema.org/WorkPosition">
+                    <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                    <div className="bg-[#F1F1F1] rounded-lg p-6 hover:bg-gray-100 transition-colors">
+                      <h3 className="font-bold text-lg mb-3" itemProp="jobTitle">{job.title}</h3>
+                      {Array.isArray(job.descKey) ? (
+                        job.descKey.map((dk, idx) => (
+                          <p className="text-gray-600 text-justify mb-2" key={idx} itemProp="description">
+                            <TranslatedText textKey={dk} />
+                          </p>
+                        ))
+                      ) : (
+                        <p className="text-gray-600 text-justify" itemProp="description">
+                          <TranslatedText textKey={job.descKey} />
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </section>
