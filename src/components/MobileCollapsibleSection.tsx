@@ -4,8 +4,6 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 import JobCard from "./career/JobCard";
 
-// Used on mobile, but now uses JobCard for visual consistency
-
 interface MobileCollapsibleSectionProps {
   title: React.ReactNode;
   children?: React.ReactNode;
@@ -21,13 +19,12 @@ const MobileCollapsibleSection: React.FC<MobileCollapsibleSectionProps> = ({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="w-full flex justify-between items-center py-3 px-4 bg-gray-50 rounded-t-lg text-left font-semibold text-base focus:outline-none border border-b-0 border-gray-200 shadow-sm">
-        <span>{title}</span>
-        {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+      <CollapsibleTrigger className="w-full flex justify-between items-center py-3 px-4 bg-gray-50/80 rounded-t-lg text-left font-semibold text-base focus:outline-none border border-gray-200 shadow-sm hover:bg-gray-100 transition-colors">
+        <span className="text-gray-800">{title}</span>
+        {open ? <ChevronUp className="w-4 h-4 text-primary" /> : <ChevronDown className="w-4 h-4 text-primary" />}
       </CollapsibleTrigger>
       <CollapsibleContent className="px-0 pt-0 pb-0">
-        <div className="border border-t-0 border-gray-200 rounded-b-lg shadow-md bg-white">
-          {/* Render as passed or fallback in career timeline to <TimelineItem> with no timeline/marker */}
+        <div className="border border-t-0 border-gray-200 rounded-b-lg shadow-md bg-white p-4">
           {children}
         </div>
       </CollapsibleContent>

@@ -1,3 +1,4 @@
+
 import React from "react";
 import TimelineItem from "./TimelineItem";
 import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
@@ -22,7 +23,10 @@ const CareerTimeline = ({ jobs }: CareerTimelineProps) => {
         <MobileCollapsibleSection key={i} title={job.title}>
           {Array.isArray(job.descKey) ? (
             job.descKey.map((dk, idx) => (
-              <p className="text-gray-600 text-justify mb-1" key={idx}>
+              <p 
+                className={`text-gray-600 text-justify mb-1 ${job.title.startsWith("Account Manager at DWA") ? "leading-[1.35] text-[15px] py-1" : ""}`} 
+                key={idx}
+              >
                 <TranslatedText textKey={dk} />
               </p>
             ))

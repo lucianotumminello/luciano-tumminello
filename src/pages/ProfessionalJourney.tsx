@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -65,7 +66,7 @@ const ProfessionalJourney = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Helmet>
         <title>Career | Luciano Tumminello</title>
         <meta name="description" content="Explore Luciano Tumminello's professional career journey from SEM Specialist at Sensis to Chief Operating Officer at Spartan Health, with expertise in marketing, operations, and digital transformation across APAC." />
@@ -76,14 +77,16 @@ const ProfessionalJourney = () => {
       <main className="flex-1 py-16">
         <div className="container mx-auto max-w-4xl px-4">
           <section id="career-journey" className="mb-16">
-            <h1 className="text-3xl font-bold mb-8 text-gray-900">
+            <h1 className="text-3xl font-bold mb-8 text-gray-900 border-b-2 border-primary/20 pb-2">
               <TranslatedText textKey="nav.journey" />
             </h1>
-            <h2 className="text-2xl font-semibold mb-6 text-gray-900 flex items-center">
+            <h2 className="text-2xl font-semibold mb-6 text-primary flex items-center">
               <LineChart className="mr-2 h-6 w-6 text-primary" />
               <TranslatedText textKey="about.journey" />
             </h2>
-            <CareerTimeline jobs={jobs} />
+            <div className="bg-white/50 p-6 rounded-xl shadow-sm border border-gray-100">
+              <CareerTimeline jobs={jobs} />
+            </div>
           </section>
         </div>
         <CoreCompetencies />
