@@ -249,7 +249,11 @@ const it = {
   "job.lion.analytics": "Ho rafforzato le relazioni con DSP, partner e fornitori di Social Media e AdTech per migliorare le capacità di marketing.",
   
   // DWA job descriptions
-  "job.dwa.description": "Sviluppato strategie di marketing B2B, proposte e preventivi per presentare ai clienti o in risposta ai loro brief. Acquisito, mantenuto e sviluppato relazioni commerciali con i clienti. Agito come principale punto di contatto tra il cliente e l'agenzia. Individuato fornitori e negoziato per mantenere bassi costi e margini di profitto. Gestito progetti inclusi retrospettiva, tempistiche e budgeting.",
+  "job.dwa.strategies": "Ho sviluppato strategie di marketing B2B, proposte e preventivi per presentazioni ai clienti o in risposta alle loro richieste.",
+  "job.dwa.relationships": "Ho acquisito, mantenuto e costruito relazioni commerciali con i clienti.",
+  "job.dwa.liaison": "Ho agito come collegamento principale tra il cliente e l'agenzia.",
+  "job.dwa.vendors": "Ho ricercato fornitori e negoziato per mantenere bassi costi e margini di profitto.",
+  "job.dwa.project": "Ho gestito progetti includendo retro-pianificazione, tempistiche e budget.",
   
   "job.cadreon": "Ho guidato l'espansione della piattaforma Cadreon nei mercati ASEAN per Interpublic Group (IPG Mediabrands). Ho presentato con successo la pubblicità programmatica a importanti clienti tra cui Garuda Airlines, Marlboro, RHB Bank, CIMB Bank e McDonald's, raggiungendo gli obiettivi di vendita e fornendo consulenza strategica sulle esigenze pubblicitarie.",
   "job.sensis": "Ho gestito un portafoglio di oltre 140 campagne SEM su Google AdWords, Yahoo e BidSmart per PMI australiane in diversi settori. Ho condotto ricerche di parole chiave e configurato oltre 100 campagne, migliorando significativamente le prestazioni di campagne sottoperformanti ereditate da personale precedente. Ho potenziato con successo i risultati delle campagne e contribuito a mantenere clienti preziosi.",
