@@ -39,13 +39,7 @@ const jobs = [
   },
   {
     title: "Account Manager at DWA",
-    descKey: [
-      "job.dwa.strategies",
-      "job.dwa.relationships",
-      "job.dwa.liaison",
-      "job.dwa.vendors",
-      "job.dwa.project"
-    ]
+    descKey: "job.dwa.description"
   },
   {
     title: "Business Development Manager (ASEAN) at Cadreon (IPG Mediabrands)",
