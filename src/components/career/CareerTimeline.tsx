@@ -1,4 +1,3 @@
-
 import React from "react";
 import TimelineItem from "./TimelineItem";
 import MobileCollapsibleSection from "@/components/MobileCollapsibleSection";
@@ -38,7 +37,13 @@ const CareerTimeline = ({ jobs }: CareerTimelineProps) => {
   ) : (
     <div className="space-y-6">
       {jobs.map((job, index) => (
-        <TimelineItem key={index} job={job} />
+        <TimelineItem
+          key={index}
+          job={job}
+          collapsible={true}
+          showTimeline={true}
+          denseDWA={job.title.startsWith("Account Manager at DWA")}
+        />
       ))}
     </div>
   );
