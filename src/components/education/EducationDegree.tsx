@@ -95,7 +95,8 @@ const EducationDegree: React.FC<EducationDegreeProps> = ({
               <span className="ml-2 text-muted-foreground text-xs">
                 <TranslatedText textKey={degree.locationKey} />
               </span>
-            </div>
+            </span>
+          </div>
           <div className="flex items-center gap-4">
             {renderPeriod()}
             {isOpen ? (
@@ -118,4 +119,3 @@ const EducationDegree: React.FC<EducationDegreeProps> = ({
 };
 
 export default EducationDegree;
-
