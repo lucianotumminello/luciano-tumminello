@@ -2,7 +2,6 @@
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
-import JobCard from "./career/JobCard";
 
 interface MobileCollapsibleSectionProps {
   title: React.ReactNode;
@@ -19,12 +18,22 @@ const MobileCollapsibleSection: React.FC<MobileCollapsibleSectionProps> = ({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="w-full flex justify-between items-center py-3 px-4 bg-gray-50/80 rounded-t-lg text-left font-semibold text-base focus:outline-none border border-gray-200 shadow-sm hover:bg-gray-100 transition-colors">
-        <span className="text-gray-800">{title}</span>
-        {open ? <ChevronUp className="w-4 h-4 text-primary" /> : <ChevronDown className="w-4 h-4 text-primary" />}
+      <CollapsibleTrigger className="w-full text-left focus:outline-none">
+        <div className="bg-white border border-gray-100 rounded-xl shadow-sm">
+          <div className="px-4 py-3">
+            <div className="font-semibold text-gray-900 text-lg mb-1">{title}</div>
+            <div className="flex items-center justify-between">
+              {open ? (
+                <ChevronUp className="w-4 h-4 text-gray-500" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-gray-500" />
+              )}
+            </div>
+          </div>
+        </div>
       </CollapsibleTrigger>
-      <CollapsibleContent className="px-0 pt-0 pb-0">
-        <div className="border border-t-0 border-gray-200 rounded-b-lg shadow-md bg-white p-4">
+      <CollapsibleContent>
+        <div className="px-4 py-3 bg-white border-x border-b border-gray-100 rounded-b-xl shadow-sm mt-px">
           {children}
         </div>
       </CollapsibleContent>
