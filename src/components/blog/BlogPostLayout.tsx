@@ -46,6 +46,13 @@ const BlogPostLayout = ({
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
         
+        {/* Additional SEO Meta Tags */}
+        <meta name="author" content="Luciano Tumminello" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+        
+        {/* JSON-LD structured data */}
         <script type="application/ld+json">
           {JSON.stringify(schemaData)}
         </script>

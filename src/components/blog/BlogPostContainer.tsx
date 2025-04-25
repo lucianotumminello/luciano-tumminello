@@ -1,12 +1,14 @@
 
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import BlogPostHeader from "@/components/blog/BlogPostHeader";
-import BlogPostContent from "@/components/blog/BlogPostContent";
-import BlogPostFooter from "@/components/blog/BlogPostFooter";
-import ShareButtons from "@/components/blog/ShareButtons";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+// Lazy load components that are not immediately visible
+const BlogPostContent = lazy(() => import("@/components/blog/BlogPostContent"));
+const BlogPostFooter = lazy(() => import("@/components/blog/BlogPostFooter"));
+const ShareButtons = lazy(() => import("@/components/blog/ShareButtons"));
 
 interface BlogPostContainerProps {
   post: {
@@ -50,26 +52,30 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         desktopImageUrl={post.desktopImageUrl}
       />
       
-      <BlogPostContent 
-        content={isItalian ? post.contentIT : post.content} 
-      />
-      
-      <div className="flex justify-between items-center mb-6">
-        <BlogPostFooter 
-          tags={isItalian ? post.tagsIT : post.tags}
-          authorName={post.author}
-          authorImageUrl={post.authorImageUrl}
-          translationPrefix={isItalian ? "it" : "en"}
+      <Suspense fallback={<div className="animate-pulse h-40 bg-gray-100 rounded-md w-full"></div>}>
+        <BlogPostContent 
+          content={isItalian ? post.contentIT : post.content} 
         />
-        
-        <div className="ml-auto">
-          <ShareButtons 
-            pageUrl={pageUrl}
-            title={isItalian ? post.titleIT : post.title}
+      </Suspense>
+      
+      <Suspense fallback={<div className="h-20"></div>}>
+        <div className="flex justify-between items-center mb-6">
+          <BlogPostFooter 
+            tags={isItalian ? post.tagsIT : post.tags}
+            authorName={post.author}
+            authorImageUrl={post.authorImageUrl}
             translationPrefix={isItalian ? "it" : "en"}
           />
+          
+          <div className="ml-auto">
+            <ShareButtons 
+              pageUrl={pageUrl}
+              title={isItalian ? post.titleIT : post.title}
+              translationPrefix={isItalian ? "it" : "en"}
+            />
+          </div>
         </div>
-      </div>
+      </Suspense>
       
       <div className="mt-10 text-center">
         <Link to="/blog">

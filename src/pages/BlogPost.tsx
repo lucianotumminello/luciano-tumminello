@@ -38,11 +38,13 @@ const BlogPost = () => {
   // Use the desktop image URL for sharing preview as it appears above the title
   const fullImageUrl = new URL(post.desktopImageUrl, window.location.origin).href;
 
+  // Enhanced structured data with more complete information
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": isItalian ? post.titleIT : post.title,
     "image": fullImageUrl,
+    "wordCount": (isItalian ? post.contentIT : post.content).split(/\s+/).length,
     "author": {
       "@type": "Person",
       "name": post.author,
@@ -59,7 +61,10 @@ const BlogPost = () => {
     "datePublished": post.date,
     "dateModified": post.date,
     "mainEntityOfPage": pageUrl,
-    "description": isItalian ? post.excerptIT : post.excerpt
+    "description": isItalian ? post.excerptIT : post.excerpt,
+    "keywords": (isItalian ? post.tagsIT : post.tags).join(", "),
+    "articleSection": isItalian ? post.categoryIT : post.category,
+    "inLanguage": isItalian ? "it" : "en"
   };
 
   return (

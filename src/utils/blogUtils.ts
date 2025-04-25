@@ -65,7 +65,7 @@ export async function generateTags(content: string): Promise<string[]> {
     if (
       word.length > 1 &&
       /^[A-Z]/.test(word) && 
-      word.toUpperCase() !== word && // Fix: Changed '===' to '!=='
+      word.toUpperCase() !== word &&
       !commonWords.has(word.toLowerCase())
     ) {
       potentialTags.add(word.replace(/[.,;:?!()]/g, ''));
@@ -102,4 +102,46 @@ export function estimateReadingTime(content: string): number {
   
   // Return at least 1 minute
   return Math.max(1, readingTimeMinutes);
+}
+
+// Generate search-friendly slugs
+export function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+}
+
+// Add schema.org structured data for articles
+export function generateArticleSchema(post: any, url: string, language: string = 'en'): object {
+  const isItalian = language === 'it';
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": isItalian ? post.titleIT : post.title,
+    "image": post.desktopImageUrl,
+    "wordCount": (isItalian ? post.contentIT : post.content).split(/\s+/).length,
+    "author": {
+      "@type": "Person",
+      "name": post.author,
+      "url": "https://lucianotumminello.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Luciano Tumminello",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://lucianotumminello.com/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png"
+      }
+    },
+    "datePublished": post.date,
+    "dateModified": post.date,
+    "mainEntityOfPage": url,
+    "description": isItalian ? post.excerptIT : post.excerpt,
+    "keywords": (isItalian ? post.tagsIT : post.tags).join(", "),
+    "articleSection": isItalian ? post.categoryIT : post.category,
+    "inLanguage": isItalian ? "it" : "en"
+  };
 }

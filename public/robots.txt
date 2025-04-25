@@ -5,6 +5,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /blog-builder/
 Disallow: /*.json$
 Disallow: /*.js$
 Disallow: /*.css$
@@ -14,18 +15,22 @@ Disallow: /*?*
 User-agent: Googlebot
 Allow: /
 Disallow: /api/
+Disallow: /blog-builder/
 
 User-agent: Bingbot
 Allow: /
 Disallow: /api/
+Disallow: /blog-builder/
 
 User-agent: Slurp
 Allow: /
 Disallow: /api/
+Disallow: /blog-builder/
 
 User-agent: DuckDuckBot
 Allow: /
 Disallow: /api/
+Disallow: /blog-builder/
 
 # Social media crawlers - allow image access
 User-agent: Twitterbot
@@ -52,7 +57,7 @@ Allow: /*.jpeg$
 Allow: /*.gif$
 Allow: /*.webp$
 
-# Crawl-delay directive (in seconds) for bots that respect it
+# Rate limiting for crawlers
 Crawl-delay: 10
 
 # Sitemap location

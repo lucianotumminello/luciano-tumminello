@@ -24,13 +24,19 @@ const HeroSection = memo(() => {
   }, [navigate]);
 
   return (
-    <section className="relative py-20 md:py-32 px-4">
+    <section 
+      className="relative py-20 md:py-32 px-4" 
+      aria-labelledby="hero-heading"
+    >
       <div className="container mx-auto max-w-5xl">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center">
+        <header className="text-center mb-8">
+          <h2 
+            id="hero-heading" 
+            className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center"
+          >
             <TranslatedText textKey="home.title" />
           </h2>
-        </div>
+        </header>
         <div className="space-y-6">
           <p className={`text-lg md:text-xl text-gray-600 max-w-3xl mx-auto ${isMobile ? 'text-center' : 'text-justify'}`}>
             <TranslatedText textKey="home.subtitle" />
@@ -41,6 +47,7 @@ const HeroSection = memo(() => {
               onClick={scrollToCompetencies}
               size="lg" 
               className="min-w-[160px]"
+              aria-label={t("home.expertise")}
             >
               <TranslatedText textKey="home.expertise" />
               <ArrowDownIcon className="ml-2 h-4 w-4" />
@@ -48,6 +55,7 @@ const HeroSection = memo(() => {
             <Button 
               onClick={navigateToCareer}
               className="min-w-[160px]"
+              aria-label={t("home.professionalJourney")}
             >
               <TranslatedText textKey="home.professionalJourney" />
             </Button>

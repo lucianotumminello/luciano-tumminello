@@ -23,7 +23,7 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
   const displayText = translatedText === textKey && fallback ? fallback : translatedText;
   
   return (
-    <Component className={className}>
+    <Component className={className} lang={textKey.startsWith('it.') ? 'it' : 'en'}>
       {displayText}
     </Component>
   );
