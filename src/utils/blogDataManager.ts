@@ -1,3 +1,4 @@
+
 import blogPostsData from "@/data/blogPostsData";
 import { BlogPost } from "@/types";
 
@@ -13,7 +14,14 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   // Create a copy of the blog post data without the slug property
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  updatedBlogPosts[slug] = blogPostWithoutSlug;
+  // Remove the post from its current position if it exists
+  const { [slug]: existingPost, ...remainingPosts } = updatedBlogPosts;
+  
+  // Add the post at the beginning of the object
+  updatedBlogPosts = {
+    [slug]: blogPostWithoutSlug,
+    ...remainingPosts
+  };
   
   // Log for debugging purposes
   console.log(`Blog post ${slug} updated successfully`);
