@@ -58,12 +58,12 @@ const BlogPostHeader = ({
               {category}
             </span>
             
-            <div className="flex items-center text-gray-500">
+            <div className="flex items-center text-gray-500 whitespace-nowrap">
               <CalendarIcon className="h-4 w-4 mr-2" />
               {date}
             </div>
             
-            <div className="flex items-center text-gray-500">
+            <div className="flex items-center text-gray-500 whitespace-nowrap">
               <Clock className="h-4 w-4 mr-2" />
               {readingTime}
             </div>

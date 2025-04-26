@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,16 +33,21 @@ const Blog = () => {
       return dateB.getTime() - dateA.getTime();
     });
   
-  // Calculate total pages needed
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const day = date.getDate();
+    const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+  
   const totalPosts = blogPosts.length;
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
   
-  // Get current page posts
   const indexOfLastPost = currentPage * POSTS_PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  // Calculate how many placeholder posts we need
   const placeholderPosts = [
     {
       id: 2,
@@ -138,9 +142,9 @@ const Blog = () => {
                       {isItalian ? post.categoryIT : post.category}
                     </span>
                     <span>•</span>
-                    <div className="flex items-center">
+                    <div className="flex items-center whitespace-nowrap">
                       <CalendarIcon className="h-3 w-3 mr-1" />
-                      {isItalian ? post.dateIT : post.date}
+                      {formatDate(isItalian ? post.dateIT : post.date)}
                     </div>
                   </div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
