@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,16 +33,13 @@ const Blog = () => {
       return dateB.getTime() - dateA.getTime();
     });
   
-  // Calculate total pages needed
   const totalPosts = blogPosts.length;
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
   
-  // Get current page posts
   const indexOfLastPost = currentPage * POSTS_PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  // Calculate how many placeholder posts we need
   const placeholderPosts = [
     {
       id: 2,
@@ -138,7 +134,7 @@ const Blog = () => {
                       {isItalian ? post.categoryIT : post.category}
                     </span>
                     <span>•</span>
-                    <div className="flex items-center">
+                    <div className="flex items-center whitespace-nowrap">
                       <CalendarIcon className="h-3 w-3 mr-1" />
                       {isItalian ? post.dateIT : post.date}
                     </div>

@@ -1,4 +1,3 @@
-
 import { ArrowLeft, CalendarIcon, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -39,9 +38,7 @@ const BlogPostHeader = ({
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
             <picture>
-              {/* Desktop image (displayed at 768px and above) */}
               <source media="(min-width: 768px)" srcSet={desktopImageUrl} />
-              {/* Mobile image (displayed below 768px) */}
               <img 
                 src={imageUrl} 
                 alt={title} 
@@ -58,14 +55,16 @@ const BlogPostHeader = ({
               {category}
             </span>
             
-            <div className="flex items-center text-gray-500">
-              <CalendarIcon className="h-4 w-4 mr-2" />
-              {date}
-            </div>
-            
-            <div className="flex items-center text-gray-500">
-              <Clock className="h-4 w-4 mr-2" />
-              {readingTime}
+            <div className="flex items-center gap-4 flex-nowrap">
+              <div className="flex items-center text-gray-500 whitespace-nowrap">
+                <CalendarIcon className="h-4 w-4 mr-2" />
+                {date}
+              </div>
+              
+              <div className="flex items-center text-gray-500 whitespace-nowrap">
+                <Clock className="h-4 w-4 mr-2" />
+                {readingTime}
+              </div>
             </div>
           </div>
           
