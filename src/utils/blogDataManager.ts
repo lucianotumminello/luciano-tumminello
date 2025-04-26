@@ -1,4 +1,3 @@
-
 import blogPostsData from "@/data/blogPostsData";
 import { BlogPost } from "@/types";
 
@@ -29,7 +28,11 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   // Create a copy of the blog post data without the slug property
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  updatedBlogPosts[slug] = blogPostWithoutSlug;
+  // Add the new post to the beginning of the posts object
+  updatedBlogPosts = {
+    [slug]: blogPostWithoutSlug,
+    ...updatedBlogPosts
+  };
   
   // Log for debugging purposes
   console.log(`New blog post ${slug} created successfully`);

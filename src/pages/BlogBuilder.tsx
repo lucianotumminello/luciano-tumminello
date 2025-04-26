@@ -171,10 +171,12 @@ const BlogBuilder = () => {
   };
 
   const generateSlug = (title: string): string => {
-    return title
+    const timestamp = Date.now();
+    const baseSlug = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)+/g, '');
+    return `${baseSlug}-${timestamp}`;
   };
 
   const onBlogSubmit = async (data: BlogFormData) => {
