@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,7 +6,6 @@ import { CalendarIcon } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import blogPostsData from "@/data/blogPostsData";
 import { 
   Pagination, 
   PaginationContent, 
@@ -15,6 +15,7 @@ import {
   PaginationPrevious 
 } from "@/components/ui/pagination";
 import { useState } from "react";
+import { getAllBlogPosts } from "@/utils/blogDataManager";
 
 const Blog = () => {
   const { language } = useLanguage();
@@ -22,7 +23,7 @@ const Blog = () => {
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
   
-  const blogPosts = Object.entries(blogPostsData)
+  const blogPosts = Object.entries(getAllBlogPosts())
     .map(([slug, post]) => ({
       ...post,
       slug
