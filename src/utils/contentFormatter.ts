@@ -1,3 +1,4 @@
+
 /**
  * Converts plain text to HTML format with advanced formatting
  */
@@ -15,10 +16,10 @@ export function textToHtml(text: string): string {
       const headerLevel = headerMatch[1].length;
       const headerText = headerMatch[2];
       const headerClasses = {
-        1: 'text-4xl font-bold mb-8 mt-12',
-        2: 'text-3xl font-bold mb-6 mt-10',
-        3: 'text-2xl font-semibold mb-4 mt-8'
-      }[headerLevel] || 'text-xl font-semibold mb-3 mt-6';
+        1: 'text-4xl font-bold mb-8 mt-12 text-gray-800',
+        2: 'text-3xl font-bold mb-6 mt-10 text-gray-800',
+        3: 'text-2xl font-semibold mb-4 mt-8 text-gray-800'
+      }[headerLevel] || 'text-xl font-semibold mb-3 mt-6 text-gray-800';
       
       return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
     }
@@ -46,6 +47,17 @@ export function textToHtml(text: string): string {
         return `<ul class="list-disc pl-5 mb-6 space-y-3">
           ${items.map(item => `<li class="text-gray-700">${item}</li>`).join('\n')}
         </ul>`;
+      }
+    }
+    
+    // Check for blockquotes with italics and attribution
+    if (section.match(/^"([^"]*)" — (.*)/)) {
+      const match = section.match(/^"([^"]*)" — (.*)/);
+      if (match) {
+        const [_, quote, attribution] = match;
+        return `<blockquote class="italic p-4 my-6 border-l-4 border-primary bg-primary/5 text-gray-700 rounded-md">
+          "${quote}" <span class="block text-right mt-2 font-medium">— ${attribution}</span>
+        </blockquote>`;
       }
     }
     
@@ -100,6 +112,9 @@ export function htmlToText(html: string): string {
     .replace(/<ol[^>]*>([\s\S]*?)<\/ol>/g, (match, content) => {
       const items = content.match(/<li[^>]*>([\s\S]*?)<\/li>/g) || [];
       return items.map((item, index) => `${index + 1}. ` + item.replace(/<li[^>]*>([\s\S]*?)<\/li>/, '$1')).join('\n') + '\n\n';
+    })
+    .replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/g, (match, content) => {
+      return content.trim() + '\n\n';
     })
     .replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '$1\n\n')
     .replace(/<br\s*\/?>/g, '\n')
