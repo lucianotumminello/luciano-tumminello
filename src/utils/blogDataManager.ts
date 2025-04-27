@@ -1,8 +1,13 @@
 import blogPostsData from "@/data/blogPostsData";
 import { BlogPost } from "@/types";
 
+// Define a type for our blog posts store with an index signature
+type BlogPostsStore = {
+  [slug: string]: Omit<BlogPost, "slug">;
+};
+
 // In-memory data store that will be updated during the session
-let updatedBlogPosts = { 
+let updatedBlogPosts: BlogPostsStore = { 
   // Add the new blog post at the beginning
   "from-marketing-director-to-coo-transferable-leadership-principles-that-drive-organizational-growth": {
     title: "From Marketing Director to COO: Transferable Leadership Principles That Drive Organizational Growth",
@@ -212,7 +217,6 @@ Per le organizzazioni che cercano di accelerare la crescita e navigare la trasfo
     tags: ["Leadership", "Marketing", "Operations", "Career Development", "Cross-Functional"],
     tagsIT: ["Leadership", "Marketing", "Operazioni", "Sviluppo Professionale", "Interfunzionale"]
   },
-  // Keep existing blog posts
   ...blogPostsData
 };
 
@@ -222,17 +226,19 @@ Per le organizzazioni che cercano di accelerare la crescita e navigare la trasfo
  * @param blogPostData The updated blog post data
  */
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
-  // Create a copy of the blog post data without the slug property
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Remove the post from its current position
-  const { [slug]: existingPost, ...remainingPosts } = updatedBlogPosts;
-  
-  // Create a new object with the updated post at the beginning
-  updatedBlogPosts = {
-    [slug]: blogPostWithoutSlug,
-    ...remainingPosts
+  const newBlogPosts: BlogPostsStore = {
+    [slug]: blogPostWithoutSlug
   };
+  
+  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
+    if (key !== slug) {
+      newBlogPosts[key] = value;
+    }
+  });
+  
+  updatedBlogPosts = newBlogPosts;
   
   console.log(`Blog post ${slug} updated successfully`);
 };
@@ -243,14 +249,17 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
  * @param blogPostData The blog post data
  */
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
-  // Create a copy of the blog post data without the slug property
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Add the new post to the beginning of the posts object
-  updatedBlogPosts = {
-    [slug]: blogPostWithoutSlug,
-    ...updatedBlogPosts
+  const newBlogPosts: BlogPostsStore = {
+    [slug]: blogPostWithoutSlug
   };
+  
+  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
+    newBlogPosts[key] = value;
+  });
+  
+  updatedBlogPosts = newBlogPosts;
   
   console.log(`New blog post ${slug} created successfully`);
   console.log("Current blog posts:", Object.keys(updatedBlogPosts));
@@ -260,7 +269,7 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
  * Gets all blog posts from the in-memory data store
  * @returns All blog posts
  */
-export const getAllBlogPosts = (): Record<string, BlogPost> => {
+export const getAllBlogPosts = (): BlogPostsStore => {
   return updatedBlogPosts;
 };
 
@@ -269,7 +278,7 @@ export const getAllBlogPosts = (): Record<string, BlogPost> => {
  * @param slug The slug of the blog post
  * @returns The blog post or undefined if not found
  */
-export const getBlogPost = (slug: string): BlogPost | undefined => {
+export const getBlogPost = (slug: string): (Omit<BlogPost, "slug"> | undefined) => {
   return updatedBlogPosts[slug];
 };
 
@@ -278,8 +287,16 @@ export const getBlogPost = (slug: string): BlogPost | undefined => {
  * @param slug The slug of the blog post to delete
  */
 export const deleteBlogPost = (slug: string): void => {
-  const { [slug]: deletedPost, ...remainingPosts } = updatedBlogPosts;
-  updatedBlogPosts = remainingPosts;
+  const newBlogPosts: BlogPostsStore = {};
+  
+  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
+    if (key !== slug) {
+      newBlogPosts[key] = value;
+    }
+  });
+  
+  updatedBlogPosts = newBlogPosts;
+  
   console.log(`Blog post ${slug} deleted successfully`);
 };
 
