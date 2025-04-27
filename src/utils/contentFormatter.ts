@@ -24,20 +24,30 @@ export function textToHtml(text: string): string {
       return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
     }
     
-    // Check for bullet points
-    if (section.startsWith('- ')) {
-      const items = section.split('\n').map(line => line.replace(/^- /, '').trim()).filter(Boolean);
-      return `<ul class="list-disc pl-5 mb-4 space-y-2">
-        ${items.map(item => `<li>${item}</li>`).join('\n')}
-      </ul>`;
+    // Check for numbered lists (1. 2. 3. etc)
+    if (section.match(/^\d+\.\s/m)) {
+      const items = section.split('\n')
+        .filter(line => line.match(/^\d+\.\s/))
+        .map(line => line.replace(/^\d+\.\s/, '').trim());
+        
+      if (items.length > 0) {
+        return `<ol class="list-decimal pl-5 mb-4 space-y-2">
+          ${items.map(item => `<li>${item}</li>`).join('\n')}
+        </ol>`;
+      }
     }
     
-    // Check for numbered lists
-    if (section.match(/^\d+\.\s/)) {
-      const items = section.split('\n').map(line => line.replace(/^\d+\.\s/, '').trim()).filter(Boolean);
-      return `<ol class="list-decimal pl-5 mb-4 space-y-2">
-        ${items.map(item => `<li>${item}</li>`).join('\n')}
-      </ol>`;
+    // Check for bullet points
+    if (section.match(/^-\s/m)) {
+      const items = section.split('\n')
+        .filter(line => line.match(/^-\s/))
+        .map(line => line.replace(/^-\s/, '').trim());
+        
+      if (items.length > 0) {
+        return `<ul class="list-disc pl-5 mb-4 space-y-2">
+          ${items.map(item => `<li>${item}</li>`).join('\n')}
+        </ul>`;
+      }
     }
     
     // Regular paragraphs
@@ -65,6 +75,7 @@ export function applyStandardLayout(text: string): string {
   
   // Add spacing after lists
   formattedText = formattedText.replace(/(\n- .*?)(\n[^-])/g, '$1\n$2');
+  formattedText = formattedText.replace(/(\n\d+\. .*?)(\n[^\d])/g, '$1\n$2');
   
   // Format quotes
   formattedText = formattedText.replace(/"([^"]*)" — ([^"]*)/g, '"$1" — $2');
