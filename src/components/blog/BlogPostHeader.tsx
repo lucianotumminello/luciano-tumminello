@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -28,6 +29,9 @@ const BlogPostHeader = ({
   imageUrl,
   desktopImageUrl,
 }: BlogPostHeaderProps) => {
+  const { language } = useLanguage();
+  const isItalian = language === "it";
+  
   // Format date for consistent display - if it's not already formatted
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
@@ -43,7 +47,7 @@ const BlogPostHeader = ({
       
       // Format to "DD Month YYYY"
       const day = date.getDate();
-      const month = date.toLocaleString('en-US', { month: 'long' });
+      const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
       const year = date.getFullYear();
       
       return `${day} ${month} ${year}`;
@@ -59,7 +63,7 @@ const BlogPostHeader = ({
     <div className="mb-8">
       <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Blog
+        {isItalian ? "Torna al Blog" : "Back to Blog"}
       </Link>
       
       <Card className="mb-8 overflow-hidden border-0 shadow-lg">

@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,11 +14,11 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Label } from "@/components/ui/label";
 import { BlogPost } from "@/types";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, FileText } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { textToHtml, htmlToText } from "@/utils/contentFormatter";
+import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import FormattingGuide from "@/components/blog/FormattingGuide";
-import { updateBlogPost, createBlogPost, getAllBlogPosts } from "@/utils/blogDataManager";
+import { updateBlogPost, createBlogPost, getAllBlogPosts, deleteBlogPost } from "@/utils/blogDataManager";
 import { useNavigate } from "react-router-dom";
 import blogPostsData from "@/data/blogPostsData";
 
@@ -62,6 +63,7 @@ const BlogBuilder = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(false);
   const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>(getAllBlogPosts());
+  const [isPublishing, setIsPublishing] = useState(false);
   const desktopImageRef = useRef<HTMLInputElement>(null);
   const mobileImageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -193,7 +195,19 @@ const BlogBuilder = () => {
     return `${baseSlug}-${timestamp}`;
   };
 
+  const applyLayout = () => {
+    const currentContent = blogForm.getValues('content');
+    const formattedContent = applyStandardLayout(currentContent);
+    blogForm.setValue('content', formattedContent);
+    
+    toast({
+      title: "Layout applied",
+      description: "Your content has been formatted for consistency",
+    });
+  };
+
   const onBlogSubmit = async (data: BlogFormData) => {
+    setIsPublishing(true);
     toast({
       title: "Processing...",
       description: "Preparing your blog post data",
@@ -304,6 +318,8 @@ const BlogBuilder = () => {
         variant: "destructive",
       });
       console.error("Blog processing error:", error);
+    } finally {
+      setIsPublishing(false);
     }
   };
 
@@ -496,7 +512,19 @@ const BlogBuilder = () => {
                   name="content"
                   render={({ field }) => (
                     <FormItem className="col-span-1 md:col-span-2">
-                      <FormLabel>Content (Write in plain text, paragraphs will be formatted automatically)</FormLabel>
+                      <div className="flex justify-between items-center">
+                        <FormLabel>Content (Write in plain text, paragraphs will be formatted automatically)</FormLabel>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={applyLayout}
+                          className="flex items-center gap-1 text-primary hover:bg-primary/10"
+                        >
+                          <FileText className="h-4 w-4" />
+                          Apply Layout
+                        </Button>
+                      </div>
                       <FormControl>
                         <Textarea 
                           className="min-h-[300px] font-sans text-base" 
@@ -634,8 +662,13 @@ const BlogBuilder = () => {
                 </div>
               </div>
               
-              <Button type="submit" size="lg" className="w-full md:w-auto">
-                {isUpdateMode ? "Update Blog Post" : "Publish Blog"}
+              <Button 
+                type="submit" 
+                size="lg" 
+                className="w-full md:w-auto"
+                disabled={isPublishing}
+              >
+                {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
               </Button>
             </form>
           </Form>

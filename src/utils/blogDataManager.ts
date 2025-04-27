@@ -62,5 +62,15 @@ export const getBlogPost = (slug: string): BlogPost | undefined => {
   return updatedBlogPosts[slug];
 };
 
+/**
+ * Deletes a blog post from the in-memory data store
+ * @param slug The slug of the blog post to delete
+ */
+export const deleteBlogPost = (slug: string): void => {
+  const { [slug]: deletedPost, ...remainingPosts } = updatedBlogPosts;
+  updatedBlogPosts = remainingPosts;
+  console.log(`Blog post ${slug} deleted successfully`);
+};
+
 // Export the updated blog posts as default
 export default updatedBlogPosts;

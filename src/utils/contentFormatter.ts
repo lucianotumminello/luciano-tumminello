@@ -1,3 +1,4 @@
+
 /**
  * Converts plain text to HTML format with advanced formatting
  */
@@ -23,6 +24,22 @@ export function textToHtml(text: string): string {
       return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
     }
     
+    // Check for bullet points
+    if (section.startsWith('- ')) {
+      const items = section.split('\n').map(line => line.replace(/^- /, '').trim()).filter(Boolean);
+      return `<ul class="list-disc pl-5 mb-4 space-y-2">
+        ${items.map(item => `<li>${item}</li>`).join('\n')}
+      </ul>`;
+    }
+    
+    // Check for numbered lists
+    if (section.match(/^\d+\.\s/)) {
+      const items = section.split('\n').map(line => line.replace(/^\d+\.\s/, '').trim()).filter(Boolean);
+      return `<ol class="list-decimal pl-5 mb-4 space-y-2">
+        ${items.map(item => `<li>${item}</li>`).join('\n')}
+      </ol>`;
+    }
+    
     // Regular paragraphs
     const lines = section.split('\n').filter(line => line.trim());
     const formattedLines = lines.join('<br />');
@@ -33,15 +50,49 @@ export function textToHtml(text: string): string {
 }
 
 /**
+ * Applies consistent styling and formatting to content
+ */
+export function applyStandardLayout(text: string): string {
+  if (!text) return '';
+  
+  // Structure headings properly
+  let formattedText = text.replace(/^# (.*?)$/gm, '# $1');
+  formattedText = formattedText.replace(/^## (.*?)$/gm, '## $1');
+  formattedText = formattedText.replace(/^### (.*?)$/gm, '### $1');
+  
+  // Ensure double line breaks between sections
+  formattedText = formattedText.replace(/\n{3,}/g, '\n\n');
+  
+  // Add spacing after lists
+  formattedText = formattedText.replace(/(\n- .*?)(\n[^-])/g, '$1\n$2');
+  
+  // Format quotes
+  formattedText = formattedText.replace(/"([^"]*)" — ([^"]*)/g, '"$1" — $2');
+  
+  return formattedText;
+}
+
+/**
  * Converts HTML format back to plain text
  */
 export function htmlToText(html: string): string {
   if (!html) return '';
   
   return html
-    .replace(/<p>/g, '')
-    .replace(/<\/p>/g, '\n\n')
-    .replace(/<br \/>/g, '\n')
+    .replace(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/g, (match, content) => {
+      const level = match.charAt(2);
+      return '#'.repeat(parseInt(level)) + ' ' + content + '\n\n';
+    })
+    .replace(/<ul[^>]*>([\s\S]*?)<\/ul>/g, (match, content) => {
+      const items = content.match(/<li[^>]*>([\s\S]*?)<\/li>/g) || [];
+      return items.map(item => '- ' + item.replace(/<li[^>]*>([\s\S]*?)<\/li>/, '$1')).join('\n') + '\n\n';
+    })
+    .replace(/<ol[^>]*>([\s\S]*?)<\/ol>/g, (match, content) => {
+      const items = content.match(/<li[^>]*>([\s\S]*?)<\/li>/g) || [];
+      return items.map((item, index) => `${index + 1}. ` + item.replace(/<li[^>]*>([\s\S]*?)<\/li>/, '$1')).join('\n') + '\n\n';
+    })
+    .replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '$1\n\n')
+    .replace(/<br\s*\/?>/g, '\n')
     .replace(/&nbsp;/g, ' ')
     .trim();
 }
