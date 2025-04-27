@@ -20,9 +20,7 @@ Career trajectories rarely follow a linear path. My transition from Marketing Di
 
 According to McKinsey's 2025 Leadership Development Report, executives who successfully navigate cross-functional leadership transitions bring a valuable integrative perspective that drives innovation at the intersection of traditionally siloed domains. My journey illustrates how marketing expertise can profoundly enhance operational leadership when core principles are thoughtfully translated to new challenges.
 
-# The Challenge of Transition
-
-"The emotional intelligence gap between basic and advanced AI implementations is becoming a major competitive differentiator. Companies leading in this area are seeing significant loyalty improvements because customers feel genuinely understood." — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital
+## The Challenge of Transition
 
 "One of the biggest hurdles was shifting my focus from external-facing brand building and customer acquisition to the intricate internal mechanisms of efficiency and process optimization," I often share when asked about this transition. While both roles demand strategic thinking, operations leadership requires deeper immersion in granular data, supply chain logistics, and cross-departmental dependencies that demand heightened analytical rigor.
 
@@ -115,9 +113,7 @@ Le traiettorie di carriera raramente seguono un percorso lineare. La mia transiz
 
 Secondo il Rapporto McKinsey 2025 sullo Sviluppo della Leadership, i dirigenti che navigano con successo le transizioni di leadership interfunzionali apportano una preziosa prospettiva integrativa che guida l'innovazione all'incrocio di domini tradizionalmente isolati. Il mio percorso illustra come l'expertise di marketing possa migliorare profondamente la leadership operativa quando i principi fondamentali vengono tradotti attentamente in nuove sfide.
 
-# La Sfida della Transizione
-
-"Il divario di intelligenza emotiva tra implementazioni IA di base e avanzate sta diventando un importante fattore differenziante competitivo. Le aziende leader in quest'area stanno vedendo significativi miglioramenti nella fedeltà perché i clienti si sentono realmente compresi." — Maya Johnson, Chief Customer Experience Officer presso Deloitte Digital
+## La Sfida della Transizione
 
 "Uno degli ostacoli più grandi è stato spostare il mio focus dalla costruzione del brand rivolta all'esterno e dall'acquisizione clienti ai meccanismi intricati interni di efficienza e ottimizzazione dei processi," condivido spesso quando mi viene chiesto di questa transizione. Mentre entrambi i ruoli richiedono pensiero strategico, la leadership operativa richiede un'immersione più profonda in dati granulari, logistica della catena di approvvigionamento e dipendenze interdipartimentali che richiedono un elevato rigore analitico.
 
@@ -203,7 +199,8 @@ Mentre le organizzazioni affrontano sfide sempre più complesse che attraversano
 
 Il mio percorso da Direttore Marketing a COO riflette questa più ampia tendenza verso la leadership integrativa. I principi fondamentali che guidano l'eccellenza nel marketing: visione strategica, intelligenza dei dati, collaborazione interfunzionale, ottimizzazione continua e centralità del cliente: forniscono una potente fondazione per la leadership operativa quando tradotti attentamente in nuovi contesti.
 
-Per le organizzazioni che cercano di accelerare la crescita e navigare la trasformazione, identificare e sviluppare leader con questa prospettiva interfunzionale rappresenta un vantaggio competitivo critico in un panorama aziendale sempre più complesso.`,
+For organizations seeking to accelerate growth and navigate transformation, identifying and developing leaders with this cross-functional perspective represents a critical competitive advantage in an increasingly complex business landscape.
+`,
     author: "Luciano Tumminello",
     authorImageUrl: "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png",
     date: "27 April 2025",

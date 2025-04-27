@@ -16,25 +16,12 @@ export function textToHtml(text: string): string {
       const headerLevel = headerMatch[1].length;
       const headerText = headerMatch[2];
       const headerClasses = {
-        1: 'text-3xl font-bold mb-6',
-        2: 'text-2xl font-bold mb-4',
-        3: 'text-xl font-semibold mb-2'
-      }[headerLevel] || 'text-lg font-semibold mb-2';
+        1: 'text-4xl font-bold mb-8 text-gray-900',
+        2: 'text-3xl font-bold mb-6 mt-12 text-gray-800',
+        3: 'text-2xl font-semibold mb-4 mt-8 text-gray-800'
+      }[headerLevel] || 'text-xl font-semibold mb-4 text-gray-800';
       
       return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
-    }
-    
-    // Check for numbered lists (1. 2. 3. etc)
-    if (section.match(/^\d+\.\s/m)) {
-      const items = section.split('\n')
-        .filter(line => line.match(/^\d+\.\s/))
-        .map(line => line.replace(/^\d+\.\s/, '').trim());
-        
-      if (items.length > 0) {
-        return `<ol class="list-decimal pl-5 mb-4 space-y-2">
-          ${items.map(item => `<li>${item}</li>`).join('\n')}
-        </ol>`;
-      }
     }
     
     // Check for bullet points
@@ -44,16 +31,39 @@ export function textToHtml(text: string): string {
         .map(line => line.replace(/^-\s/, '').trim());
         
       if (items.length > 0) {
-        return `<ul class="list-disc pl-5 mb-4 space-y-2">
-          ${items.map(item => `<li>${item}</li>`).join('\n')}
+        return `<ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700">
+          ${items.map(item => `<li class="text-gray-700">${item}</li>`).join('\n')}
         </ul>`;
       }
+    }
+    
+    // Check for numbered lists
+    if (section.match(/^\d+\.\s/m)) {
+      const items = section.split('\n')
+        .filter(line => line.match(/^\d+\.\s/))
+        .map(line => line.replace(/^\d+\.\s/, '').trim());
+        
+      if (items.length > 0) {
+        return `<ol class="list-decimal pl-6 mb-6 space-y-2 text-gray-700">
+          ${items.map(item => `<li class="text-gray-700">${item}</li>`).join('\n')}
+        </ol>`;
+      }
+    }
+    
+    // Handle quotes with citations
+    const quoteMatch = section.match(/^"([^"]+)"\s*—\s*(.+)$/);
+    if (quoteMatch) {
+      const [_, quote, citation] = quoteMatch;
+      return `<blockquote class="border-l-4 border-primary pl-4 py-2 my-6 text-gray-700 italic">
+        <p class="mb-2">"${quote}"</p>
+        <footer class="text-gray-600">— ${citation}</footer>
+      </blockquote>`;
     }
     
     // Regular paragraphs
     const lines = section.split('\n').filter(line => line.trim());
     const formattedLines = lines.join('<br />');
-    return `<p class="mb-4">${formattedLines}</p>`;
+    return `<p class="mb-6 text-gray-700 text-justify leading-relaxed">${formattedLines}</p>`;
   });
   
   return htmlSections.join('\n\n');
