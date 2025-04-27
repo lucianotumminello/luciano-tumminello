@@ -70,7 +70,7 @@ const BlogBuilder = () => {
       title: "",
       excerpt: "",
       content: "",
-      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+      date: getCurrentFormattedDate(),
       category: "",
       tags: "",
       desktopImageUrl: "",
@@ -106,7 +106,7 @@ const BlogBuilder = () => {
         title: "",
         excerpt: "",
         content: "",
-        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        date: getCurrentFormattedDate(),
         category: "",
         tags: "",
         desktopImageUrl: "",
@@ -118,8 +118,8 @@ const BlogBuilder = () => {
   }, [isUpdateMode, blogForm]);
 
   useEffect(() => {
-    if (selectedPost && blogPostsData[selectedPost]) {
-      const post = blogPostsData[selectedPost];
+    if (selectedPost && blogPosts[selectedPost]) {
+      const post = blogPosts[selectedPost];
       blogForm.reset({
         title: post.title,
         excerpt: post.excerpt,
@@ -131,10 +131,10 @@ const BlogBuilder = () => {
         imageUrl: post.imageUrl
       });
     }
-  }, [selectedPost, blogForm]);
+  }, [selectedPost, blogForm, blogPosts]);
 
   const onAuthSubmit = (data: AuthFormData) => {
-    if (data.password === "VanBasten9!") {
+    if (data.password === ADMIN_PASSWORD) {
       if (rememberPassword) {
         try {
           localStorage.setItem(SAVED_PASSWORD_KEY, data.password);
@@ -201,7 +201,19 @@ const BlogBuilder = () => {
       const translatedContent = await translateText(formattedContent, 'en', 'it');
       const translatedCategory = await translateText(data.category, 'en', 'it');
       const translatedTags = await Promise.all(tagsToUse.map(tag => translateText(tag, 'en', 'it')));
-      const translatedDate = await translateText(data.date, 'en', 'it');
+      
+      const dateObj = new Date(data.date);
+      let italianDate = data.date;
+      
+      if (!isNaN(dateObj.getTime())) {
+        const day = dateObj.getDate();
+        const month = dateObj.toLocaleString('it-IT', { month: 'long' });
+        const year = dateObj.getFullYear();
+        italianDate = `${day} ${month} ${year}`;
+      } else {
+        italianDate = await translateText(data.date, 'en', 'it');
+      }
+      
       const translatedReadingTime = `${readingTime} min di lettura`;
 
       let desktopImageUrl = data.desktopImageUrl;
@@ -223,6 +235,8 @@ const BlogBuilder = () => {
         });
       }
 
+      const formattedDate = isUpdateMode ? data.date : getCurrentFormattedDate();
+
       const blogPost: BlogPost = {
         title: data.title,
         titleIT: translatedTitle,
@@ -232,8 +246,8 @@ const BlogBuilder = () => {
         contentIT: translatedContent,
         author: DEFAULT_AUTHOR,
         authorImageUrl: DEFAULT_AUTHOR_IMAGE,
-        date: isUpdateMode ? data.date : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-        dateIT: translatedDate,
+        date: formattedDate,
+        dateIT: italianDate,
         category: data.category,
         categoryIT: translatedCategory,
         imageUrl: mobileImageUrl,
@@ -247,7 +261,6 @@ const BlogBuilder = () => {
       setPreviewData(blogPost);
       setShowPreview(true);
 
-      // Update blog data in memory
       if (isUpdateMode && selectedPost) {
         updateBlogPost(selectedPost, blogPost);
         toast({
@@ -262,15 +275,12 @@ const BlogBuilder = () => {
         });
       }
 
-      // Update the local state to reflect changes
       setBlogPosts(getAllBlogPosts());
 
-      // After a short delay, redirect to the updated blog post
       setTimeout(() => {
         navigate(`/blog/${slug}`);
       }, 1500);
 
-      // Still provide the JSON data for backup/reference purposes
       const blogPostJson = JSON.stringify(blogPost, null, 2);
       navigator.clipboard.writeText(blogPostJson);
     } catch (error) {
@@ -310,6 +320,20 @@ const BlogBuilder = () => {
     if (!checked) {
       localStorage.removeItem(SAVED_PASSWORD_KEY);
     }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setBlogPosts(getAllBlogPosts());
+    }
+  }, [isAuthenticated]);
+
+  const getCurrentFormattedDate = () => {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.toLocaleString('en-US', { month: 'long' });
+    const year = now.getFullYear();
+    return `${day} ${month} ${year}`;
   };
 
   if (!isAuthenticated) {

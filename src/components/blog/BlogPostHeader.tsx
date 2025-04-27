@@ -28,6 +28,33 @@ const BlogPostHeader = ({
   imageUrl,
   desktopImageUrl,
 }: BlogPostHeaderProps) => {
+  // Format date for consistent display - if it's not already formatted
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "";
+    
+    try {
+      const date = new Date(dateStr);
+      
+      // Check if the date is valid
+      if (isNaN(date.getTime())) {
+        // If not valid, return the original string as it might already be formatted
+        return dateStr;
+      }
+      
+      // Format to "DD Month YYYY"
+      const day = date.getDate();
+      const month = date.toLocaleString('en-US', { month: 'long' });
+      const year = date.getFullYear();
+      
+      return `${day} ${month} ${year}`;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return dateStr;
+    }
+  };
+  
+  const formattedDate = formatDate(date);
+  
   return (
     <div className="mb-8">
       <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
@@ -60,7 +87,7 @@ const BlogPostHeader = ({
             
             <div className="flex items-center text-gray-500 whitespace-nowrap">
               <CalendarIcon className="h-4 w-4 mr-2" />
-              {date}
+              {formattedDate}
             </div>
             
             <div className="flex items-center text-gray-500 whitespace-nowrap">

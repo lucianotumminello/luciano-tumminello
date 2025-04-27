@@ -14,16 +14,15 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   // Create a copy of the blog post data without the slug property
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Remove the post from its current position if it exists
+  // Remove the post from its current position
   const { [slug]: existingPost, ...remainingPosts } = updatedBlogPosts;
   
-  // Add the post at the beginning of the object
+  // Create a new object with the updated post at the beginning
   updatedBlogPosts = {
     [slug]: blogPostWithoutSlug,
     ...remainingPosts
   };
   
-  // Log for debugging purposes
   console.log(`Blog post ${slug} updated successfully`);
 };
 
@@ -42,8 +41,8 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
     ...updatedBlogPosts
   };
   
-  // Log for debugging purposes
   console.log(`New blog post ${slug} created successfully`);
+  console.log("Current blog posts:", Object.keys(updatedBlogPosts));
 };
 
 /**

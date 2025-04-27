@@ -14,7 +14,7 @@ import {
   PaginationNext, 
   PaginationPrevious 
 } from "@/components/ui/pagination";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getAllBlogPosts } from "@/utils/blogDataManager";
 
 const Blog = () => {
@@ -22,24 +22,43 @@ const Blog = () => {
   const isItalian = language === "it";
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
+  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
-  const blogPosts = Object.entries(getAllBlogPosts())
-    .map(([slug, post]) => ({
-      ...post,
-      slug
-    }))
-    .sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return dateB.getTime() - dateA.getTime();
-    });
+  // Load and sort blog posts when component mounts or language changes
+  useEffect(() => {
+    const posts = Object.entries(getAllBlogPosts())
+      .map(([slug, post]) => ({
+        ...post,
+        slug
+      }))
+      .sort((a, b) => {
+        // Parse dates for proper comparison
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB.getTime() - dateA.getTime();
+      });
+    
+    setBlogPosts(posts);
+  }, [language]); // Re-run when language changes
   
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    const day = date.getDate();
-    const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
+    if (!dateStr) return "";
+    
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) {
+        // If date is invalid, return the original string
+        return dateStr;
+      }
+      
+      const day = date.getDate();
+      const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
+      const year = date.getFullYear();
+      return `${day} ${month} ${year}`;
+    } catch (error) {
+      console.error("Error formatting date:", error, dateStr);
+      return dateStr;
+    }
   };
   
   const totalPosts = blogPosts.length;
