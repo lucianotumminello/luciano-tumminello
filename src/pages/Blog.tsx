@@ -5,12 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { getSortedBlogPosts } from "@/utils/blogDataManager";
 import { trackPageView } from "@/utils/analytics";
 import { Helmet } from "react-helmet-async";
 import { generateSlug } from '@/utils/blogUtils';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const Blog = () => {
   console.log("Blog component rendering");
@@ -127,11 +128,18 @@ const Blog = () => {
     console.error("Error rendering Blog component:", error);
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
-        <p className="text-gray-700 mb-6">We're having trouble loading the blog. Please try again later.</p>
-        <Link to="/">
-          <Button variant="default">Return to Home</Button>
-        </Link>
+        <Header />
+        <div className="max-w-lg w-full my-12">
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>
+              We're having trouble loading the blog. Please try again later.
+            </AlertDescription>
+          </Alert>
+          <Link to="/">
+            <Button variant="default">Return to Home</Button>
+          </Link>
+        </div>
+        <Footer />
       </div>
     );
   }

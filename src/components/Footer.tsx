@@ -6,7 +6,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { memo } from "react";
 import LinkedInIcon from "@/components/icons/LinkedInIcon";
 
-const Footer = memo(() => {
+// Export the component both as a named export and default export
+export const Footer = memo(() => {
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
@@ -111,4 +112,5 @@ const Footer = memo(() => {
 
 Footer.displayName = "Footer";
 
+// Export default to maintain compatibility with existing imports
 export default Footer;
