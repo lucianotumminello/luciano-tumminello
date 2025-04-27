@@ -44,6 +44,14 @@ const DEFAULT_AUTHOR_IMAGE = Object.values(blogPostsData)[0]?.authorImageUrl || 
 const SAVED_PASSWORD_KEY = "blog_builder_password";
 
 const BlogBuilder = () => {
+  const getCurrentFormattedDate = () => {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.toLocaleString('en-US', { month: 'long' });
+    const year = now.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
@@ -132,6 +140,12 @@ const BlogBuilder = () => {
       });
     }
   }, [selectedPost, blogForm, blogPosts]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setBlogPosts(getAllBlogPosts());
+    }
+  }, [isAuthenticated]);
 
   const onAuthSubmit = (data: AuthFormData) => {
     if (data.password === ADMIN_PASSWORD) {
@@ -320,20 +334,6 @@ const BlogBuilder = () => {
     if (!checked) {
       localStorage.removeItem(SAVED_PASSWORD_KEY);
     }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      setBlogPosts(getAllBlogPosts());
-    }
-  }, [isAuthenticated]);
-
-  const getCurrentFormattedDate = () => {
-    const now = new Date();
-    const day = now.getDate();
-    const month = now.toLocaleString('en-US', { month: 'long' });
-    const year = now.getFullYear();
-    return `${day} ${month} ${year}`;
   };
 
   if (!isAuthenticated) {
