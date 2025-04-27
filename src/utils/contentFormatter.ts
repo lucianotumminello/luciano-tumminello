@@ -8,7 +8,7 @@ export function textToHtml(text: string): string {
   // Split text into sections
   const sections = text.split('\n\n').filter(s => s.trim());
   
-  // Convert each section to HTML with consistent formatting
+  // Convert each section to HTML with advanced formatting
   const htmlSections = sections.map(section => {
     // Check if the section starts with a header
     const headerMatch = section.match(/^(#+)\s(.+)/);
@@ -16,10 +16,10 @@ export function textToHtml(text: string): string {
       const headerLevel = headerMatch[1].length;
       const headerText = headerMatch[2];
       const headerClasses = {
-        1: 'text-4xl font-bold mb-8 mt-12 text-gray-800',
-        2: 'text-3xl font-bold mb-6 mt-10 text-gray-800',
-        3: 'text-2xl font-semibold mb-4 mt-8 text-gray-800'
-      }[headerLevel] || 'text-xl font-semibold mb-3 mt-6 text-gray-800';
+        1: 'text-3xl font-bold mb-6',
+        2: 'text-2xl font-bold mb-4',
+        3: 'text-xl font-semibold mb-2'
+      }[headerLevel] || 'text-lg font-semibold mb-2';
       
       return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
     }
@@ -31,8 +31,8 @@ export function textToHtml(text: string): string {
         .map(line => line.replace(/^\d+\.\s/, '').trim());
         
       if (items.length > 0) {
-        return `<ol class="list-decimal pl-5 mb-6 space-y-3">
-          ${items.map(item => `<li class="text-gray-700">${item}</li>`).join('\n')}
+        return `<ol class="list-decimal pl-5 mb-4 space-y-2">
+          ${items.map(item => `<li>${item}</li>`).join('\n')}
         </ol>`;
       }
     }
@@ -44,27 +44,16 @@ export function textToHtml(text: string): string {
         .map(line => line.replace(/^-\s/, '').trim());
         
       if (items.length > 0) {
-        return `<ul class="list-disc pl-5 mb-6 space-y-3">
-          ${items.map(item => `<li class="text-gray-700">${item}</li>`).join('\n')}
+        return `<ul class="list-disc pl-5 mb-4 space-y-2">
+          ${items.map(item => `<li>${item}</li>`).join('\n')}
         </ul>`;
       }
     }
     
-    // Check for blockquotes with italics and attribution
-    if (section.match(/^"([^"]*)" — (.*)/)) {
-      const match = section.match(/^"([^"]*)" — (.*)/);
-      if (match) {
-        const [_, quote, attribution] = match;
-        return `<blockquote class="italic p-4 my-6 border-l-4 border-primary bg-primary/5 text-gray-700 rounded-md">
-          "${quote}" <span class="block text-right mt-2 font-medium">— ${attribution}</span>
-        </blockquote>`;
-      }
-    }
-    
-    // Regular paragraphs with improved spacing and text color
+    // Regular paragraphs
     const lines = section.split('\n').filter(line => line.trim());
     const formattedLines = lines.join('<br />');
-    return `<p class="text-gray-700 mb-6 leading-relaxed">${formattedLines}</p>`;
+    return `<p class="mb-4">${formattedLines}</p>`;
   });
   
   return htmlSections.join('\n\n');
@@ -112,9 +101,6 @@ export function htmlToText(html: string): string {
     .replace(/<ol[^>]*>([\s\S]*?)<\/ol>/g, (match, content) => {
       const items = content.match(/<li[^>]*>([\s\S]*?)<\/li>/g) || [];
       return items.map((item, index) => `${index + 1}. ` + item.replace(/<li[^>]*>([\s\S]*?)<\/li>/, '$1')).join('\n') + '\n\n';
-    })
-    .replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/g, (match, content) => {
-      return content.trim() + '\n\n';
     })
     .replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '$1\n\n')
     .replace(/<br\s*\/?>/g, '\n')

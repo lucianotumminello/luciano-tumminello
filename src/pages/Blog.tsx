@@ -1,148 +1,238 @@
 
-import React, { useEffect } from 'react';
-import { Link } from "react-router-dom";
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { useLanguage } from "@/contexts/LanguageContext";
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { getSortedBlogPosts } from "@/utils/blogDataManager";
-import { trackPageView } from "@/utils/analytics";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Card, CardContent } from "@/components/ui/card";
+import { CalendarIcon } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { generateSlug } from '@/utils/blogUtils';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
+import { useState, useEffect } from "react";
+import { getAllBlogPosts } from "@/utils/blogDataManager";
 
 const Blog = () => {
-  console.log("Blog component rendering");
   const { language } = useLanguage();
   const isItalian = language === "it";
-  const title = isItalian ? "Blog | Luciano Tumminello" : "Blog | Luciano Tumminello";
-  const description = isItalian 
-    ? "Articoli, riflessioni e approfondimenti nel campo del marketing, dell'intelligenza artificiale e della leadership." 
-    : "Articles, reflections, and insights in marketing, artificial intelligence, and leadership.";
+  const POSTS_PER_PAGE = 4;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
+  // Load and sort blog posts when component mounts or language changes
   useEffect(() => {
-    console.log("Blog useEffect running");
-    trackPageView(
-      "/blog", 
-      title
-    );
-  }, [title]);
-  
-  try {
-    console.log("Fetching blog posts");
-    const blogPosts = getSortedBlogPosts();
-    console.log(`Found ${blogPosts.length} blog posts`);
+    const posts = Object.entries(getAllBlogPosts())
+      .map(([slug, post]) => ({
+        ...post,
+        slug
+      }))
+      .sort((a, b) => {
+        // Parse dates for proper comparison
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB.getTime() - dateA.getTime();
+      });
     
-    return (
-      <>
-        <Helmet>
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={description} />
-          <meta property="og:url" content={window.location.href} />
-          <meta property="og:type" content="website" />
-        </Helmet>
-        
-        <div className="min-h-screen flex flex-col bg-white">
-          <Header />
+    setBlogPosts(posts);
+  }, [language]); // Re-run when language changes
+  
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "";
+    
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) {
+        // If date is invalid, return the original string
+        return dateStr;
+      }
+      
+      const day = date.getDate();
+      const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
+      const year = date.getFullYear();
+      return `${day} ${month} ${year}`;
+    } catch (error) {
+      console.error("Error formatting date:", error, dateStr);
+      return dateStr;
+    }
+  };
+  
+  const totalPosts = blogPosts.length;
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  
+  const indexOfLastPost = currentPage * POSTS_PER_PAGE;
+  const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
+  const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
+  
+  const placeholderPosts = [
+    {
+      id: 2,
+      title: "Coming Soon",
+      titleIT: "Prossimamente",
+      excerpt: "Coming Soon",
+      excerptIT: "Prossimamente",
+      date: "March 22, 2023",
+      dateIT: "22 Marzo 2023",
+      category: "UI Design",
+      categoryIT: "UI Design",
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
+      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+    },
+    {
+      id: 3,
+      title: "Coming Soon",
+      titleIT: "Prossimamente",
+      excerpt: "Coming Soon",
+      excerptIT: "Prossimamente",
+      date: "February 8, 2023",
+      dateIT: "8 Febbraio 2023",
+      category: "Development",
+      categoryIT: "Sviluppo",
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
+      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+    },
+    {
+      id: 4,
+      title: "Coming Soon",
+      titleIT: "Prossimamente",
+      excerpt: "Coming Soon",
+      excerptIT: "Prossimamente",
+      date: "January 17, 2023",
+      dateIT: "17 Gennaio 2023",
+      category: "Design Systems",
+      categoryIT: "Sistemi di Design",
+      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
+      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+    }
+  ];
+  
+  const neededPlaceholders = Math.max(0, POSTS_PER_PAGE - currentPosts.length);
+  const allPosts = [
+    ...currentPosts,
+    ...placeholderPosts.slice(0, neededPlaceholders)
+  ];
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <Helmet>
+        <title>{isItalian ? "Blog | Luciano Tumminello" : "Blog | Luciano Tumminello"}</title>
+        <meta 
+          name="description" 
+          content={isItalian 
+            ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basate sui dati di Luciano Tumminello." 
+            : "Strategic insights on digital transformation, AI, and data-driven marketing strategies by Luciano Tumminello."} 
+        />
+        <meta 
+          name="keywords" 
+          content={isItalian 
+            ? "blog marketing, IA nel marketing, trasformazione digitale, strategie basate sui dati, Luciano Tumminello" 
+            : "marketing blog, AI in marketing, digital transformation, data-driven strategies, Luciano Tumminello"} 
+        />
+      </Helmet>
+      <Header />
+      <main className="flex-1 py-16 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="mb-12 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
+            <p className="text-lg text-gray-600 mx-auto max-w-3xl text-justify">
+              {isItalian 
+                ? "Approfondimenti strategici sulla trasformazione digitale, le operazioni globali e il marketing basato sui dati."
+                : "Strategic insights on digital transformation, global operations, and data-driven marketing."
+              }
+            </p>
+          </div>
           
-          <main className="flex-1 w-full max-w-7xl mx-auto px-4 pt-8 pb-16">
-            <div className="mb-12 text-center">
-              <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                {isItalian ? "Blog" : "Blog"}
-              </h1>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                {isItalian 
-                  ? "Scopri approfondimenti nel marketing, AI e leadership da Luciano Tumminello" 
-                  : "Discover insights on marketing, AI and leadership from Luciano Tumminello"}
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogPosts.map((post) => {
-                // Generate slug from title
-                const slug = generateSlug(post.title);
-                
-                return (
-                  <Card 
-                    key={slug} 
-                    className="overflow-hidden border border-gray-200 transition-shadow hover:shadow-lg"
-                  >
-                    <div>
-                      <AspectRatio ratio={16/9} className="bg-gray-100">
-                        <img 
-                          src={post.imageUrl} 
-                          alt={isItalian ? post.titleIT : post.title}
-                          className="w-full h-full object-cover" 
-                          loading="lazy"
-                        />
-                      </AspectRatio>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            {allPosts.map((post, index) => (
+              <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <img 
+                    src={post.imageUrl || (post.desktopImageUrl || "")} 
+                    alt={isItalian ? post.titleIT : post.title} 
+                    className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                    <span className="bg-gray-100 px-2 py-1 rounded-full">
+                      {isItalian ? post.categoryIT : post.category}
+                    </span>
+                    <span>•</span>
+                    <div className="flex items-center whitespace-nowrap">
+                      <CalendarIcon className="h-3 w-3 mr-1" />
+                      {formatDate(isItalian ? post.dateIT : post.date)}
                     </div>
-                    
-                    <CardContent className="p-6">
-                      <div className="mb-4 flex items-center justify-between">
-                        <span className="bg-gray-100 rounded-full px-3 py-1 text-sm text-gray-700">
-                          {isItalian ? post.categoryIT : post.category}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {isItalian ? post.dateIT : post.date}
-                        </span>
-                      </div>
-                      
-                      <h2 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
-                        {isItalian ? post.titleIT : post.title}
-                      </h2>
-                      
-                      <p className="text-gray-600 mb-4 line-clamp-3">
-                        {isItalian ? post.excerptIT : post.excerpt}
-                      </p>
-                      
-                      <div className="flex items-center">
-                        <span className="text-sm text-gray-500">
-                          {isItalian ? post.readingTimeIT : post.readingTime}
-                        </span>
-                      </div>
-                    </CardContent>
-                    
-                    <CardFooter className="p-6 pt-0">
-                      <Link to={`/blog/${slug}`} className="w-full">
-                        <Button variant="outline" className="w-full">
-                          {isItalian ? "Leggi l'articolo" : "Read Article"}
-                        </Button>
-                      </Link>
-                    </CardFooter>
-                  </Card>
-                );
-              })}
-            </div>
-          </main>
-          
-          <Footer />
+                  </div>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
+                    {'slug' in post ? (
+                      <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
+                    ) : (
+                      isItalian ? post.titleIT : post.title
+                    )}
+                  </h2>
+                  <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
+                  {'slug' in post ? (
+                    <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
+                      {isItalian ? "Leggi di più →" : "Read More →"}
+                    </Link>
+                  ) : (
+                    <span className="text-gray-400 font-medium text-sm">
+                      {isItalian ? "Prossimamente..." : "Coming Soon..."}
+                    </span>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <Pagination className="mt-8">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+                
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <PaginationItem key={i + 1}>
+                    <PaginationLink
+                      onClick={() => setCurrentPage(i + 1)}
+                      isActive={currentPage === i + 1}
+                      className="cursor-pointer"
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
         </div>
-      </>
-    );
-  } catch (error) {
-    console.error("Error rendering Blog component:", error);
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
-        <Header />
-        <div className="max-w-lg w-full my-12">
-          <Alert variant="destructive" className="mb-4">
-            <AlertDescription>
-              We're having trouble loading the blog. Please try again later.
-            </AlertDescription>
-          </Alert>
-          <Link to="/">
-            <Button variant="default">Return to Home</Button>
-          </Link>
-        </div>
-        <Footer />
+      </main>
+      <div className="container mx-auto max-w-5xl flex justify-end mb-8">
+        <Link 
+          to="/blog-builder"
+          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          LOGIN
+        </Link>
       </div>
-    );
-  }
+      <Footer />
+    </div>
+  );
 };
 
 export default Blog;
