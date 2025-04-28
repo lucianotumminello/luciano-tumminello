@@ -1,3 +1,4 @@
+
 import type { BlogPost } from '@/types';
 
 export function getAllBlogPosts(): Record<string, BlogPost> {
@@ -18,6 +19,16 @@ export function getPublishedBlogPosts(): Record<string, BlogPost> {
     }
     return acc;
   }, {} as Record<string, BlogPost>);
+}
+
+export function getBlogPost(slug: string): BlogPost | null {
+  try {
+    const blogs = getAllBlogPosts();
+    return blogs[slug] || null;
+  } catch (error) {
+    console.error('Error getting blog post:', error);
+    return null;
+  }
 }
 
 export function updateBlogPost(slug: string, updatedPost: BlogPost): void {

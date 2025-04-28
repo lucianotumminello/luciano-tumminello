@@ -13,7 +13,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Label } from "@/components/ui/label";
 import { BlogPost } from "@/types";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
-import { Eye, EyeOff, FileText } from "lucide-react";
+import { Eye, EyeOff, FileText, Send } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import FormattingGuide from "@/components/blog/FormattingGuide";
@@ -471,7 +471,7 @@ const BlogBuilder = () => {
                   onClick={applyLayout}
                   className="flex items-center gap-2"
                 >
-                  <LayoutList className="h-5 w-5" />
+                  <FileText className="h-5 w-5" />
                   Apply Layout
                 </Button>
                 <Button 
