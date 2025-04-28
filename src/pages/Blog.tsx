@@ -1,5 +1,4 @@
-import React from 'react';
-import { getPublishedBlogPosts } from '@/utils/blogDataManager';
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import {
   PaginationPrevious 
 } from "@/components/ui/pagination";
 import { useState, useEffect } from "react";
+import { getAllBlogPosts } from "@/utils/blogDataManager";
 
 const Blog = () => {
   const { language } = useLanguage();
@@ -24,20 +24,22 @@ const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
+  // Load and sort blog posts when component mounts or language changes
   useEffect(() => {
-    const posts = Object.entries(getPublishedBlogPosts())
+    const posts = Object.entries(getAllBlogPosts())
       .map(([slug, post]) => ({
         ...post,
         slug
       }))
       .sort((a, b) => {
+        // Parse dates for proper comparison
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
         return dateB.getTime() - dateA.getTime();
       });
     
     setBlogPosts(posts);
-  }, [language]);
+  }, [language]); // Re-run when language changes
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
@@ -45,6 +47,7 @@ const Blog = () => {
     try {
       const date = new Date(dateStr);
       if (isNaN(date.getTime())) {
+        // If date is invalid, return the original string
         return dateStr;
       }
       
@@ -120,7 +123,7 @@ const Blog = () => {
         <meta 
           name="description" 
           content={isItalian 
-            ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basati sui dati di Luciano Tumminello." 
+            ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basate sui dati di Luciano Tumminello." 
             : "Strategic insights on digital transformation, AI, and data-driven marketing strategies by Luciano Tumminello."} 
         />
         <meta 

@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Label } from "@/components/ui/label";
 import { BlogPost } from "@/types";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
-import { Eye, EyeOff, FileText, Send } from "lucide-react";
+import { Eye, EyeOff, FileText } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import FormattingGuide from "@/components/blog/FormattingGuide";
@@ -432,25 +433,21 @@ const BlogBuilder = () => {
                     <SheetTitle>Select a post to edit</SheetTitle>
                   </SheetHeader>
                   <div className="mt-6 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-                    {Object.entries(blogPosts).length > 0 ? (
-                      Object.entries(blogPosts).map(([slug, post]) => (
-                        <Button 
-                          key={slug} 
-                          variant="outline" 
-                          className="justify-start text-left h-auto py-3"
-                          onClick={() => {
-                            selectPostToEdit(slug);
-                          }}
-                        >
-                          <div>
-                            <p className="font-medium">{post.title}</p>
-                            <p className="text-sm text-gray-500">{post.date}</p>
-                          </div>
-                        </Button>
-                      ))
-                    ) : (
-                      <p className="text-center text-gray-500 py-4">No blog posts available</p>
-                    )}
+                    {Object.entries(blogPosts).map(([slug, post]) => (
+                      <Button 
+                        key={slug} 
+                        variant="outline" 
+                        className="justify-start text-left h-auto py-3"
+                        onClick={() => {
+                          selectPostToEdit(slug);
+                        }}
+                      >
+                        <div>
+                          <p className="font-medium">{post.title}</p>
+                          <p className="text-sm text-gray-500">{post.date}</p>
+                        </div>
+                      </Button>
+                    ))}
                   </div>
                 </SheetContent>
               </Sheet>
@@ -665,59 +662,16 @@ const BlogBuilder = () => {
                 </div>
               </div>
               
-              <div className="flex justify-end gap-4 mt-8 mb-8">
-                <Button 
-                  type="button" 
-                  variant="default"
-                  size="lg"
-                  onClick={applyLayout}
-                  className="flex items-center gap-2 bg-primary"
-                >
-                  <FileText className="h-5 w-5" />
-                  Apply Layout
-                </Button>
-                <Button 
-                  type="submit" 
-                  size="lg"
-                  disabled={isPublishing}
-                  className="flex items-center gap-2"
-                >
-                  <Send className="h-5 w-5" />
-                  {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
-                </Button>
-                {isUpdateMode && selectedPost && (
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="publishStatus"
-                      checked={!blogPosts[selectedPost]?.unpublished}
-                      onCheckedChange={(checked) => {
-                        const updatedPost = {
-                          ...blogPosts[selectedPost],
-                          unpublished: !checked
-                        };
-                        updateBlogPost(selectedPost, updatedPost);
-                        setBlogPosts((prev) => ({
-                          ...prev,
-                          [selectedPost]: updatedPost
-                        }));
-                        toast({
-                          title: checked ? "Blog post published" : "Blog post unpublished",
-                          description: checked 
-                            ? "Your post is now visible on the blog page" 
-                            : "Your post has been hidden from the blog page",
-                        });
-                      }}
-                    />
-                    <Label htmlFor="publishStatus" className="text-sm">
-                      {blogPosts[selectedPost]?.unpublished ? "Unpublished" : "Published"}
-                    </Label>
-                  </div>
-                )}
-              </div>
+              <Button 
+                type="submit" 
+                size="lg" 
+                className="w-full md:w-auto"
+                disabled={isPublishing}
+              >
+                {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
+              </Button>
             </form>
           </Form>
-
-          <FormattingGuide />
 
           <Dialog open={showPreview} onOpenChange={setShowPreview}>
             <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
@@ -808,6 +762,8 @@ const BlogBuilder = () => {
               )}
             </DialogContent>
           </Dialog>
+
+          <FormattingGuide />
         </div>
       </main>
       <Footer />

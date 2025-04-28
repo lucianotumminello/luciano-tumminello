@@ -19,5 +19,4 @@ export interface BlogPost {
   tags: string[];
   tagsIT: string[];
   slug?: string; // Added slug property as optional
-  unpublished?: boolean; // Added unpublished property as optional
 }
