@@ -1,38 +1,38 @@
-
 /**
  * Converts plain text to HTML format with advanced formatting
  */
 export function textToHtml(text: string): string {
   if (!text) return '';
   
-  // Split text into sections
+  // Split text into sections and remove empty ones
   const sections = text.split('\n\n').filter(s => s.trim());
   
   // Convert each section to HTML with advanced formatting
   const htmlSections = sections.map(section => {
-    // Check if the section starts with a header
-    const headerMatch = section.match(/^(#+)\s(.+)/);
-    if (headerMatch) {
-      const headerLevel = headerMatch[1].length;
-      const headerText = headerMatch[2];
-      // Apply standardized heading styles with proper spacing
-      switch(headerLevel) {
-        case 1: // H1 - Main Title
-          return `<h1 class="text-4xl font-bold mb-8 mt-12 text-gray-900">${headerText}</h1>`;
-        case 2: // H2 - Section Title
-          return `<h2 class="text-3xl font-bold mb-6 mt-12 text-gray-800">${headerText}</h2>`;
-        case 3: // H3 - Subsection Title
-          return `<h3 class="text-2xl font-semibold mb-4 mt-8 text-gray-800">${headerText}</h3>`;
-        default: // H4-H6 - Minor headings
-          return `<h${headerLevel} class="text-xl font-semibold mb-4 mt-6 text-gray-800">${headerText}</h${headerLevel}>`;
+    // First check if the section is a heading
+    if (section.startsWith('#')) {
+      const match = section.match(/^(#+)\s*(.+)$/);
+      if (match) {
+        const level = match[1].length;
+        const content = match[2].trim();
+        switch(level) {
+          case 1:
+            return `<h1 class="text-4xl font-bold mb-8 mt-12 text-gray-900">${content}</h1>`;
+          case 2:
+            return `<h2 class="text-3xl font-bold mb-6 mt-12 text-gray-800">${content}</h2>`;
+          case 3:
+            return `<h3 class="text-2xl font-semibold mb-4 mt-8 text-gray-800">${content}</h3>`;
+          default:
+            return `<h${level} class="text-xl font-semibold mb-4 mt-6 text-gray-800">${content}</h${level}>`;
+        }
       }
     }
     
     // Check for bullet points
     if (section.match(/^-\s/m)) {
       const items = section.split('\n')
-        .filter(line => line.match(/^-\s/))
-        .map(line => line.replace(/^-\s/, '').trim());
+        .filter(line => line.trim().startsWith('- '))
+        .map(line => line.replace(/^-\s+/, '').trim());
         
       if (items.length > 0) {
         return `<ul class="list-disc pl-6 mb-6 space-y-3 text-gray-700">
@@ -45,7 +45,7 @@ export function textToHtml(text: string): string {
     if (section.match(/^\d+\.\s/m)) {
       const items = section.split('\n')
         .filter(line => line.match(/^\d+\.\s/))
-        .map(line => line.replace(/^\d+\.\s/, '').trim());
+        .map(line => line.replace(/^\d+\.\s+/, '').trim());
         
       if (items.length > 0) {
         return `<ol class="list-decimal pl-6 mb-6 space-y-3 text-gray-700">
@@ -65,9 +65,7 @@ export function textToHtml(text: string): string {
     }
     
     // Regular paragraphs with improved spacing and text styling
-    const lines = section.split('\n').filter(line => line.trim());
-    const formattedLines = lines.join('<br />');
-    return `<p class="mb-6 text-gray-700 text-justify leading-relaxed">${formattedLines}</p>`;
+    return `<p class="mb-6 text-gray-700 text-justify leading-relaxed">${section.trim()}</p>`;
   });
   
   return htmlSections.join('\n\n');
@@ -79,22 +77,21 @@ export function textToHtml(text: string): string {
 export function applyStandardLayout(text: string): string {
   if (!text) return '';
   
-  // Ensure proper header formatting
-  let formattedText = text
-    .replace(/^# (.*?)$/gm, '# $1\n')  // H1 titles
-    .replace(/^## (.*?)$/gm, '## $1\n') // H2 titles
-    .replace(/^### (.*?)$/gm, '### $1\n'); // H3 titles
+  let formattedText = text;
   
-  // Ensure double line breaks between sections
-  formattedText = formattedText.replace(/\n{3,}/g, '\n\n');
-  
-  // Add spacing after lists
+  // Ensure proper header formatting with space after #
   formattedText = formattedText
-    .replace(/(\n- .*?)(\n[^-])/g, '$1\n$2')
-    .replace(/(\n\d+\. .*?)(\n[^\d])/g, '$1\n$2');
+    .replace(/^(#+)([^\s])/gm, '$1 $2')  // Add space after # if missing
+    .replace(/^(#+)\s+/gm, '$1 ');  // Normalize spaces after #
   
-  // Format quotes
-  formattedText = formattedText.replace(/"([^"]*)" — ([^"]*)/g, '"$1" — $2');
+  // Ensure lists have proper spacing
+  formattedText = formattedText
+    .replace(/^(-|\d+\.)\s*/gm, '$1 ')  // Normalize list item spacing
+    .replace(/\n{3,}/g, '\n\n');  // Remove extra blank lines
+  
+  // Format quotes consistently
+  formattedText = formattedText
+    .replace(/^"([^"]*)"(\s*)—(\s*)([^"]*)/gm, '"$1" — $4');
   
   return formattedText;
 }

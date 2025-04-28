@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -464,6 +463,56 @@ const BlogBuilder = () => {
           
           <Form {...blogForm}>
             <form onSubmit={blogForm.handleSubmit(onBlogSubmit)} className="space-y-6">
+              <div className="flex justify-end items-center gap-4 mb-4">
+                <Button 
+                  type="button" 
+                  variant="default"
+                  size="lg"
+                  onClick={applyLayout}
+                  className="flex items-center gap-2"
+                >
+                  <LayoutList className="h-5 w-5" />
+                  Apply Layout
+                </Button>
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  disabled={isPublishing}
+                  className="flex items-center gap-2"
+                >
+                  <Send className="h-5 w-5" />
+                  {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
+                </Button>
+                {isUpdateMode && selectedPost && (
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="publishStatus"
+                      checked={!blogPosts[selectedPost]?.unpublished}
+                      onCheckedChange={(checked) => {
+                        const updatedPost = {
+                          ...blogPosts[selectedPost],
+                          unpublished: !checked
+                        };
+                        updateBlogPost(selectedPost, updatedPost);
+                        setBlogPosts((prev) => ({
+                          ...prev,
+                          [selectedPost]: updatedPost
+                        }));
+                        toast({
+                          title: checked ? "Blog post published" : "Blog post unpublished",
+                          description: checked 
+                            ? "Your post is now visible on the blog page" 
+                            : "Your post has been hidden from the blog page",
+                        });
+                      }}
+                    />
+                    <Label htmlFor="publishStatus" className="text-sm">
+                      {blogPosts[selectedPost]?.unpublished ? "Unpublished" : "Published"}
+                    </Label>
+                  </div>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={blogForm.control}
