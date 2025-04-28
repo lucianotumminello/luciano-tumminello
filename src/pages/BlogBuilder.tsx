@@ -432,21 +432,25 @@ const BlogBuilder = () => {
                     <SheetTitle>Select a post to edit</SheetTitle>
                   </SheetHeader>
                   <div className="mt-6 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-                    {Object.entries(blogPosts).map(([slug, post]) => (
-                      <Button 
-                        key={slug} 
-                        variant="outline" 
-                        className="justify-start text-left h-auto py-3"
-                        onClick={() => {
-                          selectPostToEdit(slug);
-                        }}
-                      >
-                        <div>
-                          <p className="font-medium">{post.title}</p>
-                          <p className="text-sm text-gray-500">{post.date}</p>
-                        </div>
-                      </Button>
-                    ))}
+                    {Object.entries(blogPosts).length > 0 ? (
+                      Object.entries(blogPosts).map(([slug, post]) => (
+                        <Button 
+                          key={slug} 
+                          variant="outline" 
+                          className="justify-start text-left h-auto py-3"
+                          onClick={() => {
+                            selectPostToEdit(slug);
+                          }}
+                        >
+                          <div>
+                            <p className="font-medium">{post.title}</p>
+                            <p className="text-sm text-gray-500">{post.date}</p>
+                          </div>
+                        </Button>
+                      ))
+                    ) : (
+                      <p className="text-center text-gray-500 py-4">No blog posts available</p>
+                    )}
                   </div>
                 </SheetContent>
               </Sheet>
@@ -804,8 +808,6 @@ const BlogBuilder = () => {
               )}
             </DialogContent>
           </Dialog>
-
-          
         </div>
       </main>
       <Footer />
