@@ -463,56 +463,6 @@ const BlogBuilder = () => {
           
           <Form {...blogForm}>
             <form onSubmit={blogForm.handleSubmit(onBlogSubmit)} className="space-y-6">
-              <div className="flex justify-end items-center gap-4 mb-4">
-                <Button 
-                  type="button" 
-                  variant="default"
-                  size="lg"
-                  onClick={applyLayout}
-                  className="flex items-center gap-2"
-                >
-                  <FileText className="h-5 w-5" />
-                  Apply Layout
-                </Button>
-                <Button 
-                  type="submit" 
-                  size="lg"
-                  disabled={isPublishing}
-                  className="flex items-center gap-2"
-                >
-                  <Send className="h-5 w-5" />
-                  {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
-                </Button>
-                {isUpdateMode && selectedPost && (
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="publishStatus"
-                      checked={!blogPosts[selectedPost]?.unpublished}
-                      onCheckedChange={(checked) => {
-                        const updatedPost = {
-                          ...blogPosts[selectedPost],
-                          unpublished: !checked
-                        };
-                        updateBlogPost(selectedPost, updatedPost);
-                        setBlogPosts((prev) => ({
-                          ...prev,
-                          [selectedPost]: updatedPost
-                        }));
-                        toast({
-                          title: checked ? "Blog post published" : "Blog post unpublished",
-                          description: checked 
-                            ? "Your post is now visible on the blog page" 
-                            : "Your post has been hidden from the blog page",
-                        });
-                      }}
-                    />
-                    <Label htmlFor="publishStatus" className="text-sm">
-                      {blogPosts[selectedPost]?.unpublished ? "Unpublished" : "Published"}
-                    </Label>
-                  </div>
-                )}
-              </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={blogForm.control}
@@ -711,16 +661,59 @@ const BlogBuilder = () => {
                 </div>
               </div>
               
-              <Button 
-                type="submit" 
-                size="lg" 
-                className="w-full md:w-auto"
-                disabled={isPublishing}
-              >
-                {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
-              </Button>
+              <div className="flex justify-end gap-4 mt-8 mb-8">
+                <Button 
+                  type="button" 
+                  variant="default"
+                  size="lg"
+                  onClick={applyLayout}
+                  className="flex items-center gap-2 bg-primary"
+                >
+                  <FileText className="h-5 w-5" />
+                  Apply Layout
+                </Button>
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  disabled={isPublishing}
+                  className="flex items-center gap-2"
+                >
+                  <Send className="h-5 w-5" />
+                  {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
+                </Button>
+                {isUpdateMode && selectedPost && (
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="publishStatus"
+                      checked={!blogPosts[selectedPost]?.unpublished}
+                      onCheckedChange={(checked) => {
+                        const updatedPost = {
+                          ...blogPosts[selectedPost],
+                          unpublished: !checked
+                        };
+                        updateBlogPost(selectedPost, updatedPost);
+                        setBlogPosts((prev) => ({
+                          ...prev,
+                          [selectedPost]: updatedPost
+                        }));
+                        toast({
+                          title: checked ? "Blog post published" : "Blog post unpublished",
+                          description: checked 
+                            ? "Your post is now visible on the blog page" 
+                            : "Your post has been hidden from the blog page",
+                        });
+                      }}
+                    />
+                    <Label htmlFor="publishStatus" className="text-sm">
+                      {blogPosts[selectedPost]?.unpublished ? "Unpublished" : "Published"}
+                    </Label>
+                  </div>
+                )}
+              </div>
             </form>
           </Form>
+
+          <FormattingGuide />
 
           <Dialog open={showPreview} onOpenChange={setShowPreview}>
             <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
@@ -812,7 +805,7 @@ const BlogBuilder = () => {
             </DialogContent>
           </Dialog>
 
-          <FormattingGuide />
+          
         </div>
       </main>
       <Footer />
