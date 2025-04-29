@@ -138,4 +138,3 @@ export function htmlToText(html: string): string {
     .replace(/&nbsp;/g, ' ')
     .trim();
 }
-

@@ -55,10 +55,29 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         .prose p {
           text-align: justify;
           color: rgb(75 85 99);
+          margin-bottom: 1.5rem;
         }
         .prose li {
           text-align: justify;
           color: rgb(75 85 99);
+          margin-bottom: 0.5rem;
+        }
+        .prose h1 {
+          margin-top: 2rem;
+          margin-bottom: 1.5rem;
+        }
+        .prose h2 {
+          margin-top: 1.75rem;
+          margin-bottom: 1.25rem;
+        }
+        .prose h3 {
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .prose blockquote {
+          padding: 1rem;
+          margin: 1.5rem 0;
+          border-radius: 0.375rem;
         }
       `}</style>
     </article>
