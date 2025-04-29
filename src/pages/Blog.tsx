@@ -31,8 +31,6 @@ const Blog = () => {
         ...post,
         slug
       }))
-      // Only include published posts (if published is undefined, treat as published)
-      .filter(post => post.published !== false)
       .sort((a, b) => {
         // Parse dates for proper comparison
         const dateA = new Date(a.date);
