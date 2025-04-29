@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -64,6 +63,7 @@ const BlogBuilder = () => {
   const [rememberPassword, setRememberPassword] = useState(false);
   const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>(getAllBlogPosts());
   const [isPublishing, setIsPublishing] = useState(false);
+  const [blogPostPublishState, setBlogPostPublishState] = useState<Record<string, boolean>>({});
   const desktopImageRef = useRef<HTMLInputElement>(null);
   const mobileImageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -145,7 +145,14 @@ const BlogBuilder = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      setBlogPosts(getAllBlogPosts());
+      const posts = getAllBlogPosts();
+      setBlogPosts(posts);
+      
+      const initialPublishState: Record<string, boolean> = {};
+      Object.entries(posts).forEach(([slug, post]) => {
+        initialPublishState[slug] = post.published !== false;
+      });
+      setBlogPostPublishState(initialPublishState);
     }
   }, [isAuthenticated]);
 
@@ -204,6 +211,26 @@ const BlogBuilder = () => {
       title: "Layout applied",
       description: "Your content has been formatted for consistency",
     });
+  };
+
+  const handlePublishStateChange = (slug: string, checked: boolean) => {
+    setBlogPostPublishState(prev => ({
+      ...prev,
+      [slug]: checked
+    }));
+    
+    const post = blogPosts[slug];
+    if (post) {
+      const updatedPost = { ...post, published: checked };
+      updateBlogPost(slug, updatedPost);
+      
+      toast({
+        title: checked ? "Post published" : "Post unpublished",
+        description: `"${post.title}" is now ${checked ? "visible" : "hidden"} on the blog page`,
+      });
+      
+      setBlogPosts(getAllBlogPosts());
+    }
   };
 
   const onBlogSubmit = async (data: BlogFormData) => {
@@ -284,6 +311,9 @@ const BlogBuilder = () => {
         readingTimeIT: translatedReadingTime,
         tags: tagsToUse,
         tagsIT: translatedTags,
+        published: isUpdateMode && selectedPost ? 
+          (blogPostPublishState[selectedPost] ?? true) : 
+          true
       };
 
       setPreviewData(blogPost);
@@ -433,21 +463,39 @@ const BlogBuilder = () => {
                     <SheetTitle>Select a post to edit</SheetTitle>
                   </SheetHeader>
                   <div className="mt-6 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-                    {Object.entries(blogPosts).map(([slug, post]) => (
-                      <Button 
-                        key={slug} 
-                        variant="outline" 
-                        className="justify-start text-left h-auto py-3"
-                        onClick={() => {
-                          selectPostToEdit(slug);
-                        }}
-                      >
-                        <div>
-                          <p className="font-medium">{post.title}</p>
-                          <p className="text-sm text-gray-500">{post.date}</p>
+                    {Object.entries(blogPosts).length > 0 ? (
+                      Object.entries(blogPosts).map(([slug, post]) => (
+                        <div 
+                          key={slug} 
+                          className="flex items-center gap-3 border border-gray-200 rounded-md p-3"
+                        >
+                          <div className="flex items-center h-full">
+                            <Checkbox
+                              id={`publish-${slug}`}
+                              checked={blogPostPublishState[slug] ?? true}
+                              onCheckedChange={(checked) => handlePublishStateChange(slug, checked as boolean)}
+                              className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                            />
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-left h-auto py-3 flex-1 hover:bg-gray-100"
+                            onClick={() => {
+                              selectPostToEdit(slug);
+                            }}
+                          >
+                            <div className="w-full">
+                              <p className="font-medium">{post.title}</p>
+                              <p className="text-sm text-gray-500">{post.date}</p>
+                            </div>
+                          </Button>
                         </div>
-                      </Button>
-                    ))}
+                      ))
+                    ) : (
+                      <div className="text-center py-4 text-gray-500">
+                        No blog posts available
+                      </div>
+                    )}
                   </div>
                 </SheetContent>
               </Sheet>
