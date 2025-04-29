@@ -75,20 +75,41 @@ export function textToHtml(text: string): string {
 export function applyStandardLayout(text: string): string {
   if (!text) return '';
   
-  // Structure headings properly
-  let formattedText = text.replace(/^# (.*?)$/gm, '# $1');
-  formattedText = formattedText.replace(/^## (.*?)$/gm, '## $1');
-  formattedText = formattedText.replace(/^### (.*?)$/gm, '### $1');
+  // First, normalize line breaks to ensure consistent processing
+  let formattedText = text.replace(/\r\n/g, '\n');
   
-  // Ensure double line breaks between sections
+  // Identify existing headings and ensure proper formatting
+  formattedText = formattedText.replace(/^(#+)(?:\s*)(.+)$/gm, (match, hashes, content) => {
+    // Ensure exactly one space after the hash(es)
+    return `${hashes} ${content.trim()}`;
+  });
+  
+  // Add proper spacing between different sections
+  
+  // Ensure double line breaks between sections and avoid excessive line breaks
   formattedText = formattedText.replace(/\n{3,}/g, '\n\n');
   
-  // Add spacing after lists
-  formattedText = formattedText.replace(/(\n- .*?)(\n[^-])/g, '$1\n$2');
-  formattedText = formattedText.replace(/(\n\d+\. .*?)(\n[^\d])/g, '$1\n$2');
+  // Ensure proper spacing after headings
+  formattedText = formattedText.replace(/^(#+\s.+)$/gm, '$1\n');
   
-  // Format quotes
-  formattedText = formattedText.replace(/"([^"]*)" — ([^"]*)/g, '"$1" — $2');
+  // Fix list formatting - ensure proper indentation and spacing
+  // For bullet points
+  formattedText = formattedText.replace(/^-(?:\s*)(.+)$/gm, '- $1');
+  
+  // For numbered lists
+  formattedText = formattedText.replace(/^(\d+\.)(?:\s*)(.+)$/gm, '$1 $2');
+  
+  // Add spacing after lists
+  formattedText = formattedText.replace(/(\n- .*?)(\n[^-\n])/g, '$1\n$2');
+  formattedText = formattedText.replace(/(\n\d+\. .*?)(\n[^\d\n])/g, '$1\n$2');
+  
+  // Format quotes consistently
+  formattedText = formattedText.replace(/"([^"]*)"(?:\s*)—(?:\s*)([^"]*)/, (match, quote, citation) => {
+    return `"${quote.trim()}" — ${citation.trim()}`;
+  });
+  
+  // Ensure paragraphs have proper spacing
+  formattedText = formattedText.replace(/([^\n])(\n)([^\n#-\d"])/g, '$1\n\n$3');
   
   return formattedText;
 }
@@ -117,3 +138,4 @@ export function htmlToText(html: string): string {
     .replace(/&nbsp;/g, ' ')
     .trim();
 }
+
