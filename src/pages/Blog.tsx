@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,21 +24,22 @@ const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
+  // Load and sort blog posts when component mounts or language changes
   useEffect(() => {
     const posts = Object.entries(getAllBlogPosts())
       .map(([slug, post]) => ({
         ...post,
         slug
       }))
-      .filter(post => post.published !== false)
       .sort((a, b) => {
+        // Parse dates for proper comparison
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
         return dateB.getTime() - dateA.getTime();
       });
     
     setBlogPosts(posts);
-  }, [language]);
+  }, [language]); // Re-run when language changes
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
@@ -45,6 +47,7 @@ const Blog = () => {
     try {
       const date = new Date(dateStr);
       if (isNaN(date.getTime())) {
+        // If date is invalid, return the original string
         return dateStr;
       }
       
