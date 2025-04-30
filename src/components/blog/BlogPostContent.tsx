@@ -55,58 +55,10 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         .prose p {
           text-align: justify;
           color: rgb(75 85 99);
-          margin-bottom: 1.5rem;
         }
         .prose li {
           text-align: justify;
           color: rgb(75 85 99);
-          margin-bottom: 0.5rem;
-        }
-        .prose h1 {
-          font-size: 2rem;
-          line-height: 2.5rem;
-          margin-top: 2.5rem;
-          margin-bottom: 1.5rem;
-          color: rgb(31 41 55);
-        }
-        .prose h2 {
-          font-size: 1.75rem;
-          line-height: 2.25rem;
-          margin-top: 2rem;
-          margin-bottom: 1.25rem;
-          color: rgb(31 41 55);
-        }
-        .prose h3 {
-          font-size: 1.5rem;
-          line-height: 2rem;
-          margin-top: 1.75rem;
-          margin-bottom: 1rem;
-          color: rgb(31 41 55);
-        }
-        .prose blockquote {
-          padding: 1.25rem 1.5rem;
-          margin: 2rem 0;
-          border-radius: 0.5rem;
-          background-color: rgba(var(--primary-rgb), 0.05);
-          border-left-width: 4px;
-          border-color: var(--primary);
-        }
-        .prose blockquote p {
-          margin-bottom: 0.75rem;
-        }
-        .prose ul, .prose ol {
-          margin-top: 1rem;
-          margin-bottom: 1.5rem;
-        }
-        /* Improve header spacing for better readability */
-        .prose h1:first-child {
-          margin-top: 0;
-        }
-        .prose h1 + h2 {
-          margin-top: 1.5rem;
-        }
-        .prose h2 + h3 {
-          margin-top: 1.25rem;
         }
       `}</style>
     </article>
