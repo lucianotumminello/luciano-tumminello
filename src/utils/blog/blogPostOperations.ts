@@ -11,18 +11,7 @@ import { updatedBlogPosts } from "./blogPostsStore";
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  const newBlogPosts: BlogPostsStore = {
-    [slug]: blogPostWithoutSlug
-  };
-  
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    if (key !== slug) {
-      newBlogPosts[key] = value;
-    }
-  });
-  
-  // Update the in-memory store
-  Object.assign(updatedBlogPosts, newBlogPosts);
+  updatedBlogPosts[slug] = blogPostWithoutSlug;
   
   console.log(`Blog post ${slug} updated successfully`);
 };
@@ -35,16 +24,7 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  const newBlogPosts: BlogPostsStore = {
-    [slug]: blogPostWithoutSlug
-  };
-  
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    newBlogPosts[key] = value;
-  });
-  
-  // Update the in-memory store
-  Object.assign(updatedBlogPosts, newBlogPosts);
+  updatedBlogPosts[slug] = blogPostWithoutSlug;
   
   console.log(`New blog post ${slug} created successfully`);
   console.log("Current blog posts:", Object.keys(updatedBlogPosts));
@@ -55,19 +35,10 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
  * @param slug The slug of the blog post to delete
  */
 export const deleteBlogPost = (slug: string): void => {
-  const newBlogPosts: BlogPostsStore = {};
-  
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    if (key !== slug) {
-      newBlogPosts[key] = value;
-    }
-  });
-  
-  // Replace the entire in-memory store
-  Object.keys(updatedBlogPosts).forEach(key => {
-    delete updatedBlogPosts[key];
-  });
-  Object.assign(updatedBlogPosts, newBlogPosts);
-  
-  console.log(`Blog post ${slug} deleted successfully`);
+  if (slug in updatedBlogPosts) {
+    delete updatedBlogPosts[slug];
+    console.log(`Blog post ${slug} deleted successfully`);
+  } else {
+    console.warn(`Blog post ${slug} not found for deletion`);
+  }
 };

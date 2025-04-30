@@ -1,13 +1,24 @@
 
 import { updatedBlogPosts } from "./blogPostsStore";
+import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
 
 /**
  * Gets all blog posts from the in-memory data store
- * @returns All blog posts
+ * @returns All blog posts with slugs as keys
  */
-export const getAllBlogPosts = (): BlogPostsStore => {
-  return updatedBlogPosts;
+export const getAllBlogPosts = (): Record<string, BlogPost> => {
+  const result: Record<string, BlogPost> = {};
+  
+  // Convert the store's format to include slugs in the blog post objects
+  Object.entries(updatedBlogPosts).forEach(([slug, post]) => {
+    result[slug] = {
+      ...post,
+      slug
+    };
+  });
+  
+  return result;
 };
 
 /**
@@ -15,6 +26,13 @@ export const getAllBlogPosts = (): BlogPostsStore => {
  * @param slug The slug of the blog post
  * @returns The blog post or undefined if not found
  */
-export const getBlogPost = (slug: string): (Omit<import('@/types').BlogPost, "slug"> | undefined) => {
-  return updatedBlogPosts[slug];
+export const getBlogPost = (slug: string): (BlogPost | undefined) => {
+  const post = updatedBlogPosts[slug];
+  if (!post) return undefined;
+  
+  // Add the slug to the post object
+  return {
+    ...post,
+    slug
+  };
 };
