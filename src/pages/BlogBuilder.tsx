@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
@@ -35,7 +36,7 @@ const BlogBuilder = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [previewData, setPreviewData] = useState<BlogPost | null>(null);
   const [rememberPassword, setRememberPassword] = useState(false);
-  const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>({});
+  const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>(getAllBlogPosts());
   const [publishStates, setPublishStates] = useState<Record<string, boolean>>({});
   const [isPublishing, setIsPublishing] = useState(false);
   const [isPostListOpen, setIsPostListOpen] = useState(false);
@@ -75,11 +76,33 @@ const BlogBuilder = () => {
     }
   }, []);
 
-  // Load blog posts when authenticated
+  useEffect(() => {
+    if (!isUpdateMode) {
+      setFormValues(defaultFormValues);
+      setDesktopImageFile(null);
+      setMobileImageFile(null);
+    }
+  }, [isUpdateMode]);
+
+  useEffect(() => {
+    if (selectedPost && blogPosts[selectedPost]) {
+      const post = blogPosts[selectedPost];
+      setFormValues({
+        title: post.title,
+        excerpt: post.excerpt,
+        content: htmlToText(post.content),
+        date: post.date,
+        category: post.category,
+        tags: post.tags.join(", "),
+        desktopImageUrl: post.desktopImageUrl,
+        imageUrl: post.imageUrl
+      });
+    }
+  }, [selectedPost, blogPosts]);
+
   useEffect(() => {
     if (isAuthenticated) {
       const posts = getAllBlogPosts();
-      console.log("Loaded blog posts:", posts);
       setBlogPosts(posts);
       
       const initialPublishStates: Record<string, boolean> = {};
@@ -89,37 +112,6 @@ const BlogBuilder = () => {
       setPublishStates(initialPublishStates);
     }
   }, [isAuthenticated]);
-
-  // Reset form when switching between create and update modes
-  useEffect(() => {
-    if (!isUpdateMode) {
-      setFormValues(defaultFormValues);
-      setDesktopImageFile(null);
-      setMobileImageFile(null);
-      setSelectedPost(null);
-    }
-  }, [isUpdateMode]);
-
-  // Update form values when selecting a blog post to edit
-  useEffect(() => {
-    if (selectedPost && blogPosts[selectedPost]) {
-      const post = blogPosts[selectedPost];
-      console.log("Selected post to edit:", post);
-      
-      setFormValues({
-        title: post.title || "",
-        excerpt: post.excerpt || "",
-        content: post.content ? htmlToText(post.content) : "",
-        date: post.date || getCurrentFormattedDate(),
-        category: post.category || "",
-        tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
-        desktopImageUrl: post.desktopImageUrl || "",
-        imageUrl: post.imageUrl || ""
-      });
-      
-      setIsUpdateMode(true);
-    }
-  }, [selectedPost, blogPosts]);
 
   const handleRememberPasswordChange = (checked: boolean) => {
     setRememberPassword(checked);
@@ -286,22 +278,19 @@ const BlogBuilder = () => {
         readingTimeIT: translatedReadingTime,
         tags: tagsToUse,
         tagsIT: translatedTags,
-        published: currentPublishedState,
-        slug: slug // Add slug to the blogPost object
+        published: currentPublishedState
       };
 
       setPreviewData(blogPost);
       setShowPreview(true);
 
       if (isUpdateMode && selectedPost) {
-        console.log("Updating blog post:", selectedPost, blogPost);
         updateBlogPost(selectedPost, blogPost);
         toast({
           title: "Blog post updated!",
           description: "Changes have been applied successfully.",
         });
       } else {
-        console.log("Creating new blog post:", slug, blogPost);
         createBlogPost(slug, blogPost);
         setPublishStates(prev => ({
           ...prev,
@@ -313,9 +302,7 @@ const BlogBuilder = () => {
         });
       }
 
-      // Refresh blog posts after update
-      const updatedPosts = getAllBlogPosts();
-      setBlogPosts(updatedPosts);
+      setBlogPosts(getAllBlogPosts());
 
       setTimeout(() => {
         navigate(`/blog/${slug}`);
@@ -336,9 +323,21 @@ const BlogBuilder = () => {
   };
 
   const selectPostToEdit = (slug: string) => {
-    console.log("Selecting post to edit:", slug);
     setSelectedPost(slug);
     setIsUpdateMode(true);
+    const post = blogPosts[slug];
+    if (post) {
+      setFormValues({
+        title: post.title,
+        excerpt: post.excerpt,
+        content: htmlToText(post.content),
+        date: post.date,
+        category: post.category,
+        tags: post.tags.join(", "),
+        desktopImageUrl: post.desktopImageUrl,
+        imageUrl: post.imageUrl
+      });
+    }
   };
 
   if (!isAuthenticated) {
