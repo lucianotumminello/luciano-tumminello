@@ -98,6 +98,16 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           margin-top: 1rem;
           margin-bottom: 1.5rem;
         }
+        /* Improve header spacing for better readability */
+        .prose h1:first-child {
+          margin-top: 0;
+        }
+        .prose h1 + h2 {
+          margin-top: 1.5rem;
+        }
+        .prose h2 + h3 {
+          margin-top: 1.25rem;
+        }
       `}</style>
     </article>
   );

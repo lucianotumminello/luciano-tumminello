@@ -1,3 +1,4 @@
+
 import blogPostsData from "@/data/blogPostsData";
 import { BlogPost } from "@/types";
 
@@ -203,8 +204,8 @@ For organizations seeking to accelerate growth and navigate transformation, iden
 `,
     author: "Luciano Tumminello",
     authorImageUrl: "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png",
-    date: "27 April 2025",
-    dateIT: "27 Aprile 2025",
+    date: "29 April 2025",
+    dateIT: "29 Aprile 2025",
     category: "Leadership",
     categoryIT: "Leadership",
     imageUrl: "/lovable-uploads/dfa43c55-e5d0-4a88-8ee6-f7306b088886.png",
