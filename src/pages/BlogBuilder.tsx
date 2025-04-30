@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,11 +9,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import { BlogPost } from "@/types";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
-import { Eye, EyeOff, FileText } from "lucide-react";
+import { Eye, EyeOff, FileText, Save } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import FormattingGuide from "@/components/blog/FormattingGuide";
@@ -63,7 +62,10 @@ const BlogBuilder = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(false);
   const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>(getAllBlogPosts());
+  const [publishStates, setPublishStates] = useState<Record<string, boolean>>({});
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isPostListOpen, setIsPostListOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const desktopImageRef = useRef<HTMLInputElement>(null);
   const mobileImageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -145,7 +147,14 @@ const BlogBuilder = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      setBlogPosts(getAllBlogPosts());
+      const posts = getAllBlogPosts();
+      setBlogPosts(posts);
+      
+      const initialPublishStates: Record<string, boolean> = {};
+      Object.entries(posts).forEach(([slug, post]) => {
+        initialPublishStates[slug] = post.published !== false;
+      });
+      setPublishStates(initialPublishStates);
     }
   }, [isAuthenticated]);
 
@@ -204,6 +213,46 @@ const BlogBuilder = () => {
       title: "Layout applied",
       description: "Your content has been formatted for consistency",
     });
+  };
+
+  const handlePublishStateChange = (slug: string, checked: boolean) => {
+    setPublishStates(prev => ({
+      ...prev,
+      [slug]: checked
+    }));
+  };
+
+  const savePublishStates = () => {
+    setIsSaving(true);
+    
+    try {
+      Object.entries(publishStates).forEach(([slug, isPublished]) => {
+        if (blogPosts[slug]) {
+          const updatedPost = {
+            ...blogPosts[slug],
+            published: isPublished
+          };
+          updateBlogPost(slug, updatedPost);
+        }
+      });
+      
+      setBlogPosts(getAllBlogPosts());
+      
+      toast({
+        title: "Changes saved",
+        description: "Blog visibility settings have been updated",
+      });
+    } catch (error) {
+      console.error("Error saving publish states:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save blog visibility settings",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+      setIsPostListOpen(false);
+    }
   };
 
   const onBlogSubmit = async (data: BlogFormData) => {
@@ -265,6 +314,12 @@ const BlogBuilder = () => {
 
       const formattedDate = isUpdateMode ? data.date : getCurrentFormattedDate();
 
+      const currentPublishedState = isUpdateMode && selectedPost 
+        ? publishStates[selectedPost] !== undefined
+          ? publishStates[selectedPost]
+          : blogPosts[selectedPost]?.published !== false
+        : true;
+
       const blogPost: BlogPost = {
         title: data.title,
         titleIT: translatedTitle,
@@ -284,6 +339,7 @@ const BlogBuilder = () => {
         readingTimeIT: translatedReadingTime,
         tags: tagsToUse,
         tagsIT: translatedTags,
+        published: currentPublishedState
       };
 
       setPreviewData(blogPost);
@@ -297,6 +353,10 @@ const BlogBuilder = () => {
         });
       } else {
         createBlogPost(slug, blogPost);
+        setPublishStates(prev => ({
+          ...prev,
+          [slug]: currentPublishedState
+        }));
         toast({
           title: "Blog post created!",
           description: `New post "${data.title}" has been created successfully.`,
@@ -424,7 +484,7 @@ const BlogBuilder = () => {
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold">Blog Article Builder</h1>
             <div className="flex gap-4">
-              <Sheet>
+              <Sheet open={isPostListOpen} onOpenChange={setIsPostListOpen}>
                 <SheetTrigger asChild>
                   <Button variant="outline">Edit Existing Post</Button>
                 </SheetTrigger>
@@ -432,23 +492,50 @@ const BlogBuilder = () => {
                   <SheetHeader>
                     <SheetTitle>Select a post to edit</SheetTitle>
                   </SheetHeader>
-                  <div className="mt-6 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-                    {Object.entries(blogPosts).map(([slug, post]) => (
-                      <Button 
-                        key={slug} 
-                        variant="outline" 
-                        className="justify-start text-left h-auto py-3"
-                        onClick={() => {
-                          selectPostToEdit(slug);
-                        }}
-                      >
-                        <div>
-                          <p className="font-medium">{post.title}</p>
-                          <p className="text-sm text-gray-500">{post.date}</p>
+                  <div className="mt-6 flex flex-col gap-2 max-h-[65vh] overflow-y-auto">
+                    {Object.entries(blogPosts).length > 0 ? (
+                      Object.entries(blogPosts).map(([slug, post]) => (
+                        <div key={slug} className="flex items-center gap-2 border rounded-md p-3">
+                          <Checkbox 
+                            id={`publish-${slug}`}
+                            checked={publishStates[slug] !== false}
+                            onCheckedChange={(checked) => handlePublishStateChange(slug, !!checked)}
+                          />
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-left h-auto py-3 flex-1"
+                            onClick={() => {
+                              selectPostToEdit(slug);
+                              setIsPostListOpen(false);
+                            }}
+                          >
+                            <div>
+                              <p className="font-medium">{post.title}</p>
+                              <p className="text-sm text-gray-500">{post.date}</p>
+                            </div>
+                          </Button>
                         </div>
-                      </Button>
-                    ))}
+                      ))
+                    ) : (
+                      <p className="text-center text-gray-500 py-4">No blog posts available</p>
+                    )}
                   </div>
+                  <SheetFooter className="mt-6">
+                    <Button 
+                      onClick={savePublishStates}
+                      disabled={isSaving}
+                      className="w-full bg-green-500 hover:bg-green-600 text-white"
+                    >
+                      {isSaving ? (
+                        "Saving..."
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4 mr-2" />
+                          Save Blog Visibility Settings
+                        </>
+                      )}
+                    </Button>
+                  </SheetFooter>
                 </SheetContent>
               </Sheet>
               <Button 
