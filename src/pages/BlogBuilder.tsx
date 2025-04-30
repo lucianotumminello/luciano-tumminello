@@ -211,7 +211,7 @@ const BlogBuilder = () => {
     
     toast({
       title: "Layout applied",
-      description: "Your content has been formatted for consistency",
+      description: "Your content has been formatted with proper headings and spacing",
     });
   };
 
@@ -263,13 +263,15 @@ const BlogBuilder = () => {
     });
 
     try {
-      const formattedContent = textToHtml(data.content);
+      // Format the content with proper styling
+      const formattedContent = textToHtml(applyStandardLayout(data.content));
       
       const slug = isUpdateMode && selectedPost ? selectedPost : generateSlug(data.title);
       
       const generatedTags = await generateTags(formattedContent);
       const tagsToUse = data.tags ? data.tags.split(',').map(tag => tag.trim()) : generatedTags;
       
+      // Calculate reading time based on formatted content
       const readingTime = estimateReadingTime(formattedContent);
       const readingTimeText = `${readingTime} min read`;
 

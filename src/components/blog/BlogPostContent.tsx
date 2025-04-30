@@ -63,21 +63,40 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           margin-bottom: 0.5rem;
         }
         .prose h1 {
-          margin-top: 2rem;
+          font-size: 2rem;
+          line-height: 2.5rem;
+          margin-top: 2.5rem;
           margin-bottom: 1.5rem;
+          color: rgb(31 41 55);
         }
         .prose h2 {
-          margin-top: 1.75rem;
+          font-size: 1.75rem;
+          line-height: 2.25rem;
+          margin-top: 2rem;
           margin-bottom: 1.25rem;
+          color: rgb(31 41 55);
         }
         .prose h3 {
-          margin-top: 1.5rem;
+          font-size: 1.5rem;
+          line-height: 2rem;
+          margin-top: 1.75rem;
           margin-bottom: 1rem;
+          color: rgb(31 41 55);
         }
         .prose blockquote {
-          padding: 1rem;
-          margin: 1.5rem 0;
-          border-radius: 0.375rem;
+          padding: 1.25rem 1.5rem;
+          margin: 2rem 0;
+          border-radius: 0.5rem;
+          background-color: rgba(var(--primary-rgb), 0.05);
+          border-left-width: 4px;
+          border-color: var(--primary);
+        }
+        .prose blockquote p {
+          margin-bottom: 0.75rem;
+        }
+        .prose ul, .prose ol {
+          margin-top: 1rem;
+          margin-bottom: 1.5rem;
         }
       `}</style>
     </article>

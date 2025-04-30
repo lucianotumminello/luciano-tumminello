@@ -16,10 +16,10 @@ export function textToHtml(text: string): string {
       const headerLevel = headerMatch[1].length;
       const headerText = headerMatch[2];
       const headerClasses = {
-        1: 'text-4xl font-bold mb-8 text-gray-900',
+        1: 'text-4xl font-bold mb-8 mt-8 text-gray-900',
         2: 'text-3xl font-bold mb-6 mt-12 text-gray-800',
         3: 'text-2xl font-semibold mb-4 mt-8 text-gray-800'
-      }[headerLevel] || 'text-xl font-semibold mb-4 text-gray-800';
+      }[headerLevel] || 'text-xl font-semibold mb-4 mt-6 text-gray-800';
       
       return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
     }
@@ -31,7 +31,7 @@ export function textToHtml(text: string): string {
         .map(line => line.replace(/^-\s/, '').trim());
         
       if (items.length > 0) {
-        return `<ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700">
+        return `<ul class="list-disc pl-6 mb-8 space-y-2 text-gray-700">
           ${items.map(item => `<li class="text-gray-700">${item}</li>`).join('\n')}
         </ul>`;
       }
@@ -44,7 +44,7 @@ export function textToHtml(text: string): string {
         .map(line => line.replace(/^\d+\.\s/, '').trim());
         
       if (items.length > 0) {
-        return `<ol class="list-decimal pl-6 mb-6 space-y-2 text-gray-700">
+        return `<ol class="list-decimal pl-6 mb-8 space-y-2 text-gray-700">
           ${items.map(item => `<li class="text-gray-700">${item}</li>`).join('\n')}
         </ol>`;
       }
@@ -54,7 +54,7 @@ export function textToHtml(text: string): string {
     const quoteMatch = section.match(/^"([^"]+)"\s*—\s*(.+)$/);
     if (quoteMatch) {
       const [_, quote, citation] = quoteMatch;
-      return `<blockquote class="border-l-4 border-primary pl-4 py-2 my-6 text-gray-700 italic">
+      return `<blockquote class="border-l-4 border-primary pl-4 py-2 my-8 text-gray-700 italic">
         <p class="mb-2">"${quote}"</p>
         <footer class="text-gray-600">— ${citation}</footer>
       </blockquote>`;
@@ -111,7 +111,37 @@ export function applyStandardLayout(text: string): string {
   // Ensure paragraphs have proper spacing
   formattedText = formattedText.replace(/([^\n])(\n)([^\n#-\d"])/g, '$1\n\n$3');
   
-  return formattedText;
+  // Make sure headings have consistent hierarchy and spacing
+  const lines = formattedText.split('\n');
+  let processedLines = [];
+  let prevLineIsHeading = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const isHeading = /^#+\s/.test(line);
+    
+    // If this line is a heading and the previous line was also a heading
+    // add an extra line break for better spacing
+    if (isHeading && prevLineIsHeading) {
+      processedLines.push('');
+    }
+    
+    // If this is a heading and the previous line wasn't a blank line
+    if (isHeading && i > 0 && lines[i-1].trim() !== '') {
+      processedLines.push('');
+    }
+    
+    processedLines.push(line);
+    
+    // Add blank line after heading if next line isn't blank
+    if (isHeading && i < lines.length - 1 && lines[i+1].trim() !== '') {
+      processedLines.push('');
+    }
+    
+    prevLineIsHeading = isHeading;
+  }
+  
+  return processedLines.join('\n');
 }
 
 /**
@@ -137,4 +167,22 @@ export function htmlToText(html: string): string {
     .replace(/<br\s*\/?>/g, '\n')
     .replace(/&nbsp;/g, ' ')
     .trim();
+}
+
+/**
+ * Estimate reading time based on content
+ */
+export function estimateReadingTime(content: string): number {
+  // Average reading speed is about 200-250 words per minute
+  const WORDS_PER_MINUTE = 225;
+  
+  // Count words in the content (simplified)
+  const text = content.replace(/<[^>]*>/g, ' '); // Remove HTML tags
+  const wordCount = text.split(/\s+/).filter(word => word.trim().length > 0).length;
+  
+  // Calculate reading time in minutes
+  const readingTimeMinutes = Math.ceil(wordCount / WORDS_PER_MINUTE);
+  
+  // Return at least 1 minute
+  return Math.max(1, readingTimeMinutes);
 }
