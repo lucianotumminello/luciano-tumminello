@@ -6,7 +6,7 @@ import BlogPostContainer from "@/components/blog/BlogPostContainer";
 import NotFoundMessage from "@/components/blog/NotFoundMessage";
 import { useEffect } from "react";
 import { trackPageView } from "@/utils/analytics";
-import { getBlogPost } from "@/utils/blog"; // Updated import path
+import { getBlogPost } from "@/utils/blogDataManager";
 
 const BlogPost = () => {
   const { slug } = useParams();
