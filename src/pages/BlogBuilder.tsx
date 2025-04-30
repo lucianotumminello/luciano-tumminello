@@ -1,47 +1,23 @@
-import { useState, useRef, useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { BlogPost } from "@/types";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
-import { Eye, EyeOff, FileText, Send } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import FormattingGuide from "@/components/blog/FormattingGuide";
-import { updateBlogPost, createBlogPost, getAllBlogPosts, deleteBlogPost } from "@/utils/blogDataManager";
+import { updateBlogPost, createBlogPost, getAllBlogPosts } from "@/utils/blogDataManager";
 import { useNavigate } from "react-router-dom";
-import blogPostsData from "@/data/blogPostsData";
-
-type AuthFormData = {
-  password: string;
-};
-
-type BlogFormData = {
-  title: string;
-  excerpt: string;
-  content: string;
-  date: string;
-  category: string;
-  tags: string;
-  desktopImageUrl: string;
-  imageUrl: string;
-};
-
-const ADMIN_PASSWORD = "VanBasten9!";
-
-const DEFAULT_AUTHOR = Object.values(blogPostsData)[0]?.author || "Luciano Tumminello";
-const DEFAULT_AUTHOR_IMAGE = Object.values(blogPostsData)[0]?.authorImageUrl || "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
+import { AuthForm } from "@/components/blog-builder/AuthForm";
+import { BlogPostList } from "@/components/blog-builder/BlogPostList";
+import { BlogForm, BlogFormData } from "@/components/blog-builder/BlogForm";
+import { BlogPreview } from "@/components/blog-builder/BlogPreview";
 
 const SAVED_PASSWORD_KEY = "blog_builder_password";
+const DEFAULT_AUTHOR = "Luciano Tumminello";
+const DEFAULT_AUTHOR_IMAGE = "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
 
 const BlogBuilder = () => {
   const getCurrentFormattedDate = () => {
@@ -58,51 +34,42 @@ const BlogBuilder = () => {
   const [desktopImageFile, setDesktopImageFile] = useState<File | null>(null);
   const [mobileImageFile, setMobileImageFile] = useState<File | null>(null);
   const [showPreview, setShowPreview] = useState(false);
-  const [previewData, setPreviewData] = useState<any>(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const [previewData, setPreviewData] = useState<BlogPost | null>(null);
   const [rememberPassword, setRememberPassword] = useState(false);
   const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>(getAllBlogPosts());
+  const [publishStates, setPublishStates] = useState<Record<string, boolean>>({});
   const [isPublishing, setIsPublishing] = useState(false);
-  const desktopImageRef = useRef<HTMLInputElement>(null);
-  const mobileImageRef = useRef<HTMLInputElement>(null);
+  const [isPostListOpen, setIsPostListOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const authForm = useForm<AuthFormData>({
-    defaultValues: {
-      password: "",
-    }
-  });
-
-  const blogForm = useForm<BlogFormData>({
-    defaultValues: {
-      title: "",
-      excerpt: "",
-      content: "",
-      date: getCurrentFormattedDate(),
-      category: "",
-      tags: "",
-      desktopImageUrl: "",
-      imageUrl: ""
-    }
-  });
+  // Default form values
+  const defaultFormValues: BlogFormData = {
+    title: "",
+    excerpt: "",
+    content: "",
+    date: getCurrentFormattedDate(),
+    category: "",
+    tags: "",
+    desktopImageUrl: "",
+    imageUrl: ""
+  };
+  
+  // State for form values
+  const [formValues, setFormValues] = useState<BlogFormData>(defaultFormValues);
 
   useEffect(() => {
     try {
       const savedPassword = localStorage.getItem(SAVED_PASSWORD_KEY);
-      if (savedPassword) {
-        console.log("Found saved password");
-        authForm.setValue("password", savedPassword);
+      if (savedPassword && savedPassword === "VanBasten9!") {
+        console.log("Auto-login with saved password");
+        setIsAuthenticated(true);
         setRememberPassword(true);
-        
-        if (savedPassword === ADMIN_PASSWORD) {
-          console.log("Auto-login with saved password");
-          setIsAuthenticated(true);
-          toast({
-            title: "Authentication successful",
-            description: "Welcome to the blog builder!",
-          });
-        }
+        toast({
+          title: "Authentication successful",
+          description: "Welcome to the blog builder!",
+        });
       }
     } catch (error) {
       console.error("Error accessing localStorage:", error);
@@ -111,25 +78,16 @@ const BlogBuilder = () => {
 
   useEffect(() => {
     if (!isUpdateMode) {
-      blogForm.reset({
-        title: "",
-        excerpt: "",
-        content: "",
-        date: getCurrentFormattedDate(),
-        category: "",
-        tags: "",
-        desktopImageUrl: "",
-        imageUrl: ""
-      });
+      setFormValues(defaultFormValues);
       setDesktopImageFile(null);
       setMobileImageFile(null);
     }
-  }, [isUpdateMode, blogForm]);
+  }, [isUpdateMode]);
 
   useEffect(() => {
     if (selectedPost && blogPosts[selectedPost]) {
       const post = blogPosts[selectedPost];
-      blogForm.reset({
+      setFormValues({
         title: post.title,
         excerpt: post.excerpt,
         content: htmlToText(post.content),
@@ -140,35 +98,25 @@ const BlogBuilder = () => {
         imageUrl: post.imageUrl
       });
     }
-  }, [selectedPost, blogForm, blogPosts]);
+  }, [selectedPost, blogPosts]);
 
   useEffect(() => {
     if (isAuthenticated) {
-      setBlogPosts(getAllBlogPosts());
+      const posts = getAllBlogPosts();
+      setBlogPosts(posts);
+      
+      const initialPublishStates: Record<string, boolean> = {};
+      Object.entries(posts).forEach(([slug, post]) => {
+        initialPublishStates[slug] = post.published !== false;
+      });
+      setPublishStates(initialPublishStates);
     }
   }, [isAuthenticated]);
 
-  const onAuthSubmit = (data: AuthFormData) => {
-    if (data.password === ADMIN_PASSWORD) {
-      if (rememberPassword) {
-        try {
-          localStorage.setItem(SAVED_PASSWORD_KEY, data.password);
-        } catch (error) {
-          console.error("Error saving password:", error);
-        }
-      }
-      
-      setIsAuthenticated(true);
-      toast({
-        title: "Authentication successful",
-        description: "Welcome to the blog builder!",
-      });
-    } else {
-      toast({
-        title: "Authentication failed",
-        description: "Invalid password. Please try again.",
-        variant: "destructive",
-      });
+  const handleRememberPasswordChange = (checked: boolean) => {
+    setRememberPassword(checked);
+    if (!checked) {
+      localStorage.removeItem(SAVED_PASSWORD_KEY);
     }
   };
 
@@ -195,14 +143,53 @@ const BlogBuilder = () => {
   };
 
   const applyLayout = () => {
-    const currentContent = blogForm.getValues('content');
-    const formattedContent = applyStandardLayout(currentContent);
-    blogForm.setValue('content', formattedContent);
+    const formattedContent = applyStandardLayout(formValues.content);
+    setFormValues({ ...formValues, content: formattedContent });
     
     toast({
       title: "Layout applied",
-      description: "Your content has been formatted for consistency",
+      description: "Your content has been formatted with proper headings and spacing",
     });
+  };
+
+  const handlePublishStateChange = (slug: string, checked: boolean) => {
+    setPublishStates(prev => ({
+      ...prev,
+      [slug]: checked
+    }));
+  };
+
+  const savePublishStates = () => {
+    setIsSaving(true);
+    
+    try {
+      Object.entries(publishStates).forEach(([slug, isPublished]) => {
+        if (blogPosts[slug]) {
+          const updatedPost = {
+            ...blogPosts[slug],
+            published: isPublished
+          };
+          updateBlogPost(slug, updatedPost);
+        }
+      });
+      
+      setBlogPosts(getAllBlogPosts());
+      
+      toast({
+        title: "Changes saved",
+        description: "Blog visibility settings have been updated",
+      });
+    } catch (error) {
+      console.error("Error saving publish states:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save blog visibility settings",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+      setIsPostListOpen(false);
+    }
   };
 
   const onBlogSubmit = async (data: BlogFormData) => {
@@ -213,13 +200,15 @@ const BlogBuilder = () => {
     });
 
     try {
-      const formattedContent = textToHtml(data.content);
+      // Format the content with proper styling
+      const formattedContent = textToHtml(applyStandardLayout(data.content));
       
       const slug = isUpdateMode && selectedPost ? selectedPost : generateSlug(data.title);
       
       const generatedTags = await generateTags(formattedContent);
       const tagsToUse = data.tags ? data.tags.split(',').map(tag => tag.trim()) : generatedTags;
       
+      // Calculate reading time based on formatted content
       const readingTime = estimateReadingTime(formattedContent);
       const readingTimeText = `${readingTime} min read`;
 
@@ -264,6 +253,12 @@ const BlogBuilder = () => {
 
       const formattedDate = isUpdateMode ? data.date : getCurrentFormattedDate();
 
+      const currentPublishedState = isUpdateMode && selectedPost 
+        ? publishStates[selectedPost] !== undefined
+          ? publishStates[selectedPost]
+          : blogPosts[selectedPost]?.published !== false
+        : true;
+
       const blogPost: BlogPost = {
         title: data.title,
         titleIT: translatedTitle,
@@ -283,6 +278,7 @@ const BlogBuilder = () => {
         readingTimeIT: translatedReadingTime,
         tags: tagsToUse,
         tagsIT: translatedTags,
+        published: currentPublishedState
       };
 
       setPreviewData(blogPost);
@@ -296,6 +292,10 @@ const BlogBuilder = () => {
         });
       } else {
         createBlogPost(slug, blogPost);
+        setPublishStates(prev => ({
+          ...prev,
+          [slug]: currentPublishedState
+        }));
         toast({
           title: "Blog post created!",
           description: `New post "${data.title}" has been created successfully.`,
@@ -327,7 +327,7 @@ const BlogBuilder = () => {
     setIsUpdateMode(true);
     const post = blogPosts[slug];
     if (post) {
-      blogForm.reset({
+      setFormValues({
         title: post.title,
         excerpt: post.excerpt,
         content: htmlToText(post.content),
@@ -340,75 +340,17 @@ const BlogBuilder = () => {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(prev => !prev);
-  };
-
-  const handleRememberPasswordChange = (checked: boolean) => {
-    setRememberPassword(checked);
-    if (!checked) {
-      localStorage.removeItem(SAVED_PASSWORD_KEY);
-    }
-  };
-
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-1 py-16 px-4">
-          <div className="container mx-auto max-w-md">
-            <h1 className="text-2xl font-bold text-center mb-8">Blog Builder Authentication</h1>
-            <Form {...authForm}>
-              <form onSubmit={authForm.handleSubmit(onAuthSubmit)} className="space-y-4">
-                <FormField
-                  control={authForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input 
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Enter password"
-                            {...field}
-                          />
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-2 top-1/2 -translate-y-1/2"
-                            onClick={togglePasswordVisibility}
-                          >
-                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                          </Button>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="remember" 
-                    checked={rememberPassword}
-                    onCheckedChange={checked => handleRememberPasswordChange(checked as boolean)}
-                  />
-                  <label
-                    htmlFor="remember"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Remember my password
-                  </label>
-                </div>
-                
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
-              </form>
-            </Form>
-          </div>
+          <AuthForm 
+            onAuthSuccess={() => setIsAuthenticated(true)}
+            savedPassword={localStorage.getItem(SAVED_PASSWORD_KEY)}
+            rememberPassword={rememberPassword}
+            onRememberPasswordChange={handleRememberPasswordChange}
+          />
         </main>
         <Footer />
       </div>
@@ -423,33 +365,16 @@ const BlogBuilder = () => {
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold">Blog Article Builder</h1>
             <div className="flex gap-4">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline">Edit Existing Post</Button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>Select a post to edit</SheetTitle>
-                  </SheetHeader>
-                  <div className="mt-6 flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-                    {Object.entries(blogPosts).map(([slug, post]) => (
-                      <Button 
-                        key={slug} 
-                        variant="outline" 
-                        className="justify-start text-left h-auto py-3"
-                        onClick={() => {
-                          selectPostToEdit(slug);
-                        }}
-                      >
-                        <div>
-                          <p className="font-medium">{post.title}</p>
-                          <p className="text-sm text-gray-500">{post.date}</p>
-                        </div>
-                      </Button>
-                    ))}
-                  </div>
-                </SheetContent>
-              </Sheet>
+              <BlogPostList 
+                blogPosts={blogPosts}
+                publishStates={publishStates}
+                isOpen={isPostListOpen}
+                setIsOpen={setIsPostListOpen}
+                onSelectPost={selectPostToEdit}
+                onPublishStateChange={handlePublishStateChange}
+                onSavePublishStates={savePublishStates}
+                isSaving={isSaving}
+              />
               <Button 
                 variant={isUpdateMode ? "default" : "secondary"} 
                 onClick={() => setIsUpdateMode(false)}
@@ -461,351 +386,26 @@ const BlogBuilder = () => {
             </div>
           </div>
           
-          <Form {...blogForm}>
-            <form onSubmit={blogForm.handleSubmit(onBlogSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={blogForm.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={blogForm.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={blogForm.control}
-                  name="excerpt"
-                  render={({ field }) => (
-                    <FormItem className="col-span-1 md:col-span-2">
-                      <FormLabel>Excerpt</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={blogForm.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem className="col-span-1 md:col-span-2">
-                      <div className="flex justify-between items-center">
-                        <FormLabel>Content (Write in plain text, paragraphs will be formatted automatically)</FormLabel>
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={applyLayout}
-                          className="flex items-center gap-1 text-primary hover:bg-primary/10"
-                        >
-                          <FileText className="h-4 w-4" />
-                          Apply Layout
-                        </Button>
-                      </div>
-                      <FormControl>
-                        <Textarea 
-                          className="min-h-[300px] font-sans text-base" 
-                          placeholder="Write your content here... Use double line breaks for new paragraphs"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={blogForm.control}
-                  name="date"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Date</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={blogForm.control}
-                  name="tags"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tags (comma-separated, or leave blank for automatic)</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="space-y-4">
-                  <Label htmlFor="desktopImage">Desktop Image</Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      id="desktopImage"
-                      type="file"
-                      accept="image/*"
-                      ref={desktopImageRef}
-                      onChange={(e) => handleImageUpload(e, setDesktopImageFile)}
-                      className="flex-1"
-                    />
-                    {desktopImageFile && (
-                      <Button 
-                        type="button" 
-                        variant="ghost" 
-                        onClick={() => {
-                          setDesktopImageFile(null);
-                          if (desktopImageRef.current) desktopImageRef.current.value = "";
-                        }}
-                      >
-                        Clear
-                      </Button>
-                    )}
-                  </div>
-                  {desktopImageFile && (
-                    <div className="w-full h-40 relative">
-                      <img
-                        src={URL.createObjectURL(desktopImageFile)}
-                        alt="Desktop preview"
-                        className="h-full object-contain"
-                      />
-                    </div>
-                  )}
-                  <FormField
-                    control={blogForm.control}
-                    name="desktopImageUrl"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Or enter desktop image URL directly</FormLabel>
-                        <FormControl>
-                          <Input {...field} disabled={!!desktopImageFile} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                <div className="space-y-4">
-                  <Label htmlFor="mobileImage">Mobile Image</Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      id="mobileImage"
-                      type="file"
-                      accept="image/*"
-                      ref={mobileImageRef}
-                      onChange={(e) => handleImageUpload(e, setMobileImageFile)}
-                      className="flex-1"
-                    />
-                    {mobileImageFile && (
-                      <Button 
-                        type="button" 
-                        variant="ghost" 
-                        onClick={() => {
-                          setMobileImageFile(null);
-                          if (mobileImageRef.current) mobileImageRef.current.value = "";
-                        }}
-                      >
-                        Clear
-                      </Button>
-                    )}
-                  </div>
-                  {mobileImageFile && (
-                    <div className="w-full h-40 relative">
-                      <img
-                        src={URL.createObjectURL(mobileImageFile)}
-                        alt="Mobile preview"
-                        className="h-full object-contain"
-                      />
-                    </div>
-                  )}
-                  <FormField
-                    control={blogForm.control}
-                    name="imageUrl"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Or enter mobile image URL directly</FormLabel>
-                        <FormControl>
-                          <Input {...field} disabled={!!mobileImageFile} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              
-              <div className="flex justify-end gap-4 mt-8 mb-8">
-                <Button 
-                  type="button" 
-                  variant="default"
-                  size="lg"
-                  onClick={applyLayout}
-                  className="flex items-center gap-2 bg-primary"
-                >
-                  <FileText className="h-5 w-5" />
-                  Apply Layout
-                </Button>
-                <Button 
-                  type="submit" 
-                  size="lg"
-                  disabled={isPublishing}
-                  className="flex items-center gap-2"
-                >
-                  <Send className="h-5 w-5" />
-                  {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
-                </Button>
-                {isUpdateMode && selectedPost && (
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="publishStatus"
-                      checked={!blogPosts[selectedPost]?.unpublished}
-                      onCheckedChange={(checked) => {
-                        const updatedPost = {
-                          ...blogPosts[selectedPost],
-                          unpublished: !checked
-                        };
-                        updateBlogPost(selectedPost, updatedPost);
-                        setBlogPosts((prev) => ({
-                          ...prev,
-                          [selectedPost]: updatedPost
-                        }));
-                        toast({
-                          title: checked ? "Blog post published" : "Blog post unpublished",
-                          description: checked 
-                            ? "Your post is now visible on the blog page" 
-                            : "Your post has been hidden from the blog page",
-                        });
-                      }}
-                    />
-                    <Label htmlFor="publishStatus" className="text-sm">
-                      {blogPosts[selectedPost]?.unpublished ? "Unpublished" : "Published"}
-                    </Label>
-                  </div>
-                )}
-              </div>
-            </form>
-          </Form>
+          <BlogForm 
+            initialData={formValues}
+            isPublishing={isPublishing}
+            isUpdateMode={isUpdateMode}
+            onSubmit={onBlogSubmit}
+            onApplyLayout={applyLayout}
+            onImageUpload={handleImageUpload}
+            desktopImageFile={desktopImageFile}
+            mobileImageFile={mobileImageFile}
+            setDesktopImageFile={setDesktopImageFile}
+            setMobileImageFile={setMobileImageFile}
+          />
+
+          <BlogPreview 
+            isOpen={showPreview}
+            onOpenChange={setShowPreview}
+            previewData={previewData}
+          />
 
           <FormattingGuide />
-
-          <Dialog open={showPreview} onOpenChange={setShowPreview}>
-            <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Blog Post Preview</DialogTitle>
-              </DialogHeader>
-              {previewData && (
-                <div className="mt-4 space-y-6">
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Title</h2>
-                    <p>{previewData.title}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Excerpt</h2>
-                    <p>{previewData.excerpt}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Category</h2>
-                    <p>{previewData.category}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Date</h2>
-                    <p>{previewData.date}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Reading Time</h2>
-                    <p>{previewData.readingTime}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Tags</h2>
-                    <div className="flex flex-wrap gap-2">
-                      {previewData.tags.map((tag: string, index: number) => (
-                        <span key={index} className="bg-gray-100 px-2 py-1 rounded-md">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Images</h2>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="font-medium">Desktop</p>
-                        <div className="h-40 bg-gray-100 flex items-center justify-center">
-                          {previewData.desktopImageUrl ? (
-                            <img 
-                              src={previewData.desktopImageUrl} 
-                              alt="Desktop preview" 
-                              className="max-h-full object-contain"
-                            />
-                          ) : (
-                            <span className="text-gray-400">No image</span>
-                          )}
-                        </div>
-                      </div>
-                      <div>
-                        <p className="font-medium">Mobile</p>
-                        <div className="h-40 bg-gray-100 flex items-center justify-center">
-                          {previewData.imageUrl ? (
-                            <img 
-                              src={previewData.imageUrl} 
-                              alt="Mobile preview" 
-                              className="max-h-full object-contain"
-                            />
-                          ) : (
-                            <span className="text-gray-400">No image</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pt-4 border-t">
-                    <Button 
-                      onClick={() => {
-                        const blogPostJson = JSON.stringify(previewData, null, 2);
-                        navigator.clipboard.writeText(blogPostJson);
-                        toast({
-                          title: "Copied again!",
-                          description: "Blog post data copied to clipboard (for backup purposes)"
-                        });
-                      }}
-                      className="w-full"
-                    >
-                      Copy JSON (For Backup)
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </DialogContent>
-          </Dialog>
-
-          
         </div>
       </main>
       <Footer />

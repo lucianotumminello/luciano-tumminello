@@ -1,5 +1,3 @@
-import React from 'react';
-import { getPublishedBlogPosts } from '@/utils/blogDataManager';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +14,7 @@ import {
   PaginationPrevious 
 } from "@/components/ui/pagination";
 import { useState, useEffect } from "react";
+import { getAllBlogPosts } from "@/utils/blogDataManager";
 
 const Blog = () => {
   const { language } = useLanguage();
@@ -25,11 +24,12 @@ const Blog = () => {
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
   useEffect(() => {
-    const posts = Object.entries(getPublishedBlogPosts())
+    const posts = Object.entries(getAllBlogPosts())
       .map(([slug, post]) => ({
         ...post,
         slug
       }))
+      .filter(post => post.published !== false)
       .sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
@@ -120,7 +120,7 @@ const Blog = () => {
         <meta 
           name="description" 
           content={isItalian 
-            ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basati sui dati di Luciano Tumminello." 
+            ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basate sui dati di Luciano Tumminello." 
             : "Strategic insights on digital transformation, AI, and data-driven marketing strategies by Luciano Tumminello."} 
         />
         <meta 
