@@ -1,3 +1,4 @@
+
 import { BlogPost } from "@/types";
 
 const initialBlogPosts: Record<string, Omit<BlogPost, "slug">> = {
@@ -389,3 +390,10 @@ Per i leader del marketing che considerano questa transizione, abbraccia il tuo 
     imageUrl: "/lovable-uploads/5442caea-b979-458a-afee-771d811502a7.png",
     desktopImageUrl: "/lovable-uploads/5442caea-b979-458a-afee-771d811502a7.png",
     readingTime: "9 min read",
+    readingTimeIT: "9 min di lettura",
+    tags: ["leadership", "marketing", "operations", "professional development", "career transition"],
+    tagsIT: ["leadership", "marketing", "operazioni", "sviluppo professionale", "transizione di carriera"],
+  }
+};
+
+export default initialBlogPosts;
