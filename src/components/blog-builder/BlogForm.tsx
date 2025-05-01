@@ -49,9 +49,16 @@ export const BlogForm = ({
   const mobileImageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
+  // Initialize the form with initialData
   const blogForm = useForm<BlogFormData>({
     defaultValues: initialData
   });
+
+  // Update form when initialData changes (e.g., when a blog post is selected for editing)
+  React.useEffect(() => {
+    console.log("Form initial data updated:", initialData);
+    blogForm.reset(initialData);
+  }, [initialData, blogForm]);
 
   return (
     <Form {...blogForm}>

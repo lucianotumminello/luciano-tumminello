@@ -110,7 +110,7 @@ const BlogPostHeader = ({
           
           <div className="flex items-center mt-6">
             <Avatar className="h-10 w-10 mr-3">
-              <AvatarImage src="/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png" alt={author} />
+              <AvatarImage src={authorImageUrl} alt={author} />
               <AvatarFallback>{author.charAt(0)}</AvatarFallback>
             </Avatar>
             <span className="font-medium">{author}</span>
