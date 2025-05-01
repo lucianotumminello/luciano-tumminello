@@ -12,4 +12,5 @@ export {
 } from './blog';
 
 // Re-export types
-export { BlogPostsStore, addSlugToPost } from './blog/types';
+export type { BlogPostsStore } from './blog/types';
+export { addSlugToPost } from './blog/types';
