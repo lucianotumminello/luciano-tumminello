@@ -11,15 +11,11 @@ import { updatedBlogPosts } from "./blogPostsStore";
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
+  // Create a new object with updated post at the specified slug
   const newBlogPosts: BlogPostsStore = {
+    ...updatedBlogPosts,
     [slug]: blogPostWithoutSlug
   };
-  
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    if (key !== slug) {
-      newBlogPosts[key] = value;
-    }
-  });
   
   // Update the in-memory store
   Object.keys(updatedBlogPosts).forEach(key => {
@@ -38,6 +34,7 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
+  // Create a new object with the new blog post added
   const newBlogPosts: BlogPostsStore = {
     ...updatedBlogPosts,
     [slug]: blogPostWithoutSlug
@@ -59,6 +56,7 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const deleteBlogPost = (slug: string): void => {
   const newBlogPosts: BlogPostsStore = {};
   
+  // Copy all posts except the one to delete
   Object.entries(updatedBlogPosts).forEach(([key, value]) => {
     if (key !== slug) {
       newBlogPosts[key] = value;
