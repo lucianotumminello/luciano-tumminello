@@ -6,7 +6,7 @@ import BlogPostContainer from "@/components/blog/BlogPostContainer";
 import NotFoundMessage from "@/components/blog/NotFoundMessage";
 import { useEffect } from "react";
 import { trackPageView } from "@/utils/analytics";
-import { getBlogPost } from "@/utils/blogDataManager"; // Use the correct import path
+import { getBlogPost } from "@/utils/blogDataManager";
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -55,7 +55,7 @@ const BlogPost = () => {
       "name": "Luciano Tumminello",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://lucianotumminello.com/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png"
+        "url": "https://lucianotumminello.com/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png"
       }
     },
     "datePublished": post.date,

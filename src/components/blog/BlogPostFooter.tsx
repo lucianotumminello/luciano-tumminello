@@ -33,7 +33,7 @@ const BlogPostFooter = ({
       
       <div className="flex items-center">
         <Avatar className="h-12 w-12 mr-3">
-          <AvatarImage src={authorImageUrl} alt={authorName} />
+          <AvatarImage src="/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png" alt={authorName} />
           <AvatarFallback>{authorName.charAt(0)}</AvatarFallback>
         </Avatar>
         <div>
