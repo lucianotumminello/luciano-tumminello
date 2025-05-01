@@ -1,6 +1,6 @@
 
 import { BlogPost } from "@/types";
-import { BlogPostsStore } from "./types";
+import { BlogPostsStore, addSlugToPost } from "./types";
 import { updatedBlogPosts } from "./blogPostsStore";
 
 /**
@@ -22,6 +22,9 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   });
   
   // Update the in-memory store
+  Object.keys(updatedBlogPosts).forEach(key => {
+    delete updatedBlogPosts[key];
+  });
   Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`Blog post ${slug} updated successfully`);
@@ -36,18 +39,17 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
   const newBlogPosts: BlogPostsStore = {
+    ...updatedBlogPosts,
     [slug]: blogPostWithoutSlug
   };
   
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    newBlogPosts[key] = value;
-  });
-  
   // Update the in-memory store
+  Object.keys(updatedBlogPosts).forEach(key => {
+    delete updatedBlogPosts[key];
+  });
   Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`New blog post ${slug} created successfully`);
-  console.log("Current blog posts:", Object.keys(updatedBlogPosts));
 };
 
 /**

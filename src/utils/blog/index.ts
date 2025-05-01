@@ -4,3 +4,4 @@ export { createBlogPost, updateBlogPost, deleteBlogPost } from './blogPostOperat
 export { default as initialBlogPosts } from './initialBlogPosts';
 export { updatedBlogPosts } from './blogPostsStore';
 export type { BlogPostsStore } from './types';
+export { addSlugToPost } from './types';
