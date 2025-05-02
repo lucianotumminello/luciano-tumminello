@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
@@ -16,7 +17,7 @@ import { BlogPreview } from "@/components/blog-builder/BlogPreview";
 
 const SAVED_PASSWORD_KEY = "blog_builder_password";
 const DEFAULT_AUTHOR = "Luciano Tumminello";
-const DEFAULT_AUTHOR_IMAGE = "/lovable-uploads/16736ca3-cf96-42d8-8e9b-214d90395f88.png";
+const DEFAULT_AUTHOR_IMAGE = "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
 
 const BlogBuilder = () => {
   const getCurrentFormattedDate = () => {
@@ -83,31 +84,25 @@ const BlogBuilder = () => {
     }
   }, [isUpdateMode]);
 
-  // This effect handles loading selected post data into the form
   useEffect(() => {
     if (selectedPost && blogPosts[selectedPost]) {
       const post = blogPosts[selectedPost];
-      console.log("Selected post found:", post);
       setFormValues({
-        title: post.title || "",
-        excerpt: post.excerpt || "",
-        content: post.content ? htmlToText(post.content) : "",
-        date: post.date || getCurrentFormattedDate(),
-        category: post.category || "",
-        tags: post.tags ? post.tags.join(", ") : "",
-        desktopImageUrl: post.desktopImageUrl || "",
-        imageUrl: post.imageUrl || ""
+        title: post.title,
+        excerpt: post.excerpt,
+        content: htmlToText(post.content),
+        date: post.date,
+        category: post.category,
+        tags: post.tags.join(", "),
+        desktopImageUrl: post.desktopImageUrl,
+        imageUrl: post.imageUrl
       });
-      setIsUpdateMode(true);
-    } else if (selectedPost) {
-      console.error("Selected post not found:", selectedPost);
     }
   }, [selectedPost, blogPosts]);
 
   useEffect(() => {
     if (isAuthenticated) {
       const posts = getAllBlogPosts();
-      console.log("Fetched blog posts:", posts);
       setBlogPosts(posts);
       
       const initialPublishStates: Record<string, boolean> = {};
@@ -178,7 +173,6 @@ const BlogBuilder = () => {
         }
       });
       
-      // Refresh blog posts after updates
       setBlogPosts(getAllBlogPosts());
       
       toast({
@@ -257,7 +251,7 @@ const BlogBuilder = () => {
         });
       }
 
-      const formattedDate = data.date;
+      const formattedDate = isUpdateMode ? data.date : getCurrentFormattedDate();
 
       const currentPublishedState = isUpdateMode && selectedPost 
         ? publishStates[selectedPost] !== undefined
@@ -308,7 +302,6 @@ const BlogBuilder = () => {
         });
       }
 
-      // Refresh blog posts list
       setBlogPosts(getAllBlogPosts());
 
       setTimeout(() => {
@@ -330,25 +323,20 @@ const BlogBuilder = () => {
   };
 
   const selectPostToEdit = (slug: string) => {
-    console.log("Selecting post to edit:", slug);
     setSelectedPost(slug);
     setIsUpdateMode(true);
-    
     const post = blogPosts[slug];
     if (post) {
-      console.log("Post found, updating form values");
       setFormValues({
-        title: post.title || "",
-        excerpt: post.excerpt || "",
-        content: post.content ? htmlToText(post.content) : "",
-        date: post.date || getCurrentFormattedDate(),
-        category: post.category || "",
-        tags: post.tags ? post.tags.join(", ") : "",
-        desktopImageUrl: post.desktopImageUrl || "",
-        imageUrl: post.imageUrl || ""
+        title: post.title,
+        excerpt: post.excerpt,
+        content: htmlToText(post.content),
+        date: post.date,
+        category: post.category,
+        tags: post.tags.join(", "),
+        desktopImageUrl: post.desktopImageUrl,
+        imageUrl: post.imageUrl
       });
-    } else {
-      console.error("Post not found for slug:", slug);
     }
   };
 
@@ -389,11 +377,8 @@ const BlogBuilder = () => {
               />
               <Button 
                 variant={isUpdateMode ? "default" : "secondary"} 
-                onClick={() => {
-                  setIsUpdateMode(false);
-                  setSelectedPost(null);
-                  setFormValues(defaultFormValues);
-                }}
+                onClick={() => setIsUpdateMode(false)}
+                disabled={!isUpdateMode}
               >
                 Create New Post
               </Button>

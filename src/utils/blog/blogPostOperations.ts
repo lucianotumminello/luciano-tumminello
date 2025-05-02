@@ -1,6 +1,6 @@
 
 import { BlogPost } from "@/types";
-import { BlogPostsStore, addSlugToPost } from "./types";
+import { BlogPostsStore } from "./types";
 import { updatedBlogPosts } from "./blogPostsStore";
 
 /**
@@ -11,16 +11,17 @@ import { updatedBlogPosts } from "./blogPostsStore";
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Create a new object with updated post at the specified slug
   const newBlogPosts: BlogPostsStore = {
-    ...updatedBlogPosts,
     [slug]: blogPostWithoutSlug
   };
   
-  // Update the in-memory store
-  Object.keys(updatedBlogPosts).forEach(key => {
-    delete updatedBlogPosts[key];
+  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
+    if (key !== slug) {
+      newBlogPosts[key] = value;
+    }
   });
+  
+  // Update the in-memory store
   Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`Blog post ${slug} updated successfully`);
@@ -34,19 +35,19 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Create a new object with the new blog post added
   const newBlogPosts: BlogPostsStore = {
-    ...updatedBlogPosts,
     [slug]: blogPostWithoutSlug
   };
   
-  // Update the in-memory store
-  Object.keys(updatedBlogPosts).forEach(key => {
-    delete updatedBlogPosts[key];
+  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
+    newBlogPosts[key] = value;
   });
+  
+  // Update the in-memory store
   Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`New blog post ${slug} created successfully`);
+  console.log("Current blog posts:", Object.keys(updatedBlogPosts));
 };
 
 /**
@@ -56,7 +57,6 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const deleteBlogPost = (slug: string): void => {
   const newBlogPosts: BlogPostsStore = {};
   
-  // Copy all posts except the one to delete
   Object.entries(updatedBlogPosts).forEach(([key, value]) => {
     if (key !== slug) {
       newBlogPosts[key] = value;

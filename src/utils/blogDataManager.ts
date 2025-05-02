@@ -10,7 +10,3 @@ export {
   deleteBlogPost,
   updatedBlogPosts as default
 } from './blog';
-
-// Re-export types
-export type { BlogPostsStore } from './blog/types';
-export { addSlugToPost } from './blog/types';
