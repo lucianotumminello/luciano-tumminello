@@ -265,3 +265,4 @@ const initialBlogPosts: BlogPostsStore = {
 };
 
 export default initialBlogPosts;
+
