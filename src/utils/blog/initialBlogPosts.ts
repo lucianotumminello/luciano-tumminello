@@ -1,4 +1,3 @@
-
 import blogPostsData from "@/data/blogPostsData";
 import { BlogPostsStore } from "./types";
 
@@ -161,7 +160,7 @@ const initialBlogPosts: BlogPostsStore = {
 
 <h2 class="text-2xl font-bold mb-4">Cinque Principi di Leadership Trasferibili</h2>
 
-<h3 class="text-xl font-semibold mb-2">Visione Strategica come Forza Unificante</h3>
+<h3 class="text-xl font-semibold mb-2">Strategic Vision as a Unifying Force</h3>
 
 <p class="mb-4">L'eccellenza nel marketing si concentra sulla creazione di narrative coinvolgenti che risuonano con il pubblico target. Questa capacità di articolare una visione si traduce potentemente nella leadership operativa, dove riunire diversi team attorno a uno scopo coesivo guida il cambiamento trasformativo.</p>
 
@@ -169,7 +168,7 @@ const initialBlogPosts: BlogPostsStore = {
 
 <p class="mb-4">Le metodologie avanzate di pianificazione strategica che ho sviluppato attraverso il mio Master in Commercio hanno fornito framework sistematici per tradurre ampi obiettivi aziendali in roadmap operative attuabili, una competenza ugualmente preziosa sia nella leadership di marketing che in quella operativa.</p>
 
-<h3 class="text-xl font-semibold mb-2">L'Intelligenza dei Dati come Linguaggio Universale</h3>
+<h3 class="text-xl font-semibold mb-2">Data Intelligence as the Universal Language</h3>
 
 <p class="mb-4">"La centralità del cliente, radicata nel focus sul customer journey nel marketing, è diventata un principio guida per i miglioramenti operativi," spiego quando discuto delle competenze trasferibili. "Il processo decisionale basato sui dati affinato nel marketing ha informato direttamente l'identificazione dei colli di bottiglia operativi e la misurazione dei guadagni di efficienza."</p>
 
@@ -233,7 +232,7 @@ const initialBlogPosts: BlogPostsStore = {
   <li><strong>Abbraccia la Modalità di Apprendimento:</strong> Dimostra genuina curiosità verso le sfide operative offrendo al contempo prospettive ispirate al marketing. Questo approccio bilanciato costruisce credibilità con i team tecnici.</li>
   <li><strong>Trova Opportunità di Integrazione:</strong> Cerca modi immediati per applicare principi di marketing alle sfide operative, creando rapidi successi che dimostrano il valore della tua prospettiva interfunzionale.</li>
   <li><strong>Costruisci Relazioni di Traduttore:</strong> Coltiva forti partnership con rispettati veterani operativi che possono aiutarti ad adattare concetti di marketing alle realtà operative.</li>
-  <li><strong>Guida con Visione e Metriche:</strong> Combina narrative strategiche ispiratorie con rigorose misurazioni delle performance, un equilibrio particolarmente adatto ai leader con background di marketing.</li>
+  <li><strong>Guida con Visione e Metrics:</strong> Combina narrative strategiche ispiratorie con rigorose misurazioni delle performance, un equilibrio particolarmente adatto ai leader con background di marketing.</li>
   <li><strong>Investi nell'Apprendimento Continuo:</strong> Impegnati in esperienze di apprendimento formali e informali che espandono le tue capacità, in particolare nelle tecnologie emergenti che collegano marketing e operazioni.</li>
 </ol>
 
@@ -249,7 +248,7 @@ const initialBlogPosts: BlogPostsStore = {
 
 <p class="mb-4">Luciano Tumminello ha oltre 15 anni di esperienza nella guida della crescita in tutta l'Asia-Pacifico, specializzandosi in marketing, operazioni e trasformazione digitale, con un focus crescente sull'utilizzo dell'intelligenza artificiale. Con un track record comprovato nella guida di iniziative strategiche e nel fornire risultati misurabili, Luciano aiuta le organizzazioni a navigare la complessa intersezione tra tecnologia e leadership aziendale.</p>`,
     author: "Luciano Tumminello",
-    authorImageUrl: "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png",
+    authorImageUrl: "/lovable-uploads/75f2726b-f578-414b-a7b7-c66751aadd9f.png",
     date: "2 May 2025",
     dateIT: "2 Maggio 2025",
     category: "Leadership",
@@ -495,7 +494,7 @@ const initialBlogPosts: BlogPostsStore = {
 
 <p>Luciano Tumminello ha oltre 15 anni di esperienza nella guida della crescita in tutta l'Asia-Pacifico, specializzandosi in marketing, operazioni e trasformazione digitale, con un focus crescente sull'utilizzo dell'intelligenza artificiale. Con un track record comprovato nella guida di iniziative strategiche e nel fornire risultati misurabili, Luciano aiuta le organizzazioni a navigare la complessa intersezione tra tecnologia e leadership aziendale.</p>`,
     author: "Luciano Tumminello",
-    authorImageUrl: "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png",
+    authorImageUrl: "/lovable-uploads/75f2726b-f578-414b-a7b7-c66751aadd9f.png",
     date: "17 April 2025",
     dateIT: "17 Aprile 2025",
     category: "Artificial Intelligence",
