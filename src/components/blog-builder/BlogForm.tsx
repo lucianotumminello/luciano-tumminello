@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
-import { FileText, Save, Upload, Copy, Paste, FileWord, FilePdf } from "lucide-react";
+import { FileText, Save, Upload, Copy, ClipboardPaste, FileType, File } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -228,7 +229,7 @@ export const BlogForm = ({
                   onClick={handlePasteContent}
                   className="flex items-center gap-1"
                 >
-                  <Paste className="h-4 w-4" /> Paste
+                  <ClipboardPaste className="h-4 w-4" /> Paste
                 </Button>
                 <Button 
                   type="button" 
@@ -289,7 +290,7 @@ export const BlogForm = ({
                     onClick={() => fileInputRef.current?.click()}
                     className="flex items-center gap-2"
                   >
-                    <FileWord className="h-4 w-4" />
+                    <FileType className="h-4 w-4" />
                     Word (.docx)
                   </Button>
                   <Button
@@ -298,7 +299,7 @@ export const BlogForm = ({
                     onClick={() => fileInputRef.current?.click()}
                     className="flex items-center gap-2"
                   >
-                    <FilePdf className="h-4 w-4" />
+                    <File className="h-4 w-4" />
                     PDF (.pdf)
                   </Button>
                 </div>
