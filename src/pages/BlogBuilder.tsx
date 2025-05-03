@@ -97,6 +97,24 @@ const BlogBuilder = () => {
         desktopImageUrl: post.desktopImageUrl,
         imageUrl: post.imageUrl
       });
+      
+      // Clear any previously uploaded images when selecting a post to edit
+      setDesktopImageFile(null);
+      setMobileImageFile(null);
+      
+      // Update publish state for this post if needed
+      setPublishStates(prev => ({
+        ...prev,
+        [selectedPost]: post.published !== false
+      }));
+      
+      // Make sure we're in update mode
+      setIsUpdateMode(true);
+      
+      toast({
+        title: "Post loaded for editing",
+        description: `Now editing: "${post.title}"`,
+      });
     }
   }, [selectedPost, blogPosts]);
 
@@ -337,7 +355,31 @@ const BlogBuilder = () => {
         desktopImageUrl: post.desktopImageUrl,
         imageUrl: post.imageUrl
       });
+      
+      // Clear any previously uploaded files
+      setDesktopImageFile(null);
+      setMobileImageFile(null);
+      
+      // Scroll to the top of the form
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     }
+  };
+
+  // Cancel editing and return to create mode
+  const cancelEditing = () => {
+    setIsUpdateMode(false);
+    setSelectedPost(null);
+    setFormValues(defaultFormValues);
+    setDesktopImageFile(null);
+    setMobileImageFile(null);
+    
+    toast({
+      title: "Editing canceled",
+      description: "Switched to create new blog post mode",
+    });
   };
 
   if (!isAuthenticated) {
@@ -362,9 +404,9 @@ const BlogBuilder = () => {
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
             <h1 className="text-2xl font-bold">Blog Article Builder</h1>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-3">
               <BlogPostList 
                 blogPosts={blogPosts}
                 publishStates={publishStates}
@@ -375,16 +417,32 @@ const BlogBuilder = () => {
                 onSavePublishStates={savePublishStates}
                 isSaving={isSaving}
               />
-              <Button 
-                variant={isUpdateMode ? "default" : "secondary"} 
-                onClick={() => setIsUpdateMode(false)}
-                disabled={!isUpdateMode}
-              >
-                Create New Post
-              </Button>
+              {isUpdateMode ? (
+                <Button 
+                  variant="outline" 
+                  onClick={cancelEditing}
+                >
+                  Cancel Editing
+                </Button>
+              ) : (
+                <Button 
+                  variant="secondary" 
+                  disabled={true}
+                >
+                  Create New Post
+                </Button>
+              )}
               <Button variant="outline" onClick={() => setIsAuthenticated(false)}>Logout</Button>
             </div>
           </div>
+          
+          {isUpdateMode && selectedPost && (
+            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-blue-700 font-medium">
+                Editing: {blogPosts[selectedPost]?.title}
+              </p>
+            </div>
+          )}
           
           <BlogForm 
             initialData={formValues}

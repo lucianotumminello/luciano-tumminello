@@ -63,7 +63,7 @@ const FormattingGuide = () => {
           </div>
           
           <div className="bg-blue-50 p-4 rounded-lg mt-6">
-            <p className="text-blue-800">
+            <div className="text-blue-800">
               <strong>Tips:</strong>
               <ul className="list-disc pl-5 mt-2 space-y-1">
                 <li>Use double line breaks (press Enter twice) to create new paragraphs</li>
@@ -71,7 +71,7 @@ const FormattingGuide = () => {
                 <li>All paragraphs will automatically be justified and properly spaced</li>
                 <li>The system will maintain consistent styling across all blog posts</li>
               </ul>
-            </p>
+            </div>
           </div>
         </div>
       </CardContent>
