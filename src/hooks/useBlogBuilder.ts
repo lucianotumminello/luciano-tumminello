@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -80,14 +79,14 @@ export const useBlogBuilder = () => {
     if (selectedPost && blogPosts[selectedPost]) {
       const post = blogPosts[selectedPost];
       setFormValues({
-        title: post.title,
-        excerpt: post.excerpt,
-        content: htmlToText(post.content),
-        date: post.date,
-        category: post.category,
-        tags: post.tags.join(", "),
-        desktopImageUrl: post.desktopImageUrl,
-        imageUrl: post.imageUrl
+        title: post.title || "",
+        excerpt: post.excerpt || "",
+        content: htmlToText(post.content || ""),
+        date: post.date || getCurrentFormattedDate(),
+        category: post.category || "",
+        tags: post.tags ? post.tags.join(", ") : "",
+        desktopImageUrl: post.desktopImageUrl || "",
+        imageUrl: post.imageUrl || ""
       });
       
       // Clear any previously uploaded images when selecting a post to edit
@@ -336,26 +335,35 @@ export const useBlogBuilder = () => {
     setSelectedPost(slug);
     setIsUpdateMode(true);
     const post = blogPosts[slug];
+    
     if (post) {
       setFormValues({
-        title: post.title,
-        excerpt: post.excerpt,
-        content: htmlToText(post.content),
-        date: post.date,
-        category: post.category,
-        tags: post.tags.join(", "),
-        desktopImageUrl: post.desktopImageUrl,
-        imageUrl: post.imageUrl
+        title: post.title || "",
+        excerpt: post.excerpt || "",
+        content: htmlToText(post.content || ""),
+        date: post.date || getCurrentFormattedDate(),
+        category: post.category || "",
+        tags: post.tags ? post.tags.join(", ") : "",
+        desktopImageUrl: post.desktopImageUrl || "",
+        imageUrl: post.imageUrl || ""
       });
       
       // Clear any previously uploaded files
       setDesktopImageFile(null);
       setMobileImageFile(null);
       
+      // Ensure we're in update mode
+      setIsUpdateMode(true);
+      
       // Scroll to the top of the form
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
+      });
+      
+      toast({
+        title: "Post loaded for editing",
+        description: `Now editing: "${post.title}"`,
       });
     }
   };

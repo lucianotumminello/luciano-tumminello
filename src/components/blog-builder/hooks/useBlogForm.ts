@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
@@ -12,6 +13,11 @@ export const useBlogForm = (initialData: BlogFormData) => {
   const blogForm = useForm<BlogFormData>({
     defaultValues: initialData
   });
+  
+  // Reset form when initialData changes (when editing a different post)
+  useEffect(() => {
+    blogForm.reset(initialData);
+  }, [initialData, blogForm]);
   
   // Handle file upload (Word, PDF, Text)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
