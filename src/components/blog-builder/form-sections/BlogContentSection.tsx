@@ -119,9 +119,12 @@ export const BlogContentSection = ({
                   <Textarea 
                     {...field} 
                     ref={(e) => {
+                      // Fixed the assignment to ref
                       field.ref(e);
-                      if (contentRef) {
-                        contentRef.current = e;
+                      // Only forward the ref if the element exists and contentRef is provided
+                      if (e && contentRef) {
+                        // This is the proper way to assign refs in React
+                        (contentRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = e;
                       }
                     }}
                     className="min-h-[400px] font-sans text-base" 
