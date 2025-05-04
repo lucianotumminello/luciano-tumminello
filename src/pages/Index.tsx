@@ -44,7 +44,7 @@ const Index = () => {
         <title>Luciano Tumminello | Marketing & Operations Leader</title>
         <meta name="description" content="Seasoned Marketing & Operations Leader with extensive experience in digital transformation, global operations, and data-driven marketing strategies across APAC." />
         <meta name="keywords" content="Luciano Tumminello, Chief Operating Officer, COO, Marketing Leader, Digital Transformation, Operations, APAC, Strategic Planning, Data-Driven Marketing" />
-        <link rel="canonical" href={pageUrl} />
+        <meta name="canonical" href={pageUrl} />
         
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Luciano Tumminello | Marketing & Operations Leader" />
@@ -65,9 +65,9 @@ const Index = () => {
       </Helmet>
       <Header />
       <main className="flex-1">
-        {/* Replace sr-only with visible H1 tag */}
+        {/* Updated H1 tag to only display MARKETING & OPERATIONS LEADER */}
         <h1 className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center py-8">
-          Luciano Tumminello | Marketing & Operations Leader
+          MARKETING &amp; OPERATIONS LEADER
         </h1>
         <HeroSection />
         <ProfileImage />
