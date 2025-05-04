@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet-async";
 const Index = () => {
   // The URL to the image that will be used for social media sharing
   const shareImageUrl = "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
-  const pageUrl = "https://lucianotumminello.com/";
+  const pageUrl = "https://www.lucianotumminello.com/";
   
   // Structured data for the homepage
   const personSchema = {
@@ -22,7 +22,7 @@ const Index = () => {
       "name": "Spartan Health"
     },
     "description": "Marketing & Operations Leader with expertise in digital transformation and data-driven strategies across APAC.",
-    "image": `https://lucianotumminello.com${shareImageUrl}`,
+    "image": `https://www.lucianotumminello.com${shareImageUrl}`,
     "url": pageUrl,
     "sameAs": [
       "https://linkedin.com/in/lucianotumminello",
@@ -48,7 +48,7 @@ const Index = () => {
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Luciano Tumminello | Marketing & Operations Leader" />
         <meta property="og:description" content="Seasoned Marketing & Operations Leader with extensive experience in digital transformation and data-driven strategies across APAC." />
-        <meta property="og:image" content={`https://lucianotumminello.com${shareImageUrl}`} />
+        <meta property="og:image" content={`https://www.lucianotumminello.com${shareImageUrl}`} />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:site_name" content="Luciano Tumminello" />
         
@@ -56,7 +56,7 @@ const Index = () => {
         <meta name="twitter:site" content="@luciano_tumminello" />
         <meta name="twitter:title" content="Luciano Tumminello | Marketing & Operations Leader" />
         <meta name="twitter:description" content="Seasoned Marketing & Operations Leader with extensive experience in digital transformation and data-driven strategies across APAC." />
-        <meta name="twitter:image" content={`https://lucianotumminello.com${shareImageUrl}`} />
+        <meta name="twitter:image" content={`https://www.lucianotumminello.com${shareImageUrl}`} />
         
         <script type="application/ld+json">
           {JSON.stringify(personSchema)}

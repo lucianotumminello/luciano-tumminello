@@ -1,5 +1,5 @@
 
-# robots.txt for https://lucianotumminello.com/
+# robots.txt for https://www.lucianotumminello.com/
 
 # Allow all web crawlers to access most content
 User-agent: *
@@ -61,4 +61,5 @@ Allow: /*.webp$
 Crawl-delay: 10
 
 # Sitemap location
-Sitemap: https://lucianotumminello.com/sitemap.xml
+Sitemap: https://www.lucianotumminello.com/sitemap.xml
+
