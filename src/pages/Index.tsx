@@ -65,7 +65,7 @@ const Index = () => {
       </Helmet>
       <Header />
       <main className="flex-1">
-        {/* Updated H1 tag to only display MARKETING & OPERATIONS LEADER */}
+        {/* H1 heading */}
         <h1 className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center py-8">
           MARKETING &amp; OPERATIONS LEADER
         </h1>

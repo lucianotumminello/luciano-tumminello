@@ -29,14 +29,6 @@ const HeroSection = memo(() => {
       aria-labelledby="hero-heading"
     >
       <div className="container mx-auto max-w-5xl">
-        <header className="text-center mb-8">
-          <h2 
-            id="hero-heading" 
-            className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center"
-          >
-            <TranslatedText textKey="home.title" />
-          </h2>
-        </header>
         <div className="space-y-6">
           <p className={`text-lg md:text-xl text-gray-600 max-w-3xl mx-auto ${isMobile ? 'text-center' : 'text-justify'}`}>
             <TranslatedText textKey="home.subtitle" />
