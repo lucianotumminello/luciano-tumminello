@@ -5,6 +5,7 @@ import HeroSection from "@/components/HeroSection";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   // The URL to the image that will be used for social media sharing
@@ -64,12 +65,38 @@ const Index = () => {
       </Helmet>
       <Header />
       <main className="flex-1">
-        {/* Adding visually hidden h1 for SEO, as the design uses h2 in HeroSection */}
-        <h1 className="sr-only">Luciano Tumminello | Marketing & Operations Leader</h1>
+        {/* Replace sr-only with visible H1 tag */}
+        <h1 className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center py-8">
+          Luciano Tumminello | Marketing & Operations Leader
+        </h1>
         <HeroSection />
         <ProfileImage />
         <section id="core-competencies">
           <CompetenciesSummary />
+        </section>
+        
+        {/* Adding some outgoing links for better SEO */}
+        <section className="py-8 px-4 bg-gray-50">
+          <div className="container mx-auto max-w-5xl">
+            <h2 className="text-2xl font-semibold mb-6 text-center">Explore More</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+                <h3 className="text-xl font-medium mb-2">Professional Journey</h3>
+                <p className="text-gray-600 mb-4">Learn about my professional experience and career milestones.</p>
+                <Link to="/career" className="text-primary font-medium hover:underline">View Career Timeline</Link>
+              </div>
+              <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+                <h3 className="text-xl font-medium mb-2">Educational Background</h3>
+                <p className="text-gray-600 mb-4">Discover my academic qualifications and ongoing learning journey.</p>
+                <Link to="/education" className="text-primary font-medium hover:underline">View Education</Link>
+              </div>
+              <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+                <h3 className="text-xl font-medium mb-2">Latest Insights</h3>
+                <p className="text-gray-600 mb-4">Read my thoughts on industry trends and marketing strategies.</p>
+                <Link to="/blog" className="text-primary font-medium hover:underline">Read Blog</Link>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
       <Footer />
