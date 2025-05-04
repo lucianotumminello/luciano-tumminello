@@ -44,7 +44,7 @@ const Index = () => {
         <title>Luciano Tumminello | Marketing & Operations Leader</title>
         <meta name="description" content="Seasoned Marketing & Operations Leader with extensive experience in digital transformation, global operations, and data-driven marketing strategies across APAC." />
         <meta name="keywords" content="Luciano Tumminello, Chief Operating Officer, COO, Marketing Leader, Digital Transformation, Operations, APAC, Strategic Planning, Data-Driven Marketing" />
-        <meta name="canonical" href={pageUrl} />
+        <link rel="canonical" href={pageUrl} />
         
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Luciano Tumminello | Marketing & Operations Leader" />
