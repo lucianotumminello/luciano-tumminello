@@ -5,6 +5,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -31,6 +32,7 @@ const BlogPostHeader = ({
 }: BlogPostHeaderProps) => {
   const { language } = useLanguage();
   const isItalian = language === "it";
+  const isMobile = useIsMobile();
   
   // Format date for consistent display - if it's not already formatted
   const formatDate = (dateStr: string) => {
@@ -41,7 +43,6 @@ const BlogPostHeader = ({
       
       // Check if the date is valid
       if (isNaN(date.getTime())) {
-        // If not valid, return the original string as it might already be formatted
         return dateStr;
       }
       
@@ -66,50 +67,51 @@ const BlogPostHeader = ({
         {isItalian ? "Torna al Blog" : "Back to Blog"}
       </Link>
       
-      <Card className="mb-8 overflow-hidden border-0 shadow-lg">
+      <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
-            <picture>
-              {/* Desktop image (displayed at 768px and above) */}
-              <source media="(min-width: 768px)" srcSet={desktopImageUrl} />
-              {/* Mobile image (displayed below 768px) */}
-              <img 
-                src={imageUrl} 
-                alt={title} 
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-            </picture>
+            {/* Simplified image loading strategy for faster mobile rendering */}
+            <img 
+              src={isMobile ? imageUrl : desktopImageUrl} 
+              alt={title}
+              className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width={isMobile ? "640" : "1200"}
+              height={isMobile ? "360" : "675"}
+              style={{aspectRatio: "16/9"}}
+            />
           </AspectRatio>
         </div>
         
-        <CardContent className="p-8 bg-white">
-          <div className="flex flex-wrap items-center gap-4 mb-6 border-b border-gray-100 pb-6">
-            <span className="inline-block bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-medium">
+        <CardContent className="p-4 md:p-6 bg-white">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 md:mb-6 border-b border-gray-100 pb-4 md:pb-6">
+            <span className="inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-medium text-sm">
               {category}
             </span>
             
-            <div className="flex items-center text-gray-500 whitespace-nowrap">
-              <CalendarIcon className="h-4 w-4 mr-2" />
+            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
+              <CalendarIcon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
               {formattedDate}
             </div>
             
-            <div className="flex items-center text-gray-500 whitespace-nowrap">
-              <Clock className="h-4 w-4 mr-2" />
+            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
+              <Clock className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
               {readingTime}
             </div>
           </div>
           
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          {/* Mobile-optimized header text sizes */}
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">
             {title}
           </h1>
           
-          <p className="text-xl text-gray-600 mb-4 leading-relaxed text-justify">
+          <p className="text-base text-gray-600 mb-3 md:mb-4 leading-relaxed">
             {excerpt}
           </p>
           
-          <div className="flex items-center mt-6">
-            <Avatar className="h-10 w-10 mr-3">
+          <div className="flex items-center mt-3 md:mt-6">
+            <Avatar className="h-8 w-8 mr-2 md:mr-3">
               <AvatarImage src={authorImageUrl} alt={author} />
               <AvatarFallback>{author.charAt(0)}</AvatarFallback>
             </Avatar>

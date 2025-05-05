@@ -1,14 +1,13 @@
 
-import React, { lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import BlogPostHeader from "@/components/blog/BlogPostHeader";
+import BlogPostContent from "@/components/blog/BlogPostContent";
+import BlogPostFooter from "@/components/blog/BlogPostFooter";
+import ShareButtons from "@/components/blog/ShareButtons";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-// Lazy load components that are not immediately visible
-const BlogPostContent = lazy(() => import("@/components/blog/BlogPostContent"));
-const BlogPostFooter = lazy(() => import("@/components/blog/BlogPostFooter"));
-const ShareButtons = lazy(() => import("@/components/blog/ShareButtons"));
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BlogPostContainerProps {
   post: {
@@ -36,7 +35,34 @@ interface BlogPostContainerProps {
 
 const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
   const { language } = useLanguage();
+  const isMobile = useIsMobile();
   const isItalian = language === "it";
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+  
+  // Simplified intersection observer for better mobile performance
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) {
+      // Fallback for older browsers
+      setIsFooterVisible(true);
+      return;
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setIsFooterVisible(true);
+          observer.disconnect();
+        }
+      });
+    }, { rootMargin: '100px' });
+    
+    const element = document.getElementById('blog-post-footer-trigger');
+    if (element) observer.observe(element);
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <>
@@ -52,38 +78,45 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         desktopImageUrl={post.desktopImageUrl}
       />
       
-      <Suspense fallback={<div className="animate-pulse h-40 bg-gray-100 rounded-md w-full"></div>}>
-        <BlogPostContent 
-          content={isItalian ? post.contentIT : post.content} 
-        />
-      </Suspense>
+      <BlogPostContent 
+        content={isItalian ? post.contentIT : post.content} 
+      />
       
-      <Suspense fallback={<div className="h-20"></div>}>
-        <div className="flex justify-between items-center mb-6">
-          <BlogPostFooter 
-            tags={isItalian ? post.tagsIT : post.tags}
-            authorName={post.author}
-            authorImageUrl={post.authorImageUrl}
-            translationPrefix={isItalian ? "it" : "en"}
-          />
-          
-          <div className="ml-auto">
-            <ShareButtons 
-              pageUrl={pageUrl}
-              title={isItalian ? post.titleIT : post.title}
+      {/* Footer visibility trigger element */}
+      <div 
+        id="blog-post-footer-trigger" 
+        className="h-1 w-full" 
+        aria-hidden="true"
+      ></div>
+      
+      {isFooterVisible && (
+        <>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <BlogPostFooter 
+              tags={isItalian ? post.tagsIT : post.tags}
+              authorName={post.author}
+              authorImageUrl={post.authorImageUrl}
               translationPrefix={isItalian ? "it" : "en"}
             />
+            
+            <div className="md:ml-auto">
+              <ShareButtons 
+                pageUrl={pageUrl}
+                title={isItalian ? post.titleIT : post.title}
+                translationPrefix={isItalian ? "it" : "en"}
+              />
+            </div>
           </div>
-        </div>
-      </Suspense>
-      
-      <div className="mt-10 text-center">
-        <Link to="/blog">
-          <Button variant="secondary" className="px-6">
-            {isItalian ? "Leggi Altri Articoli" : "Read More Articles"}
-          </Button>
-        </Link>
-      </div>
+          
+          <div className="mt-8 text-center">
+            <Link to="/blog">
+              <Button variant="secondary" className="px-4 py-2">
+                {isItalian ? "Leggi Altri Articoli" : "Read More Articles"}
+              </Button>
+            </Link>
+          </div>
+        </>
+      )}
     </>
   );
 };

@@ -1,9 +1,9 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowDownIcon, FileTextIcon } from "lucide-react";
+import { ArrowDownIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "./TranslatedText";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -11,6 +11,15 @@ const HeroSection = memo(() => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Add visibility effect for smoother rendering
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
+    return () => clearTimeout(timeoutId);
+  }, []);
   
   const scrollToCompetencies = useCallback(() => {
     const competenciesSection = document.getElementById('core-competencies');
@@ -25,12 +34,13 @@ const HeroSection = memo(() => {
 
   return (
     <section 
-      className="relative py-20 md:py-32 px-4" 
+      className={`relative py-12 md:py-20 px-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
       aria-labelledby="hero-heading"
+      style={{ willChange: "opacity" }}
     >
       <div className="container mx-auto max-w-5xl">
         <div className="space-y-6">
-          <p className={`text-lg md:text-xl text-gray-600 max-w-3xl mx-auto ${isMobile ? 'text-center' : 'text-justify'}`}>
+          <p className={`text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto ${isMobile ? 'text-center' : 'text-justify'}`}>
             <TranslatedText textKey="home.subtitle" />
           </p>
           
@@ -56,7 +66,7 @@ const HeroSection = memo(() => {
       </div>
       
       <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-        <div className="h-20 w-px bg-gradient-to-b from-transparent to-gray-200"></div>
+        <div className="h-16 w-px bg-gradient-to-b from-transparent to-gray-200"></div>
       </div>
     </section>
   );
