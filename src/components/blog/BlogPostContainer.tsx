@@ -38,6 +38,25 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
   const { language } = useLanguage();
   const isItalian = language === "it";
   const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
+
+  // Preload content after initial render but before scrolling
+  useEffect(() => {
+    // Use requestIdleCallback to load content during idle time
+    const idleLoadContent = () => {
+      setIsContentLoaded(true);
+    };
+    
+    if ('requestIdleCallback' in window) {
+      // Use requestIdleCallback if available
+      const idleCallbackId = requestIdleCallback(idleLoadContent, { timeout: 2000 });
+      return () => cancelIdleCallback(idleCallbackId);
+    } else {
+      // Fallback to setTimeout
+      const timeoutId = setTimeout(idleLoadContent, 200);
+      return () => clearTimeout(timeoutId);
+    }
+  }, []);
 
   // Use intersection observer for lazy loading footer
   useEffect(() => {
@@ -75,18 +94,32 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         desktopImageUrl={post.desktopImageUrl}
       />
       
-      <Suspense fallback={<div className="animate-pulse h-40 bg-gray-100 rounded-md w-full"></div>}>
-        <BlogPostContent 
-          content={isItalian ? post.contentIT : post.content} 
-        />
-      </Suspense>
+      {isContentLoaded ? (
+        <Suspense fallback={
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-gray-100 rounded-md w-full"></div>
+            <div className="h-4 bg-gray-100 rounded-md w-3/4"></div>
+            <div className="h-4 bg-gray-100 rounded-md w-5/6"></div>
+          </div>
+        }>
+          <BlogPostContent 
+            content={isItalian ? post.contentIT : post.content} 
+          />
+        </Suspense>
+      ) : (
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-gray-100 rounded-md w-full"></div>
+          <div className="h-4 bg-gray-100 rounded-md w-3/4"></div>
+          <div className="h-4 bg-gray-100 rounded-md w-5/6"></div>
+        </div>
+      )}
       
       {/* Footer visibility trigger element */}
-      <div id="blog-post-footer-trigger" className="h-1 w-full" />
+      <div id="blog-post-footer-trigger" className="h-1 w-full" aria-hidden="true"></div>
       
       {isFooterVisible && (
-        <Suspense fallback={<div className="h-20"></div>}>
-          <div className="flex justify-between items-center mb-6">
+        <Suspense fallback={<div className="h-20" aria-hidden="true"></div>}>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <BlogPostFooter 
               tags={isItalian ? post.tagsIT : post.tags}
               authorName={post.author}
@@ -94,7 +127,7 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
               translationPrefix={isItalian ? "it" : "en"}
             />
             
-            <div className="ml-auto">
+            <div className="md:ml-auto">
               <ShareButtons 
                 pageUrl={pageUrl}
                 title={isItalian ? post.titleIT : post.title}

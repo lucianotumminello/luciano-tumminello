@@ -4,57 +4,59 @@ import * as React from "react"
 const MOBILE_BREAKPOINT = 768
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
+  const [isMobile, setIsMobile] = React.useState(() => {
+    // Only run on client side, return default during SSR
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < MOBILE_BREAKPOINT;
+  });
 
   React.useEffect(() => {
-    // Set initial state based on current width
+    // Don't run in SSR
+    if (typeof window === 'undefined') return;
+    
+    // Memoize the check function
     const checkMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
+    
+    // Set initial state based on window width
     setIsMobile(checkMobile());
 
-    // Use a debounced resize handler for performance
-    let resizeTimer: number;
-    const handleResize = () => {
-      if (resizeTimer) clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        setIsMobile(checkMobile());
-      }, 100);
+    // Use matchMedia for better performance (reduces reflows)
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    
+    // Create one handler function that we'll use for both approaches
+    const handleMediaChange = (e?: MediaQueryListEvent) => {
+      setIsMobile(e ? e.matches : checkMobile());
     };
-
-    // Use matchMedia for better performance
-    try {
-      const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-      // Modern browsers
-      if (mql.addEventListener) {
-        mql.addEventListener("change", handleResize);
-      } 
-      // Legacy browsers
-      else if (mql.addListener) {
-        mql.addListener(handleResize);
-      } 
-      // Fallback
-      else {
-        window.addEventListener("resize", handleResize);
-      }
-
-      return () => {
-        if (mql.removeEventListener) {
-          mql.removeEventListener("change", handleResize);
-        } else if (mql.removeListener) {
-          mql.removeListener(handleResize);
+    
+    // Modern browsers - addEventListener is more efficient
+    if (mql.addEventListener) {
+      mql.addEventListener("change", handleMediaChange);
+      return () => mql.removeEventListener("change", handleMediaChange);
+    } 
+    // Legacy browsers - addListener fallback
+    else if (mql.addListener) {
+      mql.addListener(handleMediaChange);
+      return () => mql.removeListener(handleMediaChange);
+    } 
+    // Last resort - use resize event (less efficient)
+    else {
+      // Use passive event listener for better performance
+      window.addEventListener("resize", () => {
+        // Debounce resize events for better performance
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(() => {
+            handleMediaChange();
+          });
         } else {
-          window.removeEventListener("resize", handleResize);
+          handleMediaChange();
         }
-        if (resizeTimer) clearTimeout(resizeTimer);
-      };
-    } catch (e) {
-      // Fallback for older browsers
-      window.addEventListener("resize", handleResize);
+      }, { passive: true });
+      
       return () => {
-        window.removeEventListener("resize", handleResize);
-        if (resizeTimer) clearTimeout(resizeTimer);
+        window.removeEventListener("resize", handleMediaChange);
       };
     }
   }, []);
 
-  return !!isMobile;
+  return isMobile;
 }

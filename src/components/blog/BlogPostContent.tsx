@@ -34,6 +34,9 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
             src="${imageUrl}" 
             alt="Marketing Transformation" 
             class="w-full rounded-lg shadow-md" 
+            loading="lazy"
+            width="${isMobile ? "480" : "960"}"
+            height="${isMobile ? "320" : "640"}"
           />
         </div>
       `;
@@ -45,9 +48,9 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
   }, [content, isMobile, isItalian]);
   
   return (
-    <article className="bg-white rounded-xl shadow-md p-6 md:p-10 mb-12">
+    <article className="bg-white rounded-xl shadow-md p-4 md:p-6 lg:p-10 mb-12">
       <div 
-        className="prose prose-lg max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-primary prose-a:font-medium prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-4 prose-blockquote:rounded-md prose-blockquote:text-gray-700 prose-blockquote:italic prose-img:rounded-lg"
+        className="prose prose-base md:prose-lg max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-primary prose-a:font-medium prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-4 prose-blockquote:rounded-md prose-blockquote:text-gray-700 prose-blockquote:italic prose-img:rounded-lg"
         dangerouslySetInnerHTML={{ __html: modifiedContent }}
       />
       
@@ -55,7 +58,7 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         .prose p {
           text-align: justify;
           color: rgb(75 85 99);
-          margin-bottom: 1.5rem;
+          margin-bottom: 1.25rem;
         }
         .prose li {
           text-align: justify;
@@ -63,50 +66,57 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           margin-bottom: 0.5rem;
         }
         .prose h1 {
-          font-size: 2rem;
-          line-height: 2.5rem;
-          margin-top: 2.5rem;
-          margin-bottom: 1.5rem;
-          color: rgb(31 41 55);
-        }
-        .prose h2 {
           font-size: 1.75rem;
           line-height: 2.25rem;
-          margin-top: 2rem;
+          margin-top: 2.25rem;
           margin-bottom: 1.25rem;
           color: rgb(31 41 55);
         }
-        .prose h3 {
+        .prose h2 {
           font-size: 1.5rem;
           line-height: 2rem;
           margin-top: 1.75rem;
           margin-bottom: 1rem;
           color: rgb(31 41 55);
         }
+        .prose h3 {
+          font-size: 1.25rem;
+          line-height: 1.75rem;
+          margin-top: 1.5rem;
+          margin-bottom: 0.75rem;
+          color: rgb(31 41 55);
+        }
         .prose blockquote {
-          padding: 1.25rem 1.5rem;
-          margin: 2rem 0;
+          padding: 1rem 1.25rem;
+          margin: 1.5rem 0;
           border-radius: 0.5rem;
           background-color: rgba(var(--primary-rgb), 0.05);
           border-left-width: 4px;
           border-color: var(--primary);
         }
         .prose blockquote p {
-          margin-bottom: 0.75rem;
+          margin-bottom: 0.5rem;
         }
         .prose ul, .prose ol {
-          margin-top: 1rem;
-          margin-bottom: 1.5rem;
+          margin-top: 0.75rem;
+          margin-bottom: 1.25rem;
         }
         /* Improve header spacing for better readability */
         .prose h1:first-child {
           margin-top: 0;
         }
         .prose h1 + h2 {
-          margin-top: 1.5rem;
+          margin-top: 1.25rem;
         }
         .prose h2 + h3 {
-          margin-top: 1.25rem;
+          margin-top: 1rem;
+        }
+        /* Optimize image rendering */
+        .prose img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+          will-change: transform;
         }
       `}</style>
     </article>

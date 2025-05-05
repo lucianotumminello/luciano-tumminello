@@ -1,10 +1,13 @@
 
-/* Minimized CSS with only necessary styles */
+/* Minimized CSS with only performance-critical styles */
 #root {
-  max-width: 1280px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
+/* Disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -14,6 +17,7 @@
   }
 }
 
+/* Print-specific styles */
 @media print {
   .no-print {
     display: none !important;
