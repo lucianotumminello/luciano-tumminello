@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => ({
             'react-router-dom',
             'react-helmet-async'
           ],
-          ui: ['@/components/ui'],
+          ui: ['@/components/ui/index.ts'], // Updated path to use the index file
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
