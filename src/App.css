@@ -7,36 +7,38 @@
   min-height: 100vh;
 }
 
+/* Critical blog post styles for immediate render */
+.blog-header {
+  margin-bottom: 2rem;
+}
+
+.blog-header img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Base text styling for all devices */
+h1, h2, h3 {
+  color: rgb(31 41 55);
+}
+
+p {
+  color: rgb(75 85 99);
+}
+
 /* Disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition: none !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* Print-specific styles */
-@media print {
-  .no-print {
-    display: none !important;
   }
 }
 
 /* Mobile-specific optimizations */
 @media (max-width: 768px) {
-  /* Reduce layout shifts by setting explicit heights */
-  .blog-header img {
-    min-height: 200px;
-    content-visibility: auto;
-  }
-  
-  /* Optimize paint performance on mobile */
-  .card, .button, .avatar {
-    will-change: transform;
-  }
-  
   /* Improve touch targets for mobile */
   button, 
   a, 
@@ -45,14 +47,29 @@
     min-width: 44px;
   }
   
-  /* Reduce reflows from font loading */
-  body {
-    text-size-adjust: 100%;
+  /* Content optimization for mobile */
+  .content-mobile-optimized {
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  
+  /* Optimize layout for mobile */
+  .blog-header img {
+    height: auto;
+    max-height: 260px;
+  }
+  
+  /* Optimize text for mobile */
+  .mobile-heading {
+    font-size: 90%;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
   }
 }
 
-/* Content-visibility optimizations for below-the-fold content */
-.below-fold {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
+/* Print-specific styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }

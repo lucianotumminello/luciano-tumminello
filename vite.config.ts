@@ -26,9 +26,6 @@ export default defineConfig(({ mode }) => ({
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
-        passes: 2,
         ecma: 2015,
       },
       mangle: {
@@ -36,25 +33,14 @@ export default defineConfig(({ mode }) => ({
       },
       format: {
         comments: false,
-        ecma: 2015,
       }
     },
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: [
-            'react', 
-            'react-dom'
-          ],
-          router: [
-            'react-router-dom'
-          ],
-          utilities: [
-            'react-helmet-async',
-            '@tanstack/react-query'
-          ],
-          ui: ['@/components/ui/index.ts'], // Updated path to use the index file
-          icons: ['lucide-react']
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@/components/ui/index.ts']
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
@@ -68,26 +54,17 @@ export default defineConfig(({ mode }) => ({
           return 'assets/[name]-[hash][extname]';
         },
       },
-      // Optimize for mobile by splitting package dependencies
       treeshake: {
         moduleSideEffects: true,
-        propertyReadSideEffects: false,
-        tryCatchDeoptimization: false
       },
     },
-    cssCodeSplit: true,
+    cssCodeSplit: false, // Bundle CSS for faster mobile loading
     reportCompressedSize: false,
-    assetsInlineLimit: 4096, // Inline small assets
-    sourcemap: false, // Disable sourcemaps for production builds
-    chunkSizeWarningLimit: 1000, // Increase warning limit
-    // Generate service worker for offline capabilities and mobile performance
-    emptyOutDir: true,
+    assetsInlineLimit: 8192, // Inline more assets for fewer requests
+    sourcemap: false,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    esbuildOptions: {
-      target: 'es2015',
-    }
   },
   preview: {
     port: 8080,
