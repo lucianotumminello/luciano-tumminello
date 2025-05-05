@@ -23,3 +23,36 @@
     display: none !important;
   }
 }
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Reduce layout shifts by setting explicit heights */
+  .blog-header img {
+    min-height: 200px;
+    content-visibility: auto;
+  }
+  
+  /* Optimize paint performance on mobile */
+  .card, .button, .avatar {
+    will-change: transform;
+  }
+  
+  /* Improve touch targets for mobile */
+  button, 
+  a, 
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Reduce reflows from font loading */
+  body {
+    text-size-adjust: 100%;
+  }
+}
+
+/* Content-visibility optimizations for below-the-fold content */
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}

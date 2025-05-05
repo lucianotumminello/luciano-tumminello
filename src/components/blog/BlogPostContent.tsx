@@ -21,13 +21,17 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     
     const quoteToFind = isItalian ? italianQuote : englishQuote;
     
+    // Process content for mobile optimization
+    let processedContent = content;
+    
     // Only proceed if the quote exists in the content
-    if (content.includes(quoteToFind)) {
+    if (processedContent.includes(quoteToFind)) {
       // Set the appropriate image URL based on device type
       const desktopImageUrl = "/lovable-uploads/c58f3f96-294d-41f7-8a9b-4dcefa5823ed.png";
       const mobileImageUrl = "/lovable-uploads/329dab58-64c7-4a2a-95fc-b22a6742091b.png";
       const imageUrl = isMobile ? mobileImageUrl : desktopImageUrl;
       
+      // Add smaller size attributes for mobile devices
       const imageTag = `
         <div class="my-8">
           <img 
@@ -37,18 +41,37 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
             loading="lazy"
             width="${isMobile ? "480" : "960"}"
             height="${isMobile ? "320" : "640"}"
+            decoding="async"
+            sizes="(max-width: 768px) 100vw, 960px"
           />
         </div>
       `;
       
-      return content.replace(quoteToFind, `${quoteToFind}${imageTag}`);
+      processedContent = processedContent.replace(quoteToFind, `${quoteToFind}${imageTag}`);
     }
     
-    return content;
+    // Add mobile optimizations for images
+    if (isMobile) {
+      // Replace all <img> tags with optimized versions
+      processedContent = processedContent.replace(/<img\s+([^>]*)>/g, (match, attrs) => {
+        // Don't modify if it already has loading="lazy"
+        if (attrs.includes('loading="lazy"')) return match;
+        
+        return `<img ${attrs} loading="lazy" decoding="async">`;
+      });
+      
+      // Use smaller font sizes for mobile
+      processedContent = processedContent.replace(
+        /<h([1-6])\s+([^>]*)>/g,
+        (match, level, attrs) => `<h${level} class="mobile-heading" ${attrs}>`
+      );
+    }
+    
+    return processedContent;
   }, [content, isMobile, isItalian]);
   
   return (
-    <article className="bg-white rounded-xl shadow-md p-4 md:p-6 lg:p-10 mb-12">
+    <article className={`bg-white rounded-xl shadow-md p-4 md:p-6 lg:p-10 mb-12 ${isMobile ? 'content-mobile-optimized' : ''}`}>
       <div 
         className="prose prose-base md:prose-lg max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-primary prose-a:font-medium prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-4 prose-blockquote:rounded-md prose-blockquote:text-gray-700 prose-blockquote:italic prose-img:rounded-lg"
         dangerouslySetInnerHTML={{ __html: modifiedContent }}
@@ -117,6 +140,31 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           height: auto;
           display: block;
           will-change: transform;
+          content-visibility: auto;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+          .content-mobile-optimized {
+            padding: 1rem;
+          }
+          .mobile-heading {
+            font-size: 90%;
+            margin-top: 1.2rem;
+            margin-bottom: 0.8rem;
+          }
+          .prose p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+          }
+          .prose blockquote {
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+          }
+          .prose img {
+            contain: paint;
+          }
         }
       `}</style>
     </article>
