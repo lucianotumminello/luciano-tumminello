@@ -1,5 +1,5 @@
 
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import BlogPostHeader from "@/components/blog/BlogPostHeader";
@@ -37,6 +37,29 @@ interface BlogPostContainerProps {
 const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
   const { language } = useLanguage();
   const isItalian = language === "it";
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+
+  // Use intersection observer for lazy loading footer
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setIsFooterVisible(true);
+          observer.disconnect();
+        }
+      });
+    }, {
+      rootMargin: '200px', // Start loading 200px before it comes into view
+      threshold: 0.01
+    });
+    
+    const element = document.getElementById('blog-post-footer-trigger');
+    if (element) observer.observe(element);
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <>
@@ -58,24 +81,29 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         />
       </Suspense>
       
-      <Suspense fallback={<div className="h-20"></div>}>
-        <div className="flex justify-between items-center mb-6">
-          <BlogPostFooter 
-            tags={isItalian ? post.tagsIT : post.tags}
-            authorName={post.author}
-            authorImageUrl={post.authorImageUrl}
-            translationPrefix={isItalian ? "it" : "en"}
-          />
-          
-          <div className="ml-auto">
-            <ShareButtons 
-              pageUrl={pageUrl}
-              title={isItalian ? post.titleIT : post.title}
+      {/* Footer visibility trigger element */}
+      <div id="blog-post-footer-trigger" className="h-1 w-full" />
+      
+      {isFooterVisible && (
+        <Suspense fallback={<div className="h-20"></div>}>
+          <div className="flex justify-between items-center mb-6">
+            <BlogPostFooter 
+              tags={isItalian ? post.tagsIT : post.tags}
+              authorName={post.author}
+              authorImageUrl={post.authorImageUrl}
               translationPrefix={isItalian ? "it" : "en"}
             />
+            
+            <div className="ml-auto">
+              <ShareButtons 
+                pageUrl={pageUrl}
+                title={isItalian ? post.titleIT : post.title}
+                translationPrefix={isItalian ? "it" : "en"}
+              />
+            </div>
           </div>
-        </div>
-      </Suspense>
+        </Suspense>
+      )}
       
       <div className="mt-10 text-center">
         <Link to="/blog">

@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowDownIcon, FileTextIcon } from "lucide-react";
+import { ArrowDownIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import TranslatedText from "./TranslatedText";
 import { memo, useCallback } from "react";
@@ -25,7 +25,7 @@ const HeroSection = memo(() => {
 
   return (
     <section 
-      className="relative py-20 md:py-32 px-4" 
+      className="relative py-16 md:py-24 px-4" 
       aria-labelledby="hero-heading"
     >
       <div className="container mx-auto max-w-5xl">
@@ -56,7 +56,7 @@ const HeroSection = memo(() => {
       </div>
       
       <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-        <div className="h-20 w-px bg-gradient-to-b from-transparent to-gray-200"></div>
+        <div className="h-16 w-px bg-gradient-to-b from-transparent to-gray-200"></div>
       </div>
     </section>
   );
