@@ -7,63 +7,13 @@
   min-height: 100vh;
 }
 
-/* Critical blog post styles for immediate render */
-.blog-header {
-  margin-bottom: 2rem;
-}
-
-.blog-header img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-}
-
-/* Base text styling for all devices */
-h1, h2, h3 {
-  color: rgb(31 41 55);
-}
-
-p {
-  color: rgb(75 85 99);
-}
-
 /* Disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
-    animation: none !important;
-    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* Mobile-specific optimizations */
-@media (max-width: 768px) {
-  /* Improve touch targets for mobile */
-  button, 
-  a, 
-  [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  /* Content optimization for mobile */
-  .content-mobile-optimized {
-    line-height: 1.5;
-    font-size: 0.95rem;
-  }
-  
-  /* Optimize layout for mobile */
-  .blog-header img {
-    height: auto;
-    max-height: 260px;
-  }
-  
-  /* Optimize text for mobile */
-  .mobile-heading {
-    font-size: 90%;
-    margin-top: 1rem;
-    margin-bottom: 0.75rem;
   }
 }
 

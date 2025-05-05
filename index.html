@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,30 +11,25 @@
     <!-- End Google Tag Manager -->
     
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luciano Tumminello | Marketing & Operations Leader</title>
     <meta name="description" content="Luciano Tumminello is a seasoned Marketing & Operations Leader with extensive experience in digital transformation, global operations, and data-driven marketing strategies across APAC." />
     
-    <!-- Mobile-specific meta tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="mobile-web-app-capable" content="yes" />
+    <!-- Performance optimizations -->
+    <link rel="preload" href="/src/index.css" as="style">
     
-    <!-- Preconnect to third-party domains -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    <link rel="preconnect" href="https://analytics.ahrefs.com" crossorigin />
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-    <link rel="dns-prefetch" href="https://analytics.ahrefs.com" />
+    <!-- Preload critical images -->
+    <link rel="preload" href="/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png" as="image" fetchpriority="high">
+    <link rel="preload" href="/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png" as="image" fetchpriority="high">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Preconnect to essential domains -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="preconnect" href="https://analytics.ahrefs.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://analytics.ahrefs.com">
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/src/index.css" as="style" />
-    <link rel="preload" href="/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png" as="image" fetchpriority="high" />
-    <link rel="preload" href="/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png" as="image" fetchpriority="high" />
-    
-    <!-- Enhanced inline critical CSS -->
+    <!-- Inline critical CSS -->
     <style>
       body {
         margin: 0;
@@ -41,7 +37,6 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         background-color: white;
-        font-display: swap;
       }
       #root {
         min-height: 100vh;
@@ -67,37 +62,6 @@
         height: auto;
         display: block;
       }
-      /* Optimize loading behavior */
-      @media (max-width: 768px) {
-        :root {
-          scroll-padding-top: 50px;
-        }
-        body {
-          font-size: 16px;
-          touch-action: manipulation;
-          -webkit-tap-highlight-color: transparent;
-        }
-        /* Avoid invisible text while webfonts load */
-        html {
-          font-display: swap;
-          text-size-adjust: 100%;
-        }
-      }
-      /* Faster initial rendering for mobile */
-      @media (max-width: 768px) {
-        .content-shell {
-          min-height: 100vh;
-          display: grid;
-          grid-template-rows: auto 1fr auto;
-        }
-        /* Pre-allocate space for mobile content */
-        .header-placeholder {
-          height: 60px;
-        }
-        .hero-placeholder {
-          height: 240px; 
-        }
-      }
     </style>
 
     <!-- Defer non-essential scripts -->
@@ -122,12 +86,10 @@
     <!-- Delay Contentsquare script loading -->
     <script defer>
       document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          const script = document.createElement('script');
-          script.src = 'https://static.hj.contentsquare.net/c/csq-6391574.js';
-          script.async = true;
-          document.head.appendChild(script);
-        }, 3000); // Delay by 3 seconds
+        const script = document.createElement('script');
+        script.src = 'https://static.hj.contentsquare.net/c/csq-6391574.js';
+        script.async = true;
+        document.head.appendChild(script);
       });
     </script>
     
@@ -195,7 +157,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCG9MW2D"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <div id="root" class="content-shell"></div>
+    <div id="root"></div>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
@@ -207,28 +169,6 @@
           document.body.classList.remove('js-loading');
         });
       });
-      
-      // Add support for native lazy-loading
-      if ('loading' in HTMLImageElement.prototype) {
-        const images = document.querySelectorAll('img[loading="lazy"]');
-        images.forEach(img => {
-          img.src = img.dataset.src;
-        });
-      } else {
-        // Fallback for browsers that don't support native lazy loading
-        const script = document.createElement('script');
-        script.src = '/lazysizes.min.js';
-        document.body.appendChild(script);
-      }
-      
-      // Register service worker for offline support
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/service-worker.js').catch(function(err) {
-            console.log('Service worker registration failed: ', err);
-          });
-        });
-      }
     </script>
   </body>
 </html>

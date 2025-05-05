@@ -26,11 +26,9 @@ export default defineConfig(({ mode }) => ({
     terserOptions: {
       compress: {
         drop_console: true,
-        ecma: 2015,
+        passes: 2,
       },
-      mangle: {
-        safari10: true,
-      },
+      mangle: true,
       format: {
         comments: false,
       }
@@ -38,36 +36,26 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['@/components/ui/index.ts']
+          vendor: [
+            'react', 
+            'react-dom', 
+            'react-router-dom',
+            'react-helmet-async'
+          ],
+          ui: ['@/components/ui/index.ts'], // Updated path to use the index file
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: ({name}) => {
-          if (/\.(gif|jpe?g|png|svg|webp)$/.test(name ?? '')) {
-            return 'assets/images/[name]-[hash][extname]';
-          }
-          if (/\.css$/.test(name ?? '')) {
-            return 'assets/css/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
-      },
-      treeshake: {
-        moduleSideEffects: true,
-      },
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+      }
     },
-    cssCodeSplit: false, // Bundle CSS for faster mobile loading
+    cssCodeSplit: true,
     reportCompressedSize: false,
-    assetsInlineLimit: 8192, // Inline more assets for fewer requests
-    sourcemap: false,
+    assetsInlineLimit: 4096, // Inline small assets
+    sourcemap: false, // Disable sourcemaps for production builds
+    chunkSizeWarningLimit: 1000, // Increase warning limit
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-  },
-  preview: {
-    port: 8080,
-    host: true,
-  },
+  }
 }));
