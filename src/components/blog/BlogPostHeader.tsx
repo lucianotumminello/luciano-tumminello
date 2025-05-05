@@ -66,7 +66,7 @@ const BlogPostHeader = ({
         {isItalian ? "Torna al Blog" : "Back to Blog"}
       </Link>
       
-      <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
+      <Card className="mb-8 overflow-hidden border-0 shadow-lg">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
             <picture>
@@ -75,45 +75,41 @@ const BlogPostHeader = ({
               {/* Mobile image (displayed below 768px) */}
               <img 
                 src={imageUrl} 
-                alt={title}
+                alt={title} 
                 className="w-full h-full object-cover"
                 loading="eager"
-                fetchpriority="high"
-                width="1200"
-                height="675"
-                style={{aspectRatio: "16/9"}}
               />
             </picture>
           </AspectRatio>
         </div>
         
-        <CardContent className="p-4 md:p-8 bg-white">
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 md:mb-6 border-b border-gray-100 pb-4 md:pb-6">
-            <span className="inline-block bg-gray-100 text-gray-800 px-3 py-1 md:px-4 md:py-2 rounded-full font-medium text-sm">
+        <CardContent className="p-8 bg-white">
+          <div className="flex flex-wrap items-center gap-4 mb-6 border-b border-gray-100 pb-6">
+            <span className="inline-block bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-medium">
               {category}
             </span>
             
-            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
-              <CalendarIcon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+            <div className="flex items-center text-gray-500 whitespace-nowrap">
+              <CalendarIcon className="h-4 w-4 mr-2" />
               {formattedDate}
             </div>
             
-            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
-              <Clock className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+            <div className="flex items-center text-gray-500 whitespace-nowrap">
+              <Clock className="h-4 w-4 mr-2" />
               {readingTime}
             </div>
           </div>
           
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             {title}
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-600 mb-4 leading-relaxed text-justify">
+          <p className="text-xl text-gray-600 mb-4 leading-relaxed text-justify">
             {excerpt}
           </p>
           
-          <div className="flex items-center mt-4 md:mt-6">
-            <Avatar className="h-8 w-8 md:h-10 md:w-10 mr-2 md:mr-3">
+          <div className="flex items-center mt-6">
+            <Avatar className="h-10 w-10 mr-3">
               <AvatarImage src={authorImageUrl} alt={author} />
               <AvatarFallback>{author.charAt(0)}</AvatarFallback>
             </Avatar>

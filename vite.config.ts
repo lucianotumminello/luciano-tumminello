@@ -26,12 +26,7 @@ export default defineConfig(({ mode }) => ({
     terserOptions: {
       compress: {
         drop_console: true,
-        passes: 2,
       },
-      mangle: true,
-      format: {
-        comments: false,
-      }
     },
     rollupOptions: {
       output: {
@@ -51,9 +46,6 @@ export default defineConfig(({ mode }) => ({
     },
     cssCodeSplit: true,
     reportCompressedSize: false,
-    assetsInlineLimit: 4096, // Inline small assets
-    sourcemap: false, // Disable sourcemaps for production builds
-    chunkSizeWarningLimit: 1000, // Increase warning limit
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
