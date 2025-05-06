@@ -39,7 +39,8 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         dangerouslySetInnerHTML={{ __html: modifiedContent }}
       />
       
-      <style jsx>{`
+      <style>
+        {`
         .prose p {
           text-align: justify;
           color: rgb(75 85 99);
@@ -67,7 +68,8 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
             width: 100% !important;
           }
         }
-      `}</style>
+        `}
+      </style>
     </article>
   );
 };
