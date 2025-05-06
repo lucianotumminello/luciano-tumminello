@@ -30,20 +30,44 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     }
     
     // Add the specific images before the Operations Transformation header
-    // This is for the blog post published on 13 April 2025
-    if (processedContent.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025")) {
-      console.log("Found blog post from April 13, 2025");
+    if (content.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025")) {
+      console.log("Found target blog post - April 13, 2025");
       
-      if (processedContent.includes("Operations Transformation: Decision Intelligence at Enterprise Scale")) {
-        console.log("Found Operations Transformation header, adding images");
-        const operationsHeader = "<h2>Operations Transformation: Decision Intelligence at Enterprise Scale</h2>";
-        const imageForDesktop = `<div class="operations-transformation-image desktop-only"><img src="/lovable-uploads/8c548369-87f9-4eb6-94a8-07def48e6de6.png" alt="Operations Transformation - Desktop" width="100%" height="auto" loading="lazy" decoding="async"></div>`;
-        const imageForMobile = `<div class="operations-transformation-image mobile-only"><img src="/lovable-uploads/fba14352-d1d5-451c-8b99-136cd2afde0a.png" alt="Operations Transformation - Mobile" width="100%" height="auto" loading="lazy" decoding="async"></div>`;
+      if (content.includes("Operations Transformation: Decision Intelligence at Enterprise Scale")) {
+        console.log("Found Operations Transformation header, adding images now");
         
+        const headerPattern = "<h2>Operations Transformation: Decision Intelligence at Enterprise Scale</h2>";
+        
+        // Define the image HTML with explicit styling to ensure visibility
+        const desktopImageHtml = `
+          <div class="operations-image-desktop">
+            <img 
+              src="/lovable-uploads/8c548369-87f9-4eb6-94a8-07def48e6de6.png" 
+              alt="Operations Transformation Desktop" 
+              width="100%" 
+              style="display: block; max-width: 100%; margin: 1rem 0;"
+            />
+          </div>
+        `;
+        
+        const mobileImageHtml = `
+          <div class="operations-image-mobile">
+            <img 
+              src="/lovable-uploads/fba14352-d1d5-451c-8b99-136cd2afde0a.png" 
+              alt="Operations Transformation Mobile" 
+              width="100%" 
+              style="display: block; max-width: 100%; margin: 1rem 0;"
+            />
+          </div>
+        `;
+        
+        // Replace the header with the images followed by the header
         processedContent = processedContent.replace(
-          operationsHeader, 
-          `${imageForDesktop}${imageForMobile}${operationsHeader}`
+          headerPattern,
+          `${desktopImageHtml}${mobileImageHtml}${headerPattern}`
         );
+        
+        console.log("Images inserted before Operations Transformation header");
       }
     }
     
@@ -57,8 +81,7 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         dangerouslySetInnerHTML={{ __html: modifiedContent }}
       />
       
-      <style>
-        {`
+      <style jsx>{`
         .prose p {
           text-align: justify;
           color: rgb(75 85 99);
@@ -74,34 +97,24 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           height: auto;
         }
         
-        .desktop-only {
+        .operations-image-desktop {
           display: block;
+          margin: 2rem 0;
+          width: 100%;
         }
         
-        .mobile-only {
+        .operations-image-mobile {
           display: none;
-        }
-        
-        .operations-transformation-image {
-          margin-bottom: 1.5rem;
-          margin-top: 1.5rem;
+          margin: 2rem 0;
           width: 100%;
-        }
-        
-        .operations-transformation-image img {
-          border-radius: 0.375rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-          width: 100%;
-          height: auto;
-          display: block;
         }
         
         @media (max-width: 768px) {
-          .desktop-only {
+          .operations-image-desktop {
             display: none;
           }
           
-          .mobile-only {
+          .operations-image-mobile {
             display: block;
           }
           
@@ -116,8 +129,7 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
             width: 100% !important;
           }
         }
-        `}
-      </style>
+      `}</style>
     </article>
   );
 };
