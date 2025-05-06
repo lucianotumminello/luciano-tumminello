@@ -29,6 +29,19 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
       });
     }
     
+    // Add the specific images before the Operations Transformation header
+    // This is for the blog post published on 13 April 2025
+    if (processedContent.includes("Operations Transformation: Decision Intelligence at Enterprise Scale")) {
+      const operationsHeader = "<h2>Operations Transformation: Decision Intelligence at Enterprise Scale</h2>";
+      const imageForDesktop = `<div class="operations-transformation-image desktop-only"><img src="/lovable-uploads/83fa2f21-049b-4888-a2f2-3d40fb7bc9e2.png" alt="Marketing Transformation: From Automation to Strategic Intelligence - Desktop" loading="lazy" decoding="async" class="w-full"></div>`;
+      const imageForMobile = `<div class="operations-transformation-image mobile-only"><img src="/lovable-uploads/233bb7d0-18cd-4897-877a-ef4f6d00391f.png" alt="Marketing Transformation: From Automation to Strategic Intelligence - Mobile" loading="lazy" decoding="async" class="w-full"></div>`;
+      
+      processedContent = processedContent.replace(
+        operationsHeader, 
+        `${imageForDesktop}${imageForMobile}${operationsHeader}`
+      );
+    }
+    
     return processedContent;
   }, [content, isMobile, isItalian]);
   
@@ -56,7 +69,23 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           height: auto;
         }
         
+        .desktop-only {
+          display: block;
+        }
+        
+        .mobile-only {
+          display: none;
+        }
+        
         @media (max-width: 768px) {
+          .desktop-only {
+            display: none;
+          }
+          
+          .mobile-only {
+            display: block;
+          }
+          
           .content-mobile-optimized p {
             font-size: 0.95rem;
             line-height: 1.5;
