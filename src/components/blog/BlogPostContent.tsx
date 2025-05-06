@@ -32,9 +32,10 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     // Add the specific images before the Operations Transformation header
     // This is for the blog post published on 13 April 2025
     if (processedContent.includes("Operations Transformation: Decision Intelligence at Enterprise Scale")) {
+      console.log("Found Operations Transformation header, adding images");
       const operationsHeader = "<h2>Operations Transformation: Decision Intelligence at Enterprise Scale</h2>";
-      const imageForDesktop = `<div class="operations-transformation-image desktop-only"><img src="/lovable-uploads/83fa2f21-049b-4888-a2f2-3d40fb7bc9e2.png" alt="Marketing Transformation: From Automation to Strategic Intelligence - Desktop" loading="lazy" decoding="async" class="w-full"></div>`;
-      const imageForMobile = `<div class="operations-transformation-image mobile-only"><img src="/lovable-uploads/233bb7d0-18cd-4897-877a-ef4f6d00391f.png" alt="Marketing Transformation: From Automation to Strategic Intelligence - Mobile" loading="lazy" decoding="async" class="w-full"></div>`;
+      const imageForDesktop = `<div class="operations-transformation-image desktop-only"><img src="/lovable-uploads/83fa2f21-049b-4888-a2f2-3d40fb7bc9e2.png" alt="Operations Transformation - Desktop" loading="lazy" decoding="async" class="w-full"></div>`;
+      const imageForMobile = `<div class="operations-transformation-image mobile-only"><img src="/lovable-uploads/233bb7d0-18cd-4897-877a-ef4f6d00391f.png" alt="Operations Transformation - Mobile" loading="lazy" decoding="async" class="w-full"></div>`;
       
       processedContent = processedContent.replace(
         operationsHeader, 
@@ -75,6 +76,16 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         
         .mobile-only {
           display: none;
+        }
+        
+        .operations-transformation-image {
+          margin-bottom: 1.5rem;
+          margin-top: 1.5rem;
+        }
+        
+        .operations-transformation-image img {
+          border-radius: 0.375rem;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         @media (max-width: 768px) {
