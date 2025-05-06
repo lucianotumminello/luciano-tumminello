@@ -34,8 +34,8 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     if (processedContent.includes("Operations Transformation: Decision Intelligence at Enterprise Scale")) {
       console.log("Found Operations Transformation header, adding images");
       const operationsHeader = "<h2>Operations Transformation: Decision Intelligence at Enterprise Scale</h2>";
-      const imageForDesktop = `<div class="operations-transformation-image desktop-only"><img src="/lovable-uploads/83fa2f21-049b-4888-a2f2-3d40fb7bc9e2.png" alt="Operations Transformation - Desktop" loading="lazy" decoding="async" class="w-full"></div>`;
-      const imageForMobile = `<div class="operations-transformation-image mobile-only"><img src="/lovable-uploads/233bb7d0-18cd-4897-877a-ef4f6d00391f.png" alt="Operations Transformation - Mobile" loading="lazy" decoding="async" class="w-full"></div>`;
+      const imageForDesktop = `<div class="operations-transformation-image desktop-only"><img src="/lovable-uploads/8c548369-87f9-4eb6-94a8-07def48e6de6.png" alt="Operations Transformation - Desktop" loading="lazy" decoding="async" class="w-full"></div>`;
+      const imageForMobile = `<div class="operations-transformation-image mobile-only"><img src="/lovable-uploads/fba14352-d1d5-451c-8b99-136cd2afde0a.png" alt="Operations Transformation - Mobile" loading="lazy" decoding="async" class="w-full"></div>`;
       
       processedContent = processedContent.replace(
         operationsHeader, 
