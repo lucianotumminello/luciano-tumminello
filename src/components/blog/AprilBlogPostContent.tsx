@@ -19,9 +19,8 @@ const AprilBlogPostContent = ({ content }: AprilBlogPostContentProps): string =>
   
   let processedContent = content;
   
-  // Insert marketing transformation images
-  console.log("Inserting marketing transformation images");
-  processedContent = insertMarketingImages(processedContent);
+  // Skip inserting marketing transformation images for this specific post
+  console.log("Skipping marketing transformation images for April 13 post");
   
   // Add additional content for word count and outgoing links
   console.log("Adding additional content with outgoing links");
