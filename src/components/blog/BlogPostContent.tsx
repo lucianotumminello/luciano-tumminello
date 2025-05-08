@@ -29,53 +29,106 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
       });
     }
     
-    // Add images before the Operations Transformation heading for the specific blog post
-    if (content.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025")) {
-      console.log("Found target blog post - April 13, 2025");
+    // Specifically targeting the April 13 blog post
+    const isTargetPost = content.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025");
+    console.log("Is target blog post (April 13):", isTargetPost);
+    
+    if (isTargetPost) {
+      console.log("Processing the target blog post - April 13, 2025");
       
-      // Search specifically for the quote by Maya Johnson which appears right before our target insertion point
-      if (content.includes("Maya Johnson, Chief Customer Experience Officer at Deloitte Digital")) {
-        console.log("Found Maya Johnson quote, inserting marketing transformation images");
+      // Look for the specific quote by Maya Johnson
+      const hasMayaQuote = content.includes("Maya Johnson, Chief Customer Experience Officer at Deloitte Digital");
+      console.log("Found Maya Johnson quote:", hasMayaQuote);
+      
+      if (hasMayaQuote) {
+        console.log("Preparing to insert marketing transformation images");
         
+        // Define the exact pattern to match
         const quotePattern = /" — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital<\/p>/;
+        const quoteMatch = processedContent.match(quotePattern);
+        console.log("Quote pattern matched:", !!quoteMatch);
         
-        // Define the desktop and mobile images with specific styles to ensure visibility
+        // Define the desktop and mobile images with enhanced visibility styles
         const desktopImageHtml = `
-          <div class="marketing-desktop-image">
+          <div id="marketing-desktop-image" class="marketing-desktop-image" style="display: block; margin: 2rem 0; width: 100%; max-width: 100%;">
             <img 
               src="/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png" 
               alt="Marketing Transformation Diagram - Desktop" 
               width="100%" 
               height="auto"
-              style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 0;"
+              style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 1px solid #eee;"
             />
           </div>
         `;
         
         const mobileImageHtml = `
-          <div class="marketing-mobile-image">
+          <div id="marketing-mobile-image" class="marketing-mobile-image" style="display: none; margin: 2rem 0; width: 100%; max-width: 100%;">
             <img 
               src="/lovable-uploads/9a7ea607-c8a4-4096-ae90-22f531489125.png" 
               alt="Marketing Transformation Diagram - Mobile" 
               width="100%" 
               height="auto"
-              style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 0;"
+              style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 1px solid #eee;"
             />
           </div>
         `;
         
         // Insert after Maya Johnson quote and before Operations Transformation heading
-        processedContent = processedContent.replace(
-          quotePattern,
-          `" — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital</p>${desktopImageHtml}${mobileImageHtml}`
-        );
-        
-        console.log("Marketing transformation images inserted after Maya Johnson quote");
+        if (quoteMatch) {
+          processedContent = processedContent.replace(
+            quotePattern,
+            `" — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital</p>${desktopImageHtml}${mobileImageHtml}`
+          );
+          console.log("Marketing transformation images inserted successfully");
+        } else {
+          console.error("Could not find the exact quote pattern to insert images");
+          
+          // Fallback approach - try to find a similar pattern
+          const alternativePattern = /Maya Johnson.*?Deloitte Digital<\/p>/;
+          const alternativeMatch = processedContent.match(alternativePattern);
+          
+          if (alternativeMatch) {
+            console.log("Using alternative insertion point");
+            processedContent = processedContent.replace(
+              alternativeMatch[0],
+              `${alternativeMatch[0]}${desktopImageHtml}${mobileImageHtml}`
+            );
+            console.log("Images inserted using alternative approach");
+          } else {
+            // Emergency fallback - just insert at the beginning of the content
+            console.log("Using emergency fallback to insert images");
+            processedContent = `${desktopImageHtml}${mobileImageHtml}${processedContent}`;
+          }
+        }
       }
     }
     
     return processedContent;
   }, [content, isMobile, isItalian]);
+  
+  // Effect to ensure proper image visibility after rendering
+  React.useEffect(() => {
+    if (content && content.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025")) {
+      // Ensure mobile/desktop visibility is correctly applied based on screen size
+      setTimeout(() => {
+        const desktopImg = document.getElementById("marketing-desktop-image");
+        const mobileImg = document.getElementById("marketing-mobile-image");
+        
+        if (desktopImg && mobileImg) {
+          console.log("Found marketing images in DOM, applying final visibility styles");
+          if (isMobile) {
+            desktopImg.style.display = "none";
+            mobileImg.style.display = "block";
+          } else {
+            desktopImg.style.display = "block";
+            mobileImg.style.display = "none";
+          }
+        } else {
+          console.warn("Marketing images not found in DOM after rendering");
+        }
+      }, 100);
+    }
+  }, [content, isMobile]);
   
   return (
     <article className={`bg-white rounded-lg shadow-md p-4 md:p-6 mb-8 ${isMobile ? 'content-mobile-optimized' : ''}`}>
@@ -101,18 +154,18 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           height: auto;
         }
         
-        /* Desktop images */
+        /* Desktop images - important to ensure display */
         .desktop-image-container,
         .marketing-desktop-image {
-          display: block;
+          display: block !important;
           margin: 2rem 0;
           width: 100%;
         }
         
-        /* Mobile images */
+        /* Mobile images - important to ensure proper display */
         .mobile-image-container,
         .marketing-mobile-image {
-          display: none;
+          display: none !important;
           margin: 2rem 0;
           width: 100%;
         }
@@ -121,13 +174,13 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           /* Hide desktop images on mobile */
           .desktop-image-container,
           .marketing-desktop-image {
-            display: none;
+            display: none !important;
           }
           
           /* Show mobile images on mobile */
           .mobile-image-container,
           .marketing-mobile-image {
-            display: block;
+            display: block !important;
           }
           
           /* Mobile content optimization */
