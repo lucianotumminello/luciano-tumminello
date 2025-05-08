@@ -29,45 +29,48 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
       });
     }
     
-    // Add the specific images before the Operations Transformation header
+    // Add images before the Operations Transformation heading for the specific blog post
     if (content.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025")) {
       console.log("Found target blog post - April 13, 2025");
       
-      if (content.includes("Operations Transformation: Decision Intelligence at Enterprise Scale")) {
-        console.log("Found Operations Transformation header, adding images now");
+      // Search specifically for the quote by Maya Johnson which appears right before our target insertion point
+      if (content.includes("Maya Johnson, Chief Customer Experience Officer at Deloitte Digital")) {
+        console.log("Found Maya Johnson quote, adding images before Operations Transformation heading");
         
-        const headerPattern = "<h2>Operations Transformation: Decision Intelligence at Enterprise Scale</h2>";
+        const quotePattern = /" — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital<\/p>/;
         
-        // Define the image HTML with explicit styling to ensure visibility
+        // Define the desktop and mobile images with specific styles to ensure visibility
         const desktopImageHtml = `
-          <div class="operations-image-desktop">
+          <div class="desktop-image-container">
             <img 
               src="/lovable-uploads/8c548369-87f9-4eb6-94a8-07def48e6de6.png" 
-              alt="Operations Transformation Desktop" 
+              alt="Operations Transformation Diagram" 
               width="100%" 
-              style="display: block; max-width: 100%; margin: 1rem 0;"
+              height="auto"
+              style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 0;"
             />
           </div>
         `;
         
         const mobileImageHtml = `
-          <div class="operations-image-mobile">
+          <div class="mobile-image-container">
             <img 
               src="/lovable-uploads/fba14352-d1d5-451c-8b99-136cd2afde0a.png" 
-              alt="Operations Transformation Mobile" 
+              alt="Operations Transformation Diagram Mobile" 
               width="100%" 
-              style="display: block; max-width: 100%; margin: 1rem 0;"
+              height="auto"
+              style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 0;"
             />
           </div>
         `;
         
-        // Replace the header with the images followed by the header
+        // Insert after Maya Johnson quote and before Operations Transformation heading
         processedContent = processedContent.replace(
-          headerPattern,
-          `${desktopImageHtml}${mobileImageHtml}${headerPattern}`
+          quotePattern,
+          `" — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital</p>${desktopImageHtml}${mobileImageHtml}`
         );
         
-        console.log("Images inserted before Operations Transformation header");
+        console.log("Images inserted after Maya Johnson quote");
       }
     }
     
@@ -98,24 +101,24 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           height: auto;
         }
         
-        .operations-image-desktop {
+        .desktop-image-container {
           display: block;
           margin: 2rem 0;
           width: 100%;
         }
         
-        .operations-image-mobile {
+        .mobile-image-container {
           display: none;
           margin: 2rem 0;
           width: 100%;
         }
         
         @media (max-width: 768px) {
-          .operations-image-desktop {
+          .desktop-image-container {
             display: none;
           }
           
-          .operations-image-mobile {
+          .mobile-image-container {
             display: block;
           }
           
