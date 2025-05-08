@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,6 +15,20 @@
     <title>Luciano Tumminello | Marketing & Operations Leader</title>
     <meta name="description" content="Luciano Tumminello is a seasoned Marketing & Operations Leader with extensive experience in digital transformation, global operations, and data-driven marketing strategies across APAC." />
 
+    <!-- ContentsSquare Tracking Script -->
+    <script>
+      (function (c, s, q, u, a, r, e) {
+          c.hj=c.hj||function(){(c.hj.q=c.hj.q||[]).push(arguments)};
+          c._hjSettings = { hjid: a };
+          r = s.getElementsByTagName('head')[0];
+          e = s.createElement('script');
+          e.async = true;
+          e.src = q + c._hjSettings.hjid + u;
+          r.appendChild(e);
+      })(window, document, 'https://static.hj.contentsquare.net/c/csq-', '.js', 6391574);
+    </script>
+    <!-- End ContentsSquare Tracking Script -->
+    
     <!-- Preload critical fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
@@ -179,15 +192,12 @@
     
     <!-- Delayed third-party scripts -->
     <script type="module">
-      // Lazy-load third-party scripts after the page is interactive
+      // Replace the existing ContentsSquare loading with an empty function since we're now loading it directly in head
       document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
-          // Load ContentsSquare script
-          const csScript = document.createElement('script');
-          csScript.src = 'https://static.hj.contentsquare.net/c/csq-6391574.js';
-          csScript.async = true;
-          document.head.appendChild(csScript);
-        }, 3000); // Delay by 3 seconds
+          // ContentsSquare is now loaded directly in the head
+          console.log('ContentsSquare already loaded in head');
+        }, 3000);
       });
     </script>
     
