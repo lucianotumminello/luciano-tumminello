@@ -2,36 +2,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <!-- Home page -->
   <url>
     <loc>https://www.lucianotumminello.com/</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.lucianotumminello.com/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png</image:loc>
+      <image:caption>Luciano Tumminello Profile Image</image:caption>
+    </image:image>
   </url>
+  
+  <!-- Main pages -->
   <url>
     <loc>https://www.lucianotumminello.com/about</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/career</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/education</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  
+  <!-- Blog section -->
   <url>
     <loc>https://www.lucianotumminello.com/blog</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image>
@@ -39,33 +48,45 @@
       <image:caption>Luciano Tumminello Profile Image</image:caption>
     </image:image>
   </url>
+  
+  <!-- Individual blog posts -->
   <url>
     <loc>https://www.lucianotumminello.com/blog/beyond-technology-ai-culture</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/blog/ai-leadership-revolution</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.lucianotumminello.com/blog/beyond-pattern-recognition</loc>
+    <lastmod>2025-05-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Contact page -->
+  <url>
     <loc>https://www.lucianotumminello.com/contact</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  
+  <!-- Policy pages -->
   <url>
     <loc>https://www.lucianotumminello.com/privacy-policy</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/cookie-policy</loc>
-    <lastmod>2025-04-25</lastmod>
+    <lastmod>2025-05-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>

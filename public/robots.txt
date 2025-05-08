@@ -60,6 +60,8 @@ Allow: /*.webp$
 # Rate limiting for crawlers
 Crawl-delay: 10
 
-# Sitemap location
+# Sitemap location (with HTTPS)
 Sitemap: https://www.lucianotumminello.com/sitemap.xml
 
+# Ahrefs verification
+Ahrefs-site-verification: ce683dc04b54269de284df7d84a3a796826866a4f5457c678512dacf582e80a1

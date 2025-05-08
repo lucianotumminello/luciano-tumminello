@@ -23,18 +23,23 @@ const BlogPostLayout = ({
   keywords,
   schemaData,
 }: BlogPostLayoutProps) => {
+  // Ensure description is not too long (fixes "Meta description too long" issue)
+  const optimizedDescription = description && description.length > 155 
+    ? `${description.substring(0, 152)}...` 
+    : description;
+  
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
         <title>{title} | Luciano Tumminello</title>
-        <meta name="description" content={description} />
+        <meta name="description" content={optimizedDescription} />
         <meta name="keywords" content={keywords} />
         <link rel="canonical" href={pageUrl} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        <meta property="og:description" content={optimizedDescription} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:site_name" content="Luciano Tumminello" />
@@ -43,7 +48,7 @@ const BlogPostLayout = ({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@luciano_tumminello" />
         <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
+        <meta name="twitter:description" content={optimizedDescription} />
         <meta name="twitter:image" content={imageUrl} />
         
         {/* Additional SEO Meta Tags */}
@@ -61,9 +66,9 @@ const BlogPostLayout = ({
       <Header />
       
       <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
-        {/* Adding fallback h1 in case the BlogPostHeader component doesn't provide one */}
-        <h1 className="sr-only">{title}</h1>
         <div className="container mx-auto max-w-4xl">
+          {/* Ensure visible H1 tag exists on the page (fixes "H1 tag missing or empty" issue) */}
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{title}</h1>
           {children}
         </div>
       </main>
