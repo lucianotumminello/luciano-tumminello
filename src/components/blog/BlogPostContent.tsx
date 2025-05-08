@@ -35,16 +35,16 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
       
       // Search specifically for the quote by Maya Johnson which appears right before our target insertion point
       if (content.includes("Maya Johnson, Chief Customer Experience Officer at Deloitte Digital")) {
-        console.log("Found Maya Johnson quote, adding images before Operations Transformation heading");
+        console.log("Found Maya Johnson quote, inserting marketing transformation images");
         
         const quotePattern = /" — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital<\/p>/;
         
         // Define the desktop and mobile images with specific styles to ensure visibility
         const desktopImageHtml = `
-          <div class="desktop-image-container">
+          <div class="marketing-desktop-image">
             <img 
-              src="/lovable-uploads/8c548369-87f9-4eb6-94a8-07def48e6de6.png" 
-              alt="Operations Transformation Diagram" 
+              src="/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png" 
+              alt="Marketing Transformation Diagram - Desktop" 
               width="100%" 
               height="auto"
               style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 0;"
@@ -53,10 +53,10 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
         `;
         
         const mobileImageHtml = `
-          <div class="mobile-image-container">
+          <div class="marketing-mobile-image">
             <img 
-              src="/lovable-uploads/fba14352-d1d5-451c-8b99-136cd2afde0a.png" 
-              alt="Operations Transformation Diagram Mobile" 
+              src="/lovable-uploads/9a7ea607-c8a4-4096-ae90-22f531489125.png" 
+              alt="Marketing Transformation Diagram - Mobile" 
               width="100%" 
               height="auto"
               style="display: block; max-width: 100%; margin: 2rem 0 1rem 0; border: 0;"
@@ -70,7 +70,7 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           `" — Maya Johnson, Chief Customer Experience Officer at Deloitte Digital</p>${desktopImageHtml}${mobileImageHtml}`
         );
         
-        console.log("Images inserted after Maya Johnson quote");
+        console.log("Marketing transformation images inserted after Maya Johnson quote");
       }
     }
     
@@ -101,27 +101,36 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
           height: auto;
         }
         
-        .desktop-image-container {
+        /* Desktop images */
+        .desktop-image-container,
+        .marketing-desktop-image {
           display: block;
           margin: 2rem 0;
           width: 100%;
         }
         
-        .mobile-image-container {
+        /* Mobile images */
+        .mobile-image-container,
+        .marketing-mobile-image {
           display: none;
           margin: 2rem 0;
           width: 100%;
         }
         
         @media (max-width: 768px) {
-          .desktop-image-container {
+          /* Hide desktop images on mobile */
+          .desktop-image-container,
+          .marketing-desktop-image {
             display: none;
           }
           
-          .mobile-image-container {
+          /* Show mobile images on mobile */
+          .mobile-image-container,
+          .marketing-mobile-image {
             display: block;
           }
           
+          /* Mobile content optimization */
           .content-mobile-optimized p {
             font-size: 0.95rem;
             line-height: 1.5;
