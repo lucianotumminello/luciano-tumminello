@@ -74,30 +74,27 @@ export const ensureOutgoingLinks = (content: string): string => {
   // Check if content already has links
   const hasLinks = content.includes('<a href=');
   
-  // If no links found, add related resources section
-  if (!hasLinks) {
-    console.log("No outgoing links found in content, adding related resources section");
-    
-    const relatedResources = `
-      <div class="related-resources">
-        <h3>Related Resources</h3>
-        <ul>
-          <li><a href="/blog" class="text-primary hover:underline">Explore more articles on digital transformation</a></li>
-          <li><a href="/career" class="text-primary hover:underline">Learn about my experience in marketing operations</a></li>
-          <li><a href="/contact" class="text-primary hover:underline">Connect with me for consulting opportunities</a></li>
-          <li><a href="https://www.linkedin.com/in/lucianotumminello10101981/" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Connect on LinkedIn</a></li>
-        </ul>
-      </div>
-    `;
-    
-    // Add before the closing body tag if it exists
-    if (content.includes('</body>')) {
-      return content.replace('</body>', relatedResources + '</body>');
-    }
-    
-    // Otherwise add to the end
-    return content + relatedResources;
+  // If content already has links, return it unchanged - no longer adding Related Resources section
+  if (hasLinks) {
+    console.log("Outgoing links already found in content, not adding related resources section");
+    return content;
   }
   
-  return content;
+  // If no links found, we still need to add at least one outgoing link for SEO purposes
+  // but we'll add it more subtly at the end of the content without the Related Resources header
+  console.log("No outgoing links found in content, adding minimal outgoing link");
+  
+  const minimalLink = `
+    <p class="mt-8">
+      <a href="/contact" class="text-primary hover:underline">Contact me</a> for more information on this topic.
+    </p>
+  `;
+  
+  // Add before the closing body tag if it exists
+  if (content.includes('</body>')) {
+    return content.replace('</body>', minimalLink + '</body>');
+  }
+  
+  // Otherwise add to the end
+  return content + minimalLink;
 };
