@@ -1,7 +1,4 @@
 
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect } from "react";
-
 /**
  * Optimizes images in HTML content for better loading performance and responsive display
  * @param content - HTML content to process
@@ -14,16 +11,39 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
   // Process content for mobile optimization
   let processedContent = content;
   
-  // Add mobile optimizations for images
-  if (isMobile) {
-    // Replace all <img> tags with optimized versions
-    processedContent = processedContent.replace(/<img\s+([^>]*)>/g, (match, attrs) => {
-      // Don't modify if it already has loading="lazy"
-      if (attrs.includes('loading="lazy"')) return match;
-      
-      return `<img ${attrs} loading="lazy" decoding="async">`;
-    });
-  }
+  // Add loading="lazy" and decoding="async" to all images that don't have them
+  processedContent = processedContent.replace(/<img\s+([^>]*)>/g, (match, attrs) => {
+    // Don't modify if it already has loading="lazy"
+    if (attrs.includes('loading="lazy"') && attrs.includes('decoding="async"')) return match;
+    
+    let newAttrs = attrs;
+    if (!attrs.includes('loading=')) {
+      newAttrs += ' loading="lazy"';
+    }
+    if (!attrs.includes('decoding=')) {
+      newAttrs += ' decoding="async"';
+    }
+    
+    // Add width and height attributes if missing to prevent layout shifts
+    if (!attrs.includes('width=') && !attrs.includes('height=')) {
+      newAttrs += ' width="800" height="auto"';
+    }
+    
+    return `<img ${newAttrs}>`;
+  });
+  
+  // Add srcset for responsive images when possible
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, src, after) => {
+    // Skip already optimized images or SVGs
+    if (match.includes('srcset=') || src.endsWith('.svg')) return match;
+    
+    // Only add srcset for local images
+    if (src.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
+      const srcset = `srcset="${src} 1x, ${src} 2x"`;
+      return `<img ${before}src="${src}" ${srcset}${after}>`;
+    }
+    return match;
+  });
   
   return processedContent;
 };
@@ -35,46 +55,41 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
  */
 export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobile: boolean) => {
   if (contentContainsTargetPost) {
-    setTimeout(() => {
+    try {
       const desktopImg = document.getElementById("marketing-desktop-image");
       const mobileImg = document.getElementById("marketing-mobile-image");
       
       if (desktopImg && mobileImg) {
         console.log("Found marketing images in DOM, applying final visibility styles");
+        
         if (isMobile) {
-          desktopImg.style.display = "none !important";
-          mobileImg.style.display = "block !important";
+          // Mobile display
+          desktopImg.style.cssText = "display: none !important";
+          mobileImg.style.cssText = "display: block !important";
           
-          // Force the style with setAttribute as a fallback
-          desktopImg.setAttribute("style", "display: none !important");
-          mobileImg.setAttribute("style", "display: block !important");
-          
-          // Try direct CSS manipulation
+          // Add inline styles directly to the elements for maximum specificity
           const desktopImgElem = desktopImg as HTMLElement;
           const mobileImgElem = mobileImg as HTMLElement;
           if (desktopImgElem && mobileImgElem) {
-            desktopImgElem.style.cssText = "display: none !important";
-            mobileImgElem.style.cssText = "display: block !important";
+            desktopImgElem.setAttribute("style", "display: none !important");
+            mobileImgElem.setAttribute("style", "display: block !important");
           }
         } else {
-          desktopImg.style.display = "block !important";
-          mobileImg.style.display = "none !important";
+          // Desktop display
+          desktopImg.style.cssText = "display: block !important";
+          mobileImg.style.cssText = "display: none !important";
           
-          // Force the style with setAttribute as a fallback
-          desktopImg.setAttribute("style", "display: block !important");
-          mobileImg.setAttribute("style", "display: none !important");
-          
-          // Try direct CSS manipulation
+          // Add inline styles directly to the elements for maximum specificity
           const desktopImgElem = desktopImg as HTMLElement;
           const mobileImgElem = mobileImg as HTMLElement;
           if (desktopImgElem && mobileImgElem) {
-            desktopImgElem.style.cssText = "display: block !important";
-            mobileImgElem.style.cssText = "display: none !important";
+            desktopImgElem.setAttribute("style", "display: block !important");
+            mobileImgElem.setAttribute("style", "display: none !important");
           }
         }
-      } else {
-        console.warn("Marketing images not found in DOM after rendering");
       }
-    }, 100);
+    } catch (error) {
+      console.error("Error updating image visibility:", error);
+    }
   }
 };

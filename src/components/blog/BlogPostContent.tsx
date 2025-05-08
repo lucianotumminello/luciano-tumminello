@@ -11,7 +11,7 @@ interface BlogPostContentProps {
   content: string;
 }
 
-const BlogPostContent = ({ content }: BlogPostContentProps) => {
+const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
   const isItalian = language === "it";
@@ -20,7 +20,9 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     if (!content) return "";
     
     // Check if this is the April 13 blog post
-    const isTargetPost = content.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025");
+    const isTargetPost = content.includes("Beyond Pattern Recognition") || 
+                         content.includes("Q2 2025") ||
+                         content.includes("New Wave of AI");
     console.log("Is target blog post (April 13):", isTargetPost);
     
     // First apply general processing
@@ -28,20 +30,31 @@ const BlogPostContent = ({ content }: BlogPostContentProps) => {
     
     // Then handle the special case for April 13 post
     if (isTargetPost) {
+      console.log("Using dedicated component for April 13 blog post");
       // Use the dedicated component for April 13 blog post
-      processedContent = AprilBlogPostContent({ content: processedContent });
+      return AprilBlogPostContent({ content: processedContent });
     }
     
     // Finally, ensure outgoing links exist in all posts
-    processedContent = ensureOutgoingLinks(processedContent);
-    
-    return processedContent;
+    return ensureOutgoingLinks(processedContent);
   }, [content, isMobile, isItalian]);
   
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
-    const isTargetPost = content && content.includes("Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025");
-    updateImageVisibility(isTargetPost, isMobile);
+    const isTargetPost = content && (
+      content.includes("Beyond Pattern Recognition") || 
+      content.includes("Q2 2025") ||
+      content.includes("New Wave of AI")
+    );
+    
+    if (isTargetPost) {
+      updateImageVisibility(isTargetPost, isMobile);
+      
+      // Additional force-update in case the previous call didn't work
+      setTimeout(() => {
+        updateImageVisibility(true, isMobile);
+      }, 500);
+    }
   }, [content, isMobile]);
   
   return (
