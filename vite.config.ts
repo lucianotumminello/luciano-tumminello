@@ -27,6 +27,8 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: true,
         ecma: 2015,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
       },
       mangle: {
         safari10: true,
@@ -56,15 +58,20 @@ export default defineConfig(({ mode }) => ({
       },
       treeshake: {
         moduleSideEffects: true,
+        propertyReadSideEffects: false,
       },
     },
     cssCodeSplit: false, // Bundle CSS for faster mobile loading
     reportCompressedSize: false,
     assetsInlineLimit: 8192, // Inline more assets for fewer requests
     sourcemap: false,
+    chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
+    esbuildOptions: {
+      target: 'es2015',
+    }
   },
   preview: {
     port: 8080,

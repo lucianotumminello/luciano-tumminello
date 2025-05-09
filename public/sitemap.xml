@@ -8,31 +8,32 @@
   <!-- Home page -->
   <url>
     <loc>https://www.lucianotumminello.com/</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://www.lucianotumminello.com/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png</image:loc>
       <image:caption>Luciano Tumminello Profile Image</image:caption>
+      <image:title>Luciano Tumminello</image:title>
     </image:image>
   </url>
   
   <!-- Main pages -->
   <url>
     <loc>https://www.lucianotumminello.com/about</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/career</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/education</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -40,39 +41,55 @@
   <!-- Blog section -->
   <url>
     <loc>https://www.lucianotumminello.com/blog</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image>
       <image:loc>https://www.lucianotumminello.com/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png</image:loc>
       <image:caption>Luciano Tumminello Profile Image</image:caption>
+      <image:title>Luciano Tumminello Blog</image:title>
     </image:image>
   </url>
   
   <!-- Individual blog posts -->
   <url>
     <loc>https://www.lucianotumminello.com/blog/beyond-technology-ai-culture</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.lucianotumminello.com/lovable-uploads/be682824-4e6b-4af4-9c53-aa9a47040326.png</image:loc>
+      <image:caption>Beyond Technology: Building an AI-Ready Culture</image:caption>
+      <image:title>AI-Ready Culture</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/blog/ai-leadership-revolution</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.lucianotumminello.com/lovable-uploads/c01ac104-8de6-48b2-9503-02776cc41663.png</image:loc>
+      <image:caption>The AI Leadership Revolution</image:caption>
+      <image:title>AI Leadership Revolution</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/blog/beyond-pattern-recognition</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.lucianotumminello.com/lovable-uploads/c58f3f96-294d-41f7-8a9b-4dcefa5823ed.png</image:loc>
+      <image:caption>Beyond Pattern Recognition</image:caption>
+      <image:title>Beyond Pattern Recognition</image:title>
+    </image:image>
   </url>
   
   <!-- Contact page -->
   <url>
     <loc>https://www.lucianotumminello.com/contact</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -80,13 +97,13 @@
   <!-- Policy pages -->
   <url>
     <loc>https://www.lucianotumminello.com/privacy-policy</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.lucianotumminello.com/cookie-policy</loc>
-    <lastmod>2025-05-08</lastmod>
+    <lastmod>2025-05-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>

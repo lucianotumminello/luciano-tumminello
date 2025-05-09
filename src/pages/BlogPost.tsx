@@ -48,14 +48,14 @@ const BlogPost = () => {
     "author": {
       "@type": "Person",
       "name": post.author,
-      "url": "https://lucianotumminello.com/about"
+      "url": "https://www.lucianotumminello.com/about"
     },
     "publisher": {
       "@type": "Organization",
       "name": "Luciano Tumminello",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://lucianotumminello.com/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png"
+        "url": "https://www.lucianotumminello.com/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png"
       }
     },
     "datePublished": post.date,
