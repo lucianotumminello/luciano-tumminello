@@ -2,7 +2,6 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "react-router-dom";
 
 interface BlogPostFooterProps {
   tags: string[];
@@ -32,22 +31,15 @@ const BlogPostFooter = ({
       
       <Separator className="my-6" />
       
-      <div>
-        <div className="flex items-center mb-3">
-          <Avatar className="h-12 w-12 mr-3">
-            <AvatarImage src={authorImageUrl} alt={authorName} />
-            <AvatarFallback>{authorName.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="text-sm text-gray-500">{translationPrefix === "it" ? "Scritto da" : "Written by"}</p>
-            <p className="font-medium">{authorName}</p>
-          </div>
+      <div className="flex items-center">
+        <Avatar className="h-12 w-12 mr-3">
+          <AvatarImage src={authorImageUrl} alt={authorName} />
+          <AvatarFallback>{authorName.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <div>
+          <p className="text-sm text-gray-500">{translationPrefix === "it" ? "Scritto da" : "Written by"}</p>
+          <p className="font-medium">{authorName}</p>
         </div>
-        <p className="text-right text-sm text-blue-600 mt-3">
-          <Link to="/contact">
-            {translationPrefix === "it" ? "Contattami per maggiori informazioni su questo argomento." : "Contact me for more information on this topic."}
-          </Link>
-        </p>
       </div>
     </div>
   );
