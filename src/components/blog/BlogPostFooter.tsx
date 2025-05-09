@@ -2,7 +2,6 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "react-router-dom";
 
 interface BlogPostFooterProps {
   tags: string[];
@@ -44,10 +43,9 @@ const BlogPostFooter = ({
           </div>
         </div>
         
-        {/* Added Contact me link */}
-        <Link to="/contact" className="text-blue-600 hover:text-blue-800 transition-colors">
-          {translationPrefix === "it" ? "Contattami" : "Contact me"} for more information on this topic.
-        </Link>
+        <p className="text-right text-gray-600">
+          {translationPrefix === "it" ? "Contattami per maggiori informazioni su questo argomento." : "Contact me for more information on this topic."}
+        </p>
       </div>
     </div>
   );
