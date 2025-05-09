@@ -49,14 +49,14 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
   });
   
   // Add srcset for responsive images when possible
-  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, src, after) => {
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
     // Skip already optimized images or SVGs
-    if (match.includes('srcset=') || src.endsWith('.svg')) return match;
+    if (match.includes('srcset=') || imgSrc.endsWith('.svg')) return match;
     
     // Only add srcset for local images
-    if (src.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
+    if (imgSrc.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
       // Generate responsive srcset
-      const srcset = `srcset="${src} 1x, ${src} 2x"`;
+      const srcset = `srcset="${imgSrc} 1x, ${imgSrc} 2x"`;
       
       // Add sizes attribute if missing
       let sizesAttr = '';
@@ -64,15 +64,19 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
         sizesAttr = ' sizes="(max-width: 768px) 100vw, 800px"';
       }
       
-      return `<img ${before}src="${src}" ${srcset}${sizesAttr}${after}>`;
+      return `<img ${before}src="${imgSrc}" ${srcset}${sizesAttr}${after}>`;
     }
     return match;
   });
   
   // Convert large images to WebP format when possible
-  if (src.match(/\.(jpe?g|png)$/) && !src.includes('?format=webp')) {
-    src = `${src}?format=webp`;
-  }
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
+    if (imgSrc.match(/\.(jpe?g|png)$/) && !imgSrc.includes('?format=webp')) {
+      const newSrc = `${imgSrc}?format=webp`;
+      return `<img ${before}src="${newSrc}"${after}>`;
+    }
+    return match;
+  });
   
   return processedContent;
 };

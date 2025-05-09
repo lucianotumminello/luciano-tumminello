@@ -96,7 +96,7 @@ const ProfileImage = () => {
             width="970"
             height="647"
             style={{ aspectRatio: "970/647", background: "linear-gradient(135deg, #F2FCE2 5%, #E5DEFF 100%)" }}
-            fetchpriority="high"
+            fetchPriority="high"
           />
         </div>
       </div>
