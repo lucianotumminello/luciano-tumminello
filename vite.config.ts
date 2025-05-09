@@ -9,9 +9,18 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    headers: {
+      // Enable compression
+      'Cache-Control': 'public, max-age=31536000',
+    }
   },
   plugins: [
-    react(),
+    react({
+      // Optimize React build
+      tsDecorators: true,
+      jsxImportSource: "react",
+      plugins: [['@swc/plugin-styled-components', {}]],
+    }),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
@@ -29,20 +38,25 @@ export default defineConfig(({ mode }) => ({
         ecma: 2015,
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        passes: 3, // Multiple compression passes for better minification
       },
       mangle: {
         safari10: true,
+        toplevel: true, // Better variable name minification
       },
       format: {
         comments: false,
+        ecma: 2015,
       }
     },
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['@/components/ui/index.ts']
+          vendor: ['react', 'react-dom', 'react-router-dom'], 
+          ui: ['@/components/ui/index.ts'],
+          components: ['@/components/Header.tsx', '@/components/Footer.tsx'],
+          blog: ['@/components/blog/BlogPostLayout.tsx', '@/components/blog/BlogPostContent.tsx', '@/components/blog/BlogPostHeader.tsx'],
+          utils: ['@/utils/blog/index.ts', '@/utils/imageUtils.ts', '@/lib/utils.ts'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
@@ -59,22 +73,40 @@ export default defineConfig(({ mode }) => ({
       treeshake: {
         moduleSideEffects: true,
         propertyReadSideEffects: false,
+        tryCatchDeoptimization: false, // Optimize try-catch blocks
       },
     },
     cssCodeSplit: false, // Bundle CSS for faster mobile loading
     reportCompressedSize: false,
-    assetsInlineLimit: 8192, // Inline more assets for fewer requests
+    assetsInlineLimit: 10240, // Inline more assets (10kb) for fewer requests
     sourcemap: false,
     chunkSizeWarningLimit: 1000,
+    emptyOutDir: true, // Clean output directory before build
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
     esbuildOptions: {
       target: 'es2015',
+      treeShaking: true, // Remove unused code
+      minify: true,
+      minifyWhitespace: true,
+      minifyIdentifiers: true,
+      minifySyntax: true,
+      legalComments: 'none',
     }
   },
   preview: {
     port: 8080,
     host: true,
+    headers: {
+      // Enable compression and caching for previews
+      'Cache-Control': 'public, max-age=31536000',
+    },
+  },
+  // Add asset optimization
+  experimental: {
+    renderBuiltUrl(filename) {
+      return `/${filename}`;
+    }
   },
 }));
