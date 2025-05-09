@@ -82,6 +82,15 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         content={isItalian ? post.contentIT : post.content} 
       />
       
+      {/* Moved: Read More Articles button - placed after content but before footer */}
+      <div className="mt-8 mb-12 text-center">
+        <Link to="/blog">
+          <Button variant="secondary" className="px-4 py-2">
+            {isItalian ? "Leggi Altri Articoli" : "Read More Articles"}
+          </Button>
+        </Link>
+      </div>
+      
       {/* Footer visibility trigger element */}
       <div 
         id="blog-post-footer-trigger" 
@@ -108,13 +117,7 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
             </div>
           </div>
           
-          <div className="mt-8 text-center">
-            <Link to="/blog">
-              <Button variant="secondary" className="px-4 py-2">
-                {isItalian ? "Leggi Altri Articoli" : "Read More Articles"}
-              </Button>
-            </Link>
-          </div>
+          {/* Removed: Read More Articles button from here */}
         </>
       )}
     </>
