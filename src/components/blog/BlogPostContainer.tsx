@@ -101,12 +101,14 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
       {isFooterVisible && (
         <>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-            <BlogPostFooter 
-              tags={isItalian ? post.tagsIT : post.tags}
-              authorName={post.author}
-              authorImageUrl={post.authorImageUrl}
-              translationPrefix={isItalian ? "it" : "en"}
-            />
+            <div className="w-full md:w-2/3">
+              <BlogPostFooter 
+                tags={isItalian ? post.tagsIT : post.tags}
+                authorName={post.author}
+                authorImageUrl={post.authorImageUrl}
+                translationPrefix={isItalian ? "it" : "en"}
+              />
+            </div>
             
             <div className="md:ml-auto">
               <ShareButtons 
@@ -116,8 +118,6 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
               />
             </div>
           </div>
-          
-          {/* Removed: Read More Articles button from here */}
         </>
       )}
     </>
