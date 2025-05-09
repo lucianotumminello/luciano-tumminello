@@ -31,21 +31,15 @@ const BlogPostFooter = ({
       
       <Separator className="my-6" />
       
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center">
-          <Avatar className="h-12 w-12 mr-3">
-            <AvatarImage src={authorImageUrl} alt={authorName} />
-            <AvatarFallback>{authorName.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="text-sm text-gray-500">{translationPrefix === "it" ? "Scritto da" : "Written by"}</p>
-            <p className="font-medium">{authorName}</p>
-          </div>
+      <div className="flex items-center">
+        <Avatar className="h-12 w-12 mr-3">
+          <AvatarImage src={authorImageUrl} alt={authorName} />
+          <AvatarFallback>{authorName.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <div>
+          <p className="text-sm text-gray-500">{translationPrefix === "it" ? "Scritto da" : "Written by"}</p>
+          <p className="font-medium">{authorName}</p>
         </div>
-        
-        <p className="text-right text-gray-600">
-          {translationPrefix === "it" ? "Contattami per maggiori informazioni su questo argomento." : "Contact me for more information on this topic."}
-        </p>
       </div>
     </div>
   );
