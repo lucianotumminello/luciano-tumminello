@@ -58,6 +58,7 @@ const BlogPostHeader = ({
         </span>
       </div>
       
+      {/* The main title - this should be the only H1 in the document */}
       <h1 className={cn(
         "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4",
         isMobile ? "mobile-heading" : ""

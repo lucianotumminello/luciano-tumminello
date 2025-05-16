@@ -41,11 +41,24 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       return AprilBlogPostContent({ content: processedContent });
     }
     
-    // Special handling for May 16 post - remove the duplicate title at the top
-    if (isMayPost) {
-      // Remove the duplicate title that might appear at the top of the content
+    // Special handling for all posts - remove any duplicate titles that appear at the top of content
+    // This fixes the major layout issue with duplicate titles
+    if (processedContent) {
+      // Remove any H1 or H2 at the beginning of content that might duplicate the main title
+      processedContent = processedContent.replace(/^\s*<h1[^>]*>[^<]+<\/h1>/i, '');
+      processedContent = processedContent.replace(/^\s*<h2[^>]*>[^<]+<\/h2>/i, '');
+      
+      // Also remove any duplicated titles deeper in the content (specific to these posts)
+      processedContent = processedContent.replace(/<h1[^>]*>Beyond Technology: The Cultural[^<]*<\/h1>/i, '');
+      processedContent = processedContent.replace(/<h2[^>]*>Beyond Technology: The Cultural[^<]*<\/h2>/i, '');
       processedContent = processedContent.replace(/<h1[^>]*>The Human \+ Tech Equation[^<]*<\/h1>/i, '');
       processedContent = processedContent.replace(/<h2[^>]*>The Human \+ Tech Equation[^<]*<\/h2>/i, '');
+      processedContent = processedContent.replace(/<h1[^>]*>From Marketing Director to COO[^<]*<\/h1>/i, '');
+      processedContent = processedContent.replace(/<h2[^>]*>From Marketing Director to COO[^<]*<\/h2>/i, '');
+      processedContent = processedContent.replace(/<h1[^>]*>Beyond Pattern Recognition[^<]*<\/h1>/i, '');
+      processedContent = processedContent.replace(/<h2[^>]*>Beyond Pattern Recognition[^<]*<\/h2>/i, '');
+      processedContent = processedContent.replace(/<h1[^>]*>The AI Leadership Revolution[^<]*<\/h1>/i, '');
+      processedContent = processedContent.replace(/<h2[^>]*>The AI Leadership Revolution[^<]*<\/h2>/i, '');
     }
     
     // Finally, ensure outgoing links exist in all posts

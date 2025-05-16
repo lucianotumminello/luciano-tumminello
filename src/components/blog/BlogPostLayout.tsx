@@ -28,8 +28,13 @@ const BlogPostLayout = ({
     ? `${description.substring(0, 152)}...` 
     : description;
   
-  // Check if this is the May 16 blog post that already has a visible H1
-  const isMay16BlogPost = title.includes("Human + Tech Equation");
+  // Check if this is one of the problematic blog posts that have duplicate titles
+  const hasDuplicateTitleIssue = 
+    title.includes("Human + Tech Equation") || 
+    title.includes("Beyond Technology") ||
+    title.includes("Beyond Pattern Recognition") ||
+    title.includes("From Marketing Director to COO") ||
+    title.includes("AI Leadership Revolution");
   
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -85,8 +90,8 @@ const BlogPostLayout = ({
       
       <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
-          {/* Only show the H1 for SEO if it's not the May 16 blog post that already has a visible H1 */}
-          {!isMay16BlogPost && (
+          {/* Only show the H1 here if we're sure the post content doesn't already have an H1 */}
+          {!hasDuplicateTitleIssue && (
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{title}</h1>
           )}
           {children}
