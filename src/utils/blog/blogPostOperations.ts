@@ -12,16 +12,14 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
   const newBlogPosts: BlogPostsStore = {
+    ...updatedBlogPosts,
     [slug]: blogPostWithoutSlug
   };
   
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    if (key !== slug) {
-      newBlogPosts[key] = value;
-    }
+  // Update the in-memory store with a fresh object to avoid reference issues
+  Object.keys(updatedBlogPosts).forEach(key => {
+    delete updatedBlogPosts[key];
   });
-  
-  // Update the in-memory store
   Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`Blog post ${slug} updated successfully`);
@@ -36,14 +34,14 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
   const newBlogPosts: BlogPostsStore = {
+    ...updatedBlogPosts,
     [slug]: blogPostWithoutSlug
   };
   
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    newBlogPosts[key] = value;
+  // Update the in-memory store with a fresh object to avoid reference issues
+  Object.keys(updatedBlogPosts).forEach(key => {
+    delete updatedBlogPosts[key];
   });
-  
-  // Update the in-memory store
   Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`New blog post ${slug} created successfully`);
@@ -70,4 +68,47 @@ export const deleteBlogPost = (slug: string): void => {
   Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`Blog post ${slug} deleted successfully`);
+};
+
+/**
+ * Duplicates an existing blog post with a new slug
+ * @param originalSlug The slug of the blog post to duplicate
+ * @param newSlug The slug for the duplicated blog post
+ * @returns boolean indicating success or failure
+ */
+export const duplicateBlogPost = (originalSlug: string, newSlug: string): boolean => {
+  // Check if the original post exists
+  if (!updatedBlogPosts[originalSlug]) {
+    console.error(`Cannot duplicate: Blog post with slug ${originalSlug} not found`);
+    return false;
+  }
+  
+  // Check if the new slug already exists
+  if (updatedBlogPosts[newSlug]) {
+    console.error(`Cannot duplicate: Blog post with slug ${newSlug} already exists`);
+    return false;
+  }
+  
+  // Clone the original blog post
+  const originalPost = updatedBlogPosts[originalSlug];
+  const duplicatedPost = JSON.parse(JSON.stringify(originalPost));
+  
+  // Update the title to indicate it's a copy
+  duplicatedPost.title = `${duplicatedPost.title} (Copy)`;
+  duplicatedPost.titleIT = `${duplicatedPost.titleIT} (Copia)`;
+  
+  // Add the duplicated post to the store
+  const newBlogPosts: BlogPostsStore = {
+    ...updatedBlogPosts,
+    [newSlug]: duplicatedPost
+  };
+  
+  // Update the in-memory store
+  Object.keys(updatedBlogPosts).forEach(key => {
+    delete updatedBlogPosts[key];
+  });
+  Object.assign(updatedBlogPosts, newBlogPosts);
+  
+  console.log(`Blog post ${originalSlug} duplicated successfully as ${newSlug}`);
+  return true;
 };

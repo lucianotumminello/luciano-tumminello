@@ -262,4 +262,21 @@ if (updatedBlogPosts["ai-leadership-revolution"]) {
   console.log("AI Leadership Revolution blog post content updated successfully");
 }
 
+// Add immediate duplication code
+setTimeout(() => {
+  try {
+    // Import the function dynamically to avoid circular dependencies
+    import('./index').then(({ duplicateMostRecentPost }) => {
+      const newSlug = duplicateMostRecentPost();
+      if (newSlug) {
+        console.log(`Most recent blog post has been duplicated with slug: ${newSlug}`);
+      } else {
+        console.error('Failed to duplicate most recent blog post');
+      }
+    });
+  } catch (error) {
+    console.error('Error during blog post duplication:', error);
+  }
+}, 1000);
+
 export { updatedBlogPosts };
