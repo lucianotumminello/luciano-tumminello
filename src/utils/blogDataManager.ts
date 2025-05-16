@@ -8,7 +8,5 @@ export {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
-  duplicateBlogPost,
-  duplicateMostRecentPost,
   updatedBlogPosts as default
 } from './blog';
