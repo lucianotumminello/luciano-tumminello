@@ -72,6 +72,16 @@ const BlogPostLayout = ({
         <meta name="language" content="English" />
         <meta name="revisit-after" content="7 days" />
         
+        {/* Custom meta tags for Human + Tech Equation article */}
+        {title.includes("Human + Tech Equation") && (
+          <>
+            <meta name="article:published_time" content="2025-05-13T09:00:00+00:00" />
+            <meta name="article:modified_time" content="2025-05-13T09:00:00+00:00" />
+            <meta name="article:section" content="Digital Transformation" />
+            <meta name="article:tag" content="Digital Transformation, Workforce Development, Technology, Leadership" />
+          </>
+        )}
+        
         {/* JSON-LD structured data */}
         <script type="application/ld+json">
           {JSON.stringify(schemaData)}

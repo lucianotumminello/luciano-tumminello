@@ -23,15 +23,22 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     const isTargetPost = content.includes("Beyond Pattern Recognition") || 
                          content.includes("Q2 2025") ||
                          content.includes("New Wave of AI");
+    
+    // Check if this is the Human + Tech Equation post
+    const isHumanTechPost = content.includes("Human + Tech Equation") || 
+                         content.includes("Empowering Your Workforce") ||
+                         content.includes("Digital Transformation Era");
+                         
     console.log("Is target blog post (April 13):", isTargetPost);
+    console.log("Is Human + Tech Equation post:", isHumanTechPost);
     
     // First apply general processing
     let processedContent = optimizeImagesInContent(content, isMobile);
     
     // Then handle the special case for April 13 post
-    if (isTargetPost) {
-      console.log("Using dedicated component for April 13 blog post");
-      // Use the dedicated component for April 13 blog post
+    if (isTargetPost || isHumanTechPost) {
+      console.log("Using dedicated component for special blog post");
+      // Use the dedicated component for special blog post
       return AprilBlogPostContent({ content: processedContent });
     }
     
@@ -44,7 +51,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     const isTargetPost = content && (
       content.includes("Beyond Pattern Recognition") || 
       content.includes("Q2 2025") ||
-      content.includes("New Wave of AI")
+      content.includes("New Wave of AI") ||
+      content.includes("Human + Tech Equation")
     );
     
     if (isTargetPost) {
