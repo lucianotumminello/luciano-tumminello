@@ -28,6 +28,9 @@ const BlogPostLayout = ({
     ? `${description.substring(0, 152)}...` 
     : description;
   
+  // Check if this is the May 16 blog post that already has a visible H1
+  const isMay16BlogPost = title.includes("Human + Tech Equation");
+  
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
@@ -82,8 +85,10 @@ const BlogPostLayout = ({
       
       <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
-          {/* Ensure visible H1 tag exists on the page (fixes "H1 tag missing or empty" issue) */}
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{title}</h1>
+          {/* Only show the H1 for SEO if it's not the May 16 blog post that already has a visible H1 */}
+          {!isMay16BlogPost && (
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{title}</h1>
+          )}
           {children}
         </div>
       </main>

@@ -41,6 +41,13 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       return AprilBlogPostContent({ content: processedContent });
     }
     
+    // Special handling for May 16 post - remove the duplicate title at the top
+    if (isMayPost) {
+      // Remove the duplicate title that might appear at the top of the content
+      processedContent = processedContent.replace(/<h1[^>]*>The Human \+ Tech Equation[^<]*<\/h1>/i, '');
+      processedContent = processedContent.replace(/<h2[^>]*>The Human \+ Tech Equation[^<]*<\/h2>/i, '');
+    }
+    
     // Finally, ensure outgoing links exist in all posts
     return ensureOutgoingLinks(processedContent);
   }, [content, isMobile, isItalian]);

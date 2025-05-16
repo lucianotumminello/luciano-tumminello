@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -46,7 +47,7 @@ const Blog = () => {
       });
     
     console.log("Found blog posts:", posts.length);
-    posts.forEach(post => console.log(" - Post:", post.title, "Published:", post.published));
+    posts.forEach(post => console.log(" - Post:", post.title, "Published:", post.published, "Date:", post.date));
     
     setBlogPosts(posts);
   }, [language]);
