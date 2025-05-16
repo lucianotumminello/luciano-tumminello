@@ -2,11 +2,13 @@
 import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
 import initialBlogPosts from "./initialBlogPosts";
+import { mockApiGetAllPosts, mockApiSavePosts } from "./mockApi";
 
 // API endpoint for blog posts (this should point to your actual server API)
 const API_ENDPOINT = "/api/blog-posts";
 
-// Flag to determine if we should use the mock server (for development without a real backend)
+// Flag to determine if we should use the real server API or mock server
+// Set this to false when connecting to a real API server
 const USE_MOCK_SERVER = true;
 
 // In-memory cache of blog posts
@@ -19,11 +21,14 @@ let cachedBlogPosts: BlogPostsStore | null = null;
 export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
   try {
     if (USE_MOCK_SERVER) {
-      console.log("Using mock server for blog posts");
-      // Use local mock data for development
-      return Promise.resolve(initialBlogPosts);
+      console.log("Using mock server for fetching blog posts");
+      // Use mock server for development
+      const posts = mockApiGetAllPosts();
+      cachedBlogPosts = { ...posts };
+      return posts;
     }
     
+    // Real API implementation
     const response = await fetch(API_ENDPOINT);
     if (!response.ok) {
       throw new Error(`Failed to fetch blog posts: ${response.statusText}`);
@@ -53,12 +58,14 @@ export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
 export const saveBlogPostsToServer = async (posts: BlogPostsStore): Promise<void> => {
   try {
     if (USE_MOCK_SERVER) {
-      console.log("Mock server: Simulating saving blog posts to server");
-      // Update the cache to simulate server storage
+      console.log("Mock server: Saving blog posts to server");
+      // Use mock server for development
+      mockApiSavePosts(posts);
       cachedBlogPosts = { ...posts };
-      return Promise.resolve();
+      return;
     }
     
+    // Real API implementation
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: {
