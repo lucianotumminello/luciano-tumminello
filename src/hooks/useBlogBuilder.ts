@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -242,19 +241,10 @@ export const useBlogBuilder = () => {
       
       const translatedReadingTime = `${readingTime} min di lettura`;
 
-      // Special handling for May 16 blog post
       let desktopImageUrl = data.desktopImageUrl;
       let mobileImageUrl = data.imageUrl;
-      
-      // Check if this is the special Human + Tech blog post
-      const isHumanTechPost = data.title.includes("Human + Tech") && 
-                             data.title.includes("Digital Transformation");
-                             
-      if (isHumanTechPost) {
-        // Use the special images for this post
-        desktopImageUrl = "/lovable-uploads/6ca4ab8f-5ca0-4f53-8f16-9fcdeb0394f8.png";
-        mobileImageUrl = "/lovable-uploads/3de9471b-87c3-4da4-9052-7db78cfa8464.png";
-      } else if (desktopImageFile) {
+
+      if (desktopImageFile) {
         desktopImageUrl = URL.createObjectURL(desktopImageFile);
         toast({
           title: "Desktop image ready",
@@ -262,7 +252,7 @@ export const useBlogBuilder = () => {
         });
       }
 
-      if (!isHumanTechPost && mobileImageFile) {
+      if (mobileImageFile) {
         mobileImageUrl = URL.createObjectURL(mobileImageFile);
         toast({
           title: "Mobile image ready",

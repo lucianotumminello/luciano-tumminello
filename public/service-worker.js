@@ -1,7 +1,8 @@
+
 // Enhanced service worker for caching and performance optimization
-const CACHE_NAME = 'blog-cache-v2';
-const STATIC_CACHE_NAME = 'static-cache-v1';
-const IMAGE_CACHE_NAME = 'image-cache-v1';
+const CACHE_NAME = 'blog-cache-v3';
+const STATIC_CACHE_NAME = 'static-cache-v2';
+const IMAGE_CACHE_NAME = 'image-cache-v2';
 
 // Assets to cache immediately on install
 const STATIC_ASSETS = [
@@ -9,6 +10,12 @@ const STATIC_ASSETS = [
   '/index.html',
   '/src/index.css',
   '/src/App.css'
+];
+
+// Critical images to precache
+const CRITICAL_IMAGES = [
+  '/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png', // Hero image
+  '/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png'  // Profile image
 ];
 
 // Install event - cache critical assets
@@ -27,10 +34,7 @@ self.addEventListener('install', event => {
       // Pre-cache important images
       caches.open(IMAGE_CACHE_NAME)
         .then(cache => {
-          return cache.addAll([
-            '/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png', // Hero image
-            '/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png'  // Profile image
-          ]);
+          return cache.addAll(CRITICAL_IMAGES);
         })
     ])
     .catch(error => {
@@ -41,17 +45,14 @@ self.addEventListener('install', event => {
   );
 });
 
-// Efficient fetch strategy with network-first for HTML/API and cache-first for assets
+// Efficient fetch strategy with stale-while-revalidate for most resources
 self.addEventListener('fetch', event => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') return;
-  
-  // Skip non-HTTP(S) requests
-  if (!event.request.url.startsWith('http')) return;
+  // Skip non-GET requests and non-HTTP(S) requests
+  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
   
   const url = new URL(event.request.url);
   
-  // HTML navigation - network first, fallback to cache
+  // HTML navigation - network first, fallback to cache with 1-day max age
   if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(event.request)
@@ -59,7 +60,17 @@ self.addEventListener('fetch', event => {
           // Clone the response for browser and cache
           const responseClone = response.clone();
           caches.open(CACHE_NAME)
-            .then(cache => cache.put(event.request, responseClone));
+            .then(cache => {
+              const headers = new Headers(responseClone.headers);
+              // Add cache control header for 1 day max age
+              headers.append('Cache-Control', 'max-age=86400');
+              const responseToCache = new Response(responseClone.body, {
+                status: responseClone.status,
+                statusText: responseClone.statusText,
+                headers
+              });
+              cache.put(event.request, responseToCache);
+            });
           return response;
         })
         .catch(() => {
@@ -73,37 +84,43 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // Images and Fonts - cache first, fallback to network
-  if (url.pathname.match(/\.(jpg|jpeg|png|gif|webp|svg|woff|woff2|ttf|eot)$/) || 
+  // Images - cache first, update in background (stale-while-revalidate)
+  if (url.pathname.match(/\.(jpg|jpeg|png|gif|webp|svg|avif)$/) || 
       url.pathname.includes('/lovable-uploads/')) {
     
     event.respondWith(
       caches.match(event.request)
         .then(cachedResponse => {
-          // Return cached response if found
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-          
-          // Otherwise fetch, clone and cache
-          return fetch(event.request)
+          // Always try to update the cache in the background
+          const fetchPromise = fetch(event.request)
             .then(networkResponse => {
-              if (!networkResponse || networkResponse.status !== 200) {
-                return networkResponse;
+              if (networkResponse && networkResponse.status === 200) {
+                const responseToCache = networkResponse.clone();
+                caches.open(IMAGE_CACHE_NAME)
+                  .then(cache => {
+                    // Add cache control headers for 7 days
+                    const headers = new Headers(responseToCache.headers);
+                    headers.append('Cache-Control', 'max-age=604800');
+                    const enhancedResponse = new Response(responseToCache.body, {
+                      status: responseToCache.status,
+                      statusText: responseToCache.statusText,
+                      headers
+                    });
+                    cache.put(event.request, enhancedResponse);
+                  });
               }
-              
-              const responseToCache = networkResponse.clone();
-              caches.open(IMAGE_CACHE_NAME)
-                .then(cache => cache.put(event.request, responseToCache));
-                
               return networkResponse;
-            });
+            })
+            .catch(() => cachedResponse);
+          
+          // Return cached response immediately if available, otherwise wait for network
+          return cachedResponse || fetchPromise;
         })
     );
     return;
   }
   
-  // JS/CSS assets - stale while revalidate
+  // JS/CSS assets - stale while revalidate with long cache
   if (url.pathname.match(/\.(js|css)$/)) {
     event.respondWith(
       caches.match(event.request)
@@ -111,17 +128,24 @@ self.addEventListener('fetch', event => {
           // Return cached response immediately while fetching updated version in background
           const fetchPromise = fetch(event.request)
             .then(networkResponse => {
-              if (!networkResponse || networkResponse.status !== 200) {
-                return networkResponse;
+              if (networkResponse && networkResponse.status === 200) {
+                const responseToCache = networkResponse.clone();
+                caches.open(CACHE_NAME)
+                  .then(cache => {
+                    // Add cache control headers for 30 days
+                    const headers = new Headers(responseToCache.headers);
+                    headers.append('Cache-Control', 'max-age=2592000');
+                    const enhancedResponse = new Response(responseToCache.body, {
+                      status: responseToCache.status,
+                      statusText: responseToCache.statusText,
+                      headers
+                    });
+                    cache.put(event.request, enhancedResponse);
+                  });
               }
-              
-              // Update the cache with the new version
-              const responseToCache = networkResponse.clone();
-              caches.open(CACHE_NAME)
-                .then(cache => cache.put(event.request, responseToCache));
-                
               return networkResponse;
-            });
+            })
+            .catch(() => cachedResponse);
           
           // Return the cached version or wait for network
           return cachedResponse || fetchPromise;
@@ -130,11 +154,53 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // Default fetch strategy for other resources
+  // Web fonts - cache first with long TTL, fallback to network
+  if (url.pathname.match(/\.(woff|woff2|ttf|otf|eot)$/)) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(cachedResponse => {
+          if (cachedResponse) {
+            // Use cached font but update in background
+            fetch(event.request).then(response => {
+              if (response.status === 200) {
+                caches.open(STATIC_CACHE_NAME)
+                  .then(cache => cache.put(event.request, response));
+              }
+            }).catch(() => {});
+            return cachedResponse;
+          }
+          
+          // If not in cache, fetch and cache for future
+          return fetch(event.request)
+            .then(response => {
+              const responseToCache = response.clone();
+              if (response.status === 200) {
+                caches.open(STATIC_CACHE_NAME)
+                  .then(cache => cache.put(event.request, responseToCache));
+              }
+              return response;
+            });
+        })
+    );
+    return;
+  }
+  
+  // Default fetch strategy with stale-while-revalidate for other resources
   event.respondWith(
     caches.match(event.request)
       .then(cachedResponse => {
-        return cachedResponse || fetch(event.request);
+        const fetchPromise = fetch(event.request)
+          .then(networkResponse => {
+            if (networkResponse && networkResponse.status === 200) {
+              const responseToCache = networkResponse.clone();
+              caches.open(CACHE_NAME)
+                .then(cache => cache.put(event.request, responseToCache));
+            }
+            return networkResponse;
+          })
+          .catch(() => cachedResponse);
+        
+        return cachedResponse || fetchPromise;
       })
   );
 });
@@ -155,5 +221,20 @@ self.addEventListener('activate', event => {
           })
         );
       })
+      .then(() => {
+        // Claim clients to ensure updates take effect immediately
+        return self.clients.claim();
+      })
   );
+});
+
+// Handle messages from the main thread
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'CACHE_URLS') {
+    // Handle request to cache specific URLs
+    event.waitUntil(
+      caches.open(CACHE_NAME)
+        .then(cache => cache.addAll(event.data.urls))
+    );
+  }
 });

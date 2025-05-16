@@ -11,17 +11,28 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
   // Process content for mobile optimization
   let processedContent = content;
   
-  // Add loading="lazy" and decoding="async" to all images that don't have them
+  // Add loading="lazy", decoding="async", and fetchpriority attributes to all images
   processedContent = processedContent.replace(/<img\s+([^>]*)>/g, (match, attrs) => {
-    // Don't modify if it already has loading="lazy"
-    if (attrs.includes('loading="lazy"') && attrs.includes('decoding="async"')) return match;
+    // Skip if image already has proper attributes
+    if (attrs.includes('loading="lazy"') && 
+        attrs.includes('decoding="async"') && 
+        attrs.includes('fetchpriority')) return match;
     
     let newAttrs = attrs;
+    
+    // Add loading attribute if missing
     if (!attrs.includes('loading=')) {
       newAttrs += ' loading="lazy"';
     }
+    
+    // Add decoding attribute if missing
     if (!attrs.includes('decoding=')) {
       newAttrs += ' decoding="async"';
+    }
+    
+    // Add fetchpriority attribute if missing
+    if (!attrs.includes('fetchpriority')) {
+      newAttrs += ' fetchpriority="auto"';
     }
     
     // Add width and height attributes if missing to prevent layout shifts
@@ -29,18 +40,40 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
       newAttrs += ' width="800" height="auto"';
     }
     
+    // Add explicit styles to prevent Content Layout Shifts
+    if (!attrs.includes('style=')) {
+      newAttrs += ' style="aspect-ratio: auto; max-width: 100%;"';
+    }
+    
     return `<img ${newAttrs}>`;
   });
   
   // Add srcset for responsive images when possible
-  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imageSrc, after) => {
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
     // Skip already optimized images or SVGs
-    if (match.includes('srcset=') || imageSrc.endsWith('.svg')) return match;
+    if (match.includes('srcset=') || imgSrc.endsWith('.svg')) return match;
     
     // Only add srcset for local images
-    if (imageSrc.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
-      const srcset = `srcset="${imageSrc} 1x, ${imageSrc} 2x"`;
-      return `<img ${before}src="${imageSrc}" ${srcset}${after}>`;
+    if (imgSrc.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
+      // Generate responsive srcset
+      const srcset = `srcset="${imgSrc} 1x, ${imgSrc} 2x"`;
+      
+      // Add sizes attribute if missing
+      let sizesAttr = '';
+      if (!match.includes('sizes=')) {
+        sizesAttr = ' sizes="(max-width: 768px) 100vw, 800px"';
+      }
+      
+      return `<img ${before}src="${imgSrc}" ${srcset}${sizesAttr}${after}>`;
+    }
+    return match;
+  });
+  
+  // Convert large images to WebP format when possible
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
+    if (imgSrc.match(/\.(jpe?g|png)$/) && !imgSrc.includes('?format=webp')) {
+      const newSrc = `${imgSrc}?format=webp`;
+      return `<img ${before}src="${newSrc}"${after}>`;
     }
     return match;
   });
@@ -62,14 +95,40 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
       if (desktopImg && mobileImg) {
         console.log("Found marketing images in DOM, applying final visibility styles");
         
+        // Create style element for media queries
+        const styleEl = document.createElement('style');
+        styleEl.innerHTML = `
+          @media (max-width: 768px) {
+            #marketing-desktop-image { display: none !important; }
+            #marketing-mobile-image { display: block !important; }
+          }
+          @media (min-width: 769px) {
+            #marketing-desktop-image { display: block !important; }
+            #marketing-mobile-image { display: none !important; }
+          }
+        `;
+        document.head.appendChild(styleEl);
+        
         if (isMobile) {
-          // Mobile display - force visibility with !important inline styles
-          desktopImg.setAttribute("style", "display: none !important");
-          mobileImg.setAttribute("style", "display: block !important");
+          // Mobile display
+          desktopImg.style.cssText = "display: none !important";
+          mobileImg.style.cssText = "display: block !important";
+          
+          // Add explicit dimensions to prevent layout shifts
+          if (mobileImg instanceof HTMLImageElement) {
+            mobileImg.setAttribute('width', '100%');
+            mobileImg.setAttribute('height', 'auto');
+          }
         } else {
-          // Desktop display - force visibility with !important inline styles
-          desktopImg.setAttribute("style", "display: block !important");
-          mobileImg.setAttribute("style", "display: none !important");
+          // Desktop display
+          desktopImg.style.cssText = "display: block !important";
+          mobileImg.style.cssText = "display: none !important";
+          
+          // Add explicit dimensions to prevent layout shifts
+          if (desktopImg instanceof HTMLImageElement) {
+            desktopImg.setAttribute('width', '100%');
+            desktopImg.setAttribute('height', 'auto');
+          }
         }
       }
     } catch (error) {
@@ -79,48 +138,45 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
 };
 
 /**
- * Updates the specific blog post images for the May 16, 2025 post
+ * Optimizes a specific image for loading performance
+ * @param imgElement - Image element to optimize
  */
-export const updateMay16BlogPostImages = () => {
-  // Set the desktop and mobile images for the specific blog post
-  const desktopImageUrl = "/lovable-uploads/6ca4ab8f-5ca0-4f53-8f16-9fcdeb0394f8.png";
-  const mobileImageUrl = "/lovable-uploads/3de9471b-87c3-4da4-9052-7db78cfa8464.png";
+export const optimizeSingleImage = (imgElement: HTMLImageElement) => {
+  // Skip if already optimized
+  if (imgElement.hasAttribute('data-optimized')) return;
   
-  try {
-    // Check if we're on the correct blog post page
-    const pageContent = document.body.textContent || "";
-    const isMay16BlogPost = pageContent.includes("The Human + Tech Equation") && 
-                           pageContent.includes("Digital Transformation Era") &&
-                           pageContent.includes("May 2025");
+  // Set loading strategy
+  const isAboveFold = isElementInViewport(imgElement);
+  imgElement.loading = isAboveFold ? 'eager' : 'lazy';
+  imgElement.decoding = isAboveFold ? 'sync' : 'async';
+  
+  // Set fetchpriority
+  imgElement.setAttribute('fetchpriority', isAboveFold ? 'high' : 'auto');
+  
+  // Add explicit dimensions to prevent CLS
+  if (!imgElement.hasAttribute('width') && !imgElement.hasAttribute('height') && 
+      imgElement.naturalWidth && imgElement.naturalHeight) {
+    imgElement.width = imgElement.naturalWidth;
+    imgElement.height = imgElement.naturalHeight;
     
-    if (isMay16BlogPost) {
-      console.log("Detected May 16, 2025 blog post, updating images");
-      
-      // Find the desktop and mobile images in the DOM
-      const desktopImgElem = document.getElementById("marketing-desktop-image");
-      const mobileImgElem = document.getElementById("marketing-mobile-image");
-      
-      // Update image sources if elements exist
-      if (desktopImgElem && desktopImgElem instanceof HTMLImageElement) {
-        desktopImgElem.src = desktopImageUrl;
-        desktopImgElem.setAttribute("style", window.innerWidth >= 768 ? "display: block !important" : "display: none !important");
-      }
-      
-      if (mobileImgElem && mobileImgElem instanceof HTMLImageElement) {
-        mobileImgElem.src = mobileImageUrl;
-        mobileImgElem.setAttribute("style", window.innerWidth < 768 ? "display: block !important" : "display: none !important");
-      }
-      
-      // For all blog post images that might be referencing this content
-      const allImages = document.querySelectorAll('img[alt*="Human + Tech"], img[alt*="Digital Transformation"]');
-      allImages.forEach(img => {
-        if (img instanceof HTMLImageElement) {
-          const isMobileView = window.innerWidth < 768;
-          img.src = isMobileView ? mobileImageUrl : desktopImageUrl;
-        }
-      });
-    }
-  } catch (error) {
-    console.error("Error updating May 16 blog post images:", error);
+    // Set aspect ratio to prevent layout shifts
+    imgElement.style.aspectRatio = `${imgElement.naturalWidth}/${imgElement.naturalHeight}`;
   }
+  
+  // Mark as optimized
+  imgElement.setAttribute('data-optimized', 'true');
+};
+
+/**
+ * Checks if element is in viewport
+ * @param element - Element to check
+ */
+const isElementInViewport = (element: HTMLElement): boolean => {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
 };
