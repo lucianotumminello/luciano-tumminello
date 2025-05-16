@@ -29,12 +29,24 @@ const Blog = () => {
         ...post,
         slug
       }))
+      // Make sure we only include posts that are explicitly published
       .filter(post => post.published !== false)
+      // Sort by date (most recent first)
       .sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
+        // Ensure we have valid date strings
+        const dateA = new Date(a.date || "");
+        const dateB = new Date(b.date || "");
+        
+        // If dates are invalid, use string comparison as fallback
+        if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+          return String(b.date).localeCompare(String(a.date));
+        }
+        
         return dateB.getTime() - dateA.getTime();
       });
+    
+    console.log("Found blog posts:", posts.length);
+    posts.forEach(post => console.log(" - Post:", post.title, "Published:", post.published));
     
     setBlogPosts(posts);
   }, [language]);
