@@ -1,11 +1,8 @@
 
-import { ArrowLeft, CalendarIcon, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { updateMay16BlogPostImages } from "@/utils/imageUtils";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -28,98 +25,110 @@ const BlogPostHeader = ({
   author,
   authorImageUrl,
   imageUrl,
-  desktopImageUrl,
+  desktopImageUrl
 }: BlogPostHeaderProps) => {
-  const { language } = useLanguage();
-  const isItalian = language === "it";
   const isMobile = useIsMobile();
   
-  // Format date for consistent display - if it's not already formatted
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    
-    try {
-      const date = new Date(dateStr);
-      
-      // Check if the date is valid
-      if (isNaN(date.getTime())) {
-        return dateStr;
-      }
-      
-      // Format to "DD Month YYYY"
-      const day = date.getDate();
-      const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
-      const year = date.getFullYear();
-      
-      return `${day} ${month} ${year}`;
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return dateStr;
+  // Add special handling for the May 16, 2025 blog post
+  const isMay16Post = date.includes("16 May 2025") || 
+                     date.includes("16 Maggio 2025") || 
+                     title.includes("Human + Tech") ||
+                     title.includes("Digital Transformation Era");
+  
+  // Special image URLs for May 16 blog post
+  const may16DesktopImage = "/lovable-uploads/6ca4ab8f-5ca0-4f53-8f16-9fcdeb0394f8.png";
+  const may16MobileImage = "/lovable-uploads/3de9471b-87c3-4da4-9052-7db78cfa8464.png";
+  
+  // Determine which images to use
+  const actualDesktopImageUrl = isMay16Post ? may16DesktopImage : desktopImageUrl;
+  const actualMobileImageUrl = isMay16Post ? may16MobileImage : imageUrl;
+  
+  // Effect to update images for May 16 post when it loads
+  useEffect(() => {
+    if (isMay16Post) {
+      updateMay16BlogPostImages();
     }
-  };
-  
-  const formattedDate = formatDate(date);
-  
-  return (
-    <div className="mb-8">
-      <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        {isItalian ? "Torna al Blog" : "Back to Blog"}
-      </Link>
+    
+    // Force proper image visibility on component mount
+    const timer = setTimeout(() => {
+      const desktopImg = document.getElementById("marketing-desktop-image");
+      const mobileImg = document.getElementById("marketing-mobile-image");
       
-      <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
-        <div className="w-full">
-          <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Simplified image loading strategy for faster mobile rendering */}
-            <img 
-              src={isMobile ? imageUrl : desktopImageUrl} 
-              alt={title}
-              className="w-full h-full object-cover"
-              loading="eager"
-              fetchPriority="high"
-              width={isMobile ? "640" : "1200"}
-              height={isMobile ? "360" : "675"}
-              style={{aspectRatio: "16/9"}}
-            />
-          </AspectRatio>
-        </div>
+      if (desktopImg && mobileImg) {
+        if (isMobile) {
+          desktopImg.style.display = "none";
+          mobileImg.style.display = "block";
+        } else {
+          desktopImg.style.display = "block";
+          mobileImg.style.display = "none";
+        }
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [isMay16Post, isMobile]);
+
+  return (
+    <header className="pb-8 mb-8 border-b border-gray-200">
+      <div className="mb-4">
+        <span className="text-sm font-medium text-primary/90">
+          {category}
+        </span>
+      </div>
+      
+      {/* The main title - this should be the only H1 in the document */}
+      <h1 className={cn(
+        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 blog-post-title",
+        isMobile ? "mobile-heading" : ""
+      )}>
+        {title}
+      </h1>
+      
+      <div className="blog-header">
+        {/* Desktop Image - hidden on mobile */}
+        <img
+          id="marketing-desktop-image"
+          src={actualDesktopImageUrl}
+          alt={`${title} - Desktop Version`}
+          className={`w-full h-auto max-h-[420px] object-cover rounded-lg shadow-md mb-6 ${!isMobile ? 'block' : 'hidden'}`}
+          loading="eager"
+          decoding="async"
+          style={{ display: isMobile ? 'none !important' : 'block !important' }}
+        />
         
-        <CardContent className="p-4 md:p-6 bg-white">
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 md:mb-6 border-b border-gray-100 pb-4 md:pb-6">
-            <span className="inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-medium text-sm">
-              {category}
-            </span>
-            
-            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
-              <CalendarIcon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-              {formattedDate}
-            </div>
-            
-            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
-              <Clock className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-              {readingTime}
+        {/* Mobile Image - hidden on desktop */}
+        <img
+          id="marketing-mobile-image"
+          src={actualMobileImageUrl}
+          alt={`${title} - Mobile Version`}
+          className={`w-full h-auto max-h-[260px] object-cover rounded-lg shadow-md mb-4 ${isMobile ? 'block' : 'hidden'}`}
+          loading="eager"
+          decoding="async"
+          style={{ display: isMobile ? 'block !important' : 'none !important' }}
+        />
+      </div>
+      
+      <p className="text-lg text-gray-700 mb-6">{excerpt}</p>
+      
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center">
+          <img
+            src={authorImageUrl}
+            alt={author}
+            className="w-10 h-10 rounded-full mr-3"
+            loading="lazy"
+          />
+          <div>
+            <p className="font-medium text-gray-900">{author}</p>
+            <div className="flex items-center text-sm text-gray-500">
+              <span>{date}</span>
+              <span className="mx-2">•</span>
+              <span>{readingTime}</span>
             </div>
           </div>
-          
-          {/* Mobile-optimized header text sizes */}
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">
-            {title}
-          </h1>
-          
-          <p className="text-base text-gray-600 mb-3 md:mb-4 leading-relaxed">
-            {excerpt}
-          </p>
-          
-          <div className="flex items-center mt-3 md:mt-6">
-            <Avatar className="h-8 w-8 mr-2 md:mr-3">
-              <AvatarImage src={authorImageUrl} alt={author} />
-              <AvatarFallback>{author.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <span className="font-medium">{author}</span>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </div>
+    </header>
   );
 };
 

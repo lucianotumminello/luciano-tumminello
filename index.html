@@ -1,19 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NCG9MW2D');</script>
+    <!-- End Google Tag Manager -->
+    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Luciano Tumminello | Marketing & Operations Leader</title>
     <meta name="description" content="Luciano Tumminello is a seasoned Marketing & Operations Leader with extensive experience in digital transformation, global operations, and data-driven marketing strategies across APAC." />
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" as="style" href="/src/index.css" />
-    <link rel="preload" as="script" href="/src/main.tsx" type="module" />
-    <link rel="preload" as="image" href="/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png" fetchpriority="high" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- ContentsSquare Tracking Script -->
+    <script>
+      (function (c, s, q, u, a, r, e) {
+          c.hj=c.hj||function(){(c.hj.q=c.hj.q||[]).push(arguments)};
+          c._hjSettings = { hjid: a };
+          r = s.getElementsByTagName('head')[0];
+          e = s.createElement('script');
+          e.async = true;
+          e.src = q + c._hjSettings.hjid + u;
+          r.appendChild(e);
+      })(window, document, 'https://static.hj.contentsquare.net/c/csq-', '.js', 6391574);
+    </script>
+    <!-- End ContentsSquare Tracking Script -->
     
     <!-- Preload critical fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
@@ -29,10 +43,14 @@
     <!-- Preconnect to third-party domains -->
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="preconnect" href="https://analytics.ahrefs.com" crossorigin />
-    <link rel="preconnect" href="https://static.hj.contentsquare.net" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://analytics.ahrefs.com" />
     
+    <!-- Preload critical resources -->
+    <link rel="preload" as="image" href="/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png" fetchpriority="high" />
+
     <!-- Enhanced inline critical CSS -->
     <style>
       /* Critical render path CSS */
@@ -42,7 +60,7 @@
       }
       body {
         margin: 0;
-        font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         background-color: white;
@@ -54,7 +72,6 @@
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        contain: content;
       }
       /* Hide content until CSS is loaded to prevent layout shifts */
       .js-loading *:not(html):not(body):not(head):not(#root) {
@@ -70,7 +87,6 @@
         height: auto;
         display: block;
         will-change: transform;
-        content-visibility: auto;
       }
       /* Prevent layout shifts */
       img, picture, video {
@@ -137,6 +153,25 @@
       }
     </style>
 
+    <!-- Defer non-essential scripts -->
+    <script defer src="https://analytics.ahrefs.com/analytics.js" data-key="WyVTwmsVsR5YS89pwQ3HLw"></script>
+    
+    <!-- Move Google Analytics below critical content and add efficient loading -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W020BWHW4V"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-W020BWHW4V', {
+        'send_page_view': false,
+        'transport_type': 'beacon'
+      });
+      // Send pageview when page is interactive
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => gtag('event', 'page_view'), 2000);
+      });
+    </script>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Luciano Tumminello | Marketing & Operations Leader" />
@@ -154,6 +189,17 @@
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://www.lucianotumminello.com" />
+    
+    <!-- Delayed third-party scripts -->
+    <script type="module">
+      // Replace the existing ContentsSquare loading with an empty function since we're now loading it directly in head
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          // ContentsSquare is now loaded directly in the head
+          console.log('ContentsSquare already loaded in head');
+        }, 3000);
+      });
+    </script>
     
     <!-- Move structured data below critical content -->
     <script type="application/ld+json">
@@ -197,6 +243,10 @@
   </head>
 
   <body class="js-loading">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCG9MW2D"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="root" class="content-shell"></div>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
@@ -223,6 +273,19 @@
         const script = document.createElement('script');
         script.src = '/lazysizes.min.js';
         document.body.appendChild(script);
+      }
+      
+      // Register service worker for offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(function(registration) {
+              console.log('Service worker registered: ', registration.scope);
+            })
+            .catch(function(err) {
+              console.log('Service worker registration failed: ', err);
+            });
+        });
       }
     </script>
   </body>

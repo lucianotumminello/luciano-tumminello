@@ -5,23 +5,7 @@ import { useState, useEffect, useRef } from "react";
 // Responsive and lazy-loading for SEO and performance
 const ProfileImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const imageRef = useRef<HTMLImageElement>(null);
-  
-  // Preload high-priority image
-  useEffect(() => {
-    // Create preload link for critical image
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.href = "/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png";
-    document.head.appendChild(preloadLink);
-    
-    // Use priority hints for modern browsers
-    if (imageRef.current) {
-      // @ts-ignore - Experimental feature
-      imageRef.current.fetchPriority = 'high';
-    }
-  }, []);
+  const imgRef = useRef<HTMLImageElement>(null);
   
   // Use intersection observer for lazy loading
   useEffect(() => {
@@ -48,18 +32,18 @@ const ProfileImage = () => {
     };
   }, []);
 
-  // Generate different image sizes for responsive loading with WebP format
+  // Generate different image sizes for responsive loading
   const imageSrcSet = `
-    /lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png?format=webp 970w,
-    /lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png?width=672&format=webp 672w,
-    /lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png?width=480&format=webp 480w
+    /lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png 970w,
+    /lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png?width=672 672w,
+    /lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png?width=480 480w
   `;
 
   // Low-quality image placeholder (LQIP) for faster perceived performance
   const lqip = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/wAALCAAIAAoBAREA/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUI/8QAIRAAAQMDBAMAAAAAAAAAAAAAAQIDBQQGESEABzFBURIj/9oACAEBAAA/AClVbele3d5v1BuIplOulyfadWnqpAbbcR+6R8kAkZBO/K8KNzejtv6Nb1JuDdNDqTq22VFMVtsrCCSBzjAJ+jnzrSwuDQaZY0sklSJSFMJAOSU+eOdKnX//2Q==";
 
   return (
-    <section className="py-10 md:py-20 px-4 bg-gray-50 layout-optimized">
+    <section className="py-10 md:py-20 px-4 bg-gray-50">
       <div className="container mx-auto max-w-5xl">
         <div 
           id="profile-image-container"
@@ -81,22 +65,22 @@ const ProfileImage = () => {
           
           {/* Main image - loads with higher quality */}
           <img 
-            ref={imageRef}
+            ref={imgRef}
             src="/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png" 
             alt="Luciano Tumminello Portrait" 
             className={cn(
               "w-full h-auto object-cover rounded-lg shadow-xl ring-2 ring-primary/20 transition-opacity duration-300",
               imageLoaded ? "opacity-100" : "opacity-0"
             )}
-            loading="eager" /* Critical above-the-fold image */
+            loading="eager"
             decoding="async"
             onLoad={() => setImageLoaded(true)}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
             srcSet={imageSrcSet}
             width="970"
             height="647"
-            style={{ aspectRatio: "970/647", background: "linear-gradient(135deg, #F2FCE2 5%, #E5DEFF 100%)" }}
             fetchPriority="high"
+            style={{ aspectRatio: "970/647", background: "linear-gradient(135deg, #F2FCE2 5%, #E5DEFF 100%)" }}
           />
         </div>
       </div>

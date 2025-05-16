@@ -1,17 +1,15 @@
 
-/* Critical CSS for immediate render path */
+/* Minimized CSS with only performance-critical styles */
 #root {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  contain: content; /* CSS Containment for performance */
 }
 
 /* Critical blog post styles for immediate render */
 .blog-header {
   margin-bottom: 2rem;
-  contain: layout; /* Optimize layout calculation */
 }
 
 .blog-header img {
@@ -19,27 +17,15 @@
   height: auto;
   object-fit: cover;
   display: block;
-  content-visibility: auto; /* Modern optimization */
-  contain: paint; /* Optimize paint operations */
 }
 
-/* Base text styling for all devices with optimized paint properties */
+/* Base text styling for all devices */
 h1, h2, h3 {
   color: rgb(31 41 55);
-  text-rendering: optimizeLegibility;
-  contain: style layout; /* Optimize rendering */
 }
 
 p {
   color: rgb(75 85 99);
-  text-rendering: optimizeSpeed;
-  contain: style; /* Optimize style calculations */
-}
-
-/* Performance optimization for images */
-img {
-  content-visibility: auto;
-  contain: paint;
 }
 
 /* Disable animations for users who prefer reduced motion */
@@ -59,7 +45,6 @@ img {
   [role="button"] {
     min-height: 44px;
     min-width: 44px;
-    touch-action: manipulation; /* Optimize touch handling */
   }
   
   /* Content optimization for mobile */
@@ -72,7 +57,6 @@ img {
   .blog-header img {
     height: auto;
     max-height: 260px;
-    content-visibility: auto; /* Modern optimization */
   }
   
   /* Optimize text for mobile */
@@ -87,31 +71,5 @@ img {
 @media print {
   .no-print {
     display: none !important;
-  }
-}
-
-/* Optimize layout calculations */
-.layout-optimized {
-  contain: layout;
-  content-visibility: auto;
-}
-
-/* Optimize rendering performance with containment */
-.render-optimized {
-  contain: paint layout style;
-  will-change: transform;
-  transform: translateZ(0); /* Hardware acceleration */
-}
-
-/* Optimize loading of below-fold content */
-.below-fold {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 5000px; /* Reserve space in layout */
-}
-
-/* Optimize for touch devices */
-@media (hover: none) {
-  a, button {
-    -webkit-tap-highlight-color: transparent;
   }
 }

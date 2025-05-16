@@ -82,8 +82,6 @@ const BlogPostLayout = ({
       
       <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
-          {/* Ensure visible H1 tag exists on the page (fixes "H1 tag missing or empty" issue) */}
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{title}</h1>
           {children}
         </div>
       </main>

@@ -20,20 +20,51 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     if (!content) return "";
     
     // Check if this is the April 13 blog post
-    const isTargetPost = content.includes("Beyond Pattern Recognition") || 
+    const isAprilPost = content.includes("Beyond Pattern Recognition") || 
                          content.includes("Q2 2025") ||
                          content.includes("New Wave of AI");
-    console.log("Is target blog post (April 13):", isTargetPost);
+    
+    // Check if this is the May 16 blog post
+    const isMayPost = content.includes("Human + Tech Equation") || 
+                      content.includes("Digital Transformation Era");
+    
+    console.log("Is April 13 blog post:", isAprilPost);
+    console.log("Is May 16 blog post:", isMayPost);
+    
+    // Apply special handling for April blog post
+    if (isAprilPost) {
+      console.log("Using dedicated component for April 13 blog post");
+      return AprilBlogPostContent({ content });
+    }
     
     // First apply general processing
     let processedContent = optimizeImagesInContent(content, isMobile);
     
-    // Then handle the special case for April 13 post
-    if (isTargetPost) {
-      console.log("Using dedicated component for April 13 blog post");
-      // Use the dedicated component for April 13 blog post
-      return AprilBlogPostContent({ content: processedContent });
-    }
+    // CRITICAL FIX: Remove ALL potential title duplications at the beginning of content
+    // First, remove ALL h1 and h2 at the beginning that might duplicate the title
+    processedContent = processedContent.replace(/^\s*<h1[^>]*>[^<]+<\/h1>/i, '');
+    processedContent = processedContent.replace(/^\s*<h2[^>]*>[^<]+<\/h2>/i, '');
+    
+    // Then remove these specific titles that we know exist in our posts
+    const titlesToRemove = [
+      "Beyond Technology: The Cultural",
+      "The Human \\+ Tech Equation",
+      "Empowering Your Workforce",
+      "Digital Transformation Era",
+      "From Marketing Director to COO",
+      "Beyond Pattern Recognition",
+      "The AI Leadership Revolution"
+    ];
+    
+    titlesToRemove.forEach(title => {
+      const h1Pattern = new RegExp(`<h1[^>]*>${title}[^<]*<\\/h1>`, 'gi');
+      const h2Pattern = new RegExp(`<h2[^>]*>${title}[^<]*<\\/h2>`, 'gi');
+      processedContent = processedContent.replace(h1Pattern, '');
+      processedContent = processedContent.replace(h2Pattern, '');
+    });
+    
+    // Final check: remove any remaining H1 tags entirely (to enforce single H1 per page in header)
+    processedContent = processedContent.replace(/<h1[^>]*>([^<]+)<\/h1>/gi, '<h2>$1</h2>');
     
     // Finally, ensure outgoing links exist in all posts
     return ensureOutgoingLinks(processedContent);
@@ -41,19 +72,26 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
-    const isTargetPost = content && (
+    const isAprilPost = content && (
       content.includes("Beyond Pattern Recognition") || 
       content.includes("Q2 2025") ||
       content.includes("New Wave of AI")
     );
     
-    if (isTargetPost) {
-      updateImageVisibility(isTargetPost, isMobile);
+    const isMayPost = content && (
+      content.includes("Human + Tech Equation") || 
+      content.includes("Digital Transformation Era")
+    );
+    
+    if (isAprilPost || isMayPost) {
+      updateImageVisibility(true, isMobile);
       
-      // Additional force-update in case the previous call didn't work
-      setTimeout(() => {
-        updateImageVisibility(true, isMobile);
-      }, 500);
+      // Additional force-update with multiple attempts to ensure it works
+      const timers = [100, 300, 500, 1000].map(delay => 
+        setTimeout(() => updateImageVisibility(true, isMobile), delay)
+      );
+      
+      return () => timers.forEach(timer => clearTimeout(timer));
     }
   }, [content, isMobile]);
   

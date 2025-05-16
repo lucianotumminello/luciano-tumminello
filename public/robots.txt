@@ -1,35 +1,67 @@
 
-# robots.txt for lucianotumminello.com
-# Updated: 2025-05-09
+# robots.txt for https://www.lucianotumminello.com/
 
+# Allow all web crawlers to access most content
 User-agent: *
 Allow: /
-Disallow: /blog-builder/
-Disallow: /admin/
 Disallow: /api/
+Disallow: /blog-builder/
+Disallow: /*.json$
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*?*
 
-# Allow critical assets
-Allow: /lovable-uploads/
-Allow: /src/
-Allow: /assets/
+# Specific allowances for major search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /blog-builder/
 
-# Sitemap location
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /blog-builder/
+
+User-agent: Slurp
+Allow: /
+Disallow: /api/
+Disallow: /blog-builder/
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /api/
+Disallow: /blog-builder/
+
+# Social media crawlers - allow image access
+User-agent: Twitterbot
+Allow: /
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+
+User-agent: facebookexternalhit
+Allow: /
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+
+User-agent: LinkedInBot
+Allow: /
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+
+# Rate limiting for crawlers
+Crawl-delay: 10
+
+# Sitemap location (with HTTPS)
 Sitemap: https://www.lucianotumminello.com/sitemap.xml
 
-# Crawl-delay directive for bots
-Crawl-delay: 1
-
-# Block specific web crawlers that cause excessive load
-User-agent: AhrefsBot
-Crawl-delay: 10
-
-User-agent: SemrushBot
-Crawl-delay: 10
-
-User-agent: MJ12bot
-Disallow: /
-
-# Allow Google Images to crawl image content
-User-agent: Googlebot-Image
-Allow: /lovable-uploads/
-Allow: /assets/images/
+# Ahrefs verification
+Ahrefs-site-verification: ce683dc04b54269de284df7d84a3a796826866a4f5457c678512dacf582e80a1
