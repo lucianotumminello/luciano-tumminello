@@ -12,7 +12,7 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
   const newBlogPosts: BlogPostsStore = {
-    [slug]: { ...blogPostWithoutSlug, published: true }
+    [slug]: blogPostWithoutSlug
   };
   
   Object.entries(updatedBlogPosts).forEach(([key, value]) => {
@@ -36,7 +36,7 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
   const newBlogPosts: BlogPostsStore = {
-    [slug]: { ...blogPostWithoutSlug, published: true }
+    [slug]: blogPostWithoutSlug
   };
   
   Object.entries(updatedBlogPosts).forEach(([key, value]) => {
