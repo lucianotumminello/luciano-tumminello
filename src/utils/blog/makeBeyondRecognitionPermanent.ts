@@ -17,8 +17,8 @@ export const makeBeyondRecognitionPermanent = async (): Promise<void> => {
     // The new permanent slug to use (changed to avoid any conflict)
     const permanentSlug = "beyond-pattern-recognition-ai-revolution";
     
-    // Make the blog post permanent
-    const result = await makeBlogPostPermanent(temporarySlug, permanentSlug);
+    // Make the blog post permanent with published flag explicitly set to true
+    const result = await makeBlogPostPermanent(temporarySlug, permanentSlug, true);
     
     if (result) {
       console.log("Successfully created permanent blog post:", permanentSlug);

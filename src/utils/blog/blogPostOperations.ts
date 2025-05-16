@@ -1,160 +1,159 @@
 
-import { BlogPost } from "@/types";
-import { BlogPostsStore } from "./types";
-import { updatedBlogPosts, saveBlogPostsToStorage } from "./blogPostsStore";
+import { BlogPost } from '@/types';
+import { BlogPostsStore } from './types';
+import { updatedBlogPosts, saveBlogPostsToStorage } from './blogPostsStore';
 
 /**
- * Updates a blog post and saves it to the server
+ * Creates a new blog post
+ * @param newPost The new blog post to create
+ * @param slug The slug to use for the blog post
+ * @returns A promise that resolves to a boolean indicating success
+ */
+export const createBlogPost = async (newPost: BlogPost, slug: string): Promise<boolean> => {
+  try {
+    // Add the new post to the updated blog posts
+    updatedBlogPosts[slug] = { ...newPost };
+    
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
+    return true;
+  } catch (error) {
+    console.error("Error creating blog post:", error);
+    return false;
+  }
+};
+
+/**
+ * Updates an existing blog post
  * @param slug The slug of the blog post to update
- * @param blogPostData The updated blog post data
+ * @param updatedPost The updated blog post
+ * @returns A promise that resolves to a boolean indicating success
  */
-export const updateBlogPost = async (slug: string, blogPostData: BlogPost): Promise<void> => {
-  const { slug: _, ...blogPostWithoutSlug } = blogPostData;
-  
-  // Create a full copy of the current posts to avoid reference issues
-  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
-  
-  // Update the specific post
-  updatedPosts[slug] = { ...blogPostWithoutSlug };
-  
-  // Save to server to persist changes
-  await saveBlogPostsToStorage(updatedPosts);
-  
-  console.log(`Blog post ${slug} updated successfully`);
+export const updateBlogPost = async (slug: string, updatedPost: BlogPost): Promise<boolean> => {
+  try {
+    // Check if the blog post exists
+    if (!updatedBlogPosts[slug]) {
+      console.error(`Blog post with slug ${slug} not found.`);
+      return false;
+    }
+    
+    // Update the blog post
+    updatedBlogPosts[slug] = { ...updatedPost };
+    
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
+    return true;
+  } catch (error) {
+    console.error(`Error updating blog post ${slug}:`, error);
+    return false;
+  }
 };
 
 /**
- * Creates a new blog post and saves it to the server
- * @param slug The slug of the new blog post
- * @param blogPostData The blog post data
- */
-export const createBlogPost = async (slug: string, blogPostData: BlogPost): Promise<void> => {
-  const { slug: _, ...blogPostWithoutSlug } = blogPostData;
-  
-  // Create a full copy of the current posts to avoid reference issues
-  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
-  
-  // Add the new post
-  updatedPosts[slug] = { ...blogPostWithoutSlug };
-  
-  // Save to server to persist changes
-  await saveBlogPostsToStorage(updatedPosts);
-  
-  console.log(`New blog post ${slug} created successfully with slug: ${slug}`);
-  console.log("Current blog posts:", Object.keys(updatedPosts));
-};
-
-/**
- * Deletes a blog post and updates the server
+ * Deletes a blog post
  * @param slug The slug of the blog post to delete
+ * @returns A promise that resolves to a boolean indicating success
  */
-export const deleteBlogPost = async (slug: string): Promise<void> => {
-  // Create a full copy of the current posts to avoid reference issues
-  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
-  
-  // Remove the post
-  delete updatedPosts[slug];
-  
-  // Save to server to persist changes
-  await saveBlogPostsToStorage(updatedPosts);
-  
-  console.log(`Blog post ${slug} deleted successfully`);
+export const deleteBlogPost = async (slug: string): Promise<boolean> => {
+  try {
+    // Check if the blog post exists
+    if (!updatedBlogPosts[slug]) {
+      console.error(`Blog post with slug ${slug} not found.`);
+      return false;
+    }
+    
+    // Delete the blog post
+    delete updatedBlogPosts[slug];
+    
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
+    return true;
+  } catch (error) {
+    console.error(`Error deleting blog post ${slug}:`, error);
+    return false;
+  }
 };
 
 /**
- * Duplicates a blog post and saves it to the server
+ * Creates a duplicate of an existing blog post
  * @param originalSlug The slug of the blog post to duplicate
- * @param newSlug The slug for the duplicated blog post
- * @returns The duplicated blog post data or undefined if original not found
+ * @returns A promise that resolves to the new slug if successful, or null if failed
  */
-export const duplicateBlogPost = async (originalSlug: string, newSlug: string): Promise<BlogPost | undefined> => {
-  // Check if the original post exists
-  if (!updatedBlogPosts[originalSlug]) {
-    console.error(`Blog post ${originalSlug} not found for duplication`);
-    return undefined;
+export const duplicateBlogPost = async (originalSlug: string): Promise<string | null> => {
+  try {
+    // Check if the original blog post exists
+    if (!updatedBlogPosts[originalSlug]) {
+      console.error(`Blog post with slug ${originalSlug} not found.`);
+      return null;
+    }
+    
+    // Create a new slug with timestamp to ensure uniqueness
+    const newSlug = `${originalSlug}-copy-${Date.now()}`;
+    
+    // Create a copy of the original blog post
+    const originalPost = updatedBlogPosts[originalSlug];
+    const newPost = { ...originalPost };
+    
+    // Add the new post to the updated blog posts
+    updatedBlogPosts[newSlug] = newPost;
+    
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
+    return newSlug;
+  } catch (error) {
+    console.error(`Error duplicating blog post ${originalSlug}:`, error);
+    return null;
   }
-
-  // Create a deep copy of the blog post
-  const originalPost = updatedBlogPosts[originalSlug];
-  const duplicatedPost: BlogPost = JSON.parse(JSON.stringify(originalPost));
-  
-  // Modify the title to indicate it's a copy
-  duplicatedPost.title = `${duplicatedPost.title} (Copy)`;
-  if (duplicatedPost.titleIT) {
-    duplicatedPost.titleIT = `${duplicatedPost.titleIT} (Copia)`;
-  }
-  
-  // Update the date to current date
-  const now = new Date();
-  const day = now.getDate();
-  const month = now.toLocaleString('en-US', { month: 'long' });
-  const year = now.getFullYear();
-  const formattedDate = `${day} ${month} ${year}`;
-  
-  const monthIT = now.toLocaleString('it-IT', { month: 'long' });
-  const formattedDateIT = `${day} ${monthIT} ${year}`;
-  
-  duplicatedPost.date = formattedDate;
-  duplicatedPost.dateIT = formattedDateIT;
-  
-  // Create a full copy of the current posts to avoid reference issues
-  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
-  
-  // Add the duplicated post
-  updatedPosts[newSlug] = { ...duplicatedPost };
-  
-  // Save to server to persist changes
-  await saveBlogPostsToStorage(updatedPosts);
-  
-  console.log(`Blog post ${originalSlug} duplicated successfully as ${newSlug}`);
-  
-  return { ...duplicatedPost, slug: newSlug };
 };
 
 /**
- * Makes a temporary blog post permanent by creating a new entry with a cleaner URL
- * @param temporarySlug The current slug of the blog post (with timestamp)
- * @param permanentSlug The new permanent slug to use
- * @returns The permanent blog post data or undefined if original not found
+ * Makes a blog post permanent with a clean URL
+ * @param temporarySlug The original/temporary slug
+ * @param permanentSlug The new permanent slug
+ * @param published Optional flag to explicitly set published status (defaults to true)
+ * @returns A promise that resolves to a boolean indicating success
  */
 export const makeBlogPostPermanent = async (
   temporarySlug: string, 
-  permanentSlug: string
-): Promise<BlogPost | undefined> => {
-  // Check if the temporary post exists
-  if (!updatedBlogPosts[temporarySlug]) {
-    console.error(`Blog post ${temporarySlug} not found`);
-    return undefined;
+  permanentSlug: string,
+  published: boolean = true
+): Promise<boolean> => {
+  try {
+    // Check if the original blog post exists
+    if (!updatedBlogPosts[temporarySlug]) {
+      console.error(`Blog post with slug ${temporarySlug} not found.`);
+      return false;
+    }
+    
+    // Check if the permanent slug already exists to avoid overwriting
+    if (updatedBlogPosts[permanentSlug]) {
+      console.error(`Permanent slug ${permanentSlug} already exists.`);
+      return false;
+    }
+    
+    // Create a copy of the original blog post
+    const originalPost = updatedBlogPosts[temporarySlug];
+    const permanentPost = { 
+      ...originalPost,
+      published: published // Explicitly set the published flag
+    };
+    
+    // Add the permanent post to the updated blog posts
+    updatedBlogPosts[permanentSlug] = permanentPost;
+    
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
+    console.log(`Blog post made permanent: ${temporarySlug} -> ${permanentSlug}`);
+    console.log(`Published status set to: ${published}`);
+    
+    return true;
+  } catch (error) {
+    console.error(`Error making blog post permanent: ${temporarySlug} -> ${permanentSlug}`, error);
+    return false;
   }
-
-  // Check if the permanent slug already exists
-  if (updatedBlogPosts[permanentSlug]) {
-    console.error(`Cannot create permanent post: slug ${permanentSlug} already exists`);
-    return undefined;
-  }
-
-  // Create a deep copy of the blog post
-  const originalPost = updatedBlogPosts[temporarySlug];
-  const permanentPost: BlogPost = JSON.parse(JSON.stringify(originalPost));
-  
-  // Remove any "copy" suffix from the title
-  if (permanentPost.title.includes(" (Copy)")) {
-    permanentPost.title = permanentPost.title.replace(" (Copy)", "");
-  }
-  if (permanentPost.titleIT && permanentPost.titleIT.includes(" (Copia)")) {
-    permanentPost.titleIT = permanentPost.titleIT.replace(" (Copia)", "");
-  }
-  
-  // Create a full copy of the current posts to avoid reference issues
-  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
-  
-  // Add the permanent post
-  updatedPosts[permanentSlug] = { ...permanentPost };
-  
-  // Save to server to persist changes
-  await saveBlogPostsToStorage(updatedPosts);
-  
-  console.log(`Blog post ${temporarySlug} made permanent as ${permanentSlug}`);
-  
-  return { ...permanentPost, slug: permanentSlug };
 };

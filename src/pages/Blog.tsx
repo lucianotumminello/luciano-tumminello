@@ -39,7 +39,7 @@ const Blog = () => {
           ...post,
           slug
         }))
-        .filter(post => post.published !== false)
+        .filter(post => post.published !== false) // Explicitly filter out posts where published is false
         .sort((a, b) => {
           // Parse dates correctly regardless of format
           const dateA = new Date(a.date);
@@ -47,9 +47,13 @@ const Blog = () => {
           return dateB.getTime() - dateA.getTime(); // Most recent first
         });
       
+      console.log("Fetched posts before filtering:", Object.entries(await getAllBlogPosts()).length);
+      console.log("Posts after filtering for published:", posts.length);
+      
       setBlogPosts(posts);
       setLastRefresh(Date.now());
       console.log("Blog posts loaded:", posts.length, "posts");
+      console.log("Blog posts slugs:", posts.map(post => post.slug).join(", "));
     } catch (error) {
       console.error("Error fetching blog posts:", error);
       toast({
