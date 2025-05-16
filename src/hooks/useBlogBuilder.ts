@@ -391,7 +391,7 @@ export const useBlogBuilder = () => {
       const duplicatedPost = duplicateBlogPost(slug, newSlug);
       
       if (duplicatedPost) {
-        // Update the blog posts state
+        // Refresh the blog posts list
         setBlogPosts(getAllBlogPosts());
         
         // Update publish states
@@ -407,6 +407,9 @@ export const useBlogBuilder = () => {
         
         // Select the new post for editing
         selectPostToEdit(newSlug);
+        
+        // Close the post list modal
+        setIsPostListOpen(false);
       } else {
         toast({
           title: "Duplication failed",

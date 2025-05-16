@@ -74,7 +74,7 @@ export const duplicateBlogPost = (sourceSlug: string, newSlug: string): BlogPost
   }
   
   // Store the duplicated post with the new slug
-  createBlogPost(newSlug, duplicatedPost);
+  createBlogPost(newSlug, { ...duplicatedPost, slug: newSlug });
   
   console.log(`Blog post ${sourceSlug} duplicated to ${newSlug} successfully`);
   return { ...duplicatedPost, slug: newSlug };
