@@ -82,7 +82,7 @@ const Blog = () => {
   
   // Fetch and sort blog posts whenever the component mounts or language changes
   useEffect(() => {
-    // Initial fetch
+    // Force refresh immediately when the component mounts
     fetchPosts();
     
     // Add an event listener to re-fetch posts when the window gets focus
@@ -206,7 +206,7 @@ const Blog = () => {
         <meta 
           name="description" 
           content={isItalian 
-            ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basate sui dati di Luciano Tumminello." 
+            ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basati sui dati di Luciano Tumminello." 
             : "Strategic insights on digital transformation, AI, and data-driven marketing strategies by Luciano Tumminello."} 
         />
         <meta 
