@@ -389,7 +389,7 @@ export const useBlogBuilder = () => {
   };
 
   /**
-   * Duplicates the current blog post
+   * Duplicates the currently selected blog post
    */
   const duplicateCurrentPost = () => {
     if (!selectedPost || !blogPosts[selectedPost]) {
@@ -425,6 +425,54 @@ export const useBlogBuilder = () => {
         desktopImageUrl: duplicatedPost.desktopImageUrl || "",
         imageUrl: duplicatedPost.imageUrl || ""
       });
+      
+      toast({
+        title: "Blog post duplicated",
+        description: `"${duplicatedPost.title}" has been created as a copy.`,
+      });
+    }
+  };
+
+  /**
+   * Duplicates any blog post by slug
+   */
+  const duplicatePost = (slug: string) => {
+    if (!blogPosts[slug]) {
+      toast({
+        title: "Error",
+        description: "Blog post not found",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Generate a new slug for the duplicated post
+    const newSlug = `${slug}-copy-${Date.now()}`;
+    
+    // Duplicate the blog post
+    const duplicatedPost = duplicateBlogPost(slug, newSlug);
+    
+    if (duplicatedPost) {
+      // Update the blog posts state
+      setBlogPosts(getAllBlogPosts());
+      
+      // Set the duplicated post as the selected post
+      setSelectedPost(newSlug);
+      
+      // Update form values with the duplicated post data
+      setFormValues({
+        title: duplicatedPost.title || "",
+        excerpt: duplicatedPost.excerpt || "",
+        content: htmlToText(duplicatedPost.content || ""),
+        date: duplicatedPost.date || getCurrentFormattedDate(),
+        category: duplicatedPost.category || "",
+        tags: duplicatedPost.tags ? duplicatedPost.tags.join(", ") : "",
+        desktopImageUrl: duplicatedPost.desktopImageUrl || "",
+        imageUrl: duplicatedPost.imageUrl || ""
+      });
+      
+      // Set to update mode
+      setIsUpdateMode(true);
       
       toast({
         title: "Blog post duplicated",
@@ -471,6 +519,7 @@ export const useBlogBuilder = () => {
     selectPostToEdit,
     cancelEditing,
     getCurrentFormattedDate,
-    duplicateCurrentPost
+    duplicateCurrentPost,
+    duplicatePost
   };
 };

@@ -1,8 +1,9 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { BlogPostList } from "@/components/blog-builder/BlogPostList";
+import { LogOut } from "lucide-react";
 import { BlogPost } from "@/types";
+import { BlogPostList } from "./BlogPostList";
 
 interface BlogBuilderHeaderProps {
   isUpdateMode: boolean;
@@ -16,6 +17,7 @@ interface BlogBuilderHeaderProps {
   isSaving: boolean;
   onCancelEditing: () => void;
   onLogout: () => void;
+  onDuplicatePost: (slug: string) => void;
 }
 
 export const BlogBuilderHeader = ({
@@ -29,12 +31,17 @@ export const BlogBuilderHeader = ({
   onSavePublishStates,
   isSaving,
   onCancelEditing,
-  onLogout
+  onLogout,
+  onDuplicatePost
 }: BlogBuilderHeaderProps) => {
   return (
-    <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
-      <h1 className="text-2xl font-bold">Blog Article Builder</h1>
-      <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap gap-4 items-center justify-between mb-8">
+      <div className="flex flex-col">
+        <h1 className="text-3xl font-bold mb-2">Blog Builder</h1>
+        <p className="text-gray-600">Create and edit your blog posts</p>
+      </div>
+      
+      <div className="flex flex-wrap gap-2">
         <BlogPostList 
           blogPosts={blogPosts}
           publishStates={publishStates}
@@ -44,23 +51,19 @@ export const BlogBuilderHeader = ({
           onPublishStateChange={onPublishStateChange}
           onSavePublishStates={onSavePublishStates}
           isSaving={isSaving}
+          onDuplicatePost={onDuplicatePost}
         />
-        {isUpdateMode ? (
-          <Button 
-            variant="outline" 
-            onClick={onCancelEditing}
-          >
+        
+        {isUpdateMode && (
+          <Button variant="outline" onClick={onCancelEditing}>
             Cancel Editing
           </Button>
-        ) : (
-          <Button 
-            variant="secondary" 
-            disabled={true}
-          >
-            Create New Post
-          </Button>
         )}
-        <Button variant="outline" onClick={onLogout}>Logout</Button>
+        
+        <Button variant="ghost" onClick={onLogout}>
+          <LogOut className="h-4 w-4 mr-2" />
+          Logout
+        </Button>
       </div>
     </div>
   );
