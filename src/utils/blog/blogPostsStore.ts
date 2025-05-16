@@ -86,8 +86,9 @@ export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
   }
 };
 
-// Listen for storage events from other tabs/windows to sync data
+// Listen for various storage update events
 if (typeof window !== 'undefined') {
+  // Listen for storage events from other tabs/windows
   window.addEventListener('storage', (event) => {
     if (event.key === "blog_posts_server_storage") {
       console.log("Blog posts updated in another tab/window, refreshing data");
@@ -95,5 +96,13 @@ if (typeof window !== 'undefined') {
         console.error("Error refreshing blog posts after storage event:", error);
       });
     }
+  });
+  
+  // Listen for periodic refresh events
+  window.addEventListener('blog-periodic-refresh', () => {
+    console.log("Periodic refresh triggered, updating blog posts");
+    refreshBlogPosts().catch(error => {
+      console.error("Error during periodic refresh:", error);
+    });
   });
 }

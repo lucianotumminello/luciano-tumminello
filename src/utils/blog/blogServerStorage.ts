@@ -14,6 +14,10 @@ const USE_MOCK_SERVER = true;
 // In-memory cache of blog posts
 let cachedBlogPosts: BlogPostsStore | null = null;
 
+// Last fetch timestamp to control refresh frequency
+let lastFetchTimestamp = 0;
+const FETCH_COOLDOWN_MS = 2000; // Minimum time between fetches to prevent excessive calls
+
 /**
  * Fetches all blog posts from the server
  * Ensures cross-device synchronization by always getting the latest data
@@ -21,6 +25,17 @@ let cachedBlogPosts: BlogPostsStore | null = null;
  */
 export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
   try {
+    const now = Date.now();
+    
+    // Check if we've fetched recently to prevent excessive calls
+    if (cachedBlogPosts && now - lastFetchTimestamp < FETCH_COOLDOWN_MS) {
+      console.log("Using cached blog posts (fetch cooldown active)");
+      return { ...cachedBlogPosts };
+    }
+    
+    // Update timestamp whether we successfully fetch or not
+    lastFetchTimestamp = now;
+    
     if (USE_MOCK_SERVER) {
       console.log("Using mock server for fetching blog posts");
       // Use mock server for development - this uses localStorage which persists across sessions
@@ -148,4 +163,18 @@ if (typeof window !== 'undefined') {
       window.dispatchEvent(blogUpdateEvent);
     }
   });
+  
+  // Set up a periodic check for updates (for cross-device sync via localStorage)
+  // This helps when two devices are using the same app but not getting storage events
+  if (USE_MOCK_SERVER) {
+    console.log("Setting up periodic refresh for cross-device sync");
+    const REFRESH_INTERVAL = 30000; // 30 seconds
+    setInterval(() => {
+      console.log("Performing periodic blog posts refresh");
+      invalidateBlogPostsCache();
+      // Note: components listening for this event will trigger their own refresh
+      const blogUpdateEvent = new CustomEvent('blog-periodic-refresh');
+      window.dispatchEvent(blogUpdateEvent);
+    }, REFRESH_INTERVAL);
+  }
 }
