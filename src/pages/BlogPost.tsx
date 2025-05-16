@@ -1,12 +1,12 @@
 
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import BlogPostLayout from "@/components/blog/BlogPostLayout";
 import BlogPostContainer from "@/components/blog/BlogPostContainer";
 import NotFoundMessage from "@/components/blog/NotFoundMessage";
-import { useEffect } from "react";
 import { trackPageView } from "@/utils/analytics";
-import { getBlogPost } from "@/utils/blog"; // Updated import path
+import { getBlogPost } from "@/utils/blog";
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -35,10 +35,9 @@ const BlogPost = () => {
   }
 
   const pageUrl = window.location.href;
-  // Use the desktop image URL for sharing preview as it appears above the title
   const fullImageUrl = new URL(post.desktopImageUrl, window.location.origin).href;
 
-  // Enhanced structured data with more complete information
+  // Enhanced structured data
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",

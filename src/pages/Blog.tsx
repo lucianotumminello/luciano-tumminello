@@ -34,12 +34,6 @@ const Blog: React.FC = () => {
             ? "Approfondimenti strategici sulla trasformazione digitale, l'IA e le strategie di marketing basate sui dati di Luciano Tumminello." 
             : "Strategic insights on digital transformation, AI, and data-driven marketing strategies by Luciano Tumminello."} 
         />
-        <meta 
-          name="keywords" 
-          content={isItalian 
-            ? "blog marketing, IA nel marketing, trasformazione digitale, strategie basate sui dati, Luciano Tumminello" 
-            : "marketing blog, AI in marketing, digital transformation, data-driven strategies, Luciano Tumminello"} 
-        />
       </Helmet>
       
       <Header />

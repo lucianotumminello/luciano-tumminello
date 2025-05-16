@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import BlogPostHeader from "@/components/blog/BlogPostHeader";
@@ -31,36 +31,10 @@ interface BlogPostContainerProps {
   pageUrl: string;
 }
 
-const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
+const BlogPostContainer: React.FC<BlogPostContainerProps> = ({ post, pageUrl }) => {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
   const isItalian = language === "it";
-  const [isFooterVisible, setIsFooterVisible] = useState(false);
-  
-  // Simplified intersection observer for better mobile performance
-  useEffect(() => {
-    if (!('IntersectionObserver' in window)) {
-      // Fallback for older browsers
-      setIsFooterVisible(true);
-      return;
-    }
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setIsFooterVisible(true);
-          observer.disconnect();
-        }
-      });
-    }, { rootMargin: '100px' });
-    
-    const element = document.getElementById('blog-post-footer-trigger');
-    if (element) observer.observe(element);
-    
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
   return (
     <>
@@ -80,35 +54,24 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         content={isItalian ? post.contentIT : post.content} 
       />
       
-      {/* Footer visibility trigger element */}
-      <div 
-        id="blog-post-footer-trigger" 
-        className="h-1 w-full" 
-        aria-hidden="true"
-      ></div>
-      
-      {isFooterVisible && (
-        <>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-            <div className="w-full md:w-2/3">
-              <BlogPostFooter 
-                tags={isItalian ? post.tagsIT : post.tags}
-                authorName={post.author}
-                authorImageUrl={post.authorImageUrl}
-                translationPrefix={isItalian ? "it" : "en"}
-              />
-            </div>
-            
-            <div className="md:ml-auto">
-              <ShareButtons 
-                pageUrl={pageUrl}
-                title={isItalian ? post.titleIT : post.title}
-                translationPrefix={isItalian ? "it" : "en"}
-              />
-            </div>
-          </div>
-        </>
-      )}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <div className="w-full md:w-2/3">
+          <BlogPostFooter 
+            tags={isItalian ? post.tagsIT : post.tags}
+            authorName={post.author}
+            authorImageUrl={post.authorImageUrl}
+            translationPrefix={isItalian ? "it" : "en"}
+          />
+        </div>
+        
+        <div className="md:ml-auto">
+          <ShareButtons 
+            pageUrl={pageUrl}
+            title={isItalian ? post.titleIT : post.title}
+            translationPrefix={isItalian ? "it" : "en"}
+          />
+        </div>
+      </div>
     </>
   );
 };

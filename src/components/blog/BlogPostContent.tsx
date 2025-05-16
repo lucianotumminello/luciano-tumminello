@@ -2,10 +2,6 @@
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { optimizeImagesInContent, updateImageVisibility } from "@/utils/imageUtils";
-import { ensureOutgoingLinks } from "@/utils/blogContentUtils";
-import AprilBlogPostContent from "./AprilBlogPostContent";
-import BlogPostStyles from "./BlogPostStyles";
 
 interface BlogPostContentProps {
   content: string;
@@ -16,92 +12,73 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const isMobile = useIsMobile();
   const isItalian = language === "it";
   
-  const modifiedContent = React.useMemo(() => {
+  const processedContent = React.useMemo(() => {
     if (!content) return "";
     
-    // Check if this is the April 13 blog post
-    const isAprilPost = content.includes("Beyond Pattern Recognition") || 
-                         content.includes("Q2 2025") ||
-                         content.includes("New Wave of AI");
-    
-    // Check if this is the May 16 blog post
-    const isMayPost = content.includes("Human + Tech Equation") || 
-                      content.includes("Digital Transformation Era");
-    
-    console.log("Is April 13 blog post:", isAprilPost);
-    console.log("Is May 16 blog post:", isMayPost);
-    
-    // Apply special handling for April blog post
-    if (isAprilPost) {
-      console.log("Using dedicated component for April 13 blog post");
-      return AprilBlogPostContent({ content });
-    }
-    
-    // First apply general processing
-    let processedContent = optimizeImagesInContent(content, isMobile);
-    
-    // CRITICAL FIX: Remove ALL potential title duplications at the beginning of content
-    // First, remove ALL h1 and h2 at the beginning that might duplicate the title
-    processedContent = processedContent.replace(/^\s*<h1[^>]*>[^<]+<\/h1>/i, '');
-    processedContent = processedContent.replace(/^\s*<h2[^>]*>[^<]+<\/h2>/i, '');
-    
-    // Then remove these specific titles that we know exist in our posts
-    const titlesToRemove = [
-      "Beyond Technology: The Cultural",
-      "The Human \\+ Tech Equation",
-      "Empowering Your Workforce",
-      "Digital Transformation Era",
-      "From Marketing Director to COO",
-      "Beyond Pattern Recognition",
-      "The AI Leadership Revolution"
-    ];
-    
-    titlesToRemove.forEach(title => {
-      const h1Pattern = new RegExp(`<h1[^>]*>${title}[^<]*<\\/h1>`, 'gi');
-      const h2Pattern = new RegExp(`<h2[^>]*>${title}[^<]*<\\/h2>`, 'gi');
-      processedContent = processedContent.replace(h1Pattern, '');
-      processedContent = processedContent.replace(h2Pattern, '');
-    });
-    
-    // Final check: remove any remaining H1 tags entirely (to enforce single H1 per page in header)
-    processedContent = processedContent.replace(/<h1[^>]*>([^<]+)<\/h1>/gi, '<h2>$1</h2>');
-    
-    // Finally, ensure outgoing links exist in all posts
-    return ensureOutgoingLinks(processedContent);
-  }, [content, isMobile, isItalian]);
-  
-  // Effect to ensure proper image visibility after rendering
-  React.useEffect(() => {
-    const isAprilPost = content && (
-      content.includes("Beyond Pattern Recognition") || 
-      content.includes("Q2 2025") ||
-      content.includes("New Wave of AI")
-    );
-    
-    const isMayPost = content && (
-      content.includes("Human + Tech Equation") || 
-      content.includes("Digital Transformation Era")
-    );
-    
-    if (isAprilPost || isMayPost) {
-      updateImageVisibility(true, isMobile);
+    // Remove any potential duplicate titles at beginning of content
+    let cleanedContent = content
+      // Remove h1 tags to prevent duplicate titles
+      .replace(/<h1[^>]*>([^<]+)<\/h1>/gi, '')
+      // Convert any remaining h1 tags to h2
+      .replace(/<h1/gi, '<h2')
+      .replace(/<\/h1>/gi, '</h2>');
       
-      // Additional force-update with multiple attempts to ensure it works
-      const timers = [100, 300, 500, 1000].map(delay => 
-        setTimeout(() => updateImageVisibility(true, isMobile), delay)
-      );
-      
-      return () => timers.forEach(timer => clearTimeout(timer));
-    }
-  }, [content, isMobile]);
-  
+    return cleanedContent;
+  }, [content]);
+
   return (
     <article className={`bg-white rounded-lg shadow-md p-4 md:p-6 mb-8 ${isMobile ? 'content-mobile-optimized' : ''}`}>
       <div 
         className="prose prose-base max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-primary prose-a:font-medium"
-        dangerouslySetInnerHTML={{ __html: modifiedContent }}
+        dangerouslySetInnerHTML={{ __html: processedContent }}
       />
-      <BlogPostStyles />
+      
+      {/* Critical styles for blog content */}
+      <style>
+        {`
+        /* Blog content styles */
+        .prose p {
+          text-align: justify;
+          color: rgb(75 85 99);
+          margin-bottom: 1rem;
+        }
+        
+        .prose h2, .prose h3 {
+          color: rgb(31 41 55);
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        
+        .prose img {
+          max-width: 100%;
+          height: auto;
+          margin: 1.5rem 0;
+        }
+        
+        .prose a {
+          color: #2563eb;
+          text-decoration: underline;
+          font-weight: 500;
+        }
+        
+        .prose a:hover {
+          color: #1d4ed8;
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+          .content-mobile-optimized p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+          }
+          
+          .content-mobile-optimized img {
+            height: auto !important;
+            width: 100% !important;
+          }
+        }
+        `}
+      </style>
     </article>
   );
 };

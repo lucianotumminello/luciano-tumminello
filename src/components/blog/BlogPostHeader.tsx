@@ -1,8 +1,7 @@
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { updateMay16BlogPostImages } from "@/utils/imageUtils";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -16,7 +15,7 @@ interface BlogPostHeaderProps {
   desktopImageUrl: string;
 }
 
-const BlogPostHeader = ({
+const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
   title,
   excerpt,
   category,
@@ -26,48 +25,9 @@ const BlogPostHeader = ({
   authorImageUrl,
   imageUrl,
   desktopImageUrl
-}: BlogPostHeaderProps) => {
+}) => {
   const isMobile = useIsMobile();
   
-  // Add special handling for the May 16, 2025 blog post
-  const isMay16Post = date.includes("16 May 2025") || 
-                     date.includes("16 Maggio 2025") || 
-                     title.includes("Human + Tech") ||
-                     title.includes("Digital Transformation Era");
-  
-  // Special image URLs for May 16 blog post
-  const may16DesktopImage = "/lovable-uploads/6ca4ab8f-5ca0-4f53-8f16-9fcdeb0394f8.png";
-  const may16MobileImage = "/lovable-uploads/3de9471b-87c3-4da4-9052-7db78cfa8464.png";
-  
-  // Determine which images to use
-  const actualDesktopImageUrl = isMay16Post ? may16DesktopImage : desktopImageUrl;
-  const actualMobileImageUrl = isMay16Post ? may16MobileImage : imageUrl;
-  
-  // Effect to update images for May 16 post when it loads
-  useEffect(() => {
-    if (isMay16Post) {
-      updateMay16BlogPostImages();
-    }
-    
-    // Force proper image visibility on component mount
-    const timer = setTimeout(() => {
-      const desktopImg = document.getElementById("marketing-desktop-image");
-      const mobileImg = document.getElementById("marketing-mobile-image");
-      
-      if (desktopImg && mobileImg) {
-        if (isMobile) {
-          desktopImg.style.display = "none";
-          mobileImg.style.display = "block";
-        } else {
-          desktopImg.style.display = "block";
-          mobileImg.style.display = "none";
-        }
-      }
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, [isMay16Post, isMobile]);
-
   return (
     <header className="pb-8 mb-8 border-b border-gray-200">
       <div className="mb-4">
@@ -76,35 +36,23 @@ const BlogPostHeader = ({
         </span>
       </div>
       
-      {/* The main title - this should be the only H1 in the document */}
+      {/* The main title - this is the ONLY H1 in the document */}
       <h1 className={cn(
-        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 blog-post-title",
-        isMobile ? "mobile-heading" : ""
+        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6",
+        isMobile ? "text-2xl" : ""
       )}>
         {title}
       </h1>
       
-      <div className="blog-header">
-        {/* Desktop Image - hidden on mobile */}
+      {/* Featured Image */}
+      <div className="mb-6">
         <img
-          id="marketing-desktop-image"
-          src={actualDesktopImageUrl}
-          alt={`${title} - Desktop Version`}
-          className={`w-full h-auto max-h-[420px] object-cover rounded-lg shadow-md mb-6 ${!isMobile ? 'block' : 'hidden'}`}
-          loading="eager"
-          decoding="async"
-          style={{ display: isMobile ? 'none !important' : 'block !important' }}
-        />
-        
-        {/* Mobile Image - hidden on desktop */}
-        <img
-          id="marketing-mobile-image"
-          src={actualMobileImageUrl}
-          alt={`${title} - Mobile Version`}
-          className={`w-full h-auto max-h-[260px] object-cover rounded-lg shadow-md mb-4 ${isMobile ? 'block' : 'hidden'}`}
-          loading="eager"
-          decoding="async"
-          style={{ display: isMobile ? 'block !important' : 'none !important' }}
+          src={isMobile ? imageUrl : desktopImageUrl}
+          alt={title}
+          className="w-full h-auto rounded-lg shadow-md object-cover"
+          style={{
+            maxHeight: isMobile ? '260px' : '420px'
+          }}
         />
       </div>
       
