@@ -18,8 +18,9 @@ export function textToHtml(text: string): string {
       const headerClasses = {
         1: 'text-4xl font-bold mb-8 mt-8 text-gray-900',
         2: 'text-3xl font-bold mb-6 mt-12 text-gray-800',
-        3: 'text-2xl font-semibold mb-4 mt-8 text-gray-800'
-      }[headerLevel] || 'text-xl font-semibold mb-4 mt-6 text-gray-800';
+        3: 'text-2xl font-semibold mb-4 mt-8 text-gray-800',
+        4: 'text-xl font-semibold mb-4 mt-6 text-gray-800'
+      }[headerLevel] || 'text-lg font-semibold mb-3 mt-5 text-gray-800';
       
       return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
     }
@@ -58,6 +59,16 @@ export function textToHtml(text: string): string {
         <p class="mb-2">"${quote}"</p>
         <footer class="text-gray-600">— ${citation}</footer>
       </blockquote>`;
+    }
+    
+    // Handle about author sections
+    if (section.toLowerCase().includes('about the author') || section.toLowerCase().includes('about author')) {
+      const title = section.split('\n')[0];
+      const content = section.split('\n').slice(1).join('<br />');
+      return `<div class="related-resources">
+        <h3 class="text-2xl font-semibold mb-4 mt-8 text-gray-800">${title}</h3>
+        <p class="mb-6 text-gray-700 text-justify leading-relaxed">${content}</p>
+      </div>`;
     }
     
     // Regular paragraphs
