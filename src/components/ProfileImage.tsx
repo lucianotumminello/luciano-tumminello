@@ -1,10 +1,11 @@
 
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Responsive and lazy-loading for SEO and performance
 const ProfileImage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
   
   // Use intersection observer for lazy loading
   useEffect(() => {
@@ -64,19 +65,21 @@ const ProfileImage = () => {
           
           {/* Main image - loads with higher quality */}
           <img 
+            ref={imgRef}
             src="/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png" 
             alt="Luciano Tumminello Portrait" 
             className={cn(
               "w-full h-auto object-cover rounded-lg shadow-xl ring-2 ring-primary/20 transition-opacity duration-300",
               imageLoaded ? "opacity-100" : "opacity-0"
             )}
-            loading="lazy"
+            loading="eager"
             decoding="async"
             onLoad={() => setImageLoaded(true)}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
             srcSet={imageSrcSet}
             width="970"
             height="647"
+            fetchPriority="high"
             style={{ aspectRatio: "970/647", background: "linear-gradient(135deg, #F2FCE2 5%, #E5DEFF 100%)" }}
           />
         </div>

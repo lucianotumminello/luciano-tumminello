@@ -33,14 +33,14 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
   });
   
   // Add srcset for responsive images when possible
-  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, src, after) => {
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imageSrc, after) => {
     // Skip already optimized images or SVGs
-    if (match.includes('srcset=') || src.endsWith('.svg')) return match;
+    if (match.includes('srcset=') || imageSrc.endsWith('.svg')) return match;
     
     // Only add srcset for local images
-    if (src.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
-      const srcset = `srcset="${src} 1x, ${src} 2x"`;
-      return `<img ${before}src="${src}" ${srcset}${after}>`;
+    if (imageSrc.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
+      const srcset = `srcset="${imageSrc} 1x, ${imageSrc} 2x"`;
+      return `<img ${before}src="${imageSrc}" ${srcset}${after}>`;
     }
     return match;
   });
@@ -91,5 +91,50 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
     } catch (error) {
       console.error("Error updating image visibility:", error);
     }
+  }
+};
+
+/**
+ * Updates the specific blog post images for the May 16, 2025 post
+ */
+export const updateMay16BlogPostImages = () => {
+  // Set the desktop and mobile images for the specific blog post
+  const desktopImageUrl = "/lovable-uploads/cd2e36bd-3140-4f0e-85b1-42d505d89521.png";
+  const mobileImageUrl = "/lovable-uploads/837e1e0d-a79d-458b-a316-886952aea499.png";
+  
+  try {
+    // Check if we're on the correct blog post page
+    const pageContent = document.body.textContent || "";
+    const isMay16BlogPost = pageContent.includes("The Human + Tech Equation") && 
+                           pageContent.includes("Digital Transformation Era") &&
+                           pageContent.includes("May 2025");
+    
+    if (isMay16BlogPost) {
+      console.log("Detected May 16, 2025 blog post, updating images");
+      
+      // Find the desktop and mobile images in the DOM
+      const desktopImgElem = document.getElementById("marketing-desktop-image");
+      const mobileImgElem = document.getElementById("marketing-mobile-image");
+      
+      // Update image sources if elements exist
+      if (desktopImgElem && desktopImgElem instanceof HTMLImageElement) {
+        desktopImgElem.src = desktopImageUrl;
+      }
+      
+      if (mobileImgElem && mobileImgElem instanceof HTMLImageElement) {
+        mobileImgElem.src = mobileImageUrl;
+      }
+      
+      // For all blog post images that might be referencing this content
+      const allImages = document.querySelectorAll('img[alt*="Human + Tech"], img[alt*="Digital Transformation"]');
+      allImages.forEach(img => {
+        if (img instanceof HTMLImageElement) {
+          const isMobileView = window.innerWidth < 768;
+          img.src = isMobileView ? mobileImageUrl : desktopImageUrl;
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Error updating May 16 blog post images:", error);
   }
 };
