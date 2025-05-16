@@ -1,9 +1,9 @@
 
 import { BlogPostsStore } from "./types";
-import initialBlogPosts from "./initialBlogPosts";
+import { initialBlogPosts } from "./initialBlogPosts";
 
 // In-memory data store that will be updated during the session
-let updatedBlogPosts: BlogPostsStore = initialBlogPosts;
+let updatedBlogPosts: BlogPostsStore = { ...initialBlogPosts };
 
 // Find the "beyond-technology-cultural-transformation-ai" blog post and update its content
 if (updatedBlogPosts["beyond-technology-cultural-transformation-ai"]) {

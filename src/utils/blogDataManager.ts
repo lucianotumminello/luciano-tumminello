@@ -8,5 +8,6 @@ export {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
-  updatedBlogPosts as default
+  updatedBlogPosts as default,
+  initialBlogPosts
 } from './blog';
