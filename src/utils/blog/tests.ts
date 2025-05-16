@@ -1,13 +1,15 @@
 
 import { BlogPostsStore } from './types';
 import { 
-  createBlogPost, 
-  updateBlogPost, 
-  deleteBlogPost,
-  duplicateBlogPost, 
   getAllBlogPosts, 
   getBlogPost 
 } from './blogPostQueries';
+import { 
+  createBlogPost, 
+  updateBlogPost, 
+  deleteBlogPost,
+  duplicateBlogPost
+} from './blogPostOperations';
 import { mockApiReset } from './mockApi';
 
 // Run this function from the browser console to test the blog system
