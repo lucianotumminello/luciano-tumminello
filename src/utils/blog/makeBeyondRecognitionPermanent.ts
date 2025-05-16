@@ -14,8 +14,8 @@ export const makeBeyondRecognitionPermanent = async (): Promise<void> => {
     // The current temporary URL slug
     const temporarySlug = "beyond-pattern-recognition-copy-1747394357064";
     
-    // The new permanent slug to use
-    const permanentSlug = "beyond-pattern-recognition-ai-future";
+    // The new permanent slug to use (changed to avoid any conflict)
+    const permanentSlug = "beyond-pattern-recognition-ai-revolution";
     
     // Make the blog post permanent
     const result = await makeBlogPostPermanent(temporarySlug, permanentSlug);
@@ -31,5 +31,5 @@ export const makeBeyondRecognitionPermanent = async (): Promise<void> => {
   }
 };
 
-// Execute this function immediately to create the permanent post
+// Execute this function immediately when imported
 makeBeyondRecognitionPermanent();

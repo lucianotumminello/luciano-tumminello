@@ -33,5 +33,5 @@ export {
 // Export types
 export type { BlogPostsStore } from './types';
 
-// Import the utility to make the blog post permanent - this will execute immediately
+// Force-import the utility to make the blog post permanent
 import './makeBeyondRecognitionPermanent';

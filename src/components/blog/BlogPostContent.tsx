@@ -19,19 +19,20 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const modifiedContent = React.useMemo(() => {
     if (!content) return "";
     
-    // Check if this is the April 13 blog post
+    // Check if this is the special blog post (both original and permanent version)
     const isTargetPost = content.includes("Beyond Pattern Recognition") || 
                          content.includes("Q2 2025") ||
-                         content.includes("New Wave of AI");
-    console.log("Is target blog post (April 13):", isTargetPost);
+                         content.includes("New Wave of AI") ||
+                         content.includes("AI Revolution");
+    console.log("Is target blog post:", isTargetPost);
     
     // First apply general processing
     let processedContent = optimizeImagesInContent(content, isMobile);
     
-    // Then handle the special case for April 13 post
+    // Then handle the special case for the target post
     if (isTargetPost) {
-      console.log("Using dedicated component for April 13 blog post");
-      // Use the dedicated component for April 13 blog post
+      console.log("Using dedicated component for target blog post");
+      // Use the dedicated component for the target blog post
       return AprilBlogPostContent({ content: processedContent });
     }
     
@@ -44,7 +45,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     const isTargetPost = content && (
       content.includes("Beyond Pattern Recognition") || 
       content.includes("Q2 2025") ||
-      content.includes("New Wave of AI")
+      content.includes("New Wave of AI") ||
+      content.includes("AI Revolution")
     );
     
     if (isTargetPost) {
