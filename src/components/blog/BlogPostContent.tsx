@@ -23,7 +23,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     const isTargetPost = content.includes("Beyond Pattern Recognition") || 
                          content.includes("Q2 2025") ||
                          content.includes("New Wave of AI") ||
-                         content.includes("AI Revolution");
+                         content.includes("AI Revolution") ||
+                         content.includes("The Human + Tech Equation");
     console.log("Is target blog post:", isTargetPost);
     
     // First apply general processing
@@ -46,7 +47,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       content.includes("Beyond Pattern Recognition") || 
       content.includes("Q2 2025") ||
       content.includes("New Wave of AI") ||
-      content.includes("AI Revolution")
+      content.includes("AI Revolution") ||
+      content.includes("The Human + Tech Equation")
     );
     
     if (isTargetPost) {
