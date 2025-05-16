@@ -1,6 +1,5 @@
 
 import React from "react";
-import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BlogPostHeaderProps {
@@ -30,45 +29,52 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
   
   return (
     <header className="pb-6 mb-8 border-b border-gray-200">
+      {/* Category Badge */}
       <div className="mb-4">
-        <span className="text-sm font-medium text-primary/90">
+        <span className="inline-block px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full">
           {category}
         </span>
       </div>
       
-      {/* The main title - this is the ONLY H1 in the document */}
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+      {/* Main Title - The ONLY H1 in the document */}
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
         {title}
       </h1>
       
-      <p className="text-lg text-gray-700 mb-6">{excerpt}</p>
+      {/* Excerpt/Introduction */}
+      <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+        {excerpt}
+      </p>
       
-      {/* Featured Image - positioned properly below the text */}
-      <div className="mb-6">
+      {/* Featured Image - positioned below title and excerpt */}
+      <div className="mb-8 overflow-hidden rounded-lg shadow-md">
         <img
           src={isMobile ? imageUrl : desktopImageUrl}
           alt={title}
-          className="w-full h-auto rounded-lg shadow-md object-cover"
-          style={{ maxHeight: isMobile ? '260px' : '380px' }}
+          className="w-full h-auto object-cover"
+          style={{ maxHeight: '480px' }}
           loading="lazy"
         />
       </div>
       
-      {/* Author information */}
-      <div className="flex items-center">
-        <img
-          src={authorImageUrl}
-          alt={author}
-          className="w-10 h-10 rounded-full mr-3"
-          loading="lazy"
-        />
-        <div>
-          <p className="font-medium text-gray-900">{author}</p>
-          <div className="flex items-center text-sm text-gray-500">
-            <span>{date}</span>
-            <span className="mx-2">•</span>
-            <span>{readingTime}</span>
+      {/* Author information and metadata */}
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center">
+          <img
+            src={authorImageUrl}
+            alt={author}
+            className="w-10 h-10 rounded-full mr-3 border border-gray-200"
+            loading="lazy"
+          />
+          <div>
+            <p className="font-medium text-gray-900">{author}</p>
           </div>
+        </div>
+        
+        <div className="text-sm text-gray-600 flex items-center gap-4">
+          <span>{date}</span>
+          <span>•</span>
+          <span>{readingTime}</span>
         </div>
       </div>
     </header>

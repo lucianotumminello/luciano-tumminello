@@ -21,10 +21,15 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
       newAttrs += ' loading="lazy"';
     }
     
+    // Add decoding="async" for better performance
+    if (!attrs.includes('decoding=')) {
+      newAttrs += ' decoding="async"';
+    }
+    
     return `<img ${newAttrs}>`;
   });
   
-  // Add class for responsive images
+  // Add class for responsive images and ensure they don't overlap
   processedContent = processedContent.replace(/<img\s+([^>]*)>/g, (match, attrs) => {
     if (attrs.includes('class=')) {
       return match.replace(/class="([^"]*)"/, 'class="$1 blog-responsive-image"');
@@ -48,12 +53,17 @@ export const updateBlogPostSpecificImages = (slug: string, isMobile: boolean) =>
     const mobileImageUrl = "/lovable-uploads/3de9471b-87c3-4da4-9052-7db78cfa8464.png";
     
     try {
-      // Find the main blog image
-      const mainImage = document.querySelector('.blog-post-header-image');
-      if (mainImage instanceof HTMLImageElement) {
-        mainImage.src = isMobile ? mobileImageUrl : desktopImageUrl;
-        mainImage.style.maxHeight = isMobile ? '260px' : '380px';
-      }
+      // Update all blog header images for this specific post
+      const mainImages = document.querySelectorAll('.blog-header-image');
+      mainImages.forEach(img => {
+        if (img instanceof HTMLImageElement) {
+          img.src = isMobile ? mobileImageUrl : desktopImageUrl;
+          img.style.maxHeight = isMobile ? '300px' : '480px';
+          img.style.width = '100%';
+          img.style.objectFit = 'cover';
+          img.style.borderRadius = '0.375rem';
+        }
+      });
     } catch (error) {
       console.error("Error updating blog post images:", error);
     }

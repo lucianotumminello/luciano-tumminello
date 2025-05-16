@@ -42,7 +42,7 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
   }, [slug, isMobile]);
   
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Helmet>
         <title>{title} | Luciano Tumminello</title>
         <meta name="description" content={optimizedDescription} />
@@ -71,7 +71,7 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
       
       <Header />
       
-      <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
+      <main className="flex-1 py-12 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
           {children}
         </div>
@@ -79,48 +79,24 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
       
       <Footer />
       
-      {/* Global blog styles */}
       <style>
         {`
-        /* Critical fixes for blog layout */
-        .prose p {
-          text-align: justify;
-          color: rgb(75 85 99);
-          margin-bottom: 1rem;
-        }
-        
-        .prose h2, .prose h3 {
-          color: rgb(31 41 55);
-          margin-top: 1.5rem;
-          margin-bottom: 1rem;
-        }
-        
-        .prose img {
-          max-width: 100%;
-          height: auto;
-          margin: 1.5rem 0;
-          border-radius: 0.375rem;
-        }
-        
         .blog-responsive-image {
           max-width: 100%;
           height: auto;
-        }
-        
-        /* Link styling for better visibility */
-        .prose a {
-          color: #2563eb;
-          text-decoration: underline;
-          font-weight: 500;
-        }
-        
-        .prose a:hover {
-          color: #1d4ed8;
+          border-radius: 0.375rem;
         }
         
         /* Remove any potential duplicate titles */
         .prose h1:first-child {
           display: none !important;
+        }
+        
+        /* Fix for responsive layouts */
+        @media (max-width: 768px) {
+          .blog-container {
+            padding: 0;
+          }
         }
         `}
       </style>

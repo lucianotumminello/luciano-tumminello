@@ -1,7 +1,6 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useIsMobile } from "@/hooks/use-mobile";
 import BlogPostHeader from "@/components/blog/BlogPostHeader";
 import BlogPostContent from "@/components/blog/BlogPostContent";
 import BlogPostFooter from "@/components/blog/BlogPostFooter";
@@ -33,7 +32,6 @@ interface BlogPostContainerProps {
 
 const BlogPostContainer: React.FC<BlogPostContainerProps> = ({ post, pageUrl }) => {
   const { language } = useLanguage();
-  const isMobile = useIsMobile();
   const isItalian = language === "it";
 
   // Determine which content to display based on the selected language
@@ -46,37 +44,44 @@ const BlogPostContainer: React.FC<BlogPostContainerProps> = ({ post, pageUrl }) 
   const tags = isItalian ? post.tagsIT : post.tags;
 
   return (
-    <div className="bg-white rounded-lg shadow p-0 md:p-6">
-      <BlogPostHeader 
-        title={title}
-        excerpt={excerpt}
-        category={category}
-        date={date}
-        readingTime={readingTime}
-        author={post.author}
-        authorImageUrl={post.authorImageUrl}
-        imageUrl={post.imageUrl}
-        desktopImageUrl={post.desktopImageUrl}
-      />
-      
-      <BlogPostContent content={content} />
-      
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <div className="w-full md:w-2/3">
-          <BlogPostFooter 
-            tags={tags}
-            authorName={post.author}
-            authorImageUrl={post.authorImageUrl}
-            translationPrefix={isItalian ? "it" : "en"}
-          />
-        </div>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 md:p-8">
+        {/* Blog Post Header - Contains title, excerpt, featured image, and metadata */}
+        <BlogPostHeader 
+          title={title}
+          excerpt={excerpt}
+          category={category}
+          date={date}
+          readingTime={readingTime}
+          author={post.author}
+          authorImageUrl={post.authorImageUrl}
+          imageUrl={post.imageUrl}
+          desktopImageUrl={post.desktopImageUrl}
+        />
         
-        <div className="md:ml-auto">
-          <ShareButtons 
-            pageUrl={pageUrl}
-            title={title}
-            translationPrefix={isItalian ? "it" : "en"}
-          />
+        {/* Blog Post Content - The main article text */}
+        <BlogPostContent content={content} />
+        
+        {/* Footer Section - Contains tags and share buttons */}
+        <div className="border-t border-gray-200 pt-6 mt-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="w-full md:w-2/3">
+              <BlogPostFooter 
+                tags={tags}
+                authorName={post.author}
+                authorImageUrl={post.authorImageUrl}
+                translationPrefix={isItalian ? "it" : "en"}
+              />
+            </div>
+            
+            <div className="md:ml-auto">
+              <ShareButtons 
+                pageUrl={pageUrl}
+                title={title}
+                translationPrefix={isItalian ? "it" : "en"}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
