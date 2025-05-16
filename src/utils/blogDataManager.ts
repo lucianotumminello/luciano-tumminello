@@ -9,5 +9,6 @@ export {
   updateBlogPost,
   deleteBlogPost,
   duplicateBlogPost,
+  saveBlogPostsToStorage,
   updatedBlogPosts as default
 } from './blog';

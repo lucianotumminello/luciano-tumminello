@@ -1,10 +1,10 @@
 
 import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
-import { updatedBlogPosts } from "./blogPostsStore";
+import { updatedBlogPosts, saveBlogPostsToStorage } from "./blogPostsStore";
 
 /**
- * Updates a blog post in the in-memory data store
+ * Updates a blog post in the in-memory data store and localStorage
  * @param slug The slug of the blog post to update
  * @param blogPostData The updated blog post data
  */
@@ -24,11 +24,14 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   // Update the in-memory store
   Object.assign(updatedBlogPosts, newBlogPosts);
   
+  // Save to localStorage
+  saveBlogPostsToStorage(updatedBlogPosts);
+  
   console.log(`Blog post ${slug} updated successfully`);
 };
 
 /**
- * Creates a new blog post in the in-memory data store
+ * Creates a new blog post in the in-memory data store and localStorage
  * @param slug The slug of the new blog post
  * @param blogPostData The blog post data
  */
@@ -47,12 +50,15 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   // Update the in-memory store
   Object.assign(updatedBlogPosts, newBlogPosts);
   
+  // Save to localStorage
+  saveBlogPostsToStorage(updatedBlogPosts);
+  
   console.log(`New blog post ${slug} created successfully`);
   console.log("Current blog posts:", Object.keys(updatedBlogPosts));
 };
 
 /**
- * Deletes a blog post from the in-memory data store
+ * Deletes a blog post from the in-memory data store and localStorage
  * @param slug The slug of the blog post to delete
  */
 export const deleteBlogPost = (slug: string): void => {
@@ -70,11 +76,14 @@ export const deleteBlogPost = (slug: string): void => {
   });
   Object.assign(updatedBlogPosts, newBlogPosts);
   
+  // Save to localStorage
+  saveBlogPostsToStorage(updatedBlogPosts);
+  
   console.log(`Blog post ${slug} deleted successfully`);
 };
 
 /**
- * Duplicates a blog post in the in-memory data store
+ * Duplicates a blog post in the in-memory data store and localStorage
  * @param originalSlug The slug of the blog post to duplicate
  * @param newSlug The slug for the duplicated blog post
  * @returns The duplicated blog post data or undefined if original not found
@@ -109,7 +118,7 @@ export const duplicateBlogPost = (originalSlug: string, newSlug: string): BlogPo
   duplicatedPost.date = formattedDate;
   duplicatedPost.dateIT = formattedDateIT;
   
-  // Create the duplicated post in the store
+  // Create the duplicated post in the store (which also saves to localStorage)
   createBlogPost(newSlug, duplicatedPost);
   
   console.log(`Blog post ${originalSlug} duplicated successfully as ${newSlug}`);

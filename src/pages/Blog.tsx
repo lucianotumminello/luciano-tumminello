@@ -15,8 +15,10 @@ import {
 } from "@/components/ui/pagination";
 import { useState, useEffect } from "react";
 import { getAllBlogPosts } from "@/utils/blogDataManager";
+import { useToast } from "@/hooks/use-toast";
 
 const Blog = () => {
+  const { toast } = useToast();
   const { language } = useLanguage();
   const isItalian = language === "it";
   const POSTS_PER_PAGE = 4;
@@ -26,20 +28,30 @@ const Blog = () => {
   // Fetch and sort blog posts whenever the component mounts or language changes
   useEffect(() => {
     const fetchPosts = () => {
-      const posts = Object.entries(getAllBlogPosts())
-        .map(([slug, post]) => ({
-          ...post,
-          slug
-        }))
-        .filter(post => post.published !== false)
-        .sort((a, b) => {
-          // Parse dates correctly regardless of format
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          return dateB.getTime() - dateA.getTime(); // Most recent first
+      try {
+        const posts = Object.entries(getAllBlogPosts())
+          .map(([slug, post]) => ({
+            ...post,
+            slug
+          }))
+          .filter(post => post.published !== false)
+          .sort((a, b) => {
+            // Parse dates correctly regardless of format
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return dateB.getTime() - dateA.getTime(); // Most recent first
+          });
+        
+        setBlogPosts(posts);
+        console.log("Blog posts loaded:", posts.length);
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        toast({
+          title: "Error loading blog posts",
+          description: "There was a problem loading the blog posts",
+          variant: "destructive"
         });
-      
-      setBlogPosts(posts);
+      }
     };
     
     fetchPosts();
@@ -55,7 +67,7 @@ const Blog = () => {
     return () => {
       window.removeEventListener('focus', handleFocus);
     };
-  }, [language]);
+  }, [language, toast]);
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";

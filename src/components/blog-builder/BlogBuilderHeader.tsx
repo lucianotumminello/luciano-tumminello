@@ -1,9 +1,10 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, Save } from "lucide-react";
 import { BlogPost } from "@/types";
 import { BlogPostList } from "./BlogPostList";
+import { Badge } from "@/components/ui/badge";
 
 interface BlogBuilderHeaderProps {
   isUpdateMode: boolean;
@@ -38,7 +39,13 @@ export const BlogBuilderHeader = ({
     <div className="flex flex-wrap gap-4 items-center justify-between mb-8">
       <div className="flex flex-col">
         <h1 className="text-3xl font-bold mb-2">Blog Builder</h1>
-        <p className="text-gray-600">Create and edit your blog posts</p>
+        <div className="flex items-center gap-2">
+          <p className="text-gray-600">Create and edit your blog posts</p>
+          <Badge variant="outline" className="bg-green-50 text-green-800 border-green-300 flex items-center gap-1">
+            <Save className="h-3 w-3" />
+            Auto-saving
+          </Badge>
+        </div>
       </div>
       
       <div className="flex flex-wrap gap-2">

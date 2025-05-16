@@ -1,9 +1,38 @@
-
 import { BlogPostsStore } from "./types";
 import initialBlogPosts from "./initialBlogPosts";
 
+// Storage key for blog posts in localStorage
+const BLOG_POSTS_STORAGE_KEY = "luciano_tumminello_blog_posts";
+
+// Function to load blog posts from localStorage or use the initial data if none exists
+const loadBlogPostsFromStorage = (): BlogPostsStore => {
+  try {
+    const storedPosts = localStorage.getItem(BLOG_POSTS_STORAGE_KEY);
+    if (storedPosts) {
+      const parsedPosts = JSON.parse(storedPosts);
+      console.log("Loaded blog posts from localStorage:", Object.keys(parsedPosts).length);
+      return parsedPosts;
+    }
+  } catch (error) {
+    console.error("Error loading blog posts from localStorage:", error);
+  }
+  
+  // If there are no stored posts or an error occurred, use the initial data
+  return { ...initialBlogPosts };
+};
+
+// Function to save blog posts to localStorage
+const saveBlogPostsToStorage = (posts: BlogPostsStore) => {
+  try {
+    localStorage.setItem(BLOG_POSTS_STORAGE_KEY, JSON.stringify(posts));
+    console.log("Saved blog posts to localStorage:", Object.keys(posts).length);
+  } catch (error) {
+    console.error("Error saving blog posts to localStorage:", error);
+  }
+};
+
 // In-memory data store that will be updated during the session
-let updatedBlogPosts: BlogPostsStore = initialBlogPosts;
+let updatedBlogPosts: BlogPostsStore = loadBlogPostsFromStorage();
 
 // Find the "beyond-technology-cultural-transformation-ai" blog post and update its content
 if (updatedBlogPosts["beyond-technology-cultural-transformation-ai"]) {
@@ -120,10 +149,11 @@ if (updatedBlogPosts["beyond-technology-cultural-transformation-ai"]) {
 
 <p class="mb-6 text-gray-700 text-justify leading-relaxed">Luciano Tumminello has over 15 years of experience driving growth across Asia-Pacific, specializing in marketing, operations, and digital transformation, with a growing focus on leveraging artificial intelligence. With a proven track record of leading strategic initiatives and delivering measurable results, Luciano helps organizations navigate the complex intersection of technology and business leadership.</p>`;
 
-  // Update the blog post title if needed
+  // Make sure the title is also updated if needed
   blogPost.title = "Beyond Technology: The Cultural Transformation Required for Successful AI Integration";
   
   console.log("Blog post content updated successfully");
+  saveBlogPostsToStorage(updatedBlogPosts);
 }
 
 // Now update the "ai-leadership-revolution" blog post with the new content
@@ -260,6 +290,7 @@ if (updatedBlogPosts["ai-leadership-revolution"]) {
   blogPost.title = "The AI Leadership Revolution: How Marketing Executives Are Navigating the 2025 AI Landscape";
   
   console.log("AI Leadership Revolution blog post content updated successfully");
+  saveBlogPostsToStorage(updatedBlogPosts);
 }
 
-export { updatedBlogPosts };
+export { updatedBlogPosts, saveBlogPostsToStorage };

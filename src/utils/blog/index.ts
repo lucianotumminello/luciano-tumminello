@@ -7,5 +7,5 @@ export {
   duplicateBlogPost 
 } from './blogPostOperations';
 export { default as initialBlogPosts } from './initialBlogPosts';
-export { updatedBlogPosts } from './blogPostsStore';
+export { updatedBlogPosts, saveBlogPostsToStorage } from './blogPostsStore';
 export type { BlogPostsStore } from './types';
