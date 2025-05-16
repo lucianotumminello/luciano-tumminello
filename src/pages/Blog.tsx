@@ -13,7 +13,7 @@ import {
   PaginationNext, 
   PaginationPrevious 
 } from "@/components/ui/pagination";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getAllBlogPosts } from "@/utils/blogDataManager";
 import { useToast } from "@/hooks/use-toast";
 
@@ -26,7 +26,7 @@ const Blog = () => {
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
   // Function to fetch and sort blog posts
-  const fetchPosts = () => {
+  const fetchPosts = useCallback(() => {
     try {
       console.log("Fetching blog posts from storage");
       const posts = Object.entries(getAllBlogPosts())
@@ -52,35 +52,37 @@ const Blog = () => {
         variant: "destructive"
       });
     }
-  };
+  }, [toast]);
   
   // Fetch and sort blog posts whenever the component mounts or language changes
   useEffect(() => {
+    // Initial fetch
     fetchPosts();
     
     // Add an event listener to re-fetch posts when the window gets focus
-    // This ensures that if you publish in another tab and come back, you'll see the latest posts
     const handleFocus = () => {
       console.log("Window focus detected, refreshing blog posts");
       fetchPosts();
     };
     
     // Add an event listener to re-fetch posts when localStorage changes
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === "luciano_tumminello_blog_posts") {
-        console.log("LocalStorage change detected, refreshing blog posts");
-        fetchPosts();
-      }
+    const handleStorageChange = () => {
+      console.log("Storage change detected, refreshing blog posts");
+      fetchPosts();
     };
     
     window.addEventListener('focus', handleFocus);
     window.addEventListener('storage', handleStorageChange);
     
+    // Also set up an interval to periodically check for updates (as a fallback)
+    const checkInterval = setInterval(fetchPosts, 30000); // Check every 30 seconds
+    
     return () => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('storage', handleStorageChange);
+      clearInterval(checkInterval);
     };
-  }, [language]);
+  }, [language, fetchPosts]);
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";

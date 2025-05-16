@@ -4,11 +4,21 @@
 
 export { 
   getAllBlogPosts,
-  getBlogPost,
+  getBlogPost
+} from './blog/blogPostQueries';
+
+export {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
-  duplicateBlogPost,
-  saveBlogPostsToStorage,
-  updatedBlogPosts as default
-} from './blog';
+  duplicateBlogPost
+} from './blog/blogPostOperations';
+
+export {
+  updatedBlogPosts,
+  saveBlogPostsToStorage
+} from './blog/blogPostsStore';
+
+// Also export the updated blog posts as default for backward compatibility
+import { updatedBlogPosts } from './blog/blogPostsStore';
+export default updatedBlogPosts;

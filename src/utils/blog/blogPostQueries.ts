@@ -7,9 +7,9 @@ import { BlogPostsStore } from "./types";
  * @returns All blog posts
  */
 export const getAllBlogPosts = (): BlogPostsStore => {
-  // Ensure we're returning the latest version from memory
+  // Log the current state of the blog posts
   console.log("Getting all blog posts, count:", Object.keys(updatedBlogPosts).length);
-  return updatedBlogPosts;
+  return { ...updatedBlogPosts };
 };
 
 /**
@@ -18,5 +18,5 @@ export const getAllBlogPosts = (): BlogPostsStore => {
  * @returns The blog post or undefined if not found
  */
 export const getBlogPost = (slug: string): (Omit<import('@/types').BlogPost, "slug"> | undefined) => {
-  return updatedBlogPosts[slug];
+  return updatedBlogPosts[slug] ? { ...updatedBlogPosts[slug] } : undefined;
 };

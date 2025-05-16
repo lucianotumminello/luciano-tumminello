@@ -11,26 +11,11 @@ import { updatedBlogPosts, saveBlogPostsToStorage } from "./blogPostsStore";
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Create a new object to avoid reference issues
-  const newBlogPosts: BlogPostsStore = {};
+  // Direct update to the in-memory store
+  updatedBlogPosts[slug] = { ...blogPostWithoutSlug };
   
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    newBlogPosts[key] = value;
-  });
-  
-  // Update the specific blog post
-  newBlogPosts[slug] = blogPostWithoutSlug;
-  
-  // Update the in-memory store - replace all entries
-  Object.keys(updatedBlogPosts).forEach(key => {
-    delete updatedBlogPosts[key];
-  });
-  Object.entries(newBlogPosts).forEach(([key, value]) => {
-    updatedBlogPosts[key] = value;
-  });
-  
-  // Save to localStorage
-  saveBlogPostsToStorage(newBlogPosts);
+  // Save to localStorage to persist changes
+  saveBlogPostsToStorage({ ...updatedBlogPosts });
   
   console.log(`Blog post ${slug} updated successfully`);
 };
@@ -43,30 +28,14 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Create a new object to ensure we don't modify existing posts
-  const newBlogPosts: BlogPostsStore = {};
+  // Direct update to the in-memory store
+  updatedBlogPosts[slug] = { ...blogPostWithoutSlug };
   
-  // Copy existing posts
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    newBlogPosts[key] = value;
-  });
-  
-  // Add the new post
-  newBlogPosts[slug] = blogPostWithoutSlug;
-  
-  // Update the in-memory store - replace all entries
-  Object.keys(updatedBlogPosts).forEach(key => {
-    delete updatedBlogPosts[key];
-  });
-  Object.entries(newBlogPosts).forEach(([key, value]) => {
-    updatedBlogPosts[key] = value;
-  });
-  
-  // Save to localStorage
-  saveBlogPostsToStorage(newBlogPosts);
+  // Save to localStorage to persist changes
+  saveBlogPostsToStorage({ ...updatedBlogPosts });
   
   console.log(`New blog post ${slug} created successfully with slug: ${slug}`);
-  console.log("Current blog posts:", Object.keys(newBlogPosts));
+  console.log("Current blog posts:", Object.keys(updatedBlogPosts));
 };
 
 /**
@@ -74,25 +43,11 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
  * @param slug The slug of the blog post to delete
  */
 export const deleteBlogPost = (slug: string): void => {
-  // Create a new object excluding the post to delete
-  const newBlogPosts: BlogPostsStore = {};
+  // Remove the post from the in-memory store
+  delete updatedBlogPosts[slug];
   
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    if (key !== slug) {
-      newBlogPosts[key] = value;
-    }
-  });
-  
-  // Replace the entire in-memory store
-  Object.keys(updatedBlogPosts).forEach(key => {
-    delete updatedBlogPosts[key];
-  });
-  Object.entries(newBlogPosts).forEach(([key, value]) => {
-    updatedBlogPosts[key] = value;
-  });
-  
-  // Save to localStorage
-  saveBlogPostsToStorage(newBlogPosts);
+  // Save to localStorage to persist changes
+  saveBlogPostsToStorage({ ...updatedBlogPosts });
   
   console.log(`Blog post ${slug} deleted successfully`);
 };
@@ -134,7 +89,7 @@ export const duplicateBlogPost = (originalSlug: string, newSlug: string): BlogPo
   duplicatedPost.dateIT = formattedDateIT;
   
   // Create the duplicated post in the store (which also saves to localStorage)
-  createBlogPost(newSlug, duplicatedPost);
+  createBlogPost(newSlug, { ...duplicatedPost, slug: newSlug });
   
   console.log(`Blog post ${originalSlug} duplicated successfully as ${newSlug}`);
   
