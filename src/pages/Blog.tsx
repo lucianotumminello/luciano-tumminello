@@ -14,7 +14,7 @@ import {
   PaginationPrevious 
 } from "@/components/ui/pagination";
 import { useState, useEffect, useCallback } from "react";
-import { getAllBlogPosts, refreshBlogPosts } from "@/utils/blog";
+import { getAllBlogPosts } from "@/utils/blog";
 import { useToast } from "@/hooks/use-toast";
 
 const Blog = () => {
@@ -24,17 +24,16 @@ const Blog = () => {
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
   // Function to fetch and sort blog posts
-  const fetchPosts = useCallback(() => {
+  const fetchPosts = useCallback(async () => {
     try {
-      console.log("Fetching blog posts from storage");
+      setIsLoading(true);
+      console.log("Fetching blog posts from server");
       
-      // Force a refresh from localStorage
-      refreshBlogPosts();
-      
-      const posts = Object.entries(getAllBlogPosts())
+      const posts = Object.entries(await getAllBlogPosts())
         .map(([slug, post]) => ({
           ...post,
           slug
@@ -57,6 +56,8 @@ const Blog = () => {
         description: "There was a problem loading the blog posts",
         variant: "destructive"
       });
+    } finally {
+      setIsLoading(false);
     }
   }, [toast]);
   
@@ -71,61 +72,29 @@ const Blog = () => {
       fetchPosts();
     };
     
-    // Add an event listener to re-fetch posts when localStorage changes
-    const handleStorageChange = () => {
-      console.log("Storage change detected, refreshing blog posts");
-      fetchPosts();
-    };
-    
     // Add an event listener for our custom storage event
-    const handleCustomStorageChange = () => {
-      console.log("Custom storage event detected, refreshing blog posts");
+    const handleStorageUpdate = () => {
+      console.log("Blog storage updated, refreshing posts");
       fetchPosts();
     };
     
     window.addEventListener('focus', handleFocus);
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('blog-storage-updated', handleCustomStorageChange);
+    window.addEventListener('blog-storage-updated', handleStorageUpdate);
+    window.addEventListener('blog-server-updated', handleStorageUpdate);
     
-    // Also set up an interval to periodically check for updates (as a fallback)
-    const checkInterval = setInterval(fetchPosts, 15000); // Check every 15 seconds
+    // Also set up an interval to periodically check for updates
+    const checkInterval = setInterval(() => {
+      console.log("Periodic check for blog updates");
+      fetchPosts();
+    }, 60000); // Check every minute
     
     return () => {
       window.removeEventListener('focus', handleFocus);
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('blog-storage-updated', handleCustomStorageChange);
+      window.removeEventListener('blog-storage-updated', handleStorageUpdate);
+      window.removeEventListener('blog-server-updated', handleStorageUpdate);
       clearInterval(checkInterval);
     };
   }, [language, fetchPosts]);
-  
-  // Additional effect to check localStorage directly (as another fallback)
-  useEffect(() => {
-    const checkLocalStorageDirectly = () => {
-      try {
-        const storedPosts = localStorage.getItem("luciano_tumminello_blog_posts");
-        if (storedPosts) {
-          const parsedPosts = JSON.parse(storedPosts);
-          const storedPostsCount = Object.keys(parsedPosts).length;
-          const currentPostsCount = blogPosts.length;
-          
-          // If the counts don't match, refresh the posts
-          if (storedPostsCount !== currentPostsCount) {
-            console.log("Local storage check detected a difference, refreshing blog posts");
-            fetchPosts();
-          }
-        }
-      } catch (error) {
-        console.error("Error checking localStorage directly:", error);
-      }
-    };
-    
-    // Check localStorage directly every 10 seconds
-    const localStorageCheckInterval = setInterval(checkLocalStorageDirectly, 10000);
-    
-    return () => {
-      clearInterval(localStorageCheckInterval);
-    };
-  }, [blogPosts.length, fetchPosts]);
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
@@ -231,79 +200,87 @@ const Blog = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            {allPosts.map((post, index) => (
-              <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
-                <div className="relative aspect-[16/9] overflow-hidden">
-                  <img 
-                    src={post.imageUrl || (post.desktopImageUrl || "")} 
-                    alt={isItalian ? post.titleIT : post.title} 
-                    className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                    <span className="bg-gray-100 px-2 py-1 rounded-full">
-                      {isItalian ? post.categoryIT : post.category}
-                    </span>
-                    <span>•</span>
-                    <div className="flex items-center whitespace-nowrap">
-                      <CalendarIcon className="h-3 w-3 mr-1" />
-                      {formatDate(isItalian ? post.dateIT : post.date)}
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                {allPosts.map((post, index) => (
+                  <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <img 
+                        src={post.imageUrl || (post.desktopImageUrl || "")} 
+                        alt={isItalian ? post.titleIT : post.title} 
+                        className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+                      />
                     </div>
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
-                    {'slug' in post ? (
-                      <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
-                    ) : (
-                      isItalian ? post.titleIT : post.title
-                    )}
-                  </h2>
-                  <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
-                  {'slug' in post ? (
-                    <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
-                      {isItalian ? "Leggi di più →" : "Read More →"}
-                    </Link>
-                  ) : (
-                    <span className="text-gray-400 font-medium text-sm">
-                      {isItalian ? "Prossimamente..." : "Coming Soon..."}
-                    </span>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {totalPages > 1 && (
-            <Pagination className="mt-8">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  />
-                </PaginationItem>
-                
-                {Array.from({ length: totalPages }).map((_, i) => (
-                  <PaginationItem key={i + 1}>
-                    <PaginationLink
-                      onClick={() => setCurrentPage(i + 1)}
-                      isActive={currentPage === i + 1}
-                      className="cursor-pointer"
-                    >
-                      {i + 1}
-                    </PaginationLink>
-                  </PaginationItem>
+                    <CardContent className="p-6">
+                      <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                        <span className="bg-gray-100 px-2 py-1 rounded-full">
+                          {isItalian ? post.categoryIT : post.category}
+                        </span>
+                        <span>•</span>
+                        <div className="flex items-center whitespace-nowrap">
+                          <CalendarIcon className="h-3 w-3 mr-1" />
+                          {formatDate(isItalian ? post.dateIT : post.date)}
+                        </div>
+                      </div>
+                      <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
+                        {'slug' in post ? (
+                          <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
+                        ) : (
+                          isItalian ? post.titleIT : post.title
+                        )}
+                      </h2>
+                      <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
+                      {'slug' in post ? (
+                        <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
+                          {isItalian ? "Leggi di più →" : "Read More →"}
+                        </Link>
+                      ) : (
+                        <span className="text-gray-400 font-medium text-sm">
+                          {isItalian ? "Prossimamente..." : "Coming Soon..."}
+                        </span>
+                      )}
+                    </CardContent>
+                  </Card>
                 ))}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+              </div>
+
+              {totalPages > 1 && (
+                <Pagination className="mt-8">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <PaginationItem key={i + 1}>
+                        <PaginationLink
+                          onClick={() => setCurrentPage(i + 1)}
+                          isActive={currentPage === i + 1}
+                          className="cursor-pointer"
+                        >
+                          {i + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              )}
+            </>
           )}
           
           {/* Visual debug indicator (hidden in production) */}

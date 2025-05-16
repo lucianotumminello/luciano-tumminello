@@ -17,8 +17,16 @@ export {
 export {
   updatedBlogPosts,
   saveBlogPostsToStorage,
-  refreshBlogPosts
+  refreshBlogPosts,
+  initializeBlogPosts
 } from './blog/blogPostsStore';
+
+export {
+  fetchBlogPostsFromServer,
+  saveBlogPostsToServer,
+  getBlogPostsFromCache,
+  invalidateBlogPostsCache
+} from './blog/blogServerStorage';
 
 // Also export the updated blog posts as default for backward compatibility
 import { updatedBlogPosts } from './blog/blogPostsStore';

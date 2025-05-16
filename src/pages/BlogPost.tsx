@@ -6,54 +6,67 @@ import BlogPostContainer from "@/components/blog/BlogPostContainer";
 import NotFoundMessage from "@/components/blog/NotFoundMessage";
 import { useEffect, useState } from "react";
 import { trackPageView } from "@/utils/analytics";
-import { getBlogPost, refreshBlogPosts } from "@/utils/blog"; // Updated import path
+import { getBlogPost, refreshBlogPosts } from "@/utils/blog"; 
 
 const BlogPost = () => {
   const { slug } = useParams();
-  const [post, setPost] = useState(slug ? getBlogPost(slug) : null);
+  const [post, setPost] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { language } = useLanguage();
   const isItalian = language === "it";
   
-  // Effect to refresh post data when necessary
+  // Effect to fetch post data when the component mounts or the slug changes
   useEffect(() => {
-    if (slug) {
-      // First refresh all posts from localStorage
-      refreshBlogPosts();
-      
-      // Then get the specific post
-      const refreshedPost = getBlogPost(slug);
-      setPost(refreshedPost);
-      
-      // Set up refresh mechanisms
-      const handleFocus = () => {
-        console.log("Window focus detected, refreshing blog post");
-        refreshBlogPosts();
-        setPost(getBlogPost(slug));
-      };
-      
-      const handleStorage = () => {
-        console.log("Storage event detected, refreshing blog post");
-        refreshBlogPosts();
-        setPost(getBlogPost(slug));
-      };
-      
-      window.addEventListener('focus', handleFocus);
-      window.addEventListener('storage', handleStorage);
-      window.addEventListener('blog-storage-updated', handleStorage);
-      
-      // Periodic check as fallback
-      const interval = setInterval(() => {
-        refreshBlogPosts();
-        setPost(getBlogPost(slug));
-      }, 15000);
-      
-      return () => {
-        window.removeEventListener('focus', handleFocus);
-        window.removeEventListener('storage', handleStorage);
-        window.removeEventListener('blog-storage-updated', handleStorage);
-        clearInterval(interval);
-      };
-    }
+    const fetchPost = async () => {
+      if (slug) {
+        setIsLoading(true);
+        try {
+          // First refresh all posts from the server
+          await refreshBlogPosts();
+          
+          // Then get the specific post
+          const fetchedPost = await getBlogPost(slug);
+          setPost(fetchedPost);
+          
+          if (!fetchedPost) {
+            console.log(`Blog post with slug "${slug}" not found`);
+          }
+        } catch (error) {
+          console.error(`Error fetching blog post ${slug}:`, error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+    
+    fetchPost();
+    
+    // Set up refresh mechanisms
+    const handleFocus = () => {
+      console.log("Window focus detected, refreshing blog post");
+      fetchPost();
+    };
+    
+    const handleStorageUpdate = () => {
+      console.log("Blog storage updated, refreshing post");
+      fetchPost();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('blog-storage-updated', handleStorageUpdate);
+    window.addEventListener('blog-server-updated', handleStorageUpdate);
+    
+    // Periodic check as fallback
+    const interval = setInterval(() => {
+      fetchPost();
+    }, 60000); // Check every minute
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blog-storage-updated', handleStorageUpdate);
+      window.removeEventListener('blog-server-updated', handleStorageUpdate);
+      clearInterval(interval);
+    };
   }, [slug]);
   
   useEffect(() => {
@@ -65,6 +78,18 @@ const BlogPost = () => {
       );
     }
   }, [slug, post, isItalian]);
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white">
+        <main className="flex-1 py-16 px-4">
+          <div className="container mx-auto max-w-4xl flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </main>
+      </div>
+    );
+  }
   
   if (!post) {
     return (

@@ -3,7 +3,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { BlogPost } from "@/types";
 import { BlogFormData } from "@/components/blog-builder/BlogFormTypes";
-import { updateBlogPost, createBlogPost, getAllBlogPosts, duplicateBlogPost } from "@/utils/blogDataManager";
+import { 
+  updateBlogPost, 
+  createBlogPost, 
+  getAllBlogPosts, 
+  duplicateBlogPost
+} from "@/utils/blogDataManager";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
 
@@ -40,12 +45,13 @@ export const useBlogBuilder = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [previewData, setPreviewData] = useState<BlogPost | null>(null);
   const [rememberPassword, setRememberPassword] = useState(false);
-  const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>(getAllBlogPosts());
+  const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>({});
   const [publishStates, setPublishStates] = useState<Record<string, boolean>>({});
   const [isPublishing, setIsPublishing] = useState(false);
   const [isPostListOpen, setIsPostListOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formValues, setFormValues] = useState<BlogFormData>(defaultFormValues);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -111,16 +117,30 @@ export const useBlogBuilder = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const posts = getAllBlogPosts();
-      setBlogPosts(posts);
-      
-      const initialPublishStates: Record<string, boolean> = {};
-      Object.entries(posts).forEach(([slug, post]) => {
-        initialPublishStates[slug] = post.published !== false;
-      });
-      setPublishStates(initialPublishStates);
+      setIsLoading(true);
+      getAllBlogPosts()
+        .then(posts => {
+          setBlogPosts(posts);
+          
+          const initialPublishStates: Record<string, boolean> = {};
+          Object.entries(posts).forEach(([slug, post]) => {
+            initialPublishStates[slug] = post.published !== false;
+          });
+          setPublishStates(initialPublishStates);
+        })
+        .catch(error => {
+          console.error("Error loading blog posts:", error);
+          toast({
+            title: "Error loading posts",
+            description: "There was a problem loading your blog posts",
+            variant: "destructive"
+          });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, toast]);
 
   const handleRememberPasswordChange = (checked: boolean) => {
     setRememberPassword(checked);
@@ -168,21 +188,24 @@ export const useBlogBuilder = () => {
     }));
   };
 
-  const savePublishStates = () => {
+  const savePublishStates = async () => {
     setIsSaving(true);
     
     try {
-      Object.entries(publishStates).forEach(([slug, isPublished]) => {
+      // We need to update posts one by one with their publish states
+      for (const [slug, isPublished] of Object.entries(publishStates)) {
         if (blogPosts[slug]) {
           const updatedPost = {
             ...blogPosts[slug],
             published: isPublished
           };
-          updateBlogPost(slug, updatedPost);
+          await updateBlogPost(slug, updatedPost);
         }
-      });
+      }
       
-      setBlogPosts(getAllBlogPosts());
+      // Refresh our local state with the updated posts
+      const updatedPosts = await getAllBlogPosts();
+      setBlogPosts(updatedPosts);
       
       toast({
         title: "Changes saved",
@@ -294,13 +317,13 @@ export const useBlogBuilder = () => {
       setShowPreview(true);
 
       if (isUpdateMode && selectedPost) {
-        updateBlogPost(selectedPost, blogPost);
+        await updateBlogPost(selectedPost, blogPost);
         toast({
           title: "Blog post updated!",
           description: "Changes have been applied successfully.",
         });
       } else {
-        createBlogPost(slug, blogPost);
+        await createBlogPost(slug, blogPost);
         setPublishStates(prev => ({
           ...prev,
           [slug]: currentPublishedState
@@ -311,11 +334,9 @@ export const useBlogBuilder = () => {
         });
       }
 
-      // Update the blog posts state immediately to reflect changes
-      setBlogPosts(getAllBlogPosts());
-
-      // Force update the blog posts store
-      const newPosts = getAllBlogPosts();
+      // Update the blog posts state with the latest posts
+      const refreshedPosts = await getAllBlogPosts();
+      setBlogPosts(refreshedPosts);
       
       // A small delay before redirecting to the blog post
       setTimeout(() => {
@@ -391,7 +412,7 @@ export const useBlogBuilder = () => {
   /**
    * Duplicates the currently selected blog post
    */
-  const duplicateCurrentPost = () => {
+  const duplicateCurrentPost = async () => {
     if (!selectedPost || !blogPosts[selectedPost]) {
       toast({
         title: "Error",
@@ -404,31 +425,41 @@ export const useBlogBuilder = () => {
     // Generate a new slug for the duplicated post
     const newSlug = `${selectedPost}-copy-${Date.now()}`;
     
-    // Duplicate the blog post
-    const duplicatedPost = duplicateBlogPost(selectedPost, newSlug);
-    
-    if (duplicatedPost) {
-      // Update the blog posts state
-      setBlogPosts(getAllBlogPosts());
+    try {
+      // Duplicate the blog post
+      const duplicatedPost = await duplicateBlogPost(selectedPost, newSlug);
       
-      // Set the duplicated post as the selected post
-      setSelectedPost(newSlug);
-      
-      // Update form values with the duplicated post data
-      setFormValues({
-        title: duplicatedPost.title || "",
-        excerpt: duplicatedPost.excerpt || "",
-        content: htmlToText(duplicatedPost.content || ""),
-        date: duplicatedPost.date || getCurrentFormattedDate(),
-        category: duplicatedPost.category || "",
-        tags: duplicatedPost.tags ? duplicatedPost.tags.join(", ") : "",
-        desktopImageUrl: duplicatedPost.desktopImageUrl || "",
-        imageUrl: duplicatedPost.imageUrl || ""
-      });
-      
+      if (duplicatedPost) {
+        // Update the blog posts state
+        const refreshedPosts = await getAllBlogPosts();
+        setBlogPosts(refreshedPosts);
+        
+        // Set the duplicated post as the selected post
+        setSelectedPost(newSlug);
+        
+        // Update form values with the duplicated post data
+        setFormValues({
+          title: duplicatedPost.title || "",
+          excerpt: duplicatedPost.excerpt || "",
+          content: htmlToText(duplicatedPost.content || ""),
+          date: duplicatedPost.date || getCurrentFormattedDate(),
+          category: duplicatedPost.category || "",
+          tags: duplicatedPost.tags ? duplicatedPost.tags.join(", ") : "",
+          desktopImageUrl: duplicatedPost.desktopImageUrl || "",
+          imageUrl: duplicatedPost.imageUrl || ""
+        });
+        
+        toast({
+          title: "Blog post duplicated",
+          description: `"${duplicatedPost.title}" has been created as a copy.`,
+        });
+      }
+    } catch (error) {
+      console.error("Error duplicating blog post:", error);
       toast({
-        title: "Blog post duplicated",
-        description: `"${duplicatedPost.title}" has been created as a copy.`,
+        title: "Error",
+        description: "There was a problem duplicating the blog post",
+        variant: "destructive",
       });
     }
   };
@@ -436,7 +467,7 @@ export const useBlogBuilder = () => {
   /**
    * Duplicates any blog post by slug
    */
-  const duplicatePost = (slug: string) => {
+  const duplicatePost = async (slug: string) => {
     if (!blogPosts[slug]) {
       toast({
         title: "Error",
@@ -446,37 +477,47 @@ export const useBlogBuilder = () => {
       return;
     }
     
-    // Generate a new slug for the duplicated post
-    const newSlug = `${slug}-copy-${Date.now()}`;
-    
-    // Duplicate the blog post
-    const duplicatedPost = duplicateBlogPost(slug, newSlug);
-    
-    if (duplicatedPost) {
-      // Update the blog posts state
-      setBlogPosts(getAllBlogPosts());
+    try {
+      // Generate a new slug for the duplicated post
+      const newSlug = `${slug}-copy-${Date.now()}`;
       
-      // Set the duplicated post as the selected post
-      setSelectedPost(newSlug);
+      // Duplicate the blog post
+      const duplicatedPost = await duplicateBlogPost(slug, newSlug);
       
-      // Update form values with the duplicated post data
-      setFormValues({
-        title: duplicatedPost.title || "",
-        excerpt: duplicatedPost.excerpt || "",
-        content: htmlToText(duplicatedPost.content || ""),
-        date: duplicatedPost.date || getCurrentFormattedDate(),
-        category: duplicatedPost.category || "",
-        tags: duplicatedPost.tags ? duplicatedPost.tags.join(", ") : "",
-        desktopImageUrl: duplicatedPost.desktopImageUrl || "",
-        imageUrl: duplicatedPost.imageUrl || ""
-      });
-      
-      // Set to update mode
-      setIsUpdateMode(true);
-      
+      if (duplicatedPost) {
+        // Update the blog posts state
+        const refreshedPosts = await getAllBlogPosts();
+        setBlogPosts(refreshedPosts);
+        
+        // Set the duplicated post as the selected post
+        setSelectedPost(newSlug);
+        
+        // Update form values with the duplicated post data
+        setFormValues({
+          title: duplicatedPost.title || "",
+          excerpt: duplicatedPost.excerpt || "",
+          content: htmlToText(duplicatedPost.content || ""),
+          date: duplicatedPost.date || getCurrentFormattedDate(),
+          category: duplicatedPost.category || "",
+          tags: duplicatedPost.tags ? duplicatedPost.tags.join(", ") : "",
+          desktopImageUrl: duplicatedPost.desktopImageUrl || "",
+          imageUrl: duplicatedPost.imageUrl || ""
+        });
+        
+        // Set to update mode
+        setIsUpdateMode(true);
+        
+        toast({
+          title: "Blog post duplicated",
+          description: `"${duplicatedPost.title}" has been created as a copy.`,
+        });
+      }
+    } catch (error) {
+      console.error("Error duplicating blog post:", error);
       toast({
-        title: "Blog post duplicated",
-        description: `"${duplicatedPost.title}" has been created as a copy.`,
+        title: "Error",
+        description: "There was a problem duplicating the blog post",
+        variant: "destructive",
       });
     }
   };
@@ -510,6 +551,7 @@ export const useBlogBuilder = () => {
     setIsSaving,
     formValues,
     setFormValues,
+    isLoading,
     handleRememberPasswordChange,
     handleImageUpload,
     applyLayout,

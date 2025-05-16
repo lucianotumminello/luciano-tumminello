@@ -1,8 +1,8 @@
 
-// Export queries
+// Export queries - now with async functions
 export { getAllBlogPosts, getBlogPost } from './blogPostQueries';
 
-// Export operations
+// Export operations - now with async functions
 export { 
   createBlogPost, 
   updateBlogPost, 
@@ -17,8 +17,17 @@ export { default as initialBlogPosts } from './initialBlogPosts';
 export { 
   updatedBlogPosts, 
   saveBlogPostsToStorage,
-  refreshBlogPosts
+  refreshBlogPosts,
+  initializeBlogPosts
 } from './blogPostsStore';
+
+// Export server storage
+export {
+  fetchBlogPostsFromServer,
+  saveBlogPostsToServer,
+  getBlogPostsFromCache,
+  invalidateBlogPostsCache
+} from './blogServerStorage';
 
 // Export types
 export type { BlogPostsStore } from './types';
