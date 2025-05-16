@@ -12,11 +12,12 @@ export const makeBeyondRecognitionPermanent = async (): Promise<void> => {
     // First refresh all blog posts from storage to ensure we have the latest data
     await refreshBlogPosts();
     
-    // The current temporary URL slug
+    // The current temporary slug
     const temporarySlug = "beyond-pattern-recognition-copy-1747394357064";
     
     // The new permanent slug to use (changed to avoid any conflict)
-    const permanentSlug = "beyond-pattern-recognition-ai-revolution";
+    // We're NOT using "beyond-pattern-recognition-ai-revolution" anymore
+    const permanentSlug = "beyond-pattern-recognition-new-ai-wave";
     
     // Make the blog post permanent with published flag explicitly set to true
     const result = await makeBlogPostPermanent(temporarySlug, permanentSlug, true);

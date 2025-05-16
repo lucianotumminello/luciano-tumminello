@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,6 +58,11 @@ const Blog = () => {
           // Skip specific posts with the "human-tech-equation" in the slug
           // This specifically removes the duplicates shown in the red squares
           if (post.slug === "human-tech-equation-workforce-digital-transformation") {
+            return false;
+          }
+          
+          // Explicitly filter out the URL we want to delete
+          if (post.slug === "beyond-pattern-recognition-ai-revolution") {
             return false;
           }
           
