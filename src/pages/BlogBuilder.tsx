@@ -38,7 +38,8 @@ const BlogBuilder = () => {
     savePublishStates,
     onBlogSubmit,
     selectPostToEdit,
-    cancelEditing
+    cancelEditing,
+    duplicateCurrentPost
   } = useBlogBuilder();
 
   if (!isAuthenticated) {
@@ -88,6 +89,7 @@ const BlogBuilder = () => {
             mobileImageFile={mobileImageFile}
             setDesktopImageFile={setDesktopImageFile}
             setMobileImageFile={setMobileImageFile}
+            onDuplicate={isUpdateMode ? duplicateCurrentPost : undefined}
           />
 
           <BlogPreview 

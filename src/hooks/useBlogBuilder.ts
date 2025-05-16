@@ -3,7 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { BlogPost } from "@/types";
 import { BlogFormData } from "@/components/blog-builder/BlogFormTypes";
-import { updateBlogPost, createBlogPost, getAllBlogPosts } from "@/utils/blogDataManager";
+import { updateBlogPost, createBlogPost, getAllBlogPosts, duplicateBlogPost } from "@/utils/blogDataManager";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
 
@@ -382,6 +382,51 @@ export const useBlogBuilder = () => {
     });
   };
 
+  /**
+   * Duplicates the current blog post
+   */
+  const duplicateCurrentPost = () => {
+    if (!selectedPost || !blogPosts[selectedPost]) {
+      toast({
+        title: "Error",
+        description: "No blog post selected to duplicate",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Generate a new slug for the duplicated post
+    const newSlug = `${selectedPost}-copy-${Date.now()}`;
+    
+    // Duplicate the blog post
+    const duplicatedPost = duplicateBlogPost(selectedPost, newSlug);
+    
+    if (duplicatedPost) {
+      // Update the blog posts state
+      setBlogPosts(getAllBlogPosts());
+      
+      // Set the duplicated post as the selected post
+      setSelectedPost(newSlug);
+      
+      // Update form values with the duplicated post data
+      setFormValues({
+        title: duplicatedPost.title || "",
+        excerpt: duplicatedPost.excerpt || "",
+        content: htmlToText(duplicatedPost.content || ""),
+        date: duplicatedPost.date || getCurrentFormattedDate(),
+        category: duplicatedPost.category || "",
+        tags: duplicatedPost.tags ? duplicatedPost.tags.join(", ") : "",
+        desktopImageUrl: duplicatedPost.desktopImageUrl || "",
+        imageUrl: duplicatedPost.imageUrl || ""
+      });
+      
+      toast({
+        title: "Blog post duplicated",
+        description: `"${duplicatedPost.title}" has been created as a copy.`,
+      });
+    }
+  };
+
   return {
     isAuthenticated,
     setIsAuthenticated,
@@ -419,6 +464,7 @@ export const useBlogBuilder = () => {
     onBlogSubmit,
     selectPostToEdit,
     cancelEditing,
-    getCurrentFormattedDate
+    getCurrentFormattedDate,
+    duplicateCurrentPost
   };
 };

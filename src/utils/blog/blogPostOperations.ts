@@ -71,3 +71,47 @@ export const deleteBlogPost = (slug: string): void => {
   
   console.log(`Blog post ${slug} deleted successfully`);
 };
+
+/**
+ * Duplicates a blog post in the in-memory data store
+ * @param originalSlug The slug of the blog post to duplicate
+ * @param newSlug The slug for the duplicated blog post
+ * @returns The duplicated blog post data or undefined if original not found
+ */
+export const duplicateBlogPost = (originalSlug: string, newSlug: string): BlogPost | undefined => {
+  // Check if the original post exists
+  if (!updatedBlogPosts[originalSlug]) {
+    console.error(`Blog post ${originalSlug} not found for duplication`);
+    return undefined;
+  }
+
+  // Create a deep copy of the blog post
+  const originalPost = updatedBlogPosts[originalSlug];
+  const duplicatedPost: BlogPost = JSON.parse(JSON.stringify(originalPost));
+  
+  // Modify the title to indicate it's a copy
+  duplicatedPost.title = `${duplicatedPost.title} (Copy)`;
+  if (duplicatedPost.titleIT) {
+    duplicatedPost.titleIT = `${duplicatedPost.titleIT} (Copia)`;
+  }
+  
+  // Update the date to current date
+  const now = new Date();
+  const day = now.getDate();
+  const month = now.toLocaleString('en-US', { month: 'long' });
+  const year = now.getFullYear();
+  const formattedDate = `${day} ${month} ${year}`;
+  
+  const monthIT = now.toLocaleString('it-IT', { month: 'long' });
+  const formattedDateIT = `${day} ${monthIT} ${year}`;
+  
+  duplicatedPost.date = formattedDate;
+  duplicatedPost.dateIT = formattedDateIT;
+  
+  // Create the duplicated post in the store
+  createBlogPost(newSlug, duplicatedPost);
+  
+  console.log(`Blog post ${originalSlug} duplicated successfully as ${newSlug}`);
+  
+  return { ...duplicatedPost, slug: newSlug };
+};

@@ -1,4 +1,6 @@
 
+import { UseFormReturn } from "react-hook-form";
+
 export interface BlogFormData {
   title: string;
   excerpt: string;
@@ -21,4 +23,9 @@ export interface BlogFormProps {
   mobileImageFile: File | null;
   setDesktopImageFile: React.Dispatch<React.SetStateAction<File | null>>;
   setMobileImageFile: React.Dispatch<React.SetStateAction<File | null>>;
+  onDuplicate?: () => void;
+}
+
+export interface BlogFormSectionProps {
+  blogForm: UseFormReturn<BlogFormData>;
 }

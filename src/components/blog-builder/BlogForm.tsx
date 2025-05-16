@@ -21,7 +21,8 @@ export const BlogForm = ({
   desktopImageFile,
   mobileImageFile,
   setDesktopImageFile,
-  setMobileImageFile
+  setMobileImageFile,
+  onDuplicate
 }: BlogFormProps) => {
   const {
     activeTab,
@@ -64,6 +65,7 @@ export const BlogForm = ({
           onApplyLayout={onApplyLayout}
           isPublishing={isPublishing}
           isUpdateMode={isUpdateMode}
+          onDuplicate={onDuplicate}
         />
       </form>
     </Form>
