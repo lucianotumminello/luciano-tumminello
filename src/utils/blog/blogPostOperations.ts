@@ -11,8 +11,14 @@ import { updatedBlogPosts, saveBlogPostsToStorage } from './blogPostsStore';
  */
 export const createBlogPost = async (newPost: BlogPost, slug: string): Promise<boolean> => {
   try {
+    // Make sure the published flag is set to true by default if not specified
+    const postWithPublishedFlag = {
+      ...newPost,
+      published: newPost.published !== false
+    };
+    
     // Add the new post to the updated blog posts
-    updatedBlogPosts[slug] = { ...newPost };
+    updatedBlogPosts[slug] = { ...postWithPublishedFlag };
     
     // Save the updated blog posts to storage
     await saveBlogPostsToStorage({ ...updatedBlogPosts });
@@ -38,8 +44,16 @@ export const updateBlogPost = async (slug: string, updatedPost: BlogPost): Promi
       return false;
     }
     
+    // Ensure the published flag is preserved unless explicitly set
+    const postWithPublishedFlag = {
+      ...updatedPost,
+      published: updatedPost.published !== undefined 
+        ? updatedPost.published 
+        : (updatedBlogPosts[slug].published !== false)
+    };
+    
     // Update the blog post
-    updatedBlogPosts[slug] = { ...updatedPost };
+    updatedBlogPosts[slug] = { ...postWithPublishedFlag };
     
     // Save the updated blog posts to storage
     await saveBlogPostsToStorage({ ...updatedBlogPosts });
@@ -95,7 +109,11 @@ export const duplicateBlogPost = async (originalSlug: string): Promise<BlogPost 
     
     // Create a copy of the original blog post
     const originalPost = updatedBlogPosts[originalSlug];
-    const newPost = { ...originalPost, slug: newSlug };
+    const newPost: BlogPost = { 
+      ...originalPost, 
+      slug: newSlug,
+      published: originalPost.published !== false // Ensure published flag is preserved
+    };
     
     // Add the new post to the updated blog posts
     updatedBlogPosts[newSlug] = newPost;
@@ -131,8 +149,21 @@ export const makeBlogPostPermanent = async (
     
     // Check if the permanent slug already exists to avoid overwriting
     if (updatedBlogPosts[permanentSlug]) {
-      console.error(`Permanent slug ${permanentSlug} already exists.`);
-      return false;
+      console.log(`Permanent post ${permanentSlug} already exists, no action needed.`);
+      
+      // Ensure published flag is set to true for the permanent post
+      if (updatedBlogPosts[permanentSlug].published !== published) {
+        console.log(`Updating published status of ${permanentSlug} to ${published}`);
+        updatedBlogPosts[permanentSlug] = {
+          ...updatedBlogPosts[permanentSlug],
+          published: published
+        };
+        
+        // Save the updated blog posts to storage
+        await saveBlogPostsToStorage({ ...updatedBlogPosts });
+      }
+      
+      return true;
     }
     
     // Create a copy of the original blog post

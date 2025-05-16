@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,26 +33,41 @@ const Blog = () => {
       setIsLoading(true);
       console.log("Fetching blog posts from server");
       
-      const posts = Object.entries(await getAllBlogPosts())
+      const allPosts = await getAllBlogPosts();
+      
+      // Log all posts to debug which ones are available
+      console.log("All posts in storage:", Object.keys(allPosts).join(", "));
+      
+      const posts = Object.entries(allPosts)
         .map(([slug, post]) => ({
           ...post,
           slug
         }))
-        .filter(post => post.published !== false) // Explicitly filter out posts where published is false
+        .filter(post => {
+          // Only include posts that don't explicitly have published set to false
+          const isPublished = post.published !== false;
+          console.log(`Post ${post.slug}: published = ${isPublished}`);
+          return isPublished;
+        })
         .sort((a, b) => {
           // Parse dates correctly regardless of format
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
+          
+          // If dates can't be parsed properly, use string comparison as fallback
+          if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+            return b.date.localeCompare(a.date);
+          }
+          
           return dateB.getTime() - dateA.getTime(); // Most recent first
         });
       
-      console.log("Fetched posts before filtering:", Object.entries(await getAllBlogPosts()).length);
+      console.log("Fetched posts before filtering:", Object.entries(allPosts).length);
       console.log("Posts after filtering for published:", posts.length);
+      console.log("Visible post slugs:", posts.map(post => post.slug).join(", "));
       
       setBlogPosts(posts);
       setLastRefresh(Date.now());
-      console.log("Blog posts loaded:", posts.length, "posts");
-      console.log("Blog posts slugs:", posts.map(post => post.slug).join(", "));
     } catch (error) {
       console.error("Error fetching blog posts:", error);
       toast({

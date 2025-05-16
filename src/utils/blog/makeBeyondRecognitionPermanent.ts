@@ -26,8 +26,19 @@ export const makeBeyondRecognitionPermanent = async (): Promise<void> => {
     } else {
       console.error("Failed to create permanent blog post");
     }
+
+    // Also ensure "Human + Tech Equation" post is properly published
+    const humanTechSlug = "the-human-tech-equation-empowering-workforce";
+    const humanTechPermanentSlug = "human-tech-equation-workforce-digital-transformation";
+    
+    // Make the Human + Tech post permanent
+    const humanTechResult = await makeBlogPostPermanent(humanTechSlug, humanTechPermanentSlug, true);
+    
+    if (humanTechResult) {
+      console.log("Successfully created permanent Human + Tech post:", humanTechPermanentSlug);
+    }
   } catch (error) {
-    console.error("Error making blog post permanent:", error);
+    console.error("Error making blog posts permanent:", error);
   }
 };
 
