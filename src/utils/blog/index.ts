@@ -1,7 +1,6 @@
 
 export { getAllBlogPosts, getBlogPost } from './blogPostQueries';
 export { createBlogPost, updateBlogPost, deleteBlogPost } from './blogPostOperations';
-import initialBlogPosts from './initialBlogPosts';
-export { initialBlogPosts };
+export { default as initialBlogPosts } from './initialBlogPosts';
 export { updatedBlogPosts } from './blogPostsStore';
 export type { BlogPostsStore } from './types';
