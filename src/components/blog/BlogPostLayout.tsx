@@ -1,11 +1,8 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { updateBlogPostSpecificImages } from "@/utils/imageUtils";
 
 interface BlogPostLayoutProps {
   children: React.ReactNode;
@@ -17,7 +14,7 @@ interface BlogPostLayoutProps {
   schemaData: any;
 }
 
-const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
+const BlogPostLayout = ({
   children,
   title,
   description,
@@ -25,29 +22,34 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
   pageUrl,
   keywords,
   schemaData,
-}) => {
+}: BlogPostLayoutProps) => {
   // Ensure description is not too long (fixes "Meta description too long" issue)
   const optimizedDescription = description && description.length > 155 
     ? `${description.substring(0, 152)}...` 
     : description;
   
-  const { slug } = useParams();
-  const isMobile = useIsMobile();
-  
-  // Handle special cases for specific blog posts
-  useEffect(() => {
-    if (slug) {
-      updateBlogPostSpecificImages(slug, isMobile);
-    }
-  }, [slug, isMobile]);
-  
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
         <title>{title} | Luciano Tumminello</title>
         <meta name="description" content={optimizedDescription} />
         <meta name="keywords" content={keywords} />
         <link rel="canonical" href={pageUrl} />
+        
+        {/* ContentsSquare Tracking Script */}
+        <script type="text/javascript">
+          {`
+            (function (c, s, q, u, a, r, e) {
+                c.hj=c.hj||function(){(c.hj.q=c.hj.q||[]).push(arguments)};
+                c._hjSettings = { hjid: a };
+                r = s.getElementsByTagName('head')[0];
+                e = s.createElement('script');
+                e.async = true;
+                e.src = q + c._hjSettings.hjid + u;
+                r.appendChild(e);
+            })(window, document, 'https://static.hj.contentsquare.net/c/csq-', '.js', 6391574);
+          `}
+        </script>
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="article" />
@@ -59,9 +61,16 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@luciano_tumminello" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={optimizedDescription} />
         <meta name="twitter:image" content={imageUrl} />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="author" content="Luciano Tumminello" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
         
         {/* JSON-LD structured data */}
         <script type="application/ld+json">
@@ -71,35 +80,15 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
       
       <Header />
       
-      <main className="flex-1 py-12 px-4 bg-gray-50">
+      <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
+          {/* Ensure visible H1 tag exists on the page (fixes "H1 tag missing or empty" issue) */}
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{title}</h1>
           {children}
         </div>
       </main>
       
       <Footer />
-      
-      <style>
-        {`
-        .blog-responsive-image {
-          max-width: 100%;
-          height: auto;
-          border-radius: 0.375rem;
-        }
-        
-        /* Remove any potential duplicate titles */
-        .prose h1:first-child {
-          display: none !important;
-        }
-        
-        /* Fix for responsive layouts */
-        @media (max-width: 768px) {
-          .blog-container {
-            padding: 0;
-          }
-        }
-        `}
-      </style>
     </div>
   );
 };

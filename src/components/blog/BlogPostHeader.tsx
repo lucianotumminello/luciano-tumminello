@@ -1,5 +1,10 @@
 
-import React from "react";
+import { ArrowLeft, CalendarIcon, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BlogPostHeaderProps {
@@ -14,7 +19,7 @@ interface BlogPostHeaderProps {
   desktopImageUrl: string;
 }
 
-const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
+const BlogPostHeader = ({
   title,
   excerpt,
   category,
@@ -23,61 +28,98 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
   author,
   authorImageUrl,
   imageUrl,
-  desktopImageUrl
-}) => {
+  desktopImageUrl,
+}: BlogPostHeaderProps) => {
+  const { language } = useLanguage();
+  const isItalian = language === "it";
   const isMobile = useIsMobile();
   
+  // Format date for consistent display - if it's not already formatted
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "";
+    
+    try {
+      const date = new Date(dateStr);
+      
+      // Check if the date is valid
+      if (isNaN(date.getTime())) {
+        return dateStr;
+      }
+      
+      // Format to "DD Month YYYY"
+      const day = date.getDate();
+      const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
+      const year = date.getFullYear();
+      
+      return `${day} ${month} ${year}`;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return dateStr;
+    }
+  };
+  
+  const formattedDate = formatDate(date);
+  
   return (
-    <header className="pb-6 mb-8 border-b border-gray-200">
-      {/* Category Badge */}
-      <div className="mb-4">
-        <span className="inline-block px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full">
-          {category}
-        </span>
-      </div>
+    <div className="mb-8">
+      <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        {isItalian ? "Torna al Blog" : "Back to Blog"}
+      </Link>
       
-      {/* Main Title - The ONLY H1 in the document */}
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-        {title}
-      </h1>
-      
-      {/* Excerpt/Introduction */}
-      <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-        {excerpt}
-      </p>
-      
-      {/* Featured Image - positioned below title and excerpt */}
-      <div className="mb-8 overflow-hidden rounded-lg shadow-md">
-        <img
-          src={isMobile ? imageUrl : desktopImageUrl}
-          alt={title}
-          className="w-full h-auto object-cover"
-          style={{ maxHeight: '480px' }}
-          loading="lazy"
-        />
-      </div>
-      
-      {/* Author information and metadata */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center">
-          <img
-            src={authorImageUrl}
-            alt={author}
-            className="w-10 h-10 rounded-full mr-3 border border-gray-200"
-            loading="lazy"
-          />
-          <div>
-            <p className="font-medium text-gray-900">{author}</p>
-          </div>
+      <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
+        <div className="w-full">
+          <AspectRatio ratio={16/9} className="bg-gray-100">
+            {/* Simplified image loading strategy for faster mobile rendering */}
+            <img 
+              src={isMobile ? imageUrl : desktopImageUrl} 
+              alt={title}
+              className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width={isMobile ? "640" : "1200"}
+              height={isMobile ? "360" : "675"}
+              style={{aspectRatio: "16/9"}}
+            />
+          </AspectRatio>
         </div>
         
-        <div className="text-sm text-gray-600 flex items-center gap-4">
-          <span>{date}</span>
-          <span>•</span>
-          <span>{readingTime}</span>
-        </div>
-      </div>
-    </header>
+        <CardContent className="p-4 md:p-6 bg-white">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 md:mb-6 border-b border-gray-100 pb-4 md:pb-6">
+            <span className="inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-medium text-sm">
+              {category}
+            </span>
+            
+            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
+              <CalendarIcon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+              {formattedDate}
+            </div>
+            
+            <div className="flex items-center text-gray-500 whitespace-nowrap text-sm">
+              <Clock className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+              {readingTime}
+            </div>
+          </div>
+          
+          {/* Mobile-optimized header text sizes */}
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">
+            {title}
+          </h1>
+          
+          <p className="text-base text-gray-600 mb-3 md:mb-4 leading-relaxed">
+            {excerpt}
+          </p>
+          
+          <div className="flex items-center mt-3 md:mt-6">
+            <Avatar className="h-8 w-8 mr-2 md:mr-3">
+              <AvatarImage src={authorImageUrl} alt={author} />
+              <AvatarFallback>{author.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <span className="font-medium">{author}</span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

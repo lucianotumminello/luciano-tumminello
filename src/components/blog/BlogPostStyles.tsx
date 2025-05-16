@@ -5,7 +5,6 @@ const BlogPostStyles: React.FC = () => {
   return (
     <style>
       {`
-      /* Critical fix for blog layout */
       .prose p {
         text-align: justify;
         color: rgb(75 85 99);
@@ -23,20 +22,20 @@ const BlogPostStyles: React.FC = () => {
         height: auto;
       }
       
-      /* Desktop images - ensure proper display */
+      /* Desktop images - important to ensure display */
       .desktop-image-container,
-      .marketing-desktop-image,
-      #marketing-desktop-image {
-        width: 100%;
+      .marketing-desktop-image {
+        display: block !important;
         margin: 2rem 0;
+        width: 100%;
       }
       
-      /* Mobile images  */
+      /* Mobile images - important to ensure proper display */
       .mobile-image-container,
-      .marketing-mobile-image,
-      #marketing-mobile-image {
-        width: 100%;
+      .marketing-mobile-image {
+        display: none !important;
         margin: 2rem 0;
+        width: 100%;
       }
       
       /* Link styling for better visibility */
@@ -73,25 +72,21 @@ const BlogPostStyles: React.FC = () => {
         margin-bottom: 0.5rem;
       }
       
-      /* Blog title fix - critical to correct layout */
-      .blog-post-title {
-        display: block !important;
-        margin-bottom: 1.5rem !important;
-      }
-      
-      /* Hide ALL duplicate titles in content */
-      .prose h1:first-child,
-      .prose h2:first-child {
-        display: none !important;
-      }
-      
-      /* Fix blog header spacing */
-      .blog-header {
-        margin-bottom: 2rem !important;
-        display: block !important;
-      }
-      
       @media (max-width: 768px) {
+        /* Hide desktop images on mobile */
+        .desktop-image-container,
+        .marketing-desktop-image,
+        #marketing-desktop-image {
+          display: none !important;
+        }
+        
+        /* Show mobile images on mobile */
+        .mobile-image-container,
+        .marketing-mobile-image,
+        #marketing-mobile-image {
+          display: block !important;
+        }
+        
         /* Mobile content optimization */
         .content-mobile-optimized p {
           font-size: 0.95rem;
@@ -102,40 +97,6 @@ const BlogPostStyles: React.FC = () => {
         .content-mobile-optimized img {
           height: auto !important;
           width: 100% !important;
-        }
-        
-        /* Mobile specific heading styles */
-        .mobile-heading {
-          font-size: 1.75rem !important;
-          line-height: 1.3 !important;
-        }
-        
-        /* Mobile image display */
-        #marketing-desktop-image {
-          display: none !important;
-        }
-        #marketing-mobile-image {
-          display: block !important;
-        }
-      }
-      
-      /* Desktop image display */
-      @media (min-width: 769px) {
-        #marketing-desktop-image {
-          display: block !important;
-        }
-        #marketing-mobile-image {
-          display: none !important;
-        }
-      }
-      
-      /* Final fix for over-specificity issues */
-      @media (max-width: 768px) {
-        #marketing-desktop-image {
-          display: none !important;
-        }
-        #marketing-mobile-image {
-          display: block !important;
         }
       }
       `}
