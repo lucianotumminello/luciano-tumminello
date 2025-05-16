@@ -1,8 +1,11 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
+import { useParams } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { updateBlogPostSpecificImages } from "@/utils/imageUtils";
 
 interface BlogPostLayoutProps {
   children: React.ReactNode;
@@ -27,6 +30,16 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
   const optimizedDescription = description && description.length > 155 
     ? `${description.substring(0, 152)}...` 
     : description;
+  
+  const { slug } = useParams();
+  const isMobile = useIsMobile();
+  
+  // Handle special cases for specific blog posts
+  useEffect(() => {
+    if (slug) {
+      updateBlogPostSpecificImages(slug, isMobile);
+    }
+  }, [slug, isMobile]);
   
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -65,6 +78,50 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
       </main>
       
       <Footer />
+      
+      {/* Global blog styles */}
+      <style jsx global>{`
+        /* Critical fixes for blog layout */
+        .prose p {
+          text-align: justify;
+          color: rgb(75 85 99);
+          margin-bottom: 1rem;
+        }
+        
+        .prose h2, .prose h3 {
+          color: rgb(31 41 55);
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        
+        .prose img {
+          max-width: 100%;
+          height: auto;
+          margin: 1.5rem 0;
+          border-radius: 0.375rem;
+        }
+        
+        .blog-responsive-image {
+          max-width: 100%;
+          height: auto;
+        }
+        
+        /* Link styling for better visibility */
+        .prose a {
+          color: #2563eb;
+          text-decoration: underline;
+          font-weight: 500;
+        }
+        
+        .prose a:hover {
+          color: #1d4ed8;
+        }
+        
+        /* Remove any potential duplicate titles */
+        .prose h1:first-child {
+          display: none !important;
+        }
+      `}</style>
     </div>
   );
 };

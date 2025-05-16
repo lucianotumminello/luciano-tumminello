@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -29,7 +29,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
   const isMobile = useIsMobile();
   
   return (
-    <header className="pb-8 mb-8 border-b border-gray-200">
+    <header className="pb-6 mb-8 border-b border-gray-200">
       <div className="mb-4">
         <span className="text-sm font-medium text-primary/90">
           {category}
@@ -37,42 +37,37 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
       </div>
       
       {/* The main title - this is the ONLY H1 in the document */}
-      <h1 className={cn(
-        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6",
-        isMobile ? "text-2xl" : ""
-      )}>
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
         {title}
       </h1>
       
-      {/* Featured Image */}
+      <p className="text-lg text-gray-700 mb-6">{excerpt}</p>
+      
+      {/* Featured Image - positioned properly below the text */}
       <div className="mb-6">
         <img
           src={isMobile ? imageUrl : desktopImageUrl}
           alt={title}
           className="w-full h-auto rounded-lg shadow-md object-cover"
-          style={{
-            maxHeight: isMobile ? '260px' : '420px'
-          }}
+          style={{ maxHeight: isMobile ? '260px' : '380px' }}
+          loading="lazy"
         />
       </div>
       
-      <p className="text-lg text-gray-700 mb-6">{excerpt}</p>
-      
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center">
-          <img
-            src={authorImageUrl}
-            alt={author}
-            className="w-10 h-10 rounded-full mr-3"
-            loading="lazy"
-          />
-          <div>
-            <p className="font-medium text-gray-900">{author}</p>
-            <div className="flex items-center text-sm text-gray-500">
-              <span>{date}</span>
-              <span className="mx-2">•</span>
-              <span>{readingTime}</span>
-            </div>
+      {/* Author information */}
+      <div className="flex items-center">
+        <img
+          src={authorImageUrl}
+          alt={author}
+          className="w-10 h-10 rounded-full mr-3"
+          loading="lazy"
+        />
+        <div>
+          <p className="font-medium text-gray-900">{author}</p>
+          <div className="flex items-center text-sm text-gray-500">
+            <span>{date}</span>
+            <span className="mx-2">•</span>
+            <span>{readingTime}</span>
           </div>
         </div>
       </div>

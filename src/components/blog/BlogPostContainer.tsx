@@ -36,28 +36,35 @@ const BlogPostContainer: React.FC<BlogPostContainerProps> = ({ post, pageUrl }) 
   const isMobile = useIsMobile();
   const isItalian = language === "it";
 
+  // Determine which content to display based on the selected language
+  const title = isItalian ? post.titleIT : post.title;
+  const excerpt = isItalian ? post.excerptIT : post.excerpt;
+  const content = isItalian ? post.contentIT : post.content;
+  const category = isItalian ? post.categoryIT : post.category;
+  const date = isItalian ? post.dateIT : post.date;
+  const readingTime = isItalian ? post.readingTimeIT : post.readingTime;
+  const tags = isItalian ? post.tagsIT : post.tags;
+
   return (
-    <>
+    <div className="bg-white rounded-lg shadow p-0 md:p-6">
       <BlogPostHeader 
-        title={isItalian ? post.titleIT : post.title}
-        excerpt={isItalian ? post.excerptIT : post.excerpt}
-        category={isItalian ? post.categoryIT : post.category}
-        date={isItalian ? post.dateIT : post.date}
-        readingTime={isItalian ? post.readingTimeIT : post.readingTime}
+        title={title}
+        excerpt={excerpt}
+        category={category}
+        date={date}
+        readingTime={readingTime}
         author={post.author}
         authorImageUrl={post.authorImageUrl}
         imageUrl={post.imageUrl}
         desktopImageUrl={post.desktopImageUrl}
       />
       
-      <BlogPostContent 
-        content={isItalian ? post.contentIT : post.content} 
-      />
+      <BlogPostContent content={content} />
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div className="w-full md:w-2/3">
           <BlogPostFooter 
-            tags={isItalian ? post.tagsIT : post.tags}
+            tags={tags}
             authorName={post.author}
             authorImageUrl={post.authorImageUrl}
             translationPrefix={isItalian ? "it" : "en"}
@@ -67,12 +74,12 @@ const BlogPostContainer: React.FC<BlogPostContainerProps> = ({ post, pageUrl }) 
         <div className="md:ml-auto">
           <ShareButtons 
             pageUrl={pageUrl}
-            title={isItalian ? post.titleIT : post.title}
+            title={title}
             translationPrefix={isItalian ? "it" : "en"}
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

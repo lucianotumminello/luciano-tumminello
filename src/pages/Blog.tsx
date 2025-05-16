@@ -38,15 +38,17 @@ const Blog: React.FC = () => {
       
       <Header />
       
-      <main className="flex-1 py-16 px-4">
+      <main className="flex-1 py-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-5xl">
           <BlogHeader />
-          <BlogGrid posts={allPosts} formatDate={formatDate} />
-          <BlogPagination 
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setCurrentPage={setCurrentPage}
-          />
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <BlogGrid posts={allPosts} formatDate={formatDate} />
+            <BlogPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
         </div>
       </main>
       

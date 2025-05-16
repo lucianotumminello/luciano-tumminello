@@ -10,32 +10,29 @@ interface BlogPostContentProps {
 const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
-  const isItalian = language === "it";
   
   const processedContent = React.useMemo(() => {
     if (!content) return "";
     
     // Remove any potential duplicate titles at beginning of content
     let cleanedContent = content
-      // Remove h1 tags to prevent duplicate titles
+      // Remove h1 tags completely to prevent duplicate titles
       .replace(/<h1[^>]*>([^<]+)<\/h1>/gi, '')
-      // Convert any remaining h1 tags to h2
-      .replace(/<h1/gi, '<h2')
-      .replace(/<\/h1>/gi, '</h2>');
+      // Convert any h2 tags at the start that might duplicate the title to h3
+      .replace(/^(\s*)<h2([^>]*)>([^<]+)<\/h2>/i, '$1<h3$2>$3</h3>');
       
     return cleanedContent;
   }, [content]);
 
   return (
-    <article className={`bg-white rounded-lg shadow-md p-4 md:p-6 mb-8 ${isMobile ? 'content-mobile-optimized' : ''}`}>
+    <article className="bg-white rounded-lg shadow-md p-5 mb-8">
       <div 
         className="prose prose-base max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-primary prose-a:font-medium"
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
       
       {/* Critical styles for blog content */}
-      <style>
-        {`
+      <style jsx>{`
         /* Blog content styles */
         .prose p {
           text-align: justify;
@@ -65,11 +62,24 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
           color: #1d4ed8;
         }
         
-        /* Mobile optimization */
+        /* Blog title fix - critical to correct layout */
+        .blog-post-title {
+          display: block !important;
+          margin-bottom: 1.5rem !important;
+        }
+                
+        /* Fix blog header spacing */
+        .blog-header {
+          margin-bottom: 2rem !important;
+          display: block !important;
+        }
+        
         @media (max-width: 768px) {
+          /* Mobile content optimization */
           .content-mobile-optimized p {
             font-size: 0.95rem;
             line-height: 1.5;
+            margin-bottom: 0.75rem;
           }
           
           .content-mobile-optimized img {
@@ -77,8 +87,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
             width: 100% !important;
           }
         }
-        `}
-      </style>
+      `}</style>
     </article>
   );
 };
