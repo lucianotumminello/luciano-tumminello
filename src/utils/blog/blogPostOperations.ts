@@ -51,6 +51,36 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
 };
 
 /**
+ * Duplicates a blog post in the in-memory data store
+ * @param sourceSlug The slug of the blog post to duplicate
+ * @param newSlug The slug for the new duplicate blog post
+ * @returns The duplicated blog post data or undefined if source not found
+ */
+export const duplicateBlogPost = (sourceSlug: string, newSlug: string): BlogPost | undefined => {
+  // Check if the source blog post exists
+  if (!updatedBlogPosts[sourceSlug]) {
+    console.error(`Blog post ${sourceSlug} not found for duplication`);
+    return undefined;
+  }
+  
+  // Create a deep copy of the blog post
+  const sourcePost = updatedBlogPosts[sourceSlug];
+  const duplicatedPost: BlogPost = JSON.parse(JSON.stringify(sourcePost));
+  
+  // Update the title to indicate it's a copy
+  duplicatedPost.title = `${duplicatedPost.title} (Copy)`;
+  if (duplicatedPost.titleIT) {
+    duplicatedPost.titleIT = `${duplicatedPost.titleIT} (Copia)`;
+  }
+  
+  // Store the duplicated post with the new slug
+  createBlogPost(newSlug, duplicatedPost);
+  
+  console.log(`Blog post ${sourceSlug} duplicated to ${newSlug} successfully`);
+  return { ...duplicatedPost, slug: newSlug };
+};
+
+/**
  * Deletes a blog post from the in-memory data store
  * @param slug The slug of the blog post to delete
  */

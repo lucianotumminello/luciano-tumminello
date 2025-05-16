@@ -3,7 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { BlogPost } from "@/types";
 import { BlogFormData } from "@/components/blog-builder/BlogFormTypes";
-import { updateBlogPost, createBlogPost, getAllBlogPosts } from "@/utils/blogDataManager";
+import { updateBlogPost, createBlogPost, getAllBlogPosts, duplicateBlogPost } from "@/utils/blogDataManager";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
 
@@ -382,6 +382,48 @@ export const useBlogBuilder = () => {
     });
   };
 
+  // Duplicate an existing blog post
+  const duplicatePost = (slug: string) => {
+    const timestamp = Date.now();
+    const newSlug = `${slug}-copy-${timestamp}`;
+    
+    try {
+      const duplicatedPost = duplicateBlogPost(slug, newSlug);
+      
+      if (duplicatedPost) {
+        // Update the blog posts state
+        setBlogPosts(getAllBlogPosts());
+        
+        // Update publish states
+        setPublishStates(prev => ({
+          ...prev,
+          [newSlug]: duplicatedPost.published !== false
+        }));
+        
+        toast({
+          title: "Blog post duplicated",
+          description: `"${duplicatedPost.title}" has been created as a copy.`,
+        });
+        
+        // Select the new post for editing
+        selectPostToEdit(newSlug);
+      } else {
+        toast({
+          title: "Duplication failed",
+          description: "Could not duplicate the selected blog post.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error duplicating blog post:", error);
+      toast({
+        title: "Duplication error",
+        description: "There was a problem creating a copy of this blog post.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return {
     isAuthenticated,
     setIsAuthenticated,
@@ -419,6 +461,7 @@ export const useBlogBuilder = () => {
     onBlogSubmit,
     selectPostToEdit,
     cancelEditing,
-    getCurrentFormattedDate
+    getCurrentFormattedDate,
+    duplicatePost
   };
 };
