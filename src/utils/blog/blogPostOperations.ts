@@ -35,6 +35,7 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
+  // Create a new object to ensure we don't modify existing posts
   const newBlogPosts: BlogPostsStore = {
     [slug]: blogPostWithoutSlug
   };

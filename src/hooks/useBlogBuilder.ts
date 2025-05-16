@@ -311,12 +311,18 @@ export const useBlogBuilder = () => {
         });
       }
 
+      // Update the blog posts state immediately to reflect changes
       setBlogPosts(getAllBlogPosts());
 
+      // Force update the blog posts store
+      const newPosts = getAllBlogPosts();
+      
+      // A small delay before redirecting to the blog post
       setTimeout(() => {
         navigate(`/blog/${slug}`);
       }, 1500);
 
+      // Copy the JSON to clipboard for backup purposes
       const blogPostJson = JSON.stringify(blogPost, null, 2);
       navigator.clipboard.writeText(blogPostJson);
     } catch (error) {

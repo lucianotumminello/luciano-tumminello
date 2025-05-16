@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Save, Copy } from "lucide-react";
+import { Save, Copy, Send } from "lucide-react";
 
 interface BlogFormActionsProps {
   onApplyLayout: () => void;
@@ -47,10 +47,11 @@ export const BlogFormActions = ({
       <Button 
         type="submit" 
         size="lg" 
-        className="min-w-[200px]"
+        className="min-w-[200px] bg-green-600 hover:bg-green-700"
         disabled={isPublishing}
       >
-        {isPublishing ? "Publishing..." : (isUpdateMode ? "Update Blog Post" : "Publish Blog")}
+        <Send className="h-5 w-5 mr-2" />
+        {isPublishing ? "Publishing..." : (isUpdateMode ? "Update & Publish" : "Publish to Blog")}
       </Button>
     </div>
   );

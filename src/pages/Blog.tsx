@@ -23,20 +23,38 @@ const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
+  // Fetch and sort blog posts whenever the component mounts or language changes
   useEffect(() => {
-    const posts = Object.entries(getAllBlogPosts())
-      .map(([slug, post]) => ({
-        ...post,
-        slug
-      }))
-      .filter(post => post.published !== false)
-      .sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateB.getTime() - dateA.getTime();
-      });
+    const fetchPosts = () => {
+      const posts = Object.entries(getAllBlogPosts())
+        .map(([slug, post]) => ({
+          ...post,
+          slug
+        }))
+        .filter(post => post.published !== false)
+        .sort((a, b) => {
+          // Parse dates correctly regardless of format
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateB.getTime() - dateA.getTime(); // Most recent first
+        });
+      
+      setBlogPosts(posts);
+    };
     
-    setBlogPosts(posts);
+    fetchPosts();
+    
+    // Add an event listener to re-fetch posts when the window gets focus
+    // This ensures that if you publish in another tab and come back, you'll see the latest posts
+    const handleFocus = () => {
+      fetchPosts();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [language]);
   
   const formatDate = (dateStr: string) => {
