@@ -22,6 +22,17 @@ const AprilBlogPostContent = ({ content }: AprilBlogPostContentProps) => {
   // Skip inserting marketing transformation images for this specific post
   console.log("Skipping marketing transformation images for April 13 post");
   
+  // Look for the new Human + Tech Equation blog post
+  const isHumanTechPost = content.includes("Human + Tech Equation") || 
+                       content.includes("Empowering Your Workforce") ||
+                       content.includes("Digital Transformation Era");
+                       
+  if (isHumanTechPost) {
+    console.log("Processing the Human + Tech Equation blog post");
+    // For this post, we want to preserve its formatting exactly as created
+    return processedContent;
+  }
+  
   // Add additional content for word count and outgoing links
   console.log("Adding additional content with outgoing links");
   processedContent = addAdditionalContent(processedContent);
