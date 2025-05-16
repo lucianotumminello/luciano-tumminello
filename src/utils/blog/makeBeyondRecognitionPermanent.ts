@@ -1,5 +1,6 @@
 
-import { makeBlogPostPermanent, refreshBlogPosts } from "./blogPostOperations";
+import { makeBlogPostPermanent } from "./blogPostOperations";
+import { refreshBlogPosts } from "./blogPostsStore";
 
 /**
  * This utility function makes the "Beyond Pattern Recognition" blog post permanent
