@@ -60,7 +60,7 @@ const BlogPostHeader = ({
       
       {/* The main title - this should be the only H1 in the document */}
       <h1 className={cn(
-        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4",
+        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 blog-post-title",
         isMobile ? "mobile-heading" : ""
       )}>
         {title}
@@ -75,7 +75,7 @@ const BlogPostHeader = ({
           className="hidden md:block w-full h-auto max-h-[420px] object-cover rounded-lg shadow-md mb-6"
           loading="eager"
           decoding="async"
-          style={{ display: isMobile ? 'none' : 'block' }}
+          style={{ display: isMobile ? 'none !important' : 'block !important' }}
           fetchPriority="high"
         />
         
@@ -87,7 +87,7 @@ const BlogPostHeader = ({
           className="md:hidden w-full h-auto max-h-[260px] object-cover rounded-lg shadow-md mb-4"
           loading="eager" 
           decoding="async"
-          style={{ display: isMobile ? 'block' : 'none' }}
+          style={{ display: isMobile ? 'block !important' : 'none !important' }}
           fetchPriority="high"
         />
       </div>

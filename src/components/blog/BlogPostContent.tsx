@@ -38,53 +38,37 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     if (isAprilPost) {
       console.log("Using dedicated component for April 13 blog post");
       // Use the dedicated component for April 13 blog post
-      return AprilBlogPostContent({ content: processedContent });
+      return processedContent; // We'll process this in the AprilBlogPostContent component
     }
     
-    // Critical fix: Remove ALL H1 and H2 elements that duplicate the main title
+    // CRITICAL FIX: Remove ALL potential title duplications at the beginning of content
     // This is the most important part of the fix - we scan the entire content
     // looking for heading elements that could be duplicating the main title
-    if (processedContent) {
-      // Remove any H1 or H2 at the beginning of content that might duplicate the main title
-      processedContent = processedContent.replace(/^\s*<h1[^>]*>[^<]+<\/h1>/i, '');
-      processedContent = processedContent.replace(/^\s*<h2[^>]*>[^<]+<\/h2>/i, '');
-      
-      // Also remove any duplicated titles anywhere in the content (comprehensive list of known titles)
-      processedContent = processedContent.replace(/<h1[^>]*>Beyond Technology: The Cultural[^<]*<\/h1>/gi, '');
-      processedContent = processedContent.replace(/<h2[^>]*>Beyond Technology: The Cultural[^<]*<\/h2>/gi, '');
-      processedContent = processedContent.replace(/<h1[^>]*>The Human \+ Tech Equation[^<]*<\/h1>/gi, '');
-      processedContent = processedContent.replace(/<h2[^>]*>The Human \+ Tech Equation[^<]*<\/h2>/gi, '');
-      processedContent = processedContent.replace(/<h1[^>]*>Empowering Your Workforce[^<]*<\/h1>/gi, '');
-      processedContent = processedContent.replace(/<h2[^>]*>Empowering Your Workforce[^<]*<\/h2>/gi, '');
-      processedContent = processedContent.replace(/<h1[^>]*>Digital Transformation Era[^<]*<\/h1>/gi, '');
-      processedContent = processedContent.replace(/<h2[^>]*>Digital Transformation Era[^<]*<\/h2>/gi, '');
-      processedContent = processedContent.replace(/<h1[^>]*>From Marketing Director to COO[^<]*<\/h1>/gi, '');
-      processedContent = processedContent.replace(/<h2[^>]*>From Marketing Director to COO[^<]*<\/h2>/gi, '');
-      processedContent = processedContent.replace(/<h1[^>]*>Beyond Pattern Recognition[^<]*<\/h1>/gi, '');
-      processedContent = processedContent.replace(/<h2[^>]*>Beyond Pattern Recognition[^<]*<\/h2>/gi, '');
-      processedContent = processedContent.replace(/<h1[^>]*>The AI Leadership Revolution[^<]*<\/h1>/gi, '');
-      processedContent = processedContent.replace(/<h2[^>]*>The AI Leadership Revolution[^<]*<\/h2>/gi, '');
-      
-      // Also remove any duplicated H1/H2 within the first 500 characters (catch-all for other posts)
-      const firstPartOfContent = processedContent.substring(0, 500);
-      const h1Match = firstPartOfContent.match(/<h1[^>]*>([^<]+)<\/h1>/i);
-      const h2Match = firstPartOfContent.match(/<h2[^>]*>([^<]+)<\/h2>/i);
-      
-      if (h1Match && h1Match[1]) {
-        // Remove this H1 title from the entire content as it's likely a duplicate
-        const titlePattern = new RegExp(`<h1[^>]*>${h1Match[1]}<\\/h1>`, 'gi');
-        processedContent = processedContent.replace(titlePattern, '');
-      }
-      
-      if (h2Match && h2Match[1]) {
-        // Remove this H2 title from the entire content as it's likely a duplicate
-        const titlePattern = new RegExp(`<h2[^>]*>${h2Match[1]}<\\/h2>`, 'gi');
-        processedContent = processedContent.replace(titlePattern, '');
-      }
-      
-      // Final check: remove any remaining H1 tags entirely (to enforce single H1 per page in header)
-      processedContent = processedContent.replace(/<h1[^>]*>([^<]+)<\/h1>/gi, '<h2>$1</h2>');
-    }
+    
+    // First, remove ALL h1 and h2 at the beginning that might duplicate the title
+    processedContent = processedContent.replace(/^\s*<h1[^>]*>[^<]+<\/h1>/i, '');
+    processedContent = processedContent.replace(/^\s*<h2[^>]*>[^<]+<\/h2>/i, '');
+    
+    // Then remove these specific titles that we know exist in our posts
+    const titlesToRemove = [
+      "Beyond Technology: The Cultural",
+      "The Human \\+ Tech Equation",
+      "Empowering Your Workforce",
+      "Digital Transformation Era",
+      "From Marketing Director to COO",
+      "Beyond Pattern Recognition",
+      "The AI Leadership Revolution"
+    ];
+    
+    titlesToRemove.forEach(title => {
+      const h1Pattern = new RegExp(`<h1[^>]*>${title}[^<]*<\\/h1>`, 'gi');
+      const h2Pattern = new RegExp(`<h2[^>]*>${title}[^<]*<\\/h2>`, 'gi');
+      processedContent = processedContent.replace(h1Pattern, '');
+      processedContent = processedContent.replace(h2Pattern, '');
+    });
+    
+    // Final check: remove any remaining H1 tags entirely (to enforce single H1 per page in header)
+    processedContent = processedContent.replace(/<h1[^>]*>([^<]+)<\/h1>/gi, '<h2>$1</h2>');
     
     // Finally, ensure outgoing links exist in all posts
     return ensureOutgoingLinks(processedContent);

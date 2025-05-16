@@ -63,11 +63,11 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
         console.log("Found marketing images in DOM, applying final visibility styles");
         
         if (isMobile) {
-          // Mobile display - use setAttribute for maximum CSS specificity
+          // Mobile display - force visibility with !important inline styles
           desktopImg.setAttribute("style", "display: none !important");
           mobileImg.setAttribute("style", "display: block !important");
         } else {
-          // Desktop display - use setAttribute for maximum CSS specificity
+          // Desktop display - force visibility with !important inline styles
           desktopImg.setAttribute("style", "display: block !important");
           mobileImg.setAttribute("style", "display: none !important");
         }

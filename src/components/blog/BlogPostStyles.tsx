@@ -74,6 +74,24 @@ const BlogPostStyles: React.FC = () => {
         margin-bottom: 0.5rem;
       }
       
+      /* Blog title fix - critical to correct layout */
+      .blog-post-title {
+        display: block !important;
+        margin-bottom: 1.5rem !important;
+      }
+      
+      /* Hide ALL duplicate titles in content */
+      .prose h1:first-child,
+      .prose h2:first-child {
+        display: none !important;
+      }
+      
+      /* Fix blog header spacing */
+      .blog-header {
+        margin-bottom: 2rem !important;
+        display: block !important;
+      }
+      
       @media (max-width: 768px) {
         /* Hide desktop images on mobile */
         .desktop-image-container,
