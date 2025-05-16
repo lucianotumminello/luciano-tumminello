@@ -24,7 +24,8 @@ const BlogPostStyles: React.FC = () => {
       
       /* Desktop images - important to ensure display */
       .desktop-image-container,
-      .marketing-desktop-image {
+      .marketing-desktop-image,
+      #marketing-desktop-image {
         display: block !important;
         margin: 2rem 0;
         width: 100%;
@@ -32,7 +33,8 @@ const BlogPostStyles: React.FC = () => {
       
       /* Mobile images - important to ensure proper display */
       .mobile-image-container,
-      .marketing-mobile-image {
+      .marketing-mobile-image,
+      #marketing-mobile-image {
         display: none !important;
         margin: 2rem 0;
         width: 100%;
@@ -97,6 +99,36 @@ const BlogPostStyles: React.FC = () => {
         .content-mobile-optimized img {
           height: auto !important;
           width: 100% !important;
+        }
+        
+        /* Mobile specific heading styles */
+        .mobile-heading {
+          font-size: 1.75rem !important;
+          line-height: 1.3 !important;
+        }
+      }
+      
+      /* Fix for blog posts that have duplicate titles */
+      .blog-header {
+        margin-bottom: 2rem;
+      }
+      
+      /* Fix image display issues with !important to override any inline styles */
+      @media (min-width: 769px) {
+        #marketing-desktop-image {
+          display: block !important;
+        }
+        #marketing-mobile-image {
+          display: none !important;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        #marketing-desktop-image {
+          display: none !important;
+        }
+        #marketing-mobile-image {
+          display: block !important;
         }
       }
       `}

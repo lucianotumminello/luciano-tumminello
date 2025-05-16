@@ -63,29 +63,13 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
         console.log("Found marketing images in DOM, applying final visibility styles");
         
         if (isMobile) {
-          // Mobile display
-          desktopImg.style.cssText = "display: none !important";
-          mobileImg.style.cssText = "display: block !important";
-          
-          // Add inline styles directly to the elements for maximum specificity
-          const desktopImgElem = desktopImg as HTMLElement;
-          const mobileImgElem = mobileImg as HTMLElement;
-          if (desktopImgElem && mobileImgElem) {
-            desktopImgElem.setAttribute("style", "display: none !important");
-            mobileImgElem.setAttribute("style", "display: block !important");
-          }
+          // Mobile display - use setAttribute for maximum CSS specificity
+          desktopImg.setAttribute("style", "display: none !important");
+          mobileImg.setAttribute("style", "display: block !important");
         } else {
-          // Desktop display
-          desktopImg.style.cssText = "display: block !important";
-          mobileImg.style.cssText = "display: none !important";
-          
-          // Add inline styles directly to the elements for maximum specificity
-          const desktopImgElem = desktopImg as HTMLElement;
-          const mobileImgElem = mobileImg as HTMLElement;
-          if (desktopImgElem && mobileImgElem) {
-            desktopImgElem.setAttribute("style", "display: block !important");
-            mobileImgElem.setAttribute("style", "display: none !important");
-          }
+          // Desktop display - use setAttribute for maximum CSS specificity
+          desktopImg.setAttribute("style", "display: block !important");
+          mobileImg.setAttribute("style", "display: none !important");
         }
       }
     } catch (error) {
@@ -119,10 +103,12 @@ export const updateMay16BlogPostImages = () => {
       // Update image sources if elements exist
       if (desktopImgElem && desktopImgElem instanceof HTMLImageElement) {
         desktopImgElem.src = desktopImageUrl;
+        desktopImgElem.setAttribute("style", window.innerWidth >= 768 ? "display: block !important" : "display: none !important");
       }
       
       if (mobileImgElem && mobileImgElem instanceof HTMLImageElement) {
         mobileImgElem.src = mobileImageUrl;
+        mobileImgElem.setAttribute("style", window.innerWidth < 768 ? "display: block !important" : "display: none !important");
       }
       
       // For all blog post images that might be referencing this content
