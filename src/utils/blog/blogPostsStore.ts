@@ -1,5 +1,6 @@
+
 import { BlogPostsStore } from "./types";
-import { initialBlogPosts } from "./initialBlogPosts";
+import initialBlogPosts from "./initialBlogPosts";
 
 // In-memory data store that will be updated during the session
 let updatedBlogPosts: BlogPostsStore = initialBlogPosts;
@@ -119,7 +120,7 @@ if (updatedBlogPosts["beyond-technology-cultural-transformation-ai"]) {
 
 <p class="mb-6 text-gray-700 text-justify leading-relaxed">Luciano Tumminello has over 15 years of experience driving growth across Asia-Pacific, specializing in marketing, operations, and digital transformation, with a growing focus on leveraging artificial intelligence. With a proven track record of leading strategic initiatives and delivering measurable results, Luciano helps organizations navigate the complex intersection of technology and business leadership.</p>`;
 
-  // Make sure the title is also updated if needed
+  // Update the blog post title if needed
   blogPost.title = "Beyond Technology: The Cultural Transformation Required for Successful AI Integration";
   
   console.log("Blog post content updated successfully");
