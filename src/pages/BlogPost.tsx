@@ -4,15 +4,57 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import BlogPostLayout from "@/components/blog/BlogPostLayout";
 import BlogPostContainer from "@/components/blog/BlogPostContainer";
 import NotFoundMessage from "@/components/blog/NotFoundMessage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { trackPageView } from "@/utils/analytics";
-import { getBlogPost } from "@/utils/blog"; // Updated import path
+import { getBlogPost, refreshBlogPosts } from "@/utils/blog"; // Updated import path
 
 const BlogPost = () => {
   const { slug } = useParams();
-  const post = slug ? getBlogPost(slug) : null;
+  const [post, setPost] = useState(slug ? getBlogPost(slug) : null);
   const { language } = useLanguage();
   const isItalian = language === "it";
+  
+  // Effect to refresh post data when necessary
+  useEffect(() => {
+    if (slug) {
+      // First refresh all posts from localStorage
+      refreshBlogPosts();
+      
+      // Then get the specific post
+      const refreshedPost = getBlogPost(slug);
+      setPost(refreshedPost);
+      
+      // Set up refresh mechanisms
+      const handleFocus = () => {
+        console.log("Window focus detected, refreshing blog post");
+        refreshBlogPosts();
+        setPost(getBlogPost(slug));
+      };
+      
+      const handleStorage = () => {
+        console.log("Storage event detected, refreshing blog post");
+        refreshBlogPosts();
+        setPost(getBlogPost(slug));
+      };
+      
+      window.addEventListener('focus', handleFocus);
+      window.addEventListener('storage', handleStorage);
+      window.addEventListener('blog-storage-updated', handleStorage);
+      
+      // Periodic check as fallback
+      const interval = setInterval(() => {
+        refreshBlogPosts();
+        setPost(getBlogPost(slug));
+      }, 15000);
+      
+      return () => {
+        window.removeEventListener('focus', handleFocus);
+        window.removeEventListener('storage', handleStorage);
+        window.removeEventListener('blog-storage-updated', handleStorage);
+        clearInterval(interval);
+      };
+    }
+  }, [slug]);
   
   useEffect(() => {
     // Track specific blog post view

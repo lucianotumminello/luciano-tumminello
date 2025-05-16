@@ -14,7 +14,11 @@ export {
 export { default as initialBlogPosts } from './initialBlogPosts';
 
 // Export store
-export { updatedBlogPosts, saveBlogPostsToStorage } from './blogPostsStore';
+export { 
+  updatedBlogPosts, 
+  saveBlogPostsToStorage,
+  refreshBlogPosts
+} from './blogPostsStore';
 
 // Export types
 export type { BlogPostsStore } from './types';

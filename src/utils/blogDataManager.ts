@@ -16,7 +16,8 @@ export {
 
 export {
   updatedBlogPosts,
-  saveBlogPostsToStorage
+  saveBlogPostsToStorage,
+  refreshBlogPosts
 } from './blog/blogPostsStore';
 
 // Also export the updated blog posts as default for backward compatibility

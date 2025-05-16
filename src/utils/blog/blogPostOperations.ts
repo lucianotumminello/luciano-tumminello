@@ -11,11 +11,14 @@ import { updatedBlogPosts, saveBlogPostsToStorage } from "./blogPostsStore";
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Direct update to the in-memory store
-  updatedBlogPosts[slug] = { ...blogPostWithoutSlug };
+  // Create a full copy of the current posts to avoid reference issues
+  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
+  
+  // Update the specific post
+  updatedPosts[slug] = { ...blogPostWithoutSlug };
   
   // Save to localStorage to persist changes
-  saveBlogPostsToStorage({ ...updatedBlogPosts });
+  saveBlogPostsToStorage(updatedPosts);
   
   console.log(`Blog post ${slug} updated successfully`);
 };
@@ -28,14 +31,17 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Direct update to the in-memory store
-  updatedBlogPosts[slug] = { ...blogPostWithoutSlug };
+  // Create a full copy of the current posts to avoid reference issues
+  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
+  
+  // Add the new post
+  updatedPosts[slug] = { ...blogPostWithoutSlug };
   
   // Save to localStorage to persist changes
-  saveBlogPostsToStorage({ ...updatedBlogPosts });
+  saveBlogPostsToStorage(updatedPosts);
   
   console.log(`New blog post ${slug} created successfully with slug: ${slug}`);
-  console.log("Current blog posts:", Object.keys(updatedBlogPosts));
+  console.log("Current blog posts:", Object.keys(updatedPosts));
 };
 
 /**
@@ -43,11 +49,14 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
  * @param slug The slug of the blog post to delete
  */
 export const deleteBlogPost = (slug: string): void => {
-  // Remove the post from the in-memory store
-  delete updatedBlogPosts[slug];
+  // Create a full copy of the current posts to avoid reference issues
+  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
+  
+  // Remove the post
+  delete updatedPosts[slug];
   
   // Save to localStorage to persist changes
-  saveBlogPostsToStorage({ ...updatedBlogPosts });
+  saveBlogPostsToStorage(updatedPosts);
   
   console.log(`Blog post ${slug} deleted successfully`);
 };
@@ -88,8 +97,14 @@ export const duplicateBlogPost = (originalSlug: string, newSlug: string): BlogPo
   duplicatedPost.date = formattedDate;
   duplicatedPost.dateIT = formattedDateIT;
   
-  // Create the duplicated post in the store (which also saves to localStorage)
-  createBlogPost(newSlug, { ...duplicatedPost, slug: newSlug });
+  // Create a full copy of the current posts to avoid reference issues
+  const updatedPosts: BlogPostsStore = { ...updatedBlogPosts };
+  
+  // Add the duplicated post
+  updatedPosts[newSlug] = { ...duplicatedPost };
+  
+  // Save to localStorage to persist changes
+  saveBlogPostsToStorage(updatedPosts);
   
   console.log(`Blog post ${originalSlug} duplicated successfully as ${newSlug}`);
   

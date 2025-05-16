@@ -20,8 +20,9 @@ const loadBlogPostsFromStorage = (): BlogPostsStore => {
   
   // If there are no stored posts or an error occurred, use the initial data
   console.log("Using initial blog posts as fallback");
-  saveBlogPostsToStorage({ ...initialBlogPosts }); // Save initial posts to localStorage
-  return { ...initialBlogPosts };
+  const initialPostsCopy = { ...initialBlogPosts };
+  saveBlogPostsToStorage(initialPostsCopy); // Save initial posts to localStorage
+  return initialPostsCopy;
 };
 
 // Function to save blog posts to localStorage
@@ -30,7 +31,20 @@ export const saveBlogPostsToStorage = (posts: BlogPostsStore) => {
     localStorage.setItem(BLOG_POSTS_STORAGE_KEY, JSON.stringify(posts));
     console.log("Saved blog posts to localStorage:", Object.keys(posts).length);
     
-    // Dispatch a storage event so other tabs can detect the change
+    // Update our in-memory store to match the stored data
+    Object.keys(updatedBlogPosts).forEach(key => {
+      delete updatedBlogPosts[key];
+    });
+    
+    Object.entries(posts).forEach(([key, value]) => {
+      updatedBlogPosts[key] = { ...value };
+    });
+    
+    // Dispatch a custom event so other tabs/components can detect the change
+    const storageEvent = new CustomEvent('blog-storage-updated', { detail: posts });
+    window.dispatchEvent(storageEvent);
+    
+    // Also dispatch standard storage event for broader compatibility
     window.dispatchEvent(new Event('storage'));
   } catch (error) {
     console.error("Error saving blog posts to localStorage:", error);
@@ -39,6 +53,23 @@ export const saveBlogPostsToStorage = (posts: BlogPostsStore) => {
 
 // In-memory data store that will be updated during the session
 export const updatedBlogPosts: BlogPostsStore = loadBlogPostsFromStorage();
+
+// Force a refresh of posts from localStorage
+export const refreshBlogPosts = (): BlogPostsStore => {
+  const refreshedPosts = loadBlogPostsFromStorage();
+  
+  // Update our in-memory store to match the refreshed data
+  Object.keys(updatedBlogPosts).forEach(key => {
+    delete updatedBlogPosts[key];
+  });
+  
+  Object.entries(refreshedPosts).forEach(([key, value]) => {
+    updatedBlogPosts[key] = { ...value };
+  });
+  
+  console.log("Blog posts refreshed from localStorage:", Object.keys(updatedBlogPosts).length);
+  return { ...updatedBlogPosts };
+};
 
 // Make sure the initial blog posts are properly formatted and available
 console.log("Blog posts loaded and ready to use:", Object.keys(updatedBlogPosts).length);

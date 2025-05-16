@@ -1,5 +1,5 @@
 
-import { updatedBlogPosts } from "./blogPostsStore";
+import { updatedBlogPosts, refreshBlogPosts } from "./blogPostsStore";
 import { BlogPostsStore } from "./types";
 
 /**
@@ -7,6 +7,9 @@ import { BlogPostsStore } from "./types";
  * @returns All blog posts
  */
 export const getAllBlogPosts = (): BlogPostsStore => {
+  // First, refresh the blog posts from localStorage to ensure we have the latest data
+  refreshBlogPosts();
+  
   // Log the current state of the blog posts
   console.log("Getting all blog posts, count:", Object.keys(updatedBlogPosts).length);
   return { ...updatedBlogPosts };
@@ -18,5 +21,8 @@ export const getAllBlogPosts = (): BlogPostsStore => {
  * @returns The blog post or undefined if not found
  */
 export const getBlogPost = (slug: string): (Omit<import('@/types').BlogPost, "slug"> | undefined) => {
+  // First, refresh the blog posts from localStorage to ensure we have the latest data
+  refreshBlogPosts();
+  
   return updatedBlogPosts[slug] ? { ...updatedBlogPosts[slug] } : undefined;
 };

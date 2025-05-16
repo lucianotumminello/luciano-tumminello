@@ -14,7 +14,7 @@ import {
   PaginationPrevious 
 } from "@/components/ui/pagination";
 import { useState, useEffect, useCallback } from "react";
-import { getAllBlogPosts } from "@/utils/blogDataManager";
+import { getAllBlogPosts, refreshBlogPosts } from "@/utils/blog";
 import { useToast } from "@/hooks/use-toast";
 
 const Blog = () => {
@@ -24,11 +24,16 @@ const Blog = () => {
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
+  const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
   // Function to fetch and sort blog posts
   const fetchPosts = useCallback(() => {
     try {
       console.log("Fetching blog posts from storage");
+      
+      // Force a refresh from localStorage
+      refreshBlogPosts();
+      
       const posts = Object.entries(getAllBlogPosts())
         .map(([slug, post]) => ({
           ...post,
@@ -43,6 +48,7 @@ const Blog = () => {
         });
       
       setBlogPosts(posts);
+      setLastRefresh(Date.now());
       console.log("Blog posts loaded:", posts.length, "posts");
     } catch (error) {
       console.error("Error fetching blog posts:", error);
@@ -71,18 +77,55 @@ const Blog = () => {
       fetchPosts();
     };
     
+    // Add an event listener for our custom storage event
+    const handleCustomStorageChange = () => {
+      console.log("Custom storage event detected, refreshing blog posts");
+      fetchPosts();
+    };
+    
     window.addEventListener('focus', handleFocus);
     window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('blog-storage-updated', handleCustomStorageChange);
     
     // Also set up an interval to periodically check for updates (as a fallback)
-    const checkInterval = setInterval(fetchPosts, 30000); // Check every 30 seconds
+    const checkInterval = setInterval(fetchPosts, 15000); // Check every 15 seconds
     
     return () => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('blog-storage-updated', handleCustomStorageChange);
       clearInterval(checkInterval);
     };
   }, [language, fetchPosts]);
+  
+  // Additional effect to check localStorage directly (as another fallback)
+  useEffect(() => {
+    const checkLocalStorageDirectly = () => {
+      try {
+        const storedPosts = localStorage.getItem("luciano_tumminello_blog_posts");
+        if (storedPosts) {
+          const parsedPosts = JSON.parse(storedPosts);
+          const storedPostsCount = Object.keys(parsedPosts).length;
+          const currentPostsCount = blogPosts.length;
+          
+          // If the counts don't match, refresh the posts
+          if (storedPostsCount !== currentPostsCount) {
+            console.log("Local storage check detected a difference, refreshing blog posts");
+            fetchPosts();
+          }
+        }
+      } catch (error) {
+        console.error("Error checking localStorage directly:", error);
+      }
+    };
+    
+    // Check localStorage directly every 10 seconds
+    const localStorageCheckInterval = setInterval(checkLocalStorageDirectly, 10000);
+    
+    return () => {
+      clearInterval(localStorageCheckInterval);
+    };
+  }, [blogPosts.length, fetchPosts]);
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
@@ -261,6 +304,14 @@ const Blog = () => {
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
+          )}
+          
+          {/* Visual debug indicator (hidden in production) */}
+          {process.env.NODE_ENV !== 'production' && (
+            <div className="text-xs text-gray-400 text-center mt-4">
+              Last refreshed: {new Date(lastRefresh).toLocaleTimeString()} | 
+              Posts in memory: {blogPosts.length}
+            </div>
           )}
         </div>
       </main>
