@@ -48,7 +48,25 @@ const BlogPostHeader = ({
     if (isMay16Post) {
       updateMay16BlogPostImages();
     }
-  }, [isMay16Post]);
+    
+    // Force proper image visibility on component mount
+    const timer = setTimeout(() => {
+      const desktopImg = document.getElementById("marketing-desktop-image");
+      const mobileImg = document.getElementById("marketing-mobile-image");
+      
+      if (desktopImg && mobileImg) {
+        if (isMobile) {
+          desktopImg.style.display = "none";
+          mobileImg.style.display = "block";
+        } else {
+          desktopImg.style.display = "block";
+          mobileImg.style.display = "none";
+        }
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [isMay16Post, isMobile]);
 
   return (
     <header className="pb-8 mb-8 border-b border-gray-200">
@@ -60,7 +78,7 @@ const BlogPostHeader = ({
       
       {/* The main title - this should be the only H1 in the document */}
       <h1 className={cn(
-        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 blog-post-title",
+        "text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 blog-post-title",
         isMobile ? "mobile-heading" : ""
       )}>
         {title}
@@ -72,11 +90,10 @@ const BlogPostHeader = ({
           id="marketing-desktop-image"
           src={actualDesktopImageUrl}
           alt={`${title} - Desktop Version`}
-          className="hidden md:block w-full h-auto max-h-[420px] object-cover rounded-lg shadow-md mb-6"
+          className={`w-full h-auto max-h-[420px] object-cover rounded-lg shadow-md mb-6 ${!isMobile ? 'block' : 'hidden'}`}
           loading="eager"
           decoding="async"
           style={{ display: isMobile ? 'none !important' : 'block !important' }}
-          fetchPriority="high"
         />
         
         {/* Mobile Image - hidden on desktop */}
@@ -84,11 +101,10 @@ const BlogPostHeader = ({
           id="marketing-mobile-image"
           src={actualMobileImageUrl}
           alt={`${title} - Mobile Version`}
-          className="md:hidden w-full h-auto max-h-[260px] object-cover rounded-lg shadow-md mb-4"
-          loading="eager" 
+          className={`w-full h-auto max-h-[260px] object-cover rounded-lg shadow-md mb-4 ${isMobile ? 'block' : 'hidden'}`}
+          loading="eager"
           decoding="async"
           style={{ display: isMobile ? 'block !important' : 'none !important' }}
-          fetchPriority="high"
         />
       </div>
       

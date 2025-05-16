@@ -31,20 +31,16 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     console.log("Is April 13 blog post:", isAprilPost);
     console.log("Is May 16 blog post:", isMayPost);
     
+    // Apply special handling for April blog post
+    if (isAprilPost) {
+      console.log("Using dedicated component for April 13 blog post");
+      return AprilBlogPostContent({ content });
+    }
+    
     // First apply general processing
     let processedContent = optimizeImagesInContent(content, isMobile);
     
-    // Then handle the special case for April 13 post
-    if (isAprilPost) {
-      console.log("Using dedicated component for April 13 blog post");
-      // Use the dedicated component for April 13 blog post
-      return processedContent; // We'll process this in the AprilBlogPostContent component
-    }
-    
     // CRITICAL FIX: Remove ALL potential title duplications at the beginning of content
-    // This is the most important part of the fix - we scan the entire content
-    // looking for heading elements that could be duplicating the main title
-    
     // First, remove ALL h1 and h2 at the beginning that might duplicate the title
     processedContent = processedContent.replace(/^\s*<h1[^>]*>[^<]+<\/h1>/i, '');
     processedContent = processedContent.replace(/^\s*<h2[^>]*>[^<]+<\/h2>/i, '');
@@ -90,10 +86,12 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     if (isAprilPost || isMayPost) {
       updateImageVisibility(true, isMobile);
       
-      // Additional force-update in case the previous call didn't work
-      setTimeout(() => {
-        updateImageVisibility(true, isMobile);
-      }, 500);
+      // Additional force-update with multiple attempts to ensure it works
+      const timers = [100, 300, 500, 1000].map(delay => 
+        setTimeout(() => updateImageVisibility(true, isMobile), delay)
+      );
+      
+      return () => timers.forEach(timer => clearTimeout(timer));
     }
   }, [content, isMobile]);
   

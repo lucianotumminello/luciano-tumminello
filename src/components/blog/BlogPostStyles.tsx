@@ -5,6 +5,7 @@ const BlogPostStyles: React.FC = () => {
   return (
     <style>
       {`
+      /* Critical fix for blog layout */
       .prose p {
         text-align: justify;
         color: rgb(75 85 99);
@@ -22,22 +23,20 @@ const BlogPostStyles: React.FC = () => {
         height: auto;
       }
       
-      /* Desktop images - important to ensure display */
+      /* Desktop images - ensure proper display */
       .desktop-image-container,
       .marketing-desktop-image,
       #marketing-desktop-image {
-        display: block !important;
-        margin: 2rem 0;
         width: 100%;
+        margin: 2rem 0;
       }
       
-      /* Mobile images - important to ensure proper display */
+      /* Mobile images  */
       .mobile-image-container,
       .marketing-mobile-image,
       #marketing-mobile-image {
-        display: none !important;
-        margin: 2rem 0;
         width: 100%;
+        margin: 2rem 0;
       }
       
       /* Link styling for better visibility */
@@ -93,20 +92,6 @@ const BlogPostStyles: React.FC = () => {
       }
       
       @media (max-width: 768px) {
-        /* Hide desktop images on mobile */
-        .desktop-image-container,
-        .marketing-desktop-image,
-        #marketing-desktop-image {
-          display: none !important;
-        }
-        
-        /* Show mobile images on mobile */
-        .mobile-image-container,
-        .marketing-mobile-image,
-        #marketing-mobile-image {
-          display: block !important;
-        }
-        
         /* Mobile content optimization */
         .content-mobile-optimized p {
           font-size: 0.95rem;
@@ -124,14 +109,17 @@ const BlogPostStyles: React.FC = () => {
           font-size: 1.75rem !important;
           line-height: 1.3 !important;
         }
+        
+        /* Mobile image display */
+        #marketing-desktop-image {
+          display: none !important;
+        }
+        #marketing-mobile-image {
+          display: block !important;
+        }
       }
       
-      /* Fix for blog posts that have duplicate titles */
-      .blog-header {
-        margin-bottom: 2rem;
-      }
-      
-      /* Fix image display issues with !important to override any inline styles */
+      /* Desktop image display */
       @media (min-width: 769px) {
         #marketing-desktop-image {
           display: block !important;
@@ -141,6 +129,7 @@ const BlogPostStyles: React.FC = () => {
         }
       }
       
+      /* Final fix for over-specificity issues */
       @media (max-width: 768px) {
         #marketing-desktop-image {
           display: none !important;

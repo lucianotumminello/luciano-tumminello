@@ -12,11 +12,12 @@ const AprilBlogPostContent = ({ content }: AprilBlogPostContentProps): string =>
   
   let processedContent = content;
   
-  // CRITICAL FIX: Remove duplicate titles for this specific post
+  // CRITICAL FIX: Remove ALL potential title duplications at the beginning of content
+  // First, strip any H1/H2 tags at the start that might duplicate the title in the header
   processedContent = processedContent.replace(/^\s*<h1[^>]*>[^<]+<\/h1>/i, '');
   processedContent = processedContent.replace(/^\s*<h2[^>]*>[^<]+<\/h2>/i, '');
   
-  // Remove any known title patterns
+  // Remove any known title patterns throughout the content
   const specificTitles = [
     "Beyond Pattern Recognition",
     "Q2 2025",
@@ -30,7 +31,7 @@ const AprilBlogPostContent = ({ content }: AprilBlogPostContentProps): string =>
     processedContent = processedContent.replace(h2Pattern, '');
   });
   
-  // Final check: remove any remaining H1 tags entirely
+  // Final check: replace any remaining H1 tags with H2 to ensure only one H1 on page
   processedContent = processedContent.replace(/<h1[^>]*>([^<]+)<\/h1>/gi, '<h2>$1</h2>');
   
   // Always ensure outgoing links are present
