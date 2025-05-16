@@ -32,9 +32,7 @@ export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
   // ALWAYS ensure the blog post is published by default
-  if (blogPostWithoutSlug.published === undefined) {
-    blogPostWithoutSlug.published = true;
-  }
+  blogPostWithoutSlug.published = true;
   
   // Update the in-memory store with the new blog post
   updatedBlogPosts[slug] = blogPostWithoutSlug;
@@ -70,7 +68,7 @@ export const duplicateBlogPost = (sourceSlug: string, newSlug: string): BlogPost
   duplicatedPost.published = true;
   
   // Store the duplicated post with the new slug
-  updatedBlogPosts[newSlug] = duplicatedPost;
+  createBlogPost(newSlug, { ...duplicatedPost, slug: newSlug });
   
   console.log(`Blog post ${sourceSlug} duplicated to ${newSlug} successfully`);
   return { ...duplicatedPost, slug: newSlug };
