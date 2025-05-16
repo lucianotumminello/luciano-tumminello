@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -78,20 +79,30 @@ const Blog = () => {
       fetchPosts();
     };
     
+    // Add listener for cross-tab/window updates
+    const handleStorageEvent = (event: StorageEvent) => {
+      if (event.key === "blog_posts_server_storage") {
+        console.log("LocalStorage updated in another tab/window, refreshing posts");
+        fetchPosts();
+      }
+    };
+    
     window.addEventListener('focus', handleFocus);
     window.addEventListener('blog-storage-updated', handleStorageUpdate);
     window.addEventListener('blog-server-updated', handleStorageUpdate);
+    window.addEventListener('storage', handleStorageEvent);
     
     // Also set up an interval to periodically check for updates
     const checkInterval = setInterval(() => {
       console.log("Periodic check for blog updates");
       fetchPosts();
-    }, 60000); // Check every minute
+    }, 30000); // Check every 30 seconds for better cross-device sync
     
     return () => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('blog-storage-updated', handleStorageUpdate);
       window.removeEventListener('blog-server-updated', handleStorageUpdate);
+      window.removeEventListener('storage', handleStorageEvent);
       clearInterval(checkInterval);
     };
   }, [language, fetchPosts]);

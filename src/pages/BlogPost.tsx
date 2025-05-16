@@ -41,7 +41,7 @@ const BlogPost = () => {
     
     fetchPost();
     
-    // Set up refresh mechanisms
+    // Set up refresh mechanisms for cross-device updates
     const handleFocus = () => {
       console.log("Window focus detected, refreshing blog post");
       fetchPost();
@@ -52,11 +52,19 @@ const BlogPost = () => {
       fetchPost();
     };
     
+    const handleStorageEvent = (event: StorageEvent) => {
+      if (event.key === "blog_posts_server_storage") {
+        console.log("LocalStorage updated in another tab/window, refreshing post");
+        fetchPost();
+      }
+    };
+    
     window.addEventListener('focus', handleFocus);
     window.addEventListener('blog-storage-updated', handleStorageUpdate);
     window.addEventListener('blog-server-updated', handleStorageUpdate);
+    window.addEventListener('storage', handleStorageEvent);
     
-    // Periodic check as fallback
+    // Periodic check as fallback for cross-device sync
     const interval = setInterval(() => {
       fetchPost();
     }, 60000); // Check every minute
@@ -65,6 +73,7 @@ const BlogPost = () => {
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('blog-storage-updated', handleStorageUpdate);
       window.removeEventListener('blog-server-updated', handleStorageUpdate);
+      window.removeEventListener('storage', handleStorageEvent);
       clearInterval(interval);
     };
   }, [slug]);

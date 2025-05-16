@@ -16,20 +16,30 @@ let cachedBlogPosts: BlogPostsStore | null = null;
 
 /**
  * Fetches all blog posts from the server
+ * Ensures cross-device synchronization by always getting the latest data
  * @returns A promise that resolves to all blog posts
  */
 export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
   try {
     if (USE_MOCK_SERVER) {
       console.log("Using mock server for fetching blog posts");
-      // Use mock server for development
+      // Use mock server for development - this uses localStorage which persists across sessions
       const posts = mockApiGetAllPosts();
       cachedBlogPosts = { ...posts };
       return posts;
     }
     
-    // Real API implementation
-    const response = await fetch(API_ENDPOINT);
+    // Real API implementation - for production use
+    const response = await fetch(API_ENDPOINT, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      },
+      // Prevent caching to always get fresh data
+      cache: "no-store"
+    });
+    
     if (!response.ok) {
       throw new Error(`Failed to fetch blog posts: ${response.statusText}`);
     }
@@ -44,7 +54,13 @@ export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
   } catch (error) {
     console.error("Error fetching blog posts from server:", error);
     
-    // Fall back to initial posts if we can't fetch from the server
+    // If we have cached posts, use them
+    if (cachedBlogPosts) {
+      console.log("Using cached blog posts as fallback");
+      return { ...cachedBlogPosts };
+    }
+    
+    // Fall back to initial posts if we can't fetch from the server and have no cache
     console.log("Using initial blog posts as fallback");
     return { ...initialBlogPosts };
   }
@@ -52,6 +68,7 @@ export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
 
 /**
  * Saves blog posts to the server
+ * Ensures cross-device synchronization by updating server data
  * @param posts The blog posts to save
  * @returns A promise that resolves when the posts have been saved
  */
@@ -59,9 +76,13 @@ export const saveBlogPostsToServer = async (posts: BlogPostsStore): Promise<void
   try {
     if (USE_MOCK_SERVER) {
       console.log("Mock server: Saving blog posts to server");
-      // Use mock server for development
+      // Use mock server for development - this uses localStorage which persists across sessions
       mockApiSavePosts(posts);
       cachedBlogPosts = { ...posts };
+      
+      // Dispatch an event to notify other tabs/windows of the update
+      const blogUpdateEvent = new CustomEvent('blog-server-updated', { detail: posts });
+      window.dispatchEvent(blogUpdateEvent);
       return;
     }
     
@@ -115,3 +136,16 @@ export const invalidateBlogPostsCache = (): void => {
   cachedBlogPosts = null;
   console.log("Blog posts cache invalidated");
 };
+
+// Setup listener for storage events from other tabs/windows (cross-tab communication)
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === "blog_posts_server_storage") {
+      console.log("Blog posts updated in another tab/window, refreshing cache");
+      invalidateBlogPostsCache();
+      // Dispatch event for components to refresh
+      const blogUpdateEvent = new CustomEvent('blog-storage-updated');
+      window.dispatchEvent(blogUpdateEvent);
+    }
+  });
+}

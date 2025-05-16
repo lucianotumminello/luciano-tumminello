@@ -53,6 +53,8 @@ export const saveBlogPostsToStorage = async (posts: BlogPostsStore): Promise<voi
     // Dispatch events for other components to detect the change
     const storageEvent = new CustomEvent('blog-storage-updated', { detail: posts });
     window.dispatchEvent(storageEvent);
+    
+    console.log("Blog posts saved successfully and events dispatched");
   } catch (error) {
     console.error("Error saving blog posts:", error);
     throw error;
@@ -83,3 +85,15 @@ export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
     return { ...updatedBlogPosts };
   }
 };
+
+// Listen for storage events from other tabs/windows to sync data
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === "blog_posts_server_storage") {
+      console.log("Blog posts updated in another tab/window, refreshing data");
+      refreshBlogPosts().catch(error => {
+        console.error("Error refreshing blog posts after storage event:", error);
+      });
+    }
+  });
+}
