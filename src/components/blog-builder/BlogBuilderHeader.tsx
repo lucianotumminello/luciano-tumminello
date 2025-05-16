@@ -19,7 +19,6 @@ interface BlogBuilderHeaderProps {
   onCancelEditing: () => void;
   onLogout: () => void;
   onDuplicatePost: (slug: string) => void;
-  onDeletePost: (slug: string) => void;
 }
 
 export const BlogBuilderHeader = ({
@@ -34,8 +33,7 @@ export const BlogBuilderHeader = ({
   isSaving,
   onCancelEditing,
   onLogout,
-  onDuplicatePost,
-  onDeletePost
+  onDuplicatePost
 }: BlogBuilderHeaderProps) => {
   // Display the current count of posts in the memory
   const postCount = Object.keys(blogPosts).length;
@@ -43,7 +41,7 @@ export const BlogBuilderHeader = ({
   return (
     <div className="flex flex-wrap gap-4 items-center justify-between mb-8">
       <div className="flex flex-col">
-        <h1 className="text-3xl font-bold mb-2">Blog Builder Console</h1>
+        <h1 className="text-3xl font-bold mb-2">Blog Builder</h1>
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-gray-600">Create and edit your blog posts</p>
           <Badge variant="outline" className="bg-green-50 text-green-800 border-green-300 flex items-center gap-1">
@@ -64,7 +62,6 @@ export const BlogBuilderHeader = ({
           onSavePublishStates={onSavePublishStates}
           isSaving={isSaving}
           onDuplicatePost={onDuplicatePost}
-          onDeletePost={onDeletePost}
         />
         
         {isUpdateMode && (

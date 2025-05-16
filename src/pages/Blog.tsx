@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -39,9 +38,6 @@ const Blog = () => {
       // Log all posts to debug which ones are available
       console.log("All posts in storage:", Object.keys(allPosts).join(", "));
       
-      // Create a set to track unique titles to avoid duplicates
-      const seenTitles = new Set<string>();
-      
       const posts = Object.entries(allPosts)
         .map(([slug, post]) => ({
           ...post,
@@ -52,31 +48,6 @@ const Blog = () => {
           const isPublished = post.published !== false;
           console.log(`Post ${post.slug}: published = ${isPublished}`);
           return isPublished;
-        })
-        // Filter out the duplicate posts (keep the one with the permanent slug)
-        .filter(post => {
-          // Skip specific posts with the "human-tech-equation" in the slug
-          // This specifically removes the duplicates shown in the red squares
-          if (post.slug === "human-tech-equation-workforce-digital-transformation") {
-            return false;
-          }
-          
-          // Explicitly filter out the URL we want to delete
-          if (post.slug === "beyond-pattern-recognition-ai-revolution") {
-            return false;
-          }
-          
-          // For all other posts, check if we've seen the title before
-          const titleKey = post.title.toLowerCase();
-          
-          // If we've seen this title before, it's a duplicate - filter it out
-          if (seenTitles.has(titleKey)) {
-            return false;
-          }
-          
-          // Otherwise, add it to our seen titles and keep it
-          seenTitles.add(titleKey);
-          return true;
         })
         .sort((a, b) => {
           // Parse dates correctly regardless of format

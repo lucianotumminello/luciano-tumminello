@@ -40,8 +40,7 @@ const BlogBuilder = () => {
     selectPostToEdit,
     cancelEditing,
     duplicateCurrentPost,
-    duplicatePost,
-    deletePost
+    duplicatePost
   } = useBlogBuilder();
 
   if (!isAuthenticated) {
@@ -73,7 +72,6 @@ const BlogBuilder = () => {
             onCancelEditing={cancelEditing}
             onLogout={() => setIsAuthenticated(false)}
             onDuplicatePost={duplicatePost}
-            onDeletePost={deletePost}
           />
           
           <EditingNotice 
