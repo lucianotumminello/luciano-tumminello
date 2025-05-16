@@ -67,23 +67,8 @@ const BlogPostHeader = ({
         {isItalian ? "Torna al Blog" : "Back to Blog"}
       </Link>
       
-      <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
-        <div className="w-full">
-          <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Simplified image loading strategy for faster mobile rendering */}
-            <img 
-              src={isMobile ? imageUrl : desktopImageUrl} 
-              alt={title}
-              className="w-full h-full object-cover"
-              loading="eager"
-              fetchPriority="high"
-              width={isMobile ? "640" : "1200"}
-              height={isMobile ? "360" : "675"}
-              style={{aspectRatio: "16/9"}}
-            />
-          </AspectRatio>
-        </div>
-        
+      {/* Title Card - Displayed at the top */}
+      <Card className="mb-6 border-0 shadow-lg">
         <CardContent className="p-4 md:p-6 bg-white">
           <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 md:mb-6 border-b border-gray-100 pb-4 md:pb-6">
             <span className="inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-medium text-sm">
@@ -101,8 +86,8 @@ const BlogPostHeader = ({
             </div>
           </div>
           
-          {/* Mobile-optimized header text sizes */}
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">
+          {/* Main title clearly displayed at the top */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">
             {title}
           </h1>
           
@@ -118,6 +103,25 @@ const BlogPostHeader = ({
             <span className="font-medium">{author}</span>
           </div>
         </CardContent>
+      </Card>
+      
+      {/* Image Card - Displayed below the title */}
+      <Card className="overflow-hidden border-0 shadow-md mb-8">
+        <div className="w-full">
+          <AspectRatio ratio={16/9} className="bg-gray-100">
+            {/* Responsive image with proper loading and display attributes */}
+            <img 
+              src={isMobile ? imageUrl : desktopImageUrl} 
+              alt={title}
+              className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width={isMobile ? "640" : "1200"}
+              height={isMobile ? "360" : "675"}
+              style={{aspectRatio: "16/9"}}
+            />
+          </AspectRatio>
+        </div>
       </Card>
     </div>
   );

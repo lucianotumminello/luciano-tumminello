@@ -42,7 +42,7 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     
     // Add explicit styles to prevent Content Layout Shifts
     if (!attrs.includes('style=')) {
-      newAttrs += ' style="aspect-ratio: auto; max-width: 100%;"';
+      newAttrs += ' style="max-width: 100%; height: auto; display: block; margin: 1rem auto;"';
     }
     
     return `<img ${newAttrs}>`;
@@ -145,7 +145,7 @@ export const optimizeSingleImage = (imgElement: HTMLImageElement) => {
   // Skip if already optimized
   if (imgElement.hasAttribute('data-optimized')) return;
   
-  // Set loading strategy
+  // Set loading strategy based on visibility
   const isAboveFold = isElementInViewport(imgElement);
   imgElement.loading = isAboveFold ? 'eager' : 'lazy';
   imgElement.decoding = isAboveFold ? 'sync' : 'async';
