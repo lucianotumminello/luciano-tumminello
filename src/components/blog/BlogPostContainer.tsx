@@ -1,13 +1,11 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import BlogPostHeader from "@/components/blog/BlogPostHeader";
 import BlogPostContent from "@/components/blog/BlogPostContent";
 import BlogPostFooter from "@/components/blog/BlogPostFooter";
 import ShareButtons from "@/components/blog/ShareButtons";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BlogPostContainerProps {
   post: {
@@ -81,15 +79,6 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
       <BlogPostContent 
         content={isItalian ? post.contentIT : post.content} 
       />
-      
-      {/* Moved: Read More Articles button - placed after content but before footer */}
-      <div className="mt-8 mb-12 text-center">
-        <Link to="/blog">
-          <Button variant="secondary" className="px-4 py-2">
-            {isItalian ? "Leggi Altri Articoli" : "Read More Articles"}
-          </Button>
-        </Link>
-      </div>
       
       {/* Footer visibility trigger element */}
       <div 

@@ -36,8 +36,8 @@ const BlogPostHeader = ({
                      title.includes("Digital Transformation Era");
   
   // Special image URLs for May 16 blog post
-  const may16DesktopImage = "/lovable-uploads/cd2e36bd-3140-4f0e-85b1-42d505d89521.png";
-  const may16MobileImage = "/lovable-uploads/837e1e0d-a79d-458b-a316-886952aea499.png";
+  const may16DesktopImage = "/lovable-uploads/6ca4ab8f-5ca0-4f53-8f16-9fcdeb0394f8.png";
+  const may16MobileImage = "/lovable-uploads/3de9471b-87c3-4da4-9052-7db78cfa8464.png";
   
   // Determine which images to use
   const actualDesktopImageUrl = isMay16Post ? may16DesktopImage : desktopImageUrl;

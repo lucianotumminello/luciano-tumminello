@@ -99,8 +99,8 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
  */
 export const updateMay16BlogPostImages = () => {
   // Set the desktop and mobile images for the specific blog post
-  const desktopImageUrl = "/lovable-uploads/cd2e36bd-3140-4f0e-85b1-42d505d89521.png";
-  const mobileImageUrl = "/lovable-uploads/837e1e0d-a79d-458b-a316-886952aea499.png";
+  const desktopImageUrl = "/lovable-uploads/6ca4ab8f-5ca0-4f53-8f16-9fcdeb0394f8.png";
+  const mobileImageUrl = "/lovable-uploads/3de9471b-87c3-4da4-9052-7db78cfa8464.png";
   
   try {
     // Check if we're on the correct blog post page

@@ -20,16 +20,22 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     if (!content) return "";
     
     // Check if this is the April 13 blog post
-    const isTargetPost = content.includes("Beyond Pattern Recognition") || 
+    const isAprilPost = content.includes("Beyond Pattern Recognition") || 
                          content.includes("Q2 2025") ||
                          content.includes("New Wave of AI");
-    console.log("Is target blog post (April 13):", isTargetPost);
+    
+    // Check if this is the May 16 blog post
+    const isMayPost = content.includes("Human + Tech Equation") || 
+                      content.includes("Digital Transformation Era");
+    
+    console.log("Is April 13 blog post:", isAprilPost);
+    console.log("Is May 16 blog post:", isMayPost);
     
     // First apply general processing
     let processedContent = optimizeImagesInContent(content, isMobile);
     
     // Then handle the special case for April 13 post
-    if (isTargetPost) {
+    if (isAprilPost) {
       console.log("Using dedicated component for April 13 blog post");
       // Use the dedicated component for April 13 blog post
       return AprilBlogPostContent({ content: processedContent });
@@ -41,14 +47,19 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
-    const isTargetPost = content && (
+    const isAprilPost = content && (
       content.includes("Beyond Pattern Recognition") || 
       content.includes("Q2 2025") ||
       content.includes("New Wave of AI")
     );
     
-    if (isTargetPost) {
-      updateImageVisibility(isTargetPost, isMobile);
+    const isMayPost = content && (
+      content.includes("Human + Tech Equation") || 
+      content.includes("Digital Transformation Era")
+    );
+    
+    if (isAprilPost || isMayPost) {
+      updateImageVisibility(true, isMobile);
       
       // Additional force-update in case the previous call didn't work
       setTimeout(() => {
