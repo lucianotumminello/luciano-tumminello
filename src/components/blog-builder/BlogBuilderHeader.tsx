@@ -1,8 +1,8 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { BlogPostList } from "@/components/blog-builder/BlogPostList";
 import { BlogPost } from "@/types";
-import { BlogPostList } from "./BlogPostList";
 
 interface BlogBuilderHeaderProps {
   isUpdateMode: boolean;
@@ -13,13 +13,12 @@ interface BlogBuilderHeaderProps {
   onSelectPost: (slug: string) => void;
   onPublishStateChange: (slug: string, checked: boolean) => void;
   onSavePublishStates: () => void;
+  isSaving: boolean;
   onCancelEditing: () => void;
   onLogout: () => void;
-  onDuplicatePost: (slug: string) => void;
-  isSaving: boolean;
 }
 
-export const BlogBuilderHeader: React.FC<BlogBuilderHeaderProps> = ({
+export const BlogBuilderHeader = ({
   isUpdateMode,
   blogPosts,
   publishStates,
@@ -28,42 +27,41 @@ export const BlogBuilderHeader: React.FC<BlogBuilderHeaderProps> = ({
   onSelectPost,
   onPublishStateChange,
   onSavePublishStates,
+  isSaving,
   onCancelEditing,
-  onLogout,
-  onDuplicatePost,
-  isSaving
-}) => {
+  onLogout
+}: BlogBuilderHeaderProps) => {
   return (
-    <div className="mb-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">
-          {isUpdateMode ? "Edit Blog Post" : "Create New Blog Post"}
-        </h1>
-        <div className="flex gap-3">
-          <BlogPostList
-            blogPosts={blogPosts}
-            publishStates={publishStates}
-            isOpen={isPostListOpen}
-            setIsOpen={setIsPostListOpen}
-            onSelectPost={onSelectPost}
-            onPublishStateChange={onPublishStateChange}
-            onSavePublishStates={onSavePublishStates}
-            onDuplicatePost={onDuplicatePost}
-            isSaving={isSaving}
-          />
-          {isUpdateMode && (
-            <Button variant="outline" color="secondary" onClick={onCancelEditing}>
-              Cancel Editing
-            </Button>
-          )}
-          <Button variant="outline" onClick={onLogout}>
-            Logout
+    <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
+      <h1 className="text-2xl font-bold">Blog Article Builder</h1>
+      <div className="flex flex-wrap gap-3">
+        <BlogPostList 
+          blogPosts={blogPosts}
+          publishStates={publishStates}
+          isOpen={isPostListOpen}
+          setIsOpen={setIsPostListOpen}
+          onSelectPost={onSelectPost}
+          onPublishStateChange={onPublishStateChange}
+          onSavePublishStates={onSavePublishStates}
+          isSaving={isSaving}
+        />
+        {isUpdateMode ? (
+          <Button 
+            variant="outline" 
+            onClick={onCancelEditing}
+          >
+            Cancel Editing
           </Button>
-        </div>
+        ) : (
+          <Button 
+            variant="secondary" 
+            disabled={true}
+          >
+            Create New Post
+          </Button>
+        )}
+        <Button variant="outline" onClick={onLogout}>Logout</Button>
       </div>
-      <p className="text-gray-600 mb-4">
-        Use this form to create and manage blog posts. All changes are saved automatically.
-      </p>
     </div>
   );
 };

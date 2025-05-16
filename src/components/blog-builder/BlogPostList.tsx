@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
-import { Save, Copy } from "lucide-react";
+import { Save } from "lucide-react";
 import { BlogPost } from "@/types";
 
 interface BlogPostListProps {
@@ -14,7 +14,6 @@ interface BlogPostListProps {
   onSelectPost: (slug: string) => void;
   onPublishStateChange: (slug: string, checked: boolean) => void;
   onSavePublishStates: () => void;
-  onDuplicatePost: (slug: string) => void;
   isSaving: boolean;
 }
 
@@ -26,7 +25,6 @@ export const BlogPostList = ({
   onSelectPost,
   onPublishStateChange,
   onSavePublishStates,
-  onDuplicatePost,
   isSaving
 }: BlogPostListProps) => {
   return (
@@ -59,15 +57,6 @@ export const BlogPostList = ({
                     <p className="font-medium">{post.title}</p>
                     <p className="text-sm text-gray-500">{post.date}</p>
                   </div>
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="icon"
-                  className="flex-shrink-0"
-                  onClick={() => onDuplicatePost(slug)}
-                  title="Duplicate post"
-                >
-                  <Copy className="h-4 w-4" />
                 </Button>
               </div>
             ))

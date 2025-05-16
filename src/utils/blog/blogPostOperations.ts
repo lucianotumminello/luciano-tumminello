@@ -11,16 +11,20 @@ import { updatedBlogPosts } from "./blogPostsStore";
 export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // Always ensure blog posts are published by default unless explicitly set to false
-  if (blogPostWithoutSlug.published === undefined) {
-    blogPostWithoutSlug.published = true;
-  }
+  const newBlogPosts: BlogPostsStore = {
+    [slug]: blogPostWithoutSlug
+  };
   
-  // Update the in-memory store directly
-  updatedBlogPosts[slug] = blogPostWithoutSlug;
+  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
+    if (key !== slug) {
+      newBlogPosts[key] = value;
+    }
+  });
+  
+  // Update the in-memory store
+  Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`Blog post ${slug} updated successfully`);
-  console.log("Current blog posts:", Object.keys(updatedBlogPosts));
 };
 
 /**
@@ -31,47 +35,19 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  // ALWAYS ensure the blog post is published by default
-  blogPostWithoutSlug.published = true;
+  const newBlogPosts: BlogPostsStore = {
+    [slug]: blogPostWithoutSlug
+  };
   
-  // Update the in-memory store with the new blog post
-  updatedBlogPosts[slug] = blogPostWithoutSlug;
+  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
+    newBlogPosts[key] = value;
+  });
+  
+  // Update the in-memory store
+  Object.assign(updatedBlogPosts, newBlogPosts);
   
   console.log(`New blog post ${slug} created successfully`);
   console.log("Current blog posts:", Object.keys(updatedBlogPosts));
-};
-
-/**
- * Duplicates a blog post in the in-memory data store
- * @param sourceSlug The slug of the blog post to duplicate
- * @param newSlug The slug for the new duplicate blog post
- * @returns The duplicated blog post data or undefined if source not found
- */
-export const duplicateBlogPost = (sourceSlug: string, newSlug: string): BlogPost | undefined => {
-  // Check if the source blog post exists
-  if (!updatedBlogPosts[sourceSlug]) {
-    console.error(`Blog post ${sourceSlug} not found for duplication`);
-    return undefined;
-  }
-  
-  // Create a deep copy of the blog post
-  const sourcePost = updatedBlogPosts[sourceSlug];
-  const duplicatedPost: BlogPost = JSON.parse(JSON.stringify(sourcePost));
-  
-  // Update the title to indicate it's a copy
-  duplicatedPost.title = `${duplicatedPost.title} (Copy)`;
-  if (duplicatedPost.titleIT) {
-    duplicatedPost.titleIT = `${duplicatedPost.titleIT} (Copia)`;
-  }
-  
-  // Ensure the duplicated post is published
-  duplicatedPost.published = true;
-  
-  // Store the duplicated post with the new slug
-  createBlogPost(newSlug, { ...duplicatedPost, slug: newSlug });
-  
-  console.log(`Blog post ${sourceSlug} duplicated to ${newSlug} successfully`);
-  return { ...duplicatedPost, slug: newSlug };
 };
 
 /**

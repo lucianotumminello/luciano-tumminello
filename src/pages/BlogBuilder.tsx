@@ -38,8 +38,7 @@ const BlogBuilder = () => {
     savePublishStates,
     onBlogSubmit,
     selectPostToEdit,
-    cancelEditing,
-    duplicatePost
+    cancelEditing
   } = useBlogBuilder();
 
   if (!isAuthenticated) {
@@ -67,10 +66,9 @@ const BlogBuilder = () => {
             onSelectPost={selectPostToEdit}
             onPublishStateChange={handlePublishStateChange}
             onSavePublishStates={savePublishStates}
+            isSaving={isSaving}
             onCancelEditing={cancelEditing}
             onLogout={() => setIsAuthenticated(false)}
-            onDuplicatePost={duplicatePost}
-            isSaving={isSaving}
           />
           
           <EditingNotice 

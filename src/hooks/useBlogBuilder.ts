@@ -3,7 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { BlogPost } from "@/types";
 import { BlogFormData } from "@/components/blog-builder/BlogFormTypes";
-import { updateBlogPost, createBlogPost, getAllBlogPosts, duplicateBlogPost } from "@/utils/blogDataManager";
+import { updateBlogPost, createBlogPost, getAllBlogPosts } from "@/utils/blogDataManager";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
 
@@ -262,7 +262,6 @@ export const useBlogBuilder = () => {
 
       const formattedDate = isUpdateMode ? data.date : getCurrentFormattedDate();
 
-      // Always set published to true for new posts or maintain current state for updated posts
       const currentPublishedState = isUpdateMode && selectedPost 
         ? publishStates[selectedPost] !== undefined
           ? publishStates[selectedPost]
@@ -288,7 +287,7 @@ export const useBlogBuilder = () => {
         readingTimeIT: translatedReadingTime,
         tags: tagsToUse,
         tagsIT: translatedTags,
-        published: true // Ensure new posts are always published
+        published: currentPublishedState
       };
 
       setPreviewData(blogPost);
@@ -301,10 +300,10 @@ export const useBlogBuilder = () => {
           description: "Changes have been applied successfully.",
         });
       } else {
-        createBlogPost(slug, { ...blogPost, slug });
+        createBlogPost(slug, blogPost);
         setPublishStates(prev => ({
           ...prev,
-          [slug]: true
+          [slug]: currentPublishedState
         }));
         toast({
           title: "Blog post created!",
@@ -312,7 +311,6 @@ export const useBlogBuilder = () => {
         });
       }
 
-      // Refresh the blog posts list after creating/updating
       setBlogPosts(getAllBlogPosts());
 
       setTimeout(() => {
@@ -384,51 +382,6 @@ export const useBlogBuilder = () => {
     });
   };
 
-  // Duplicate an existing blog post
-  const duplicatePost = (slug: string) => {
-    const timestamp = Date.now();
-    const newSlug = `${slug}-copy-${timestamp}`;
-    
-    try {
-      const duplicatedPost = duplicateBlogPost(slug, newSlug);
-      
-      if (duplicatedPost) {
-        // Refresh the blog posts list
-        setBlogPosts(getAllBlogPosts());
-        
-        // Update publish states
-        setPublishStates(prev => ({
-          ...prev,
-          [newSlug]: duplicatedPost.published !== false
-        }));
-        
-        toast({
-          title: "Blog post duplicated",
-          description: `"${duplicatedPost.title}" has been created as a copy.`,
-        });
-        
-        // Select the new post for editing
-        selectPostToEdit(newSlug);
-        
-        // Close the post list modal
-        setIsPostListOpen(false);
-      } else {
-        toast({
-          title: "Duplication failed",
-          description: "Could not duplicate the selected blog post.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Error duplicating blog post:", error);
-      toast({
-        title: "Duplication error",
-        description: "There was a problem creating a copy of this blog post.",
-        variant: "destructive",
-      });
-    }
-  };
-
   return {
     isAuthenticated,
     setIsAuthenticated,
@@ -466,7 +419,6 @@ export const useBlogBuilder = () => {
     onBlogSubmit,
     selectPostToEdit,
     cancelEditing,
-    getCurrentFormattedDate,
-    duplicatePost
+    getCurrentFormattedDate
   };
 };

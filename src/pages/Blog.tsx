@@ -24,24 +24,18 @@ const Blog = () => {
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
   useEffect(() => {
-    // Get all published blog posts
     const posts = Object.entries(getAllBlogPosts())
       .map(([slug, post]) => ({
         ...post,
         slug
       }))
-      .filter(post => post.published !== false) // Only show published posts
+      .filter(post => post.published !== false)
       .sort((a, b) => {
-        try {
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          return dateB.getTime() - dateA.getTime();
-        } catch (e) {
-          return 0;
-        }
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB.getTime() - dateA.getTime();
       });
     
-    console.log("Available blog posts:", posts.length);
     setBlogPosts(posts);
   }, [language]);
   
@@ -71,7 +65,6 @@ const Blog = () => {
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  // Show placeholder posts only if we have no real posts
   const placeholderPosts = [
     {
       id: 2,
@@ -114,11 +107,10 @@ const Blog = () => {
     }
   ];
   
-  // Only use placeholders if we have no real posts
-  const neededPlaceholders = totalPosts === 0 ? POSTS_PER_PAGE : Math.max(0, POSTS_PER_PAGE - currentPosts.length);
+  const neededPlaceholders = Math.max(0, POSTS_PER_PAGE - currentPosts.length);
   const allPosts = [
     ...currentPosts,
-    ...(totalPosts === 0 ? placeholderPosts.slice(0, neededPlaceholders) : [])
+    ...placeholderPosts.slice(0, neededPlaceholders)
   ];
 
   return (
