@@ -7,7 +7,8 @@ import {
   updateBlogPost, 
   createBlogPost, 
   getAllBlogPosts, 
-  duplicateBlogPost
+  duplicateBlogPost,
+  deleteBlogPost
 } from "@/utils/blogDataManager";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
@@ -522,6 +523,54 @@ export const useBlogBuilder = () => {
     }
   };
 
+  /**
+   * Deletes a blog post by slug
+   */
+  const deletePost = async (slug: string) => {
+    try {
+      // Delete the blog post
+      const deleted = await deleteBlogPost(slug);
+      
+      if (deleted) {
+        // If we're deleting the currently selected post, clear the selection
+        if (selectedPost === slug) {
+          setSelectedPost(null);
+          setIsUpdateMode(false);
+          setFormValues(defaultFormValues);
+          setDesktopImageFile(null);
+          setMobileImageFile(null);
+        }
+        
+        // Update our local state
+        const refreshedPosts = await getAllBlogPosts();
+        setBlogPosts(refreshedPosts);
+        
+        // Update the publish states
+        const updatedPublishStates = { ...publishStates };
+        delete updatedPublishStates[slug];
+        setPublishStates(updatedPublishStates);
+        
+        toast({
+          title: "Blog post deleted",
+          description: "The post has been deleted successfully.",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "There was a problem deleting the blog post",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting blog post:", error);
+      toast({
+        title: "Error",
+        description: "There was a problem deleting the blog post",
+        variant: "destructive",
+      });
+    }
+  };
+
   return {
     isAuthenticated,
     setIsAuthenticated,
@@ -562,6 +611,7 @@ export const useBlogBuilder = () => {
     cancelEditing,
     getCurrentFormattedDate,
     duplicateCurrentPost,
-    duplicatePost
+    duplicatePost,
+    deletePost
   };
 };

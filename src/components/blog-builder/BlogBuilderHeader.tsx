@@ -19,6 +19,7 @@ interface BlogBuilderHeaderProps {
   onCancelEditing: () => void;
   onLogout: () => void;
   onDuplicatePost: (slug: string) => void;
+  onDeletePost: (slug: string) => void;
 }
 
 export const BlogBuilderHeader = ({
@@ -33,7 +34,8 @@ export const BlogBuilderHeader = ({
   isSaving,
   onCancelEditing,
   onLogout,
-  onDuplicatePost
+  onDuplicatePost,
+  onDeletePost
 }: BlogBuilderHeaderProps) => {
   // Display the current count of posts in the memory
   const postCount = Object.keys(blogPosts).length;
@@ -62,6 +64,7 @@ export const BlogBuilderHeader = ({
           onSavePublishStates={onSavePublishStates}
           isSaving={isSaving}
           onDuplicatePost={onDuplicatePost}
+          onDeletePost={onDeletePost}
         />
         
         {isUpdateMode && (

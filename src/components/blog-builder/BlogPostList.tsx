@@ -1,10 +1,21 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
-import { Save, Copy } from "lucide-react";
+import { Save, Copy, Trash2, AlertCircle } from "lucide-react";
 import { BlogPost } from "@/types";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface BlogPostListProps {
   blogPosts: Record<string, BlogPost>;
@@ -16,6 +27,7 @@ interface BlogPostListProps {
   onSavePublishStates: () => void;
   isSaving: boolean;
   onDuplicatePost: (slug: string) => void;
+  onDeletePost: (slug: string) => void;
 }
 
 export const BlogPostList = ({
@@ -27,8 +39,11 @@ export const BlogPostList = ({
   onPublishStateChange,
   onSavePublishStates,
   isSaving,
-  onDuplicatePost
+  onDuplicatePost,
+  onDeletePost
 }: BlogPostListProps) => {
+  const [postToDelete, setPostToDelete] = useState<string | null>(null);
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
@@ -75,6 +90,47 @@ export const BlogPostList = ({
                     <Copy className="h-4 w-4" />
                     Duplicate
                   </Button>
+                  
+                  <AlertDialog open={postToDelete === slug} onOpenChange={
+                    (open) => {
+                      if (!open) setPostToDelete(null);
+                    }
+                  }>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1 text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
+                        onClick={() => setPostToDelete(slug)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="flex items-center gap-2">
+                          <AlertCircle className="h-5 w-5 text-red-500" />
+                          Delete Blog Post
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete "{post.title}"? This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction 
+                          onClick={() => {
+                            onDeletePost(slug);
+                            setPostToDelete(null);
+                          }}
+                          className="bg-red-500 hover:bg-red-600 text-white"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             ))
