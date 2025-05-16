@@ -46,8 +46,8 @@ const createHumanTechPost = async (): Promise<void> => {
     const newPost: BlogPost = {
       title: "The Human + Tech Equation: Empowering Your Workforce in the Digital Transformation Era",
       titleIT: "L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale",
-      excerpt: "[Excerpt to be added]",
-      excerptIT: "[Estratto da aggiungere]",
+      excerpt: "In today's digital transformation landscape, technology alone isn't enough to drive operational excellence. The most successful organizations master what I call the \"Human + Tech Equation\", where cutting-edge technology amplifies human potential, and human insight maximizes technological impact.",
+      excerptIT: "Nel panorama attuale della trasformazione digitale, la tecnologia da sola non è sufficiente per guidare l'eccellenza operativa. Le organizzazioni di maggior successo padroneggiano quella che io chiamo \"L'Equazione Umano + Tecnologia\", dove la tecnologia all'avanguardia amplifica il potenziale umano e l'intuizione umana massimizza l'impatto tecnologico.",
       content: "<p>Content will be added soon...</p>",
       contentIT: "<p>Il contenuto sarà aggiunto presto...</p>",
       author: "Luciano Tumminello",
