@@ -27,12 +27,13 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   return (
     <article className="bg-white rounded-lg shadow-md p-5 mb-8">
       <div 
-        className="prose prose-base max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-primary prose-a:font-medium"
+        className={`prose prose-base max-w-none prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-primary prose-a:font-medium ${isMobile ? 'content-mobile-optimized' : ''}`}
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
       
       {/* Critical styles for blog content */}
-      <style jsx>{`
+      <style>
+        {`
         /* Blog content styles */
         .prose p {
           text-align: justify;
@@ -87,7 +88,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
             width: 100% !important;
           }
         }
-      `}</style>
+        `}
+      </style>
     </article>
   );
 };

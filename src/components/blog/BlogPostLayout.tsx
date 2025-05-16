@@ -80,7 +80,8 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
       <Footer />
       
       {/* Global blog styles */}
-      <style jsx global>{`
+      <style>
+        {`
         /* Critical fixes for blog layout */
         .prose p {
           text-align: justify;
@@ -121,7 +122,8 @@ const BlogPostLayout: React.FC<BlogPostLayoutProps> = ({
         .prose h1:first-child {
           display: none !important;
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
