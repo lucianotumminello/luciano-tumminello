@@ -7,7 +7,8 @@ export {
   createBlogPost, 
   updateBlogPost, 
   deleteBlogPost,
-  duplicateBlogPost 
+  duplicateBlogPost,
+  makeBlogPostPermanent
 } from './blogPostOperations';
 
 // Export initial data
@@ -31,3 +32,6 @@ export {
 
 // Export types
 export type { BlogPostsStore } from './types';
+
+// Import the utility to make the blog post permanent - this will execute immediately
+import './makeBeyondRecognitionPermanent';
