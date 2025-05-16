@@ -26,10 +26,10 @@ export function textToHtml(text: string): string {
     }
     
     // Check for bullet points
-    if (section.match(/^-\s/m)) {
+    if (section.match(/^[•-]\s/m)) {
       const items = section.split('\n')
-        .filter(line => line.match(/^-\s/))
-        .map(line => line.replace(/^-\s/, '').trim());
+        .filter(line => line.match(/^[•-]\s/))
+        .map(line => line.replace(/^[•-]\s/, '').trim());
         
       if (items.length > 0) {
         return `<ul class="list-disc pl-6 mb-8 space-y-2 text-gray-700">
@@ -89,6 +89,9 @@ export function applyStandardLayout(text: string): string {
   // First, normalize line breaks to ensure consistent processing
   let formattedText = text.replace(/\r\n/g, '\n');
   
+  // Replace bullet points (• symbol) with standard dash for consistent processing
+  formattedText = formattedText.replace(/^•\s/gm, '- ');
+  
   // Identify existing headings and ensure proper formatting
   formattedText = formattedText.replace(/^(#+)(?:\s*)(.+)$/gm, (match, hashes, content) => {
     // Ensure exactly one space after the hash(es)
@@ -104,7 +107,7 @@ export function applyStandardLayout(text: string): string {
   formattedText = formattedText.replace(/^(#+\s.+)$/gm, '$1\n');
   
   // Fix list formatting - ensure proper indentation and spacing
-  // For bullet points
+  // For bullet points (both dash and bullet character)
   formattedText = formattedText.replace(/^-(?:\s*)(.+)$/gm, '- $1');
   
   // For numbered lists
