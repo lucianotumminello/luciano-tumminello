@@ -43,7 +43,7 @@ export const BlogBuilderHeader = ({
           <p className="text-gray-600">Create and edit your blog posts</p>
           <Badge variant="outline" className="bg-green-50 text-green-800 border-green-300 flex items-center gap-1">
             <Save className="h-3 w-3" />
-            Auto-saving
+            Auto-saving to browser storage
           </Badge>
         </div>
       </div>

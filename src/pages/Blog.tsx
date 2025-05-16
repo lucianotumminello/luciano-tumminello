@@ -25,49 +25,62 @@ const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   
+  // Function to fetch and sort blog posts
+  const fetchPosts = () => {
+    try {
+      console.log("Fetching blog posts from storage");
+      const posts = Object.entries(getAllBlogPosts())
+        .map(([slug, post]) => ({
+          ...post,
+          slug
+        }))
+        .filter(post => post.published !== false)
+        .sort((a, b) => {
+          // Parse dates correctly regardless of format
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateB.getTime() - dateA.getTime(); // Most recent first
+        });
+      
+      setBlogPosts(posts);
+      console.log("Blog posts loaded:", posts.length, "posts");
+    } catch (error) {
+      console.error("Error fetching blog posts:", error);
+      toast({
+        title: "Error loading blog posts",
+        description: "There was a problem loading the blog posts",
+        variant: "destructive"
+      });
+    }
+  };
+  
   // Fetch and sort blog posts whenever the component mounts or language changes
   useEffect(() => {
-    const fetchPosts = () => {
-      try {
-        const posts = Object.entries(getAllBlogPosts())
-          .map(([slug, post]) => ({
-            ...post,
-            slug
-          }))
-          .filter(post => post.published !== false)
-          .sort((a, b) => {
-            // Parse dates correctly regardless of format
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
-            return dateB.getTime() - dateA.getTime(); // Most recent first
-          });
-        
-        setBlogPosts(posts);
-        console.log("Blog posts loaded:", posts.length);
-      } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        toast({
-          title: "Error loading blog posts",
-          description: "There was a problem loading the blog posts",
-          variant: "destructive"
-        });
-      }
-    };
-    
     fetchPosts();
     
     // Add an event listener to re-fetch posts when the window gets focus
     // This ensures that if you publish in another tab and come back, you'll see the latest posts
     const handleFocus = () => {
+      console.log("Window focus detected, refreshing blog posts");
       fetchPosts();
     };
     
+    // Add an event listener to re-fetch posts when localStorage changes
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "luciano_tumminello_blog_posts") {
+        console.log("LocalStorage change detected, refreshing blog posts");
+        fetchPosts();
+      }
+    };
+    
     window.addEventListener('focus', handleFocus);
+    window.addEventListener('storage', handleStorageChange);
     
     return () => {
       window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('storage', handleStorageChange);
     };
-  }, [language, toast]);
+  }, [language]);
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";

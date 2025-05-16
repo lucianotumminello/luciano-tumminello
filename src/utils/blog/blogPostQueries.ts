@@ -7,6 +7,8 @@ import { BlogPostsStore } from "./types";
  * @returns All blog posts
  */
 export const getAllBlogPosts = (): BlogPostsStore => {
+  // Ensure we're returning the latest version from memory
+  console.log("Getting all blog posts, count:", Object.keys(updatedBlogPosts).length);
   return updatedBlogPosts;
 };
 

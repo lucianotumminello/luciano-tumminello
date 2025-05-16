@@ -1,3 +1,4 @@
+
 import { BlogPostsStore } from "./types";
 import initialBlogPosts from "./initialBlogPosts";
 
@@ -18,6 +19,8 @@ const loadBlogPostsFromStorage = (): BlogPostsStore => {
   }
   
   // If there are no stored posts or an error occurred, use the initial data
+  console.log("Loading initial blog posts");
+  saveBlogPostsToStorage({ ...initialBlogPosts }); // Save initial posts to localStorage
   return { ...initialBlogPosts };
 };
 
