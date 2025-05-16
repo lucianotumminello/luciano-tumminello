@@ -44,7 +44,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     const isTargetPost = content && (
       content.includes("Beyond Pattern Recognition") || 
       content.includes("Q2 2025") ||
-      content.includes("New Wave of AI")
+      content.includes("New Wave of AI") ||
+      content.includes("The Human + Tech Equation") // Add this new post to special handling
     );
     
     if (isTargetPost) {
