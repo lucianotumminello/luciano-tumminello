@@ -323,7 +323,7 @@ export const useBlogBuilder = () => {
           description: "Changes have been applied successfully.",
         });
       } else {
-        await createBlogPost(slug, blogPost);
+        await createBlogPost(blogPost, slug);
         setPublishStates(prev => ({
           ...prev,
           [slug]: currentPublishedState
@@ -422,14 +422,14 @@ export const useBlogBuilder = () => {
       return;
     }
     
-    // Generate a new slug for the duplicated post
-    const newSlug = `${selectedPost}-copy-${Date.now()}`;
-    
     try {
       // Duplicate the blog post
-      const duplicatedPost = await duplicateBlogPost(selectedPost, newSlug);
+      const duplicatedPost = await duplicateBlogPost(selectedPost);
       
       if (duplicatedPost) {
+        // Add the new slug to the new post object
+        const newSlug = `${selectedPost}-copy-${Date.now()}`;
+        
         // Update the blog posts state
         const refreshedPosts = await getAllBlogPosts();
         setBlogPosts(refreshedPosts);
@@ -478,13 +478,13 @@ export const useBlogBuilder = () => {
     }
     
     try {
-      // Generate a new slug for the duplicated post
-      const newSlug = `${slug}-copy-${Date.now()}`;
-      
       // Duplicate the blog post
-      const duplicatedPost = await duplicateBlogPost(slug, newSlug);
+      const duplicatedPost = await duplicateBlogPost(slug);
       
       if (duplicatedPost) {
+        // Get the new slug
+        const newSlug = duplicatedPost.slug || `${slug}-copy-${Date.now()}`;
+        
         // Update the blog posts state
         const refreshedPosts = await getAllBlogPosts();
         setBlogPosts(refreshedPosts);

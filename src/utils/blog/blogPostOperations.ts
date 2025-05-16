@@ -80,9 +80,9 @@ export const deleteBlogPost = async (slug: string): Promise<boolean> => {
 /**
  * Creates a duplicate of an existing blog post
  * @param originalSlug The slug of the blog post to duplicate
- * @returns A promise that resolves to the new slug if successful, or null if failed
+ * @returns A promise that resolves to the duplicated post if successful, or null if failed
  */
-export const duplicateBlogPost = async (originalSlug: string): Promise<string | null> => {
+export const duplicateBlogPost = async (originalSlug: string): Promise<BlogPost | null> => {
   try {
     // Check if the original blog post exists
     if (!updatedBlogPosts[originalSlug]) {
@@ -95,7 +95,7 @@ export const duplicateBlogPost = async (originalSlug: string): Promise<string | 
     
     // Create a copy of the original blog post
     const originalPost = updatedBlogPosts[originalSlug];
-    const newPost = { ...originalPost };
+    const newPost = { ...originalPost, slug: newSlug };
     
     // Add the new post to the updated blog posts
     updatedBlogPosts[newSlug] = newPost;
@@ -103,7 +103,7 @@ export const duplicateBlogPost = async (originalSlug: string): Promise<string | 
     // Save the updated blog posts to storage
     await saveBlogPostsToStorage({ ...updatedBlogPosts });
     
-    return newSlug;
+    return newPost;
   } catch (error) {
     console.error(`Error duplicating blog post ${originalSlug}:`, error);
     return null;

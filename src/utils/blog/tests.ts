@@ -11,6 +11,7 @@ import {
   duplicateBlogPost
 } from './blogPostOperations';
 import { mockApiReset } from './mockApi';
+import { BlogPost } from '@/types';
 
 // Run this function from the browser console to test the blog system
 export const runBlogSystemTests = async () => {
@@ -26,7 +27,7 @@ export const runBlogSystemTests = async () => {
     
     console.log("3. Creating a new blog post");
     const newPostSlug = "test-post-" + Date.now();
-    await createBlogPost(newPostSlug, {
+    const testPost: BlogPost = {
       title: "Test Post",
       titleIT: "Post di Test",
       excerpt: "This is a test post",
@@ -45,30 +46,35 @@ export const runBlogSystemTests = async () => {
       readingTimeIT: "1 min di lettura",
       tags: ["test"],
       tagsIT: ["test"]
-    });
+    };
+    await createBlogPost(testPost, newPostSlug);
     
     console.log("4. Getting the new blog post");
     const newPost = await getBlogPost(newPostSlug);
     console.log("New post:", newPost);
     
     console.log("5. Updating the blog post");
-    await updateBlogPost(newPostSlug, {
-      ...newPost!,
-      title: "Updated Test Post",
-      titleIT: "Post di Test Aggiornato"
-    });
+    if (newPost) {
+      await updateBlogPost(newPostSlug, {
+        ...newPost,
+        title: "Updated Test Post",
+        titleIT: "Post di Test Aggiornato"
+      });
+    }
     
     console.log("6. Getting the updated blog post");
     const updatedPost = await getBlogPost(newPostSlug);
     console.log("Updated post:", updatedPost);
     
     console.log("7. Duplicating the blog post");
-    const duplicatedPostSlug = newPostSlug + "-duplicate";
-    await duplicateBlogPost(newPostSlug, duplicatedPostSlug);
+    const duplicatedPost = await duplicateBlogPost(newPostSlug);
+    const duplicatedPostSlug = duplicatedPost?.slug || "";
     
     console.log("8. Getting the duplicated blog post");
-    const duplicatedPost = await getBlogPost(duplicatedPostSlug);
-    console.log("Duplicated post:", duplicatedPost);
+    if (duplicatedPostSlug) {
+      const fetchedDuplicatedPost = await getBlogPost(duplicatedPostSlug);
+      console.log("Duplicated post:", fetchedDuplicatedPost);
+    }
     
     console.log("9. Getting all blog posts after operations");
     const finalPosts = await getAllBlogPosts();
@@ -76,7 +82,9 @@ export const runBlogSystemTests = async () => {
     
     console.log("10. Deleting the blog posts");
     await deleteBlogPost(newPostSlug);
-    await deleteBlogPost(duplicatedPostSlug);
+    if (duplicatedPostSlug) {
+      await deleteBlogPost(duplicatedPostSlug);
+    }
     
     console.log("11. Getting all blog posts after deletion");
     const postsAfterDeletion = await getAllBlogPosts();
