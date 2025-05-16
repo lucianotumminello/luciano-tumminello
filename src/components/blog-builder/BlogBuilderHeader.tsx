@@ -43,7 +43,7 @@ export const BlogBuilderHeader = ({
   return (
     <div className="flex flex-wrap gap-4 items-center justify-between mb-8">
       <div className="flex flex-col">
-        <h1 className="text-3xl font-bold mb-2">Blog Builder</h1>
+        <h1 className="text-3xl font-bold mb-2">Blog Builder Console</h1>
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-gray-600">Create and edit your blog posts</p>
           <Badge variant="outline" className="bg-green-50 text-green-800 border-green-300 flex items-center gap-1">
