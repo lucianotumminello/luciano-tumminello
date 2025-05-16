@@ -6,14 +6,14 @@ interface AprilBlogPostContentProps {
   content: string;
 }
 
-const AprilBlogPostContent = ({ content }: AprilBlogPostContentProps) => {
+const AprilBlogPostContent = ({ content }: AprilBlogPostContentProps): string => {
   // Process the content for the April 13th blog post
   console.log("Processing the target blog post - April 13, 2025");
   
   // Look for the specific quote by Maya Johnson or any relevant content
   const hasMayaQuote = content.includes("Maya Johnson") || 
-                     content.includes("Chief Customer Experience") || 
-                     content.includes("Deloitte Digital");
+                       content.includes("Chief Customer Experience") || 
+                       content.includes("Deloitte Digital");
   
   console.log("Found Maya Johnson quote or relevant content:", hasMayaQuote);
   
@@ -21,18 +21,6 @@ const AprilBlogPostContent = ({ content }: AprilBlogPostContentProps) => {
   
   // Skip inserting marketing transformation images for this specific post
   console.log("Skipping marketing transformation images for April 13 post");
-  
-  // Look for the Human + Tech Equation blog post
-  const isHumanTechPost = content.includes("Human + Tech Equation") || 
-                      content.includes("Empowering Your Workforce") ||
-                      content.includes("Digital Transformation Era");
-                       
-  if (isHumanTechPost) {
-    console.log("Processing the Human + Tech Equation blog post");
-    // For this post, we want to preserve its formatting exactly as created
-    console.log("Preserving original formatting for Human + Tech Equation post");
-    return content;
-  }
   
   // Add additional content for word count and outgoing links
   console.log("Adding additional content with outgoing links");

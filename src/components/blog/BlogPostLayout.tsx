@@ -72,16 +72,6 @@ const BlogPostLayout = ({
         <meta name="language" content="English" />
         <meta name="revisit-after" content="7 days" />
         
-        {/* Custom meta tags for Human + Tech Equation article */}
-        {title.includes("Human + Tech Equation") && (
-          <>
-            <meta name="article:published_time" content="2025-05-13T09:00:00+00:00" />
-            <meta name="article:modified_time" content="2025-05-13T09:00:00+00:00" />
-            <meta name="article:section" content="Digital Transformation" />
-            <meta name="article:tag" content="Digital Transformation, Workforce Development, Technology, Leadership" />
-          </>
-        )}
-        
         {/* JSON-LD structured data */}
         <script type="application/ld+json">
           {JSON.stringify(schemaData)}
@@ -92,6 +82,8 @@ const BlogPostLayout = ({
       
       <main className="flex-1 pt-8 pb-16 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
+          {/* Ensure visible H1 tag exists on the page (fixes "H1 tag missing or empty" issue) */}
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{title}</h1>
           {children}
         </div>
       </main>
