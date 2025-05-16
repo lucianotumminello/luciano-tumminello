@@ -35,16 +35,13 @@ export const updateBlogPost = (slug: string, blogPostData: BlogPost): void => {
 export const createBlogPost = (slug: string, blogPostData: BlogPost): void => {
   const { slug: _, ...blogPostWithoutSlug } = blogPostData;
   
-  const newBlogPosts: BlogPostsStore = {
-    [slug]: blogPostWithoutSlug
-  };
+  // Ensure the blog post is published by default if not specified
+  if (blogPostWithoutSlug.published === undefined) {
+    blogPostWithoutSlug.published = true;
+  }
   
-  Object.entries(updatedBlogPosts).forEach(([key, value]) => {
-    newBlogPosts[key] = value;
-  });
-  
-  // Update the in-memory store
-  Object.assign(updatedBlogPosts, newBlogPosts);
+  // Update the in-memory store with the new blog post
+  updatedBlogPosts[slug] = blogPostWithoutSlug;
   
   console.log(`New blog post ${slug} created successfully`);
   console.log("Current blog posts:", Object.keys(updatedBlogPosts));

@@ -262,6 +262,7 @@ export const useBlogBuilder = () => {
 
       const formattedDate = isUpdateMode ? data.date : getCurrentFormattedDate();
 
+      // Always set published to true for new posts or maintain current state for updated posts
       const currentPublishedState = isUpdateMode && selectedPost 
         ? publishStates[selectedPost] !== undefined
           ? publishStates[selectedPost]
@@ -287,7 +288,7 @@ export const useBlogBuilder = () => {
         readingTimeIT: translatedReadingTime,
         tags: tagsToUse,
         tagsIT: translatedTags,
-        published: currentPublishedState
+        published: true // Ensure new posts are always published
       };
 
       setPreviewData(blogPost);
@@ -300,10 +301,10 @@ export const useBlogBuilder = () => {
           description: "Changes have been applied successfully.",
         });
       } else {
-        createBlogPost(slug, blogPost);
+        createBlogPost(slug, { ...blogPost, slug });
         setPublishStates(prev => ({
           ...prev,
-          [slug]: currentPublishedState
+          [slug]: true
         }));
         toast({
           title: "Blog post created!",
@@ -311,6 +312,7 @@ export const useBlogBuilder = () => {
         });
       }
 
+      // Refresh the blog posts list after creating/updating
       setBlogPosts(getAllBlogPosts());
 
       setTimeout(() => {
