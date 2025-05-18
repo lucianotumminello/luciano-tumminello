@@ -63,10 +63,11 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   // Get the correct translation using the getTranslation utility
   const t = (key: string): string => {
     // Handle special case for Human + Tech Equation blog post
-    if (key.includes('human-tech-equation') && language === 'it') {
+    if ((key.includes('human-tech-equation') || key.includes('workforce-digital-transformation')) && language === 'it') {
       // Check if we have this in cache first
       const cacheKey = `human-tech-equation-it`;
       if (translationCache[cacheKey]) {
+        console.log("Using cached Italian translation for Human + Tech Equation");
         return translationCache[cacheKey];
       }
       
@@ -80,8 +81,16 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   
   // Function to change the language
   const changeLanguage = (lang: Language) => {
+    console.log(`Changing language to: ${lang}`);
     setLanguage(lang);
     localStorage.setItem("preferredLanguage", lang);
+    
+    // Clear the translation cache when language changes
+    Object.keys(translationCache).forEach(key => {
+      if (key.includes(lang)) {
+        delete translationCache[key];
+      }
+    });
   };
   
   // Wait until country detection is complete before rendering children

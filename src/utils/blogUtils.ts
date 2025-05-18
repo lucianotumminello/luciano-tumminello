@@ -10,62 +10,132 @@ export async function translateText(text: string, sourceLang: string, targetLang
   if (!text) return "";
   
   // For the Human + Tech Equation blog post, provide a complete Italian translation
-  if (text.includes("Human + Tech Equation") && targetLang === 'it') {
+  if ((text.includes("Human + Tech Equation") || text.includes("Empowering Your Workforce")) && targetLang === 'it') {
     // Return a complete Italian version of the blog post
     return `
-<h1>L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale</h1>
+<h1>L'Equazione Umano + Tecnologia: Potenziare la Tua Forza Lavoro nell'Era della Trasformazione Digitale</h1>
 
 <p>Nel panorama attuale della trasformazione digitale, la tecnologia da sola non è sufficiente per guidare l'eccellenza operativa. Le organizzazioni di maggior successo padroneggiano quella che io chiamo "L'Equazione Umano + Tecnologia", dove la tecnologia all'avanguardia amplifica il potenziale umano e l'intuizione umana massimizza l'impatto tecnologico.</p>
 
-<p>Nel panorama operativo in rapida evoluzione di oggi, l'integrazione di tecnologie all'avanguardia è diventata non negoziabile per il successo aziendale. Mentre le organizzazioni navigano nelle complessità della trasformazione digitale nel 2025, il vero vantaggio competitivo non risiede solo nell'implementare tecnologie avanzate, ma nel padroneggiare quella che io chiamo l'Equazione Umano + Tecnologia.</p>
+<h2>L'Equazione Umano + Tecnologia: Potenziare la Tua Forza Lavoro nell'Era della Trasformazione Digitale</h2>
 
-<h2>Oltre il Riconoscimento di Modelli: La Nuova Ondata di IA</h2>
+<p>Nel panorama operativo in rapida evoluzione di oggi, l'integrazione di tecnologie all'avanguardia è diventata non negoziabile per il successo aziendale. Mentre le organizzazioni navigano nelle complessità della trasformazione digitale, il vero vantaggio competitivo non risiede solo nell'implementare tecnologie avanzate, ma nel padroneggiare quella che io chiamo l'Equazione Umano + Tecnologia.</p>
 
-<p>Mentre l'intelligenza artificiale continua ad evolversi, stiamo assistendo ad un cambiamento significativo dal semplice riconoscimento di modelli a capacità più sofisticate che emulano il ragionamento umano. Tuttavia, la vera magia accade quando queste tecnologie vengono strategicamente abbinate alle capacità umane uniche.</p>
+<h2>Operazioni di Nuova Generazione: Dove la Tecnologia Incontra il Potenziale Umano</h2>
 
-<p>Le aziende all'avanguardia stanno implementando sistemi di IA che non solo elaborano dati ma collaborano con i dipendenti, combinando l'efficienza computazionale con intuizione, creatività e intelligenza emotiva umana. Questa sinergia sblocca nuovi livelli di innovazione e risoluzione di problemi che nessuna delle due parti potrebbe raggiungere da sola.</p>
+<p>Nel regno delle operazioni, stiamo assistendo a un cambiamento di paradigma. Le organizzazioni lungimiranti stanno implementando modelli che amalgamano perfettamente il contenuto umano e tecnologico. Questo approccio sinergico sblocca efficienze che erano irraggiungibili quando si consideravano questi elementi separatamente. Ad esempio, la piattaforma ibrida uomo-macchina di Accenture ha dimostrato di ridurre i costi operativi fino al 40% migliorando contemporaneamente la soddisfazione dei dipendenti.</p>
 
-<h2>Riqualificazione per un Futuro Integrato</h2>
+<p>L'efficacia di questi modelli ibridi risiede nella loro capacità di utilizzare gli umani e le macchine secondo i loro punti di forza inerenti. Ciò significa allocare compiti ripetitivi, ad alta intensità di dati alle piattaforme AI, liberando i talenti umani per concentrarsi sul pensiero critico, sul processo decisionale strategico e sulla costruzione di relazioni significative.</p>
 
-<p>Con l'accelerazione dell'automazione, molte organizzazioni stanno commettendo l'errore di concentrarsi esclusivamente sull'implementazione tecnologica trascurando il lato umano dell'equazione. I leader lungimiranti riconoscono che la trasformazione digitale di successo richiede un investimento parallelo nello sviluppo delle competenze della forza lavoro.</p>
+<h2>La Rivoluzione Tecnologica nelle Operazioni Moderne</h2>
 
-<p>I programmi di riqualificazione dovrebbero andare oltre l'insegnamento di competenze tecniche di base. Devono coltivare capacità che rimarranno intrinsecamente umane: pensiero critico, intelligenza emotiva, comunicazione interpersonale e pensiero creativo. Questi attributi complementano le capacità di automazione e creano una forza lavoro che può sfruttare appieno il potenziale delle nuove tecnologie.</p>
+<p>L'intelligenza artificiale e l'automazione stanno trasformando i processi operativi fondamentali:</p>
 
-<h2>Creare Cultura di Resilienza Digitale</h2>
+<ul>
+<li>I sistemi predittivi di manutenzione stanno riducendo i tempi di inattività imprevisti</li>
+<li>Le soluzioni AI per la gestione dell'inventario stanno ottimizzando le catene di approvvigionamento</li>
+<li>La robotica avanzata sta migliorando la precisione della produzione</li>
+<li>I sistemi di garanzia della qualità potenziati dall'IA stanno migliorando la coerenza del prodotto</li>
+</ul>
 
-<p>"La trasformazione digitale non riguarda solo la tecnologia ma la preparazione delle persone ad abbracciare e guidare il cambiamento", sottolinea Maya Johnson, Chief Customer Experience Officer presso Deloitte Digital. "Le organizzazioni che prosperano nella digital disruption sono quelle che hanno costruito una cultura di resilienza e apprendimento continuo."</p>
+<p>Tuttavia, questi progressi tecnologici raggiungono il loro massimo valore operativo solo quando sono sviluppati con la prospettiva che esiste un equilibrio sinergico tra capacità umane e automazione.</p>
 
-<p>L'implementazione di nuove tecnologie spesso incontra resistenza quando i dipendenti non comprendono appieno il suo valore o temono che minacci i loro ruoli. I leader devono comunicare una visione chiara che enfatizzi come l'automazione potenzia piuttosto che sostituisce il contributo umano. Coinvolgere i dipendenti nel processo di trasformazione, sollecitare il loro feedback e celebrare le vittorie iniziali può trasformare la resistenza in entusiasmo.</p>
+<h2>L'Elemento Umano: La Tua Risorsa Operativa Più Preziosa</h2>
 
-<h2>La Teoria del Cambiamento dell'Equazione Umano + Tecnologia</h2>
+<p>È fondamentale che i leader operativi ricordino che, anche nell'era digitale, gli esseri umani sono il fattore più critico nell'equazione. I dipendenti portano attributi che l'IA non ha ancora replicato:</p>
 
-<p>Per implementare con successo l'Equazione Umano + Tecnologia, propongo un framework in quattro fasi:</p>
+<ul>
+<li>Creatività situazionale per risolvere problemi complessi e senza precedenti</li>
+<li>Intelligenza emotiva per costruire relazioni con clienti e colleghi</li>
+<li>Giudizio etico</li>
+<li>Intuizione contestuale</li>
+<li>Adattabilità culturale</li>
+<li>Innovazione guidata dallo scopo</li>
+</ul>
+
+<p>L'investimento nella crescita e nello sviluppo del capitale umano rimane fondamentale per le operazioni di trasformazione. Gli investimenti in formazione tecnica e soft skill sono essenziali quanto l'investimento nell'infrastruttura tecnologica.</p>
+
+<h2>Costruire una Forza Lavoro Pronta al Futuro: Strategie Essenziali</h2>
+
+<p>Per preparare il tuo team operativo per l'era della trasformazione digitale, considera queste iniziative chiave:</p>
+
+<h3>Sviluppo della Forza Lavoro Strategica: Coltivare un Vantaggio Competitivo</h3>
+
+<p>Negli ambienti ad alta digitalizzazione, i programmi di upskilling e reskilling devono andare oltre l'insegnamento di strumenti specifici. Devono coltivare una mentalità che vede l'integrazione tecnologica come un'opportunità di crescita professionale piuttosto che una minaccia per la sicurezza del lavoro:</p>
+
+<ul>
+<li>Mappatura delle competenze della forza lavoro</li>
+<li>Percorsi di apprendimento personalizzati</li>
+<li>Formazione incrociata interfunzionale</li>
+<li>Modelli ibridi di lavoro che promuovono la collaborazione remota</li>
+</ul>
+
+<p>I leader dovrebbero implementare valutazioni regolari delle competenze dei dipendenti e creare percorsi chiari per la progressione professionale man mano che acquisiscono nuove competenze tecniche.</p>
+
+<h3>Favorire l'Impegno Digitale: Una Cultura dell'Innovazione Collaborativa</h3>
+
+<p>Un impegno efficace verso la trasformazione digitale richiede una cultura che incoraggi attivamente l'esplorazione e la sperimentazione tecnologica:</p>
+
+<ul>
+<li>Creare spazi sicuri per esperimenti digitali</li>
+<li>Celebrare e imparare dai fallimenti</li>
+<li>Stabilire comunità di pratica cross-funzionali</li>
+</ul>
+
+<p>Utilizza hackathon, incubatori interni e progetti di innovazione collaborativa per sfruttare l'intelligenza collettiva del tuo team e sviluppare soluzioni innovative per le sfide operative.</p>
+
+<h3>Comunicazione Interna Strategica: Il Modello di Leadership del Cambiamento</h3>
 
 <ol>
-<li><strong>Valutazione:</strong> Mappare sia le competenze tecnologiche che umane nell'organizzazione, identificando gap e opportunità.</li>
-<li><strong>Allineamento:</strong> Progettare soluzioni tecnologiche che si allineino ai punti di forza umani esistenti mentre si sviluppano nuove capacità.</li>
-<li><strong>Amplificazione:</strong> Implementare sistemi che aumentino le capacità umane piuttosto che semplicemente automatizzare i compiti esistenti.</li>
-<li><strong>Adattabilità:</strong> Creare cicli di feedback che consentano il continuo affinamento dell'equilibrio uomo-macchina.</li>
+<li><strong>Articolare una Visione Digitale Convincente</strong>
+<p>Per il successo di qualsiasi iniziativa di trasformazione digitale, i leader devono prima articolare chiaramente perché il cambiamento è necessario:</p>
+<ul>
+<li>Spiegare il perché dietro le nuove implementazioni tecnologiche</li>
+<li>Allineare gli obiettivi di trasformazione con i valori aziendali</li>
+<li>Mappare come i cambiamenti digitali influenzeranno i ruoli individuali</li>
+<li>Condividere storie di successo di implementazione tecnologica</li>
+</ul>
+</li>
+
+<li><strong>Costruire un Sistema Interno di Reportistica del Progresso</strong>
+<p>Una comunicazione trasparente sul progresso della trasformazione digitale è fondamentale per mantenere la fiducia e il buy-in:</p>
+<ul>
+<li>Creare dashboard visibili del progresso di trasformazione</li>
+<li>Celebrare i traguardi e le prime vittorie</li>
+<li>Gestire apertamente le battute d'arresto</li>
+<li>Fornire forum regolari per le domande dei dipendenti</li>
+</ul>
+</li>
+
+<li><strong>Stabilire Meccanismi di Feedback Significativi</strong>
+<p>I dipendenti in prima linea spesso hanno le intuizioni più preziose su come migliorare i processi operativi:</p>
+<ul>
+<li>Creare canali di feedback bidirezionali</li>
+<li>Organizzare sessioni di ascolto dedicate</li>
+<li>Implementare un processo di correzione guidato dalle intuizioni</li>
+<li>Riconoscere i contributori di idee preziose</li>
+</ul>
+</li>
 </ol>
 
-<h2>Casi Studio di Successo</h2>
+<p>Incoraggia i tuoi team a identificare aree dove la tecnologia può migliorare il loro lavoro e dare loro la possibilità di plasmare le soluzioni che utilizzeranno.</p>
 
-<p>Diverse organizzazioni all'avanguardia stanno già mostrando il potere di un approccio equilibrato alla trasformazione digitale:</p>
+<h2>Il Percorso da Seguire: Padroneggiare l'Equazione Umano + Tecnologia</h2>
 
-<p><strong>Azienda Manifatturiera Globale:</strong> Invece di sostituire completamente gli operatori di linea con robot, ha implementato cobot (robot collaborativi) che lavorano insieme ai dipendenti umani. Questo ha portato a un aumento del 28% nell'efficienza produttiva mantenendo livelli elevati di soddisfazione dei dipendenti.</p>
+<p>L'implementazione di successo dell'Equazione Umano + Tecnologia è un viaggio trasformativo che richiede un approccio metodico. I leader possono accelerare questo percorso seguendo un quadro di integrazione in tre fasi che bilancia le considerazioni umane e tecnologiche.</p>
 
-<p><strong>Istituto Finanziario Internazionale:</strong> Ha creato team "aumentati dall'IA" dove gli analisti umani collaborano con sistemi di intelligenza artificiale per identificare frodi e opportunità di investimento. Questa partnership uomo-macchina ha migliorato i tassi di rilevamento delle frodi del 35% rispetto ai sistemi puramente automatizzati o ai team solo umani.</p>
+<p>Questo framework inizia con una valutazione fondamentale delle tue risorse attuali sia umane che tecnologiche, seguita dallo sviluppo di una roadmap personalizzata che si allinea con gli obiettivi organizzativi. Con l'implementazione e l'iterazione continua, questo approccio consente di ottenere un miglioramento operativo sostenibile che si adatta alle mutevoli esigenze del panorama aziendale.</p>
 
-<h2>Guardando Avanti</h2>
+<h2>Informazioni sull'Autore</h2>
 
-<p>Mentre entriamo in questa nuova era di trasformazione digitale, le organizzazioni che prospereranno saranno quelle che vedono la tecnologia non come un sostituto del talento umano, ma come un amplificatore di esso. L'Equazione Umano + Tecnologia non è solo una strategia operativa; è un imperativo di leadership che richiede visione, empatia e un impegno sia verso l'eccellenza tecnologica che verso lo sviluppo umano.</p>
+<p>Luciano Tumminello ha guidato oltre sette team di Digital Ops attraverso significative trasformazioni guidate dall'IA, specializzandosi nell'ottimizzare strategie di marketing orientate ai dati e operazioni aziendali per leader globali. Ex-COO di agenzie di marketing digitale e attualmente leader operativo per marchi europei, Luciano ha una comprovata esperienza nell'aumentare l'efficienza operativa implementando soluzioni digitali innovative che allineano tecnologia e talento umano.</p>
 
-<p>Per i leader aziendali, la domanda non dovrebbe essere semplicemente "Come possiamo implementare più tecnologia?" ma piuttosto "Come possiamo creare una sinergia più forte tra le nostre persone e le nostre piattaforme?" Affrontando questa domanda, possiamo sbloccare il vero potenziale della trasformazione digitale.</p>
+<p>Collegati su <a href="https://www.linkedin.com/in/lucianotumminello" target="_blank" rel="noopener">LinkedIn</a></p>
     `;
   }
   
   // Very simple mock translation for Italian - this should be replaced with proper translation API
-  if (targetLang === 'it' && !text.includes("Human + Tech Equation")) {
+  if (targetLang === 'it' && !text.includes("Human + Tech Equation") && !text.includes("Empowering Your Workforce")) {
     // This is just for demonstration - use a real translation service in production
     const mockItalianTranslations: Record<string, string> = {
       'min read': 'min di lettura',

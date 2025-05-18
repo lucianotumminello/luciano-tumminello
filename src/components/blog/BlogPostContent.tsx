@@ -21,7 +21,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   
   // Generate a unique content key for the specific blog post
   const isHumanTechEquationPost = content?.includes("Human + Tech Equation") || 
-                                  content?.includes("workforce-digital-transformation");
+                                  content?.includes("workforce-digital-transformation") || 
+                                  content?.includes("Empowering Your Workforce");
   
   const contentKey = isHumanTechEquationPost ? 
     `human-tech-equation-${language}` : 
@@ -32,7 +33,9 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     if (isHumanTechEquationPost && isItalian && content) {
       const translate = async () => {
         try {
+          console.log("Translating Human + Tech Equation blog post to Italian");
           const result = await translateText(content, 'en', 'it');
+          console.log("Translation completed");
           setTranslatedContent(result);
         } catch (error) {
           console.error("Translation error:", error);
@@ -55,7 +58,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
                          translatedContent.includes("New Wave of AI") ||
                          translatedContent.includes("AI Revolution") ||
                          translatedContent.includes("The Human + Tech Equation") ||
-                         translatedContent.includes("L'Equazione Umano + Tecnologia");
+                         translatedContent.includes("L'Equazione Umano + Tecnologia") ||
+                         translatedContent.includes("Empowering Your Workforce");
     console.log("Is target blog post:", isTargetPost);
     
     // First apply general processing
@@ -80,6 +84,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       content.includes("New Wave of AI") ||
       content.includes("AI Revolution") ||
       content.includes("The Human + Tech Equation") ||
+      content.includes("Empowering Your Workforce") ||
       content.includes("L'Equazione Umano + Tecnologia")
     );
     

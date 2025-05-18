@@ -22,12 +22,14 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
   
   // If the translation is the same as the key (meaning no translation found)
   // and a fallback is provided, use the fallback
-  const displayText = translatedText === textKey && fallback ? fallback : translatedText;
+  const displayText = (translatedText === textKey && fallback) ? fallback : translatedText;
   
   // Check for Italian language based on the key prefix or specific blog post
   const { language } = useLanguage();
   const isItalianText = textKey.startsWith('it.') || 
-                       (textKey.includes('human-tech-equation') && language === 'it');
+                       ((textKey.includes('human-tech-equation') || 
+                         textKey.includes('workforce-digital-transformation')) && 
+                        language === 'it');
   
   if (dangerouslySetInnerHTML) {
     return (
