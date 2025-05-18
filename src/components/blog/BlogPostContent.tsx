@@ -19,11 +19,14 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const isItalian = language === "it";
   const [translatedContent, setTranslatedContent] = React.useState<string>("");
   
-  // Generate a unique content key for the specific blog post
-  const isHumanTechEquationPost = content?.includes("Human + Tech Equation") || 
-                                  content?.includes("workforce-digital-transformation") || 
-                                  content?.includes("Empowering Your Workforce");
+  // More reliable detection of the specific Human + Tech Equation blog post
+  const isHumanTechEquationPost = 
+    content?.includes("Human + Tech Equation") || 
+    content?.includes("workforce-digital-transformation") || 
+    content?.includes("Empowering Your Workforce") ||
+    content?.includes("human-tech-equation");
   
+  // Generate a unique content key for the specific blog post
   const contentKey = isHumanTechEquationPost ? 
     `human-tech-equation-${language}` : 
     `blog-content-${Math.random().toString(36).substring(7)}`;
@@ -52,14 +55,18 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const modifiedContent = React.useMemo(() => {
     if (!translatedContent) return "";
     
-    // Check if this is the special blog post (both original and permanent version)
-    const isTargetPost = translatedContent.includes("Beyond Pattern Recognition") || 
-                         translatedContent.includes("Q2 2025") ||
-                         translatedContent.includes("New Wave of AI") ||
-                         translatedContent.includes("AI Revolution") ||
-                         translatedContent.includes("The Human + Tech Equation") ||
-                         translatedContent.includes("L'Equazione Umano + Tecnologia") ||
-                         translatedContent.includes("Empowering Your Workforce");
+    // Enhanced detection for the special blog post (both original and permanent version)
+    const isTargetPost = 
+      translatedContent.includes("Beyond Pattern Recognition") || 
+      translatedContent.includes("Q2 2025") ||
+      translatedContent.includes("New Wave of AI") ||
+      translatedContent.includes("AI Revolution") ||
+      translatedContent.includes("The Human + Tech Equation") ||
+      translatedContent.includes("L'Equazione Umano + Tecnologia") ||
+      translatedContent.includes("Empowering Your Workforce") ||
+      translatedContent.includes("human-tech-equation") ||
+      translatedContent.includes("workforce-digital-transformation");
+    
     console.log("Is target blog post:", isTargetPost);
     
     // First apply general processing
@@ -85,7 +92,9 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       content.includes("AI Revolution") ||
       content.includes("The Human + Tech Equation") ||
       content.includes("Empowering Your Workforce") ||
-      content.includes("L'Equazione Umano + Tecnologia")
+      content.includes("L'Equazione Umano + Tecnologia") ||
+      content.includes("human-tech-equation") ||
+      content.includes("workforce-digital-transformation")
     );
     
     if (isTargetPost) {

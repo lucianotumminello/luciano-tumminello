@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { Language, getTranslation } from "@/translations";
 import { translateText } from "@/utils/blogUtils";
@@ -62,14 +61,17 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   
   // Get the correct translation using the getTranslation utility
   const t = (key: string): string => {
-    // Handle special case for Human + Tech Equation blog post
+    // Special handling for Human + Tech Equation blog post
     if ((key.includes('human-tech-equation') || key.includes('workforce-digital-transformation')) && language === 'it') {
       // Check if we have this in cache first
       const cacheKey = `human-tech-equation-it`;
-      if (translationCache[cacheKey]) {
+      if (translationCache[cacheKey] && translationCache[cacheKey].length > 1000) {
         console.log("Using cached Italian translation for Human + Tech Equation");
         return translationCache[cacheKey];
       }
+      
+      // We need to ensure the Italian translation is complete and properly cached
+      console.log("No cached translation or cache is incomplete - will use fallback");
       
       // For this specific blog post, we'll return the key to use the fallback in TranslatedText
       // This allows the full pre-translated content from translateText to be used
@@ -85,9 +87,11 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     setLanguage(lang);
     localStorage.setItem("preferredLanguage", lang);
     
-    // Clear the translation cache when language changes
+    // Only clear translations for the language that's not being switched to
+    // This ensures we keep the translations for the current language
+    const otherLang = lang === 'en' ? 'it' : 'en';
     Object.keys(translationCache).forEach(key => {
-      if (key.includes(lang)) {
+      if (key.includes(otherLang)) {
         delete translationCache[key];
       }
     });

@@ -31,6 +31,12 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
                          textKey.includes('workforce-digital-transformation')) && 
                         language === 'it');
   
+  // For debugging
+  if (textKey.includes('human-tech-equation') || textKey.includes('workforce-digital-transformation')) {
+    console.log(`TranslatedText for ${textKey}: using ${isItalianText ? 'Italian' : 'English'} text`);
+    console.log(`Text length: ${displayText?.length || 0} characters`);
+  }
+  
   if (dangerouslySetInnerHTML) {
     return (
       <Component 

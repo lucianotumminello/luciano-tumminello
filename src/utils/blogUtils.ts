@@ -10,7 +10,14 @@ export async function translateText(text: string, sourceLang: string, targetLang
   if (!text) return "";
   
   // For the Human + Tech Equation blog post, provide a complete Italian translation
-  if ((text.includes("Human + Tech Equation") || text.includes("Empowering Your Workforce")) && targetLang === 'it') {
+  if ((text.includes("Human + Tech Equation") || 
+       text.includes("Empowering Your Workforce") ||
+       text.includes("workforce-digital-transformation") ||
+       text.includes("human-tech-equation")) && 
+      targetLang === 'it') {
+    
+    console.log("Returning full Italian translation for Human + Tech Equation article");
+    
     // Return a complete Italian version of the blog post
     return `
 <h1>L'Equazione Umano + Tecnologia: Potenziare la Tua Forza Lavoro nell'Era della Trasformazione Digitale</h1>
@@ -131,6 +138,21 @@ export async function translateText(text: string, sourceLang: string, targetLang
 <p>Luciano Tumminello ha guidato oltre sette team di Digital Ops attraverso significative trasformazioni guidate dall'IA, specializzandosi nell'ottimizzare strategie di marketing orientate ai dati e operazioni aziendali per leader globali. Ex-COO di agenzie di marketing digitale e attualmente leader operativo per marchi europei, Luciano ha una comprovata esperienza nell'aumentare l'efficienza operativa implementando soluzioni digitali innovative che allineano tecnologia e talento umano.</p>
 
 <p>Collegati su <a href="https://www.linkedin.com/in/lucianotumminello" target="_blank" rel="noopener">LinkedIn</a></p>
+
+<h2>Ulteriori Letture e Risorse</h2>
+
+<p>Se hai trovato questo articolo utile, potresti voler esplorare questi argomenti correlati:</p>
+
+<ul>
+<li><a href="#">Oltre la Tecnologia: Costruire una Cultura Guidata dall'IA</a></li>
+<li><a href="#">La Rivoluzione della Leadership nell'IA: Adattarsi al Nuovo Paradigma</a></li>
+<li><a href="#">Scopri di più sul mio percorso professionale nella trasformazione digitale</a></li>
+<li><a href="#">Contattami per consulenze sulle strategie di implementazione dell'IA</a></li>
+</ul>
+
+<h2>Argomenti</h2>
+
+<p>#Trasformazione Digitale #Forza Lavoro #Tecnologia #IA</p>
     `;
   }
   
