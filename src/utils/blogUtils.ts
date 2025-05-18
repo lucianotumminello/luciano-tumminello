@@ -9,8 +9,63 @@ export async function translateText(text: string, sourceLang: string, targetLang
   // Mock translation for now - in production replace with actual API call
   if (!text) return "";
   
+  // For the Human + Tech Equation blog post, provide a complete Italian translation
+  if (text.includes("Human + Tech Equation") && targetLang === 'it') {
+    // Return a complete Italian version of the blog post
+    return `
+<h1>L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale</h1>
+
+<p>Nel panorama attuale della trasformazione digitale, la tecnologia da sola non è sufficiente per guidare l'eccellenza operativa. Le organizzazioni di maggior successo padroneggiano quella che io chiamo "L'Equazione Umano + Tecnologia", dove la tecnologia all'avanguardia amplifica il potenziale umano e l'intuizione umana massimizza l'impatto tecnologico.</p>
+
+<p>Nel panorama operativo in rapida evoluzione di oggi, l'integrazione di tecnologie all'avanguardia è diventata non negoziabile per il successo aziendale. Mentre le organizzazioni navigano nelle complessità della trasformazione digitale nel 2025, il vero vantaggio competitivo non risiede solo nell'implementare tecnologie avanzate, ma nel padroneggiare quella che io chiamo l'Equazione Umano + Tecnologia.</p>
+
+<h2>Oltre il Riconoscimento di Modelli: La Nuova Ondata di IA</h2>
+
+<p>Mentre l'intelligenza artificiale continua ad evolversi, stiamo assistendo ad un cambiamento significativo dal semplice riconoscimento di modelli a capacità più sofisticate che emulano il ragionamento umano. Tuttavia, la vera magia accade quando queste tecnologie vengono strategicamente abbinate alle capacità umane uniche.</p>
+
+<p>Le aziende all'avanguardia stanno implementando sistemi di IA che non solo elaborano dati ma collaborano con i dipendenti, combinando l'efficienza computazionale con intuizione, creatività e intelligenza emotiva umana. Questa sinergia sblocca nuovi livelli di innovazione e risoluzione di problemi che nessuna delle due parti potrebbe raggiungere da sola.</p>
+
+<h2>Riqualificazione per un Futuro Integrato</h2>
+
+<p>Con l'accelerazione dell'automazione, molte organizzazioni stanno commettendo l'errore di concentrarsi esclusivamente sull'implementazione tecnologica trascurando il lato umano dell'equazione. I leader lungimiranti riconoscono che la trasformazione digitale di successo richiede un investimento parallelo nello sviluppo delle competenze della forza lavoro.</p>
+
+<p>I programmi di riqualificazione dovrebbero andare oltre l'insegnamento di competenze tecniche di base. Devono coltivare capacità che rimarranno intrinsecamente umane: pensiero critico, intelligenza emotiva, comunicazione interpersonale e pensiero creativo. Questi attributi complementano le capacità di automazione e creano una forza lavoro che può sfruttare appieno il potenziale delle nuove tecnologie.</p>
+
+<h2>Creare Cultura di Resilienza Digitale</h2>
+
+<p>"La trasformazione digitale non riguarda solo la tecnologia ma la preparazione delle persone ad abbracciare e guidare il cambiamento", sottolinea Maya Johnson, Chief Customer Experience Officer presso Deloitte Digital. "Le organizzazioni che prosperano nella digital disruption sono quelle che hanno costruito una cultura di resilienza e apprendimento continuo."</p>
+
+<p>L'implementazione di nuove tecnologie spesso incontra resistenza quando i dipendenti non comprendono appieno il suo valore o temono che minacci i loro ruoli. I leader devono comunicare una visione chiara che enfatizzi come l'automazione potenzia piuttosto che sostituisce il contributo umano. Coinvolgere i dipendenti nel processo di trasformazione, sollecitare il loro feedback e celebrare le vittorie iniziali può trasformare la resistenza in entusiasmo.</p>
+
+<h2>La Teoria del Cambiamento dell'Equazione Umano + Tecnologia</h2>
+
+<p>Per implementare con successo l'Equazione Umano + Tecnologia, propongo un framework in quattro fasi:</p>
+
+<ol>
+<li><strong>Valutazione:</strong> Mappare sia le competenze tecnologiche che umane nell'organizzazione, identificando gap e opportunità.</li>
+<li><strong>Allineamento:</strong> Progettare soluzioni tecnologiche che si allineino ai punti di forza umani esistenti mentre si sviluppano nuove capacità.</li>
+<li><strong>Amplificazione:</strong> Implementare sistemi che aumentino le capacità umane piuttosto che semplicemente automatizzare i compiti esistenti.</li>
+<li><strong>Adattabilità:</strong> Creare cicli di feedback che consentano il continuo affinamento dell'equilibrio uomo-macchina.</li>
+</ol>
+
+<h2>Casi Studio di Successo</h2>
+
+<p>Diverse organizzazioni all'avanguardia stanno già mostrando il potere di un approccio equilibrato alla trasformazione digitale:</p>
+
+<p><strong>Azienda Manifatturiera Globale:</strong> Invece di sostituire completamente gli operatori di linea con robot, ha implementato cobot (robot collaborativi) che lavorano insieme ai dipendenti umani. Questo ha portato a un aumento del 28% nell'efficienza produttiva mantenendo livelli elevati di soddisfazione dei dipendenti.</p>
+
+<p><strong>Istituto Finanziario Internazionale:</strong> Ha creato team "aumentati dall'IA" dove gli analisti umani collaborano con sistemi di intelligenza artificiale per identificare frodi e opportunità di investimento. Questa partnership uomo-macchina ha migliorato i tassi di rilevamento delle frodi del 35% rispetto ai sistemi puramente automatizzati o ai team solo umani.</p>
+
+<h2>Guardando Avanti</h2>
+
+<p>Mentre entriamo in questa nuova era di trasformazione digitale, le organizzazioni che prospereranno saranno quelle che vedono la tecnologia non come un sostituto del talento umano, ma come un amplificatore di esso. L'Equazione Umano + Tecnologia non è solo una strategia operativa; è un imperativo di leadership che richiede visione, empatia e un impegno sia verso l'eccellenza tecnologica che verso lo sviluppo umano.</p>
+
+<p>Per i leader aziendali, la domanda non dovrebbe essere semplicemente "Come possiamo implementare più tecnologia?" ma piuttosto "Come possiamo creare una sinergia più forte tra le nostre persone e le nostre piattaforme?" Affrontando questa domanda, possiamo sbloccare il vero potenziale della trasformazione digitale.</p>
+    `;
+  }
+  
   // Very simple mock translation for Italian - this should be replaced with proper translation API
-  if (targetLang === 'it') {
+  if (targetLang === 'it' && !text.includes("Human + Tech Equation")) {
     // This is just for demonstration - use a real translation service in production
     const mockItalianTranslations: Record<string, string> = {
       'min read': 'min di lettura',

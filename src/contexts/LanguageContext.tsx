@@ -62,14 +62,17 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   
   // Get the correct translation using the getTranslation utility
   const t = (key: string): string => {
-    // For blog post special handling with human-tech-equation post
-    if (key.startsWith('human-tech-equation') && language === 'it') {
+    // Handle special case for Human + Tech Equation blog post
+    if (key.includes('human-tech-equation') && language === 'it') {
       // Check if we have this in cache first
       const cacheKey = `human-tech-equation-it`;
       if (translationCache[cacheKey]) {
         return translationCache[cacheKey];
       }
-      return key; // Will use fallback in component
+      
+      // For this specific blog post, we'll return the key to use the fallback in TranslatedText
+      // This allows the full pre-translated content from translateText to be used
+      return key;
     }
     
     return getTranslation(language, key);

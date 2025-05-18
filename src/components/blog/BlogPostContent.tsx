@@ -21,7 +21,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   
   // Generate a unique content key for the specific blog post
   const isHumanTechEquationPost = content?.includes("Human + Tech Equation") || 
-                                   content?.includes("workforce-digital-transformation");
+                                  content?.includes("workforce-digital-transformation");
   
   const contentKey = isHumanTechEquationPost ? 
     `human-tech-equation-${language}` : 
@@ -54,7 +54,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
                          translatedContent.includes("Q2 2025") ||
                          translatedContent.includes("New Wave of AI") ||
                          translatedContent.includes("AI Revolution") ||
-                         translatedContent.includes("The Human + Tech Equation");
+                         translatedContent.includes("The Human + Tech Equation") ||
+                         translatedContent.includes("L'Equazione Umano + Tecnologia");
     console.log("Is target blog post:", isTargetPost);
     
     // First apply general processing
@@ -78,7 +79,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       content.includes("Q2 2025") ||
       content.includes("New Wave of AI") ||
       content.includes("AI Revolution") ||
-      content.includes("The Human + Tech Equation")
+      content.includes("The Human + Tech Equation") ||
+      content.includes("L'Equazione Umano + Tecnologia")
     );
     
     if (isTargetPost) {

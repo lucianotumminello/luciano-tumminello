@@ -24,8 +24,10 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
   // and a fallback is provided, use the fallback
   const displayText = translatedText === textKey && fallback ? fallback : translatedText;
   
-  // Check for Italian language based on the key prefix
-  const isItalianText = textKey.startsWith('it.') || (textKey.includes('human-tech-equation') && useLanguage().language === 'it');
+  // Check for Italian language based on the key prefix or specific blog post
+  const { language } = useLanguage();
+  const isItalianText = textKey.startsWith('it.') || 
+                       (textKey.includes('human-tech-equation') && language === 'it');
   
   if (dangerouslySetInnerHTML) {
     return (
