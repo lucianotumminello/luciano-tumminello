@@ -78,6 +78,7 @@ const BlogPostStyles: React.FC = () => {
       [lang="it"] h3 {
         line-height: 1.3;
         letter-spacing: -0.01em;
+        font-weight: 600;
       }
       
       [lang="it"] p,
