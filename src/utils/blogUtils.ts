@@ -1,3 +1,4 @@
+
 /**
  * Utility functions for blog management
  */
@@ -134,7 +135,7 @@ export async function translateText(text: string, sourceLang: string, targetLang
 
 <h2>Sull'Autore</h2>
 
-<p>Luciano Tumminello ha guidato oltre sette team di Digital Ops attraverso significative trasformazioni guidate dall'IA, specializzandosi nell'ottimizzare strategie di marketing orientate ai dati e operazioni aziendali per leader globali. Ex-COO di agenzie di marketing digitale e attualmente leader operativo per marchi europei, Luciano ha una comprovata esperienza nell'aumentare l'efficienza operativa implementando soluzioni digitali innovative che allineano tecnologia e talento umano.</p>
+<p>Luciano Tumminello ha oltre 15 anni di esperienza nella guida della crescita in Asia-Pacifico, specializzato in marketing, operazioni e trasformazione digitale, con un crescente focus sull'utilizzo dell'intelligenza artificiale. Con un comprovato track record nella guida di iniziative strategiche e nel fornire risultati misurabili, Luciano aiuta le organizzazioni a navigare nella complessa intersezione tra tecnologia e leadership aziendale.</p>
 
 <p>Collegati su <a href="https://www.linkedin.com/in/lucianotumminello" target="_blank" rel="noopener">LinkedIn</a></p>
 
@@ -161,6 +162,9 @@ export async function translateText(text: string, sourceLang: string, targetLang
       'January': 'Gennaio',
       'February': 'Febbraio',
       'March': 'Marzo',
+      'About the Author': 'Sull\'Autore',
+      'Contact me': 'Contattami',
+      'for more information on this topic': 'per ulteriori informazioni su questo argomento',
     };
 
     let translatedText = text;
