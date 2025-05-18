@@ -26,7 +26,8 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       content.includes("workforce-digital-transformation") || 
       content.includes("Empowering Your Workforce") ||
       content.includes("human-tech-equation") ||
-      content.includes("L'Equazione Umano + Tecnologia")
+      content.includes("L'Equazione Umano + Tecnologia") ||
+      content.includes("L'equazione tra uomo e tecnologia")
     );
   }, [content]);
   
@@ -36,11 +37,11 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     `blog-content-${Math.random().toString(36).substring(7)}`;
   
   React.useEffect(() => {
-    // Only attempt translation for the targeted blog post
+    // For the target blog post, always use the full translation from translateText
     if (isHumanTechEquationPost && isItalian && content) {
       const translate = async () => {
         try {
-          console.log("Translating Human + Tech Equation blog post to Italian");
+          console.log("Loading full Italian translation for Human + Tech Equation blog post");
           const result = await translateText(content, 'en', 'it');
           console.log("Translation completed, length:", result.length);
           setTranslatedContent(result);

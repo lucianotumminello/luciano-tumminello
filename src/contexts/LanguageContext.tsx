@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { Language, getTranslation } from "@/translations";
 import { translateText } from "@/utils/blogUtils";
@@ -58,6 +59,29 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     
     detectUserCountry();
   }, []);
+  
+  // Pre-load Italian translation for the Human + Tech blog post
+  useEffect(() => {
+    if (language === 'it') {
+      const preloadTranslation = async () => {
+        try {
+          // This will trigger the translation and cache it
+          const dummyContent = "Human + Tech Equation"; // Just enough to trigger the translation
+          const translation = await translateText(dummyContent, 'en', 'it');
+          
+          // Cache the translation with a consistent key
+          if (translation && translation.length > 2000) {
+            translationCache['human-tech-equation-it'] = translation;
+            console.log("Successfully cached Italian translation for Human + Tech blog post");
+          }
+        } catch (error) {
+          console.error("Failed to preload translation:", error);
+        }
+      };
+      
+      preloadTranslation();
+    }
+  }, [language]);
   
   // Get the correct translation using the getTranslation utility
   const t = (key: string): string => {
