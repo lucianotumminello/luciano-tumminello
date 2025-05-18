@@ -18,7 +18,7 @@ export async function translateText(text: string, sourceLang: string, targetLang
     
     console.log("Returning full Italian translation for Human + Tech Equation article");
     
-    // Return a complete Italian version of the blog post that matches the image
+    // Return a complete Italian version of the blog post that matches the image exactly
     return `
 <h1>L'equazione tra uomo e tecnologia: dare potere alla forza lavoro nell'era della trasformazione digitale</h1>
 

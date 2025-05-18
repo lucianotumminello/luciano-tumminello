@@ -72,6 +72,25 @@ const BlogPostStyles: React.FC = () => {
         margin-bottom: 0.5rem;
       }
       
+      /* Ensure consistent styling between English and Italian versions */
+      [lang="it"] h1, 
+      [lang="it"] h2, 
+      [lang="it"] h3 {
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+      }
+      
+      [lang="it"] p,
+      [lang="it"] li {
+        line-height: 1.6;
+      }
+      
+      [lang="it"] ul,
+      [lang="it"] ol {
+        margin-top: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      
       @media (max-width: 768px) {
         /* Hide desktop images on mobile */
         .desktop-image-container,
