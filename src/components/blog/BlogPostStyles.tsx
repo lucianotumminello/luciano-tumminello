@@ -115,6 +115,14 @@ const BlogPostStyles: React.FC = () => {
         margin-bottom: 1rem;
       }
       
+      /* Force heading consistency regardless of language */
+      [lang="it"] h1, [lang="it"] h2, [lang="it"] h3,
+      [lang="en"] h1, [lang="en"] h2, [lang="en"] h3 {
+        display: block !important;
+        visibility: visible !important;
+        font-family: inherit !important;
+      }
+      
       @media (max-width: 768px) {
         /* Hide desktop images on mobile */
         .desktop-image-container,
