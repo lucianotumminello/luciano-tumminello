@@ -1,4 +1,3 @@
-
 /**
  * Utility functions for blog management
  */
@@ -138,17 +137,6 @@ export async function translateText(text: string, sourceLang: string, targetLang
 <p>Luciano Tumminello ha guidato oltre sette team di Digital Ops attraverso significative trasformazioni guidate dall'IA, specializzandosi nell'ottimizzare strategie di marketing orientate ai dati e operazioni aziendali per leader globali. Ex-COO di agenzie di marketing digitale e attualmente leader operativo per marchi europei, Luciano ha una comprovata esperienza nell'aumentare l'efficienza operativa implementando soluzioni digitali innovative che allineano tecnologia e talento umano.</p>
 
 <p>Collegati su <a href="https://www.linkedin.com/in/lucianotumminello" target="_blank" rel="noopener">LinkedIn</a></p>
-
-<h2>Further Reading & Resources</h2>
-
-<p>Se hai trovato questo articolo utile, potresti voler esplorare questi argomenti correlati:</p>
-
-<ul>
-<li><a href="#">Beyond Technology: Building an AI-Driven Culture</a></li>
-<li><a href="#">The Leadership Revolution in AI: Adapting to the New Paradigm</a></li>
-<li><a href="#">Learn More About My Journey in Digital Transformation</a></li>
-<li><a href="#">Contact Me for Consulting on AI Implementation Strategies</a></li>
-</ul>
 
 <h2>Topics</h2>
 
