@@ -1,6 +1,7 @@
 
 import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { Language, getTranslation } from "@/translations";
+import { translateText } from "@/utils/blogUtils";
 
 // Define the context type
 type LanguageContextType = {
@@ -15,6 +16,9 @@ const LanguageContext = createContext<LanguageContextType>({
   t: () => "",
   changeLanguage: () => {},
 });
+
+// Translation cache to improve performance
+const translationCache: Record<string, string> = {};
 
 // Create the provider component
 interface LanguageProviderProps {
@@ -58,6 +62,16 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   
   // Get the correct translation using the getTranslation utility
   const t = (key: string): string => {
+    // For blog post special handling with human-tech-equation post
+    if (key.startsWith('human-tech-equation') && language === 'it') {
+      // Check if we have this in cache first
+      const cacheKey = `human-tech-equation-it`;
+      if (translationCache[cacheKey]) {
+        return translationCache[cacheKey];
+      }
+      return key; // Will use fallback in component
+    }
+    
     return getTranslation(language, key);
   };
   

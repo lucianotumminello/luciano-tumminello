@@ -7,13 +7,15 @@ interface TranslatedTextProps {
   className?: string;
   as?: React.ElementType;
   fallback?: string;
+  dangerouslySetInnerHTML?: boolean;
 }
 
 const TranslatedText: React.FC<TranslatedTextProps> = ({ 
   textKey, 
   className = "", 
   as: Component = "span",
-  fallback
+  fallback,
+  dangerouslySetInnerHTML = false
 }) => {
   const { t } = useLanguage();
   const translatedText = t(textKey);
@@ -22,8 +24,21 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
   // and a fallback is provided, use the fallback
   const displayText = translatedText === textKey && fallback ? fallback : translatedText;
   
+  // Check for Italian language based on the key prefix
+  const isItalianText = textKey.startsWith('it.') || (textKey.includes('human-tech-equation') && useLanguage().language === 'it');
+  
+  if (dangerouslySetInnerHTML) {
+    return (
+      <Component 
+        className={className} 
+        lang={isItalianText ? 'it' : 'en'} 
+        dangerouslySetInnerHTML={{ __html: displayText }}
+      />
+    );
+  }
+  
   return (
-    <Component className={className} lang={textKey.startsWith('it.') ? 'it' : 'en'}>
+    <Component className={className} lang={isItalianText ? 'it' : 'en'}>
       {displayText}
     </Component>
   );
