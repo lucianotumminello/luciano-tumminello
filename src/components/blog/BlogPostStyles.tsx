@@ -100,6 +100,37 @@ const BlogPostStyles: React.FC = () => {
         margin-bottom: 0.75rem;
       }
       
+      /* Ensure list items are properly displayed in both languages */
+      [lang="it"] ul,
+      [lang="en"] ul {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        margin: 1rem 0;
+      }
+      
+      [lang="it"] ol,
+      [lang="en"] ol {
+        list-style-type: decimal;
+        padding-left: 1.5rem;
+        margin: 1rem 0;
+      }
+      
+      [lang="it"] li,
+      [lang="en"] li {
+        margin-bottom: 0.5rem;
+        display: list-item !important;
+      }
+      
+      /* Force visibility of nested lists */
+      [lang="it"] li > ul,
+      [lang="it"] li > ol,
+      [lang="en"] li > ul,
+      [lang="en"] li > ol {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        display: block !important;
+      }
+      
       [lang="it"] p,
       [lang="it"] li,
       [lang="en"] p,
@@ -156,3 +187,4 @@ const BlogPostStyles: React.FC = () => {
 };
 
 export default BlogPostStyles;
+

@@ -57,6 +57,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     }
   }, [content, isItalian, isHumanTechEquationPost]);
   
+  // Process and enhance the content for proper display
   const modifiedContent = React.useMemo(() => {
     if (!translatedContent) return "";
     
@@ -72,7 +73,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     
     // Finally, ensure outgoing links exist in all posts
     return ensureOutgoingLinks(processedContent);
-  }, [translatedContent, isMobile, isItalian, isHumanTechEquationPost]);
+  }, [translatedContent, isMobile, isHumanTechEquationPost]);
   
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
@@ -83,8 +84,19 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       setTimeout(() => {
         updateImageVisibility(true, isMobile);
       }, 500);
+      
+      // Additional fix for nested lists
+      const fixNestedLists = () => {
+        const nestedLists = document.querySelectorAll('li > ul, li > ol');
+        nestedLists.forEach(list => {
+          list.setAttribute('style', 'display: block !important; margin-top: 0.5rem;');
+        });
+      };
+      
+      fixNestedLists();
+      setTimeout(fixNestedLists, 1000);
     }
-  }, [content, isMobile, isHumanTechEquationPost]);
+  }, [content, isMobile, isHumanTechEquationPost, language]);
   
   return (
     <article className={`bg-white rounded-lg shadow-md p-4 md:p-6 mb-8 ${isMobile ? 'content-mobile-optimized' : ''}`}>
@@ -101,3 +113,4 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
 };
 
 export default BlogPostContent;
+

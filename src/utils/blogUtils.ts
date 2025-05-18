@@ -284,3 +284,4 @@ export function generateArticleSchema(post: any, url: string, language: string =
     "inLanguage": isItalian ? "it" : "en"
   };
 }
+
