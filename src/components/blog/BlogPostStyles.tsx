@@ -74,20 +74,43 @@ const BlogPostStyles: React.FC = () => {
       
       /* Ensure consistent styling between English and Italian versions */
       [lang="it"] h1, 
-      [lang="it"] h2, 
-      [lang="it"] h3 {
+      [lang="en"] h1 {
+        font-size: 2.25rem;
         line-height: 1.3;
-        letter-spacing: -0.01em;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+      
+      [lang="it"] h2, 
+      [lang="en"] h2 {
+        font-size: 1.75rem;
+        line-height: 1.3;
         font-weight: 600;
+        margin-top: 1.75rem;
+        margin-bottom: 1rem;
+      }
+      
+      [lang="it"] h3, 
+      [lang="en"] h3 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
       }
       
       [lang="it"] p,
-      [lang="it"] li {
+      [lang="it"] li,
+      [lang="en"] p,
+      [lang="en"] li {
         line-height: 1.6;
       }
       
       [lang="it"] ul,
-      [lang="it"] ol {
+      [lang="it"] ol,
+      [lang="en"] ul,
+      [lang="en"] ol {
         margin-top: 0.75rem;
         margin-bottom: 1rem;
       }
