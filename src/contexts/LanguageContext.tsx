@@ -63,18 +63,17 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   const t = (key: string): string => {
     // Special handling for Human + Tech Equation blog post
     if ((key.includes('human-tech-equation') || key.includes('workforce-digital-transformation')) && language === 'it') {
-      // Check if we have this in cache first
       const cacheKey = `human-tech-equation-it`;
-      if (translationCache[cacheKey] && translationCache[cacheKey].length > 1000) {
+      
+      // Check if we have this in cache
+      if (translationCache[cacheKey] && translationCache[cacheKey].length > 2000) {
         console.log("Using cached Italian translation for Human + Tech Equation");
         return translationCache[cacheKey];
       }
       
-      // We need to ensure the Italian translation is complete and properly cached
-      console.log("No cached translation or cache is incomplete - will use fallback");
-      
       // For this specific blog post, we'll return the key to use the fallback in TranslatedText
       // This allows the full pre-translated content from translateText to be used
+      console.log("No cached translation or incomplete cache - using fallback for Human+Tech post");
       return key;
     }
     

@@ -26,15 +26,16 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
   
   // Check for Italian language based on the key prefix or specific blog post
   const { language } = useLanguage();
-  const isItalianText = textKey.startsWith('it.') || 
-                       ((textKey.includes('human-tech-equation') || 
-                         textKey.includes('workforce-digital-transformation')) && 
-                        language === 'it');
+  const isItalianText = language === 'it' || 
+                         textKey.startsWith('it.') || 
+                         textKey.includes('human-tech-equation') || 
+                         textKey.includes('workforce-digital-transformation');
   
   // For debugging
   if (textKey.includes('human-tech-equation') || textKey.includes('workforce-digital-transformation')) {
     console.log(`TranslatedText for ${textKey}: using ${isItalianText ? 'Italian' : 'English'} text`);
     console.log(`Text length: ${displayText?.length || 0} characters`);
+    console.log(`Current language: ${language}`);
   }
   
   if (dangerouslySetInnerHTML) {
