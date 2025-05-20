@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,57 +36,10 @@ const queryClient = new QueryClient({
   },
 });
 
-// Initialize blog posts on app load with force refresh multiple times
+// Initialize blog posts on app load with force refresh
 console.log("App.tsx: Initializing blog posts on app load with force refresh");
-
-// Immediately initialize blogs
 initializeBlogPosts()
-  .then(() => {
-    console.log("Force refreshing blog posts after initialization");
-    return refreshBlogPosts(true); // Force refresh after initialization
-  })
-  .then(() => {
-    console.log("Blog posts initialization and refresh completed successfully");
-    // Immediate additional refresh to ensure images load
-    refreshBlogPosts(true);
-    
-    // Extra force refresh after a delay to ensure content is loaded
-    setTimeout(() => {
-      console.log("Performing additional force refresh after delay");
-      refreshBlogPosts(true);
-    }, 1000);
-    
-    // Add even more refresh attempts to ensure images are loaded
-    setTimeout(() => {
-      console.log("Performing second additional force refresh");
-      refreshBlogPosts(true);
-    }, 3000);
-    
-    // Final check to ensure images are properly displayed
-    setTimeout(() => {
-      console.log("Final check for image visibility");
-      const updateImageVisibility = () => {
-        const desktopImg = document.getElementById("blog-desktop-image");
-        const mobileImg = document.getElementById("blog-mobile-image");
-        
-        if (desktopImg && mobileImg) {
-          if (window.innerWidth <= 768) {
-            desktopImg.style.display = "none";
-            mobileImg.style.display = "block";
-          } else {
-            desktopImg.style.display = "block";
-            mobileImg.style.display = "none";
-          }
-          
-          // Force reflow
-          desktopImg.offsetHeight;
-          mobileImg.offsetHeight;
-        }
-      };
-      
-      updateImageVisibility();
-    }, 5000);
-  })
+  .then(() => refreshBlogPosts(true)) // Force refresh after initialization
   .catch(error => {
     console.error('Error initializing blog posts on app load:', error);
   });
@@ -102,45 +54,12 @@ const RouteChangeTracker = () => {
     const title = document.title;
     trackPageView(path, title);
     
-    // Always refresh blog posts when visiting the blog page or a blog post to ensure latest content
-    if (path === '/blog' || path.startsWith('/blog/')) {
-      console.log('Blog page or post visited, force refreshing blog posts');
+    // Always refresh blog posts when visiting the blog page to ensure latest content
+    if (path === '/blog') {
+      console.log('Blog page visited, force refreshing blog posts');
       refreshBlogPosts(true).catch(error => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });
-      
-      // Additional refresh for blog post pages to ensure images load
-      if (path.startsWith('/blog/')) {
-        setTimeout(() => {
-          console.log('Additional refresh for blog post page');
-          refreshBlogPosts(true);
-          
-          // Check image visibility
-          const desktopImg = document.getElementById("blog-desktop-image");
-          const mobileImg = document.getElementById("blog-mobile-image");
-          
-          console.log("Desktop image element:", desktopImg);
-          console.log("Mobile image element:", mobileImg);
-          
-          if (desktopImg instanceof HTMLImageElement) {
-            console.log("Desktop image src:", desktopImg.src);
-          }
-          
-          if (mobileImg instanceof HTMLImageElement) {
-            console.log("Mobile image src:", mobileImg.src);
-          }
-        }, 1500);
-      }
-    }
-    
-    // When on homepage, force another refresh with a delay
-    if (path === '/') {
-      setTimeout(() => {
-        console.log('Homepage visited, doing an additional refresh');
-        refreshBlogPosts(true).catch(error => {
-          console.error('Error refreshing blog posts on homepage visit:', error);
-        });
-      }, 2000);
     }
     
     // Redirect from homepage to blog only once to avoid infinite loops

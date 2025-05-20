@@ -94,17 +94,12 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
     if (isHumanTechEquationPost || isAgileBackbonePost) {
-      console.log(`Updating image visibility for blog post. Mobile: ${isMobile}`);
       updateImageVisibility(true, isMobile);
       
-      // Additional force-update attempts at different intervals to ensure visibility
-      const intervals = [100, 500, 1000, 2000];
-      intervals.forEach(delay => {
-        setTimeout(() => {
-          console.log(`Updating image visibility after ${delay}ms delay`);
-          updateImageVisibility(true, isMobile);
-        }, delay);
-      });
+      // Additional force-update in case the previous call didn't work
+      setTimeout(() => {
+        updateImageVisibility(true, isMobile);
+      }, 500);
       
       // Additional fix for nested lists
       const fixNestedLists = () => {
@@ -129,22 +124,6 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       fixNestedLists();
       setTimeout(fixNestedLists, 1000);
     }
-    
-    // Force reload all images in the post with a timestamp to prevent caching
-    const reloadImages = () => {
-      const images = document.querySelectorAll('.prose img');
-      const timestamp = Date.now();
-      
-      images.forEach(img => {
-        if (img instanceof HTMLImageElement && !img.src.includes('?t=')) {
-          img.src = `${img.src.split('?')[0]}?t=${timestamp}`;
-        }
-      });
-    };
-    
-    reloadImages();
-    setTimeout(reloadImages, 1000);
-    
   }, [content, isMobile, isHumanTechEquationPost, isAgileBackbonePost, language]);
   
   return (

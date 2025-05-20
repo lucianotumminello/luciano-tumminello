@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect } from "react";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -61,54 +60,6 @@ const BlogPostHeader = ({
   
   const formattedDate = formatDate(date);
   
-  // Add useEffect to ensure images are properly loaded and displayed
-  useEffect(() => {
-    // Function to update image visibility based on screen size
-    const updateImageVisibility = () => {
-      const desktopImg = document.getElementById("blog-desktop-image");
-      const mobileImg = document.getElementById("blog-mobile-image");
-      
-      if (desktopImg && mobileImg) {
-        if (window.innerWidth <= 768) {
-          desktopImg.style.display = "none";
-          mobileImg.style.display = "block";
-        } else {
-          desktopImg.style.display = "block";
-          mobileImg.style.display = "none";
-        }
-      }
-    };
-    
-    // Call initially
-    updateImageVisibility();
-    
-    // Set up listener for window resizes
-    window.addEventListener("resize", updateImageVisibility);
-    
-    // Add a small delay to ensure images are properly displayed after render
-    const timer = setTimeout(updateImageVisibility, 100);
-    
-    // Additional force updates at different intervals
-    const additionalTimers = [500, 1000, 2000].map(delay => 
-      setTimeout(updateImageVisibility, delay)
-    );
-    
-    // Log image URLs for debugging
-    console.log("Desktop image URL:", desktopImageUrl);
-    console.log("Mobile image URL:", imageUrl);
-    
-    return () => {
-      window.removeEventListener("resize", updateImageVisibility);
-      clearTimeout(timer);
-      additionalTimers.forEach(clearTimeout);
-    };
-  }, [isMobile, desktopImageUrl, imageUrl]);
-  
-  // Force reload images with timestamp to prevent caching
-  const timestamp = new Date().getTime();
-  const desktopImageWithCache = `${desktopImageUrl}?t=${timestamp}`;
-  const mobileImageWithCache = `${imageUrl}?t=${timestamp}`;
-  
   return (
     <div className="mb-8">
       <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
@@ -118,30 +69,17 @@ const BlogPostHeader = ({
       
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
-          <AspectRatio ratio={16/9} className="bg-gray-100 relative">
-            {/* Desktop image */}
+          <AspectRatio ratio={16/9} className="bg-gray-100">
+            {/* Simplified image loading strategy for faster mobile rendering */}
             <img 
-              id="blog-desktop-image"
-              src={desktopImageWithCache} 
+              src={isMobile ? imageUrl : desktopImageUrl} 
               alt={title}
-              className="w-full h-full object-cover absolute top-0 left-0"
+              className="w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"
-              width="1200"
-              height="675"
-            />
-            
-            {/* Mobile image */}
-            <img 
-              id="blog-mobile-image"
-              src={mobileImageWithCache} 
-              alt={title}
-              className="w-full h-full object-cover absolute top-0 left-0"
-              loading="eager"
-              fetchPriority="high"
-              width="640"
-              height="360"
-              style={{ display: isMobile ? 'block' : 'none' }} 
+              width={isMobile ? "640" : "1200"}
+              height={isMobile ? "360" : "675"}
+              style={{aspectRatio: "16/9"}}
             />
           </AspectRatio>
         </div>
