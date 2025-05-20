@@ -1,4 +1,3 @@
-
 /**
  * Optimizes images in HTML content for better loading performance and responsive display
  * @param content - HTML content to process
@@ -69,15 +68,6 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     return match;
   });
   
-  // Convert large images to WebP format when possible
-  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
-    if (imgSrc.match(/\.(jpe?g|png)$/) && !imgSrc.includes('?format=webp')) {
-      const newSrc = `${imgSrc}?format=webp`;
-      return `<img ${before}src="${newSrc}"${after}>`;
-    }
-    return match;
-  });
-  
   return processedContent;
 };
 
@@ -93,7 +83,7 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
       const mobileImg = document.getElementById("marketing-mobile-image");
       
       if (desktopImg && mobileImg) {
-        console.log("Found marketing images in DOM, applying final visibility styles");
+        console.log("Found marketing images in DOM, applying visibility styles");
         
         // Create style element for media queries
         const styleEl = document.createElement('style');
@@ -109,27 +99,20 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
         `;
         document.head.appendChild(styleEl);
         
+        // Set initial state based on current device
         if (isMobile) {
           // Mobile display
           desktopImg.style.cssText = "display: none !important";
           mobileImg.style.cssText = "display: block !important";
-          
-          // Add explicit dimensions to prevent layout shifts
-          if (mobileImg instanceof HTMLImageElement) {
-            mobileImg.setAttribute('width', '100%');
-            mobileImg.setAttribute('height', 'auto');
-          }
         } else {
           // Desktop display
           desktopImg.style.cssText = "display: block !important";
           mobileImg.style.cssText = "display: none !important";
-          
-          // Add explicit dimensions to prevent layout shifts
-          if (desktopImg instanceof HTMLImageElement) {
-            desktopImg.setAttribute('width', '100%');
-            desktopImg.setAttribute('height', 'auto');
-          }
         }
+        
+        console.log(`Images visibility set for ${isMobile ? 'mobile' : 'desktop'} display`);
+      } else {
+        console.log("Marketing images not found in DOM");
       }
     } catch (error) {
       console.error("Error updating image visibility:", error);

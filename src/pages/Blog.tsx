@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,11 +17,13 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { getAllBlogPosts } from "@/utils/blog";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Blog = () => {
   const { toast } = useToast();
   const { language } = useLanguage();
   const isItalian = language === "it";
+  const isMobile = useIsMobile();
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
@@ -239,10 +242,13 @@ const Blog = () => {
                 {allPosts.map((post, index) => (
                   <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
                     <div className="relative aspect-[16/9] overflow-hidden">
+                      {/* Use desktop or mobile image based on screen size */}
                       <img 
-                        src={post.imageUrl || (post.desktopImageUrl || "")} 
+                        src={isMobile ? post.imageUrl : (post.desktopImageUrl || post.imageUrl)} 
                         alt={isItalian ? post.titleIT : post.title} 
                         className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+                        loading={index < 2 ? "eager" : "lazy"}
+                        fetchPriority={index < 2 ? "high" : "auto"}
                       />
                     </div>
                     <CardContent className="p-6">

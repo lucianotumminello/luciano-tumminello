@@ -70,16 +70,34 @@ const BlogPostHeader = ({
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Simplified image loading strategy for faster mobile rendering */}
+            {/* Use different images for desktop and mobile */}
             <img 
-              src={isMobile ? imageUrl : desktopImageUrl} 
+              id="marketing-desktop-image"
+              src={desktopImageUrl} 
               alt={title}
               className="w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"
-              width={isMobile ? "640" : "1200"}
-              height={isMobile ? "360" : "675"}
-              style={{aspectRatio: "16/9"}}
+              width="1200"
+              height="675"
+              style={{
+                aspectRatio: "16/9", 
+                display: isMobile ? "none" : "block"
+              }}
+            />
+            <img 
+              id="marketing-mobile-image"
+              src={imageUrl} 
+              alt={title}
+              className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width="640"
+              height="360"
+              style={{
+                aspectRatio: "16/9", 
+                display: isMobile ? "block" : "none"
+              }}
             />
           </AspectRatio>
         </div>

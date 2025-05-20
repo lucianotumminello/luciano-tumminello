@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -39,7 +40,13 @@ const queryClient = new QueryClient({
 // Initialize blog posts on app load with force refresh
 console.log("App.tsx: Initializing blog posts on app load with force refresh");
 initializeBlogPosts()
-  .then(() => refreshBlogPosts(true)) // Force refresh after initialization
+  .then(() => {
+    console.log("Force refreshing blog posts after initialization");
+    return refreshBlogPosts(true); // Force refresh after initialization
+  })
+  .then(() => {
+    console.log("Blog posts initialization and refresh completed successfully");
+  })
   .catch(error => {
     console.error('Error initializing blog posts on app load:', error);
   });

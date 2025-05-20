@@ -28,6 +28,15 @@ export const initializeBlogPosts = async (): Promise<void> => {
     
     console.log("Blog posts initialized:", Object.keys(updatedBlogPosts).length);
     console.log("Available blog posts after init:", Object.keys(updatedBlogPosts).join(", "));
+    
+    // Verify that the Agile backbone post has the correct image URLs
+    const agilePost = updatedBlogPosts['agile-backbone-resilient-operational-models'];
+    if (agilePost) {
+      console.log("Agile post images:", {
+        desktop: agilePost.desktopImageUrl,
+        mobile: agilePost.imageUrl
+      });
+    }
   } catch (error) {
     console.error("Error initializing blog posts:", error);
   }
@@ -86,6 +95,16 @@ export const refreshBlogPosts = async (forceRefresh = false): Promise<BlogPostsS
     
     console.log("Blog posts refreshed from server:", Object.keys(updatedBlogPosts).length);
     console.log("Available blog posts after refresh:", Object.keys(updatedBlogPosts).join(", "));
+    
+    // Verify image URLs after refresh
+    const agilePost = updatedBlogPosts['agile-backbone-resilient-operational-models'];
+    if (agilePost) {
+      console.log("Agile post images after refresh:", {
+        desktop: agilePost.desktopImageUrl,
+        mobile: agilePost.imageUrl
+      });
+    }
+    
     return { ...updatedBlogPosts };
   } catch (error) {
     console.error("Error refreshing blog posts:", error);
