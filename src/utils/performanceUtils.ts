@@ -34,43 +34,32 @@ export const preloadCriticalResources = (resources: string[]) => {
  * Lazy loads images when they enter the viewport
  */
 export const setupLazyLoading = () => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
   
-  // Use standard IntersectionObserver with fallback for Edge
-  if ('IntersectionObserver' in window) {
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    
-    const imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target as HTMLImageElement;
-          const src = img.dataset.src;
-          
-          if (src) {
-            img.src = src;
-            img.removeAttribute('data-src');
-          }
-          
-          imageObserver.unobserve(img);
+  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+  
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target as HTMLImageElement;
+        const src = img.dataset.src;
+        
+        if (src) {
+          img.src = src;
+          img.removeAttribute('data-src');
         }
-      });
-    }, {
-      rootMargin: '200px', // Start loading before the image is visible
-      threshold: 0.01
-    });
-    
-    lazyImages.forEach(img => {
-      imageObserver.observe(img);
-    });
-  } else {
-    // Simple fallback for browsers without IntersectionObserver
-    const lazyImages = document.querySelectorAll('img[data-src]');
-    lazyImages.forEach((img: HTMLImageElement) => {
-      if (img.dataset.src) {
-        img.src = img.dataset.src;
+        
+        imageObserver.unobserve(img);
       }
     });
-  }
+  }, {
+    rootMargin: '200px', // Start loading before the image is visible
+    threshold: 0.01
+  });
+  
+  lazyImages.forEach(img => {
+    imageObserver.observe(img);
+  });
 };
 
 /**
@@ -96,7 +85,7 @@ export const deferNonCriticalResources = (urls: string[], type: 'script' | 'styl
         document.head.appendChild(link);
       }
     });
-  }, 1000); // Reduced delay for non-critical resources to improve Edge compatibility
+  }, 2000); // 2-second delay for non-critical resources
 };
 
 /**
@@ -126,14 +115,12 @@ export const optimizeCoreWebVitals = () => {
   heroImages.forEach(img => {
     // @ts-ignore
     if (img.tagName === 'IMG') {
-      // Use standard attributes for broader compatibility
-      img.setAttribute('importance', 'high');
-      img.setAttribute('loading', 'eager');
-      // Only use fetchPriority for browsers that support it
-      if ('fetchPriority' in HTMLImageElement.prototype) {
-        // @ts-ignore
-        img.fetchPriority = 'high';
-      }
+      // @ts-ignore
+      img.fetchPriority = 'high';
+      // @ts-ignore
+      img.loading = 'eager';
+      // @ts-ignore
+      img.decoding = 'sync';
     }
   });
 };
@@ -149,50 +136,8 @@ export const initPerformanceOptimizations = () => {
     '/lovable-uploads/2598eb07-464e-4495-a4bd-acc4b5070f3a.png'
   ];
   
-  // Set up performance optimizations with browser compatibility in mind
+  // Set up performance optimizations
   preloadCriticalResources(criticalResources);
-  
-  // Delay setup for Edge compatibility
-  setTimeout(() => {
-    setupLazyLoading();
-    optimizeCoreWebVitals();
-  }, 100);
+  setupLazyLoading();
+  optimizeCoreWebVitals();
 };
-
-/**
- * Detect browser for specific optimizations
- */
-export const detectBrowser = () => {
-  const userAgent = navigator.userAgent;
-  
-  if (userAgent.indexOf("Edg") !== -1 || userAgent.indexOf("Edge") !== -1) {
-    return "edge";
-  } else if (userAgent.indexOf("Chrome") !== -1) {
-    return "chrome";
-  } else if (userAgent.indexOf("Safari") !== -1) {
-    return "safari";
-  } else if (userAgent.indexOf("Firefox") !== -1) {
-    return "firefox";
-  } else {
-    return "other";
-  }
-};
-
-/**
- * Apply browser-specific optimizations
- */
-export const applyBrowserSpecificOptimizations = () => {
-  const browser = detectBrowser();
-  
-  if (browser === "edge") {
-    // Edge-specific optimizations
-    document.documentElement.classList.add('browser-edge');
-    
-    // Adjust CSS containment strategies which can cause issues in Edge
-    const elements = document.querySelectorAll('.layout-optimized, .render-optimized');
-    elements.forEach((el) => {
-      (el as HTMLElement).style.contain = 'none'; 
-    });
-  }
-};
-

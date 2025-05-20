@@ -2,10 +2,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import { 
-  initPerformanceOptimizations, 
-  applyBrowserSpecificOptimizations 
-} from './utils/performanceUtils.ts'
+import { initPerformanceOptimizations } from './utils/performanceUtils.ts'
 
 // Immediate initialization for critical performance optimizations
 if (typeof document !== 'undefined') {
@@ -57,13 +54,6 @@ const initApp = () => {
       
       // Initialize performance optimizations after initial render
       initPerformanceOptimizations();
-      
-      // Apply browser-specific optimizations
-      if (typeof window !== 'undefined') {
-        setTimeout(() => {
-          applyBrowserSpecificOptimizations();
-        }, 100);
-      }
       
       // Defer analytics after app is interactive
       setTimeout(() => {

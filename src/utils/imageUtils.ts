@@ -1,3 +1,4 @@
+
 /**
  * Optimizes images in HTML content for better loading performance and responsive display
  * @param content - HTML content to process
@@ -10,10 +11,12 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
   // Process content for mobile optimization
   let processedContent = content;
   
-  // Add loading="lazy", decoding="async", and other attributes to all images with better browser compatibility
+  // Add loading="lazy", decoding="async", and fetchpriority attributes to all images
   processedContent = processedContent.replace(/<img\s+([^>]*)>/g, (match, attrs) => {
     // Skip if image already has proper attributes
-    if (attrs.includes('loading="lazy"') && attrs.includes('decoding="async"')) return match;
+    if (attrs.includes('loading="lazy"') && 
+        attrs.includes('decoding="async"') && 
+        attrs.includes('fetchpriority')) return match;
     
     let newAttrs = attrs;
     
@@ -27,9 +30,9 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
       newAttrs += ' decoding="async"';
     }
     
-    // Add importance attribute for broader compatibility
-    if (!attrs.includes('importance=')) {
-      newAttrs += ' importance="auto"';
+    // Add fetchpriority attribute if missing
+    if (!attrs.includes('fetchpriority')) {
+      newAttrs += ' fetchpriority="auto"';
     }
     
     // Add width and height attributes if missing to prevent layout shifts
@@ -39,7 +42,7 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     
     // Add explicit styles to prevent Content Layout Shifts
     if (!attrs.includes('style=')) {
-      newAttrs += ' style="max-width: 100%;"';
+      newAttrs += ' style="aspect-ratio: auto; max-width: 100%;"';
     }
     
     return `<img ${newAttrs}>`;
@@ -66,14 +69,11 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     return match;
   });
   
-  // Convert large images to WebP format when possible - but keep original format as fallback
-  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+\.(jpe?g|png))"([^>]*)>/g, (match, before, imgSrc, ext, after) => {
-    if (!imgSrc.includes('?format=') && !imgSrc.includes('data:image')) {
-      // Create picture element with webp and original format
-      return `<picture>
-  <source srcset="${imgSrc}?format=webp" type="image/webp">
-  <img ${before}src="${imgSrc}"${after}>
-</picture>`;
+  // Convert large images to WebP format when possible
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
+    if (imgSrc.match(/\.(jpe?g|png)$/) && !imgSrc.includes('?format=webp')) {
+      const newSrc = `${imgSrc}?format=webp`;
+      return `<img ${before}src="${newSrc}"${after}>`;
     }
     return match;
   });
@@ -95,7 +95,7 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
       if (desktopImg && mobileImg) {
         console.log("Found marketing images in DOM, applying final visibility styles");
         
-        // Create style element for media queries - compatible with all browsers
+        // Create style element for media queries
         const styleEl = document.createElement('style');
         styleEl.innerHTML = `
           @media (max-width: 768px) {
@@ -111,8 +111,8 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
         
         if (isMobile) {
           // Mobile display
-          desktopImg.style.display = "none";
-          mobileImg.style.display = "block";
+          desktopImg.style.cssText = "display: none !important";
+          mobileImg.style.cssText = "display: block !important";
           
           // Add explicit dimensions to prevent layout shifts
           if (mobileImg instanceof HTMLImageElement) {
@@ -121,8 +121,8 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
           }
         } else {
           // Desktop display
-          desktopImg.style.display = "block";
-          mobileImg.style.display = "none";
+          desktopImg.style.cssText = "display: block !important";
+          mobileImg.style.cssText = "display: none !important";
           
           // Add explicit dimensions to prevent layout shifts
           if (desktopImg instanceof HTMLImageElement) {
@@ -150,8 +150,8 @@ export const optimizeSingleImage = (imgElement: HTMLImageElement) => {
   imgElement.loading = isAboveFold ? 'eager' : 'lazy';
   imgElement.decoding = isAboveFold ? 'sync' : 'async';
   
-  // Set importance attribute (better browser compatibility than fetchpriority)
-  imgElement.setAttribute('importance', isAboveFold ? 'high' : 'auto');
+  // Set fetchpriority
+  imgElement.setAttribute('fetchpriority', isAboveFold ? 'high' : 'auto');
   
   // Add explicit dimensions to prevent CLS
   if (!imgElement.hasAttribute('width') && !imgElement.hasAttribute('height') && 
@@ -159,9 +159,8 @@ export const optimizeSingleImage = (imgElement: HTMLImageElement) => {
     imgElement.width = imgElement.naturalWidth;
     imgElement.height = imgElement.naturalHeight;
     
-    // Set width/height explicitly rather than aspect ratio for better Edge compatibility
-    imgElement.style.maxWidth = '100%';
-    imgElement.style.height = 'auto';
+    // Set aspect ratio to prevent layout shifts
+    imgElement.style.aspectRatio = `${imgElement.naturalWidth}/${imgElement.naturalHeight}`;
   }
   
   // Mark as optimized

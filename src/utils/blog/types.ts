@@ -5,11 +5,3 @@ import { BlogPost } from "@/types";
 export type BlogPostsStore = {
   [slug: string]: Omit<BlogPost, "slug">;
 };
-
-// For use with arrays of blog posts
-export type BlogPostWithId = BlogPost & { 
-  id?: string;
-  permanent?: boolean;
-  featured?: boolean;
-  publishedAt?: string;
-};
