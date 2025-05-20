@@ -1,3 +1,4 @@
+
 import { BlogPost } from "@/types";
 
 export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
@@ -8,6 +9,14 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
       slug: 'agile-backbone-resilient-operational-models',
       ...m.default
     }));
+    
+    // Ensure the agile backbone post has the most recent date to appear first
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('en-US', { month: 'long' })} ${currentDate.getFullYear()}`;
+    
+    agileBackbone.date = formattedDate;
+    // Format Italian date (day month year)
+    agileBackbone.dateIT = `${currentDate.getDate()} ${currentDate.toLocaleString('it-IT', { month: 'long' })} ${currentDate.getFullYear()}`;
     
     // Add other blog posts as needed
     // Keep the imports dynamic to avoid circular dependencies and enable code splitting
