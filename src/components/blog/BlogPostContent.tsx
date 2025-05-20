@@ -129,6 +129,22 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       fixNestedLists();
       setTimeout(fixNestedLists, 1000);
     }
+    
+    // Force reload all images in the post with a timestamp to prevent caching
+    const reloadImages = () => {
+      const images = document.querySelectorAll('.prose img');
+      const timestamp = Date.now();
+      
+      images.forEach(img => {
+        if (img instanceof HTMLImageElement && !img.src.includes('?t=')) {
+          img.src = `${img.src.split('?')[0]}?t=${timestamp}`;
+        }
+      });
+    };
+    
+    reloadImages();
+    setTimeout(reloadImages, 1000);
+    
   }, [content, isMobile, isHumanTechEquationPost, isAgileBackbonePost, language]);
   
   return (

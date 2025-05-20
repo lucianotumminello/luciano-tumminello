@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,7 +14,7 @@ import {
   PaginationPrevious 
 } from "@/components/ui/pagination";
 import { useState, useEffect, useCallback } from "react";
-import { getAllBlogPosts } from "@/utils/blog";
+import { getAllBlogPosts, refreshBlogPosts } from "@/utils/blog";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -35,6 +34,9 @@ const Blog = () => {
     try {
       setIsLoading(true);
       console.log("Fetching blog posts from server");
+      
+      // Force refresh posts first
+      await refreshBlogPosts(true);
       
       const allPosts = await getAllBlogPosts();
       
@@ -242,9 +244,9 @@ const Blog = () => {
                 {allPosts.map((post, index) => (
                   <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
                     <div className="relative aspect-[16/9] overflow-hidden">
-                      {/* Use desktop or mobile image based on screen size */}
+                      {/* Add force refresh cache busting to images */}
                       <img 
-                        src={isMobile ? post.imageUrl : (post.desktopImageUrl || post.imageUrl)} 
+                        src={`${isMobile ? post.imageUrl : (post.desktopImageUrl || post.imageUrl)}?t=${lastRefresh}`} 
                         alt={isItalian ? post.titleIT : post.title} 
                         className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
                         loading={index < 2 ? "eager" : "lazy"}

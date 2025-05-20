@@ -83,6 +83,10 @@ const BlogPostHeader = ({
     return () => clearTimeout(timer);
   }, [isMobile]);
   
+  // Force reload images with timestamp to prevent caching
+  const desktopImageWithCache = `${desktopImageUrl}?t=${new Date().getTime()}`;
+  const mobileImageWithCache = `${imageUrl}?t=${new Date().getTime()}`;
+  
   return (
     <div className="mb-8">
       <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
@@ -96,7 +100,7 @@ const BlogPostHeader = ({
             {/* Use different images for desktop and mobile with improved visibility management */}
             <img 
               id="marketing-desktop-image"
-              src={desktopImageUrl} 
+              src={desktopImageWithCache} 
               alt={title}
               className="w-full h-full object-cover"
               loading="eager"
@@ -110,7 +114,7 @@ const BlogPostHeader = ({
             />
             <img 
               id="marketing-mobile-image"
-              src={imageUrl} 
+              src={mobileImageWithCache} 
               alt={title}
               className="w-full h-full object-cover"
               loading="eager"

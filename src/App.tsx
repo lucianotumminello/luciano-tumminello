@@ -53,6 +53,12 @@ initializeBlogPosts()
       console.log("Performing additional force refresh after delay");
       refreshBlogPosts(true);
     }, 2000);
+    
+    // Add even more refresh attempts to ensure images are loaded
+    setTimeout(() => {
+      console.log("Performing second additional force refresh");
+      refreshBlogPosts(true);
+    }, 5000);
   })
   .catch(error => {
     console.error('Error initializing blog posts on app load:', error);
@@ -74,6 +80,16 @@ const RouteChangeTracker = () => {
       refreshBlogPosts(true).catch(error => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });
+    }
+    
+    // When on homepage, force another refresh with a delay
+    if (path === '/') {
+      setTimeout(() => {
+        console.log('Homepage visited, doing an additional refresh');
+        refreshBlogPosts(true).catch(error => {
+          console.error('Error refreshing blog posts on homepage visit:', error);
+        });
+      }, 2000);
     }
     
     // Redirect from homepage to blog only once to avoid infinite loops

@@ -45,6 +45,14 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
       newAttrs += ' style="aspect-ratio: auto; max-width: 100%;"';
     }
     
+    // Add cache busting
+    if (!attrs.includes('?t=')) {
+      const now = Date.now();
+      if (attrs.includes('src="')) {
+        newAttrs = newAttrs.replace(/src="([^"]+)"/, `src="$1?t=${now}"`);
+      }
+    }
+    
     return `<img ${newAttrs}>`;
   });
   
@@ -55,8 +63,12 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     
     // Only add srcset for local images
     if (imgSrc.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
+      // Add cache busting parameter
+      const cacheBuster = `?t=${Date.now()}`;
+      const imgSrcWithCache = imgSrc.includes('?') ? imgSrc : imgSrc + cacheBuster;
+      
       // Generate responsive srcset
-      const srcset = `srcset="${imgSrc} 1x, ${imgSrc} 2x"`;
+      const srcset = `srcset="${imgSrcWithCache} 1x, ${imgSrcWithCache} 2x"`;
       
       // Add sizes attribute if missing
       let sizesAttr = '';
@@ -64,7 +76,7 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
         sizesAttr = ' sizes="(max-width: 768px) 100vw, 800px"';
       }
       
-      return `<img ${before}src="${imgSrc}" ${srcset}${sizesAttr}${after}>`;
+      return `<img ${before}src="${imgSrcWithCache}" ${srcset}${sizesAttr}${after}>`;
     }
     return match;
   });
@@ -102,6 +114,15 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
             }
           `;
           document.head.appendChild(styleEl);
+        }
+        
+        // Add cache busting to image sources
+        const timestamp = Date.now();
+        if (desktopImg instanceof HTMLImageElement && !desktopImg.src.includes('?t=')) {
+          desktopImg.src = `${desktopImg.src.split('?')[0]}?t=${timestamp}`;
+        }
+        if (mobileImg instanceof HTMLImageElement && !mobileImg.src.includes('?t=')) {
+          mobileImg.src = `${mobileImg.src.split('?')[0]}?t=${timestamp}`;
         }
         
         // Set initial state based on current device with important flag
@@ -160,6 +181,11 @@ export const optimizeSingleImage = (imgElement: HTMLImageElement) => {
     
     // Set aspect ratio to prevent layout shifts
     imgElement.style.aspectRatio = `${imgElement.naturalWidth}/${imgElement.naturalHeight}`;
+  }
+  
+  // Add cache busting
+  if (!imgElement.src.includes('?t=')) {
+    imgElement.src = `${imgElement.src.split('?')[0]}?t=${Date.now()}`;
   }
   
   // Mark as optimized
