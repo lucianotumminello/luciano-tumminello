@@ -3,7 +3,9 @@ import React from 'react';
 
 const BlogPostStyles: React.FC = () => {
   return (
-    <style jsx global>{`
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
       /* Enhanced styling for blog post content */
       .prose h2 {
         font-size: 1.75rem;
@@ -103,7 +105,9 @@ const BlogPostStyles: React.FC = () => {
         display: block !important;
         visibility: visible !important;
       }
-    `}</style>
+    `
+      }}
+    />
   );
 };
 
