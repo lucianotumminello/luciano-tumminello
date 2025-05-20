@@ -35,8 +35,3 @@ export type { BlogPostsStore } from './types';
 
 // Force-import the utility to make the blog post permanent
 import './makeBeyondRecognitionPermanent';
-
-// Force refresh blog posts on initial load
-import { refreshBlogPosts } from './blogPostsStore';
-console.log("Initializing blog posts refresh on index load");
-refreshBlogPosts().catch(error => console.error("Error refreshing blog posts on initial load:", error));

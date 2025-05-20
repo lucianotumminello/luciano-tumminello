@@ -13,8 +13,7 @@ export const updatedBlogPosts: BlogPostsStore = {};
 // Initialize the blog posts store
 export const initializeBlogPosts = async (): Promise<void> => {
   try {
-    console.log("Initializing blog posts store");
-    const posts = await fetchBlogPostsFromServer(true); // Force fresh fetch
+    const posts = await fetchBlogPostsFromServer();
     
     // Clear the updatedBlogPosts object
     Object.keys(updatedBlogPosts).forEach(key => {
@@ -27,7 +26,6 @@ export const initializeBlogPosts = async (): Promise<void> => {
     });
     
     console.log("Blog posts initialized:", Object.keys(updatedBlogPosts).length);
-    console.log("Available blog posts after init:", Object.keys(updatedBlogPosts).join(", "));
   } catch (error) {
     console.error("Error initializing blog posts:", error);
   }
@@ -64,16 +62,12 @@ export const saveBlogPostsToStorage = async (posts: BlogPostsStore): Promise<voi
 };
 
 // Force a refresh of posts from the server
-export const refreshBlogPosts = async (forceRefresh = false): Promise<BlogPostsStore> => {
+export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
   try {
-    console.log(`Refreshing blog posts from server (force=${forceRefresh})`);
+    // Invalidate cache to force a fresh fetch
+    invalidateBlogPostsCache();
     
-    // Always invalidate cache when forcing a refresh
-    if (forceRefresh) {
-      invalidateBlogPostsCache();
-    }
-    
-    const refreshedPosts = await fetchBlogPostsFromServer(forceRefresh);
+    const refreshedPosts = await fetchBlogPostsFromServer();
     
     // Update our in-memory store to match the refreshed data
     Object.keys(updatedBlogPosts).forEach(key => {
@@ -85,7 +79,6 @@ export const refreshBlogPosts = async (forceRefresh = false): Promise<BlogPostsS
     });
     
     console.log("Blog posts refreshed from server:", Object.keys(updatedBlogPosts).length);
-    console.log("Available blog posts after refresh:", Object.keys(updatedBlogPosts).join(", "));
     return { ...updatedBlogPosts };
   } catch (error) {
     console.error("Error refreshing blog posts:", error);

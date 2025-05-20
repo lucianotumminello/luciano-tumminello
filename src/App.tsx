@@ -1,14 +1,15 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
-import { refreshBlogPosts, initializeBlogPosts } from "./utils/blog";
+import { refreshBlogPosts } from "./utils/blog";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -36,38 +37,23 @@ const queryClient = new QueryClient({
   },
 });
 
-// Initialize blog posts on app load with force refresh
-console.log("App.tsx: Initializing blog posts on app load with force refresh");
-initializeBlogPosts()
-  .then(() => refreshBlogPosts(true)) // Force refresh after initialization
-  .catch(error => {
-    console.error('Error initializing blog posts on app load:', error);
-  });
-
 // Analytics tracker component
 const RouteChangeTracker = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   
   useEffect(() => {
     const path = location.pathname + location.search;
     const title = document.title;
     trackPageView(path, title);
     
-    // Always refresh blog posts when visiting the blog page to ensure latest content
+    // Refresh blog posts when visiting the blog page
     if (path === '/blog') {
-      console.log('Blog page visited, force refreshing blog posts');
-      refreshBlogPosts(true).catch(error => {
+      console.log('Blog page visited, refreshing blog posts');
+      refreshBlogPosts().catch(error => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });
     }
-    
-    // Redirect from homepage to blog only once to avoid infinite loops
-    if (path === '/' && !window.location.search.includes('no-redirect')) {
-      console.log('Homepage visited, redirecting to blog page with no-redirect flag');
-      navigate('/blog?no-redirect=true');
-    }
-  }, [location, navigate]);
+  }, [location]);
   
   return null;
 };

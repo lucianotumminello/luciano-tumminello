@@ -13,19 +13,6 @@ export const getAllBlogPosts = async (): Promise<BlogPostsStore> => {
     
     // Log the current state of the blog posts
     console.log("Getting all blog posts, count:", Object.keys(updatedBlogPosts).length);
-    console.log("Available blog post slugs:", Object.keys(updatedBlogPosts).join(", "));
-    
-    // Add additional logging for debugging
-    Object.entries(updatedBlogPosts).forEach(([slug, post]) => {
-      console.log(`Post ${slug}: title=${post.title}, published=${post.published !== false}, featured=${post.featured || false}`);
-    });
-    
-    // Check if we have the agile backbone post, if not, force a re-initialization
-    if (!updatedBlogPosts['agile-backbone-resilient-operational-models']) {
-      console.warn("Agile backbone post not found in store, forcing re-initialization");
-      await refreshBlogPosts(true); // Force refresh
-    }
-    
     return { ...updatedBlogPosts };
   } catch (error) {
     console.error("Error getting all blog posts:", error);
@@ -43,7 +30,6 @@ export const getBlogPost = async (slug: string): Promise<(Omit<import('@/types')
     // First, refresh the blog posts from the server to ensure we have the latest data
     await refreshBlogPosts();
     
-    console.log(`Getting blog post with slug ${slug}, exists: ${!!updatedBlogPosts[slug]}`);
     return updatedBlogPosts[slug] ? { ...updatedBlogPosts[slug] } : undefined;
   } catch (error) {
     console.error(`Error getting blog post ${slug}:`, error);

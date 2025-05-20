@@ -21,15 +21,14 @@ const FETCH_COOLDOWN_MS = 2000; // Minimum time between fetches to prevent exces
 /**
  * Fetches all blog posts from the server
  * Ensures cross-device synchronization by always getting the latest data
- * @param forceRefresh Force a fresh fetch even if cache is recent
  * @returns A promise that resolves to all blog posts
  */
-export const fetchBlogPostsFromServer = async (forceRefresh = false): Promise<BlogPostsStore> => {
+export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
   try {
     const now = Date.now();
     
-    // Check if we've fetched recently to prevent excessive calls, but bypass if forceRefresh is true
-    if (!forceRefresh && cachedBlogPosts && now - lastFetchTimestamp < FETCH_COOLDOWN_MS) {
+    // Check if we've fetched recently to prevent excessive calls
+    if (cachedBlogPosts && now - lastFetchTimestamp < FETCH_COOLDOWN_MS) {
       console.log("Using cached blog posts (fetch cooldown active)");
       return { ...cachedBlogPosts };
     }
@@ -41,23 +40,6 @@ export const fetchBlogPostsFromServer = async (forceRefresh = false): Promise<Bl
       console.log("Using mock server for fetching blog posts");
       // Use mock server for development - this uses localStorage which persists across sessions
       const posts = mockApiGetAllPosts();
-      
-      // Ensure agile backbone post is included
-      if (!posts['agile-backbone-resilient-operational-models']) {
-        console.log("Adding agile backbone post from data source to mock API");
-        // Import from data source
-        const { getBlogPosts } = await import('@/data/blogList');
-        const dataPosts = await getBlogPosts();
-        
-        // Merge with existing posts
-        const mergedPosts = { ...posts, ...dataPosts };
-        
-        // Save merged posts and update cache
-        mockApiSavePosts(mergedPosts);
-        cachedBlogPosts = { ...mergedPosts };
-        return mergedPosts;
-      }
-      
       cachedBlogPosts = { ...posts };
       return posts;
     }
@@ -183,9 +165,10 @@ if (typeof window !== 'undefined') {
   });
   
   // Set up a periodic check for updates (for cross-device sync via localStorage)
+  // This helps when two devices are using the same app but not getting storage events
   if (USE_MOCK_SERVER) {
     console.log("Setting up periodic refresh for cross-device sync");
-    const REFRESH_INTERVAL = 15000; // 15 seconds (reduced from 30s for more responsive updates)
+    const REFRESH_INTERVAL = 30000; // 30 seconds
     setInterval(() => {
       console.log("Performing periodic blog posts refresh");
       invalidateBlogPostsCache();

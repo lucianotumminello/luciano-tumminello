@@ -20,5 +20,4 @@ export interface BlogPost {
   tagsIT: string[];
   slug?: string; // Added slug property as optional
   published?: boolean; // Added published property as optional, defaults to true if not specified
-  featured?: boolean; // Added featured property as optional
 }

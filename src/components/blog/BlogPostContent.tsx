@@ -31,33 +31,17 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     );
   }, [content]);
   
-  // Detection for the Agile Backbone blog post
-  const isAgileBackbonePost = React.useMemo(() => {
-    return content && (
-      content.includes("The Agile Backbone") || 
-      content.includes("Building Resilient and Adaptive") ||
-      content.includes("agile-backbone") ||
-      content.includes("La Spina Dorsale Agile")
-    );
-  }, [content]);
-  
   // Generate a unique content key for the specific blog post
-  const contentKey = React.useMemo(() => {
-    if (isHumanTechEquationPost) {
-      return `human-tech-equation-${language}`;
-    } else if (isAgileBackbonePost) {
-      return `agile-backbone-${language}`;
-    } else {
-      return `blog-content-${Math.random().toString(36).substring(7)}`;
-    }
-  }, [isHumanTechEquationPost, isAgileBackbonePost, language]);
+  const contentKey = isHumanTechEquationPost ? 
+    `human-tech-equation-${language}` : 
+    `blog-content-${Math.random().toString(36).substring(7)}`;
   
   React.useEffect(() => {
-    // For special blog posts, always use the full translation from translateText
-    if ((isHumanTechEquationPost || isAgileBackbonePost) && isItalian && content) {
+    // For the target blog post, always use the full translation from translateText
+    if (isHumanTechEquationPost && isItalian && content) {
       const translate = async () => {
         try {
-          console.log(`Loading full Italian translation for ${isHumanTechEquationPost ? 'Human + Tech Equation' : 'Agile Backbone'} blog post`);
+          console.log("Loading full Italian translation for Human + Tech Equation blog post");
           const result = await translateText(content, 'en', 'it');
           console.log("Translation completed, length:", result.length);
           setTranslatedContent(result);
@@ -71,7 +55,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     } else {
       setTranslatedContent(content);
     }
-  }, [content, isItalian, isHumanTechEquationPost, isAgileBackbonePost]);
+  }, [content, isItalian, isHumanTechEquationPost]);
   
   // Process and enhance the content for proper display
   const modifiedContent = React.useMemo(() => {
@@ -93,7 +77,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
-    if (isHumanTechEquationPost || isAgileBackbonePost) {
+    if (isHumanTechEquationPost) {
       updateImageVisibility(true, isMobile);
       
       // Additional force-update in case the previous call didn't work
@@ -105,26 +89,14 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       const fixNestedLists = () => {
         const nestedLists = document.querySelectorAll('li > ul, li > ol');
         nestedLists.forEach(list => {
-          list.setAttribute('style', 'display: block !important; margin-top: 0.5rem; visibility: visible !important;');
-        });
-        
-        // Ensure all list items are properly displayed
-        const listItems = document.querySelectorAll('ul > li, ol > li');
-        listItems.forEach(item => {
-          item.setAttribute('style', 'display: list-item !important; visibility: visible !important;');
-        });
-        
-        // Fix parent lists
-        const parentLists = document.querySelectorAll('ul, ol');
-        parentLists.forEach(list => {
-          list.setAttribute('style', 'display: block !important; visibility: visible !important;');
+          list.setAttribute('style', 'display: block !important; margin-top: 0.5rem;');
         });
       };
       
       fixNestedLists();
       setTimeout(fixNestedLists, 1000);
     }
-  }, [content, isMobile, isHumanTechEquationPost, isAgileBackbonePost, language]);
+  }, [content, isMobile, isHumanTechEquationPost, language]);
   
   return (
     <article className={`bg-white rounded-lg shadow-md p-4 md:p-6 mb-8 ${isMobile ? 'content-mobile-optimized' : ''}`}>
@@ -141,3 +113,4 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
 };
 
 export default BlogPostContent;
+
