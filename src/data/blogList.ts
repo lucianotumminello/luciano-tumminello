@@ -18,13 +18,80 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     // AI Transformation image
     const aiTransformationImageUrl = `${window.location.origin}/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png`;
     
-    console.log("Image URLs being used:", {
-      desktop: absoluteDesktopImageUrl,
-      mobile: absoluteMobileImageUrl,
-      techHuman: techHumanImageUrl,
-      leadership: leadershipImageUrl,
-      aiTransformation: aiTransformationImageUrl
-    });
+    // Define the tech+human equation post
+    const techHumanEquation = {
+      slug: 'human-tech-equation',
+      title: 'The Human + Tech Equation: Empowering Your Workforce in Digital Transformation',
+      titleIT: 'L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nella Trasformazione Digitale',
+      excerpt: 'Discover how the right balance of human expertise and technology creates successful digital transformation.',
+      excerptIT: 'Scopri come il giusto equilibrio tra competenza umana e tecnologia crea una trasformazione digitale di successo.',
+      date: '10 May 2025',
+      dateIT: '10 Maggio 2025',
+      category: 'Digital Transformation',
+      categoryIT: 'Trasformazione Digitale',
+      content: 'Content for Human + Tech Equation blog post',
+      contentIT: 'Contenuto per il blog post sull\'Equazione Umano + Tecnologia',
+      author: 'Luciano Tumminello',
+      authorImageUrl: `${window.location.origin}/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png`,
+      imageUrl: techHumanImageUrl,
+      desktopImageUrl: techHumanImageUrl,
+      readingTime: '8 min read',
+      readingTimeIT: '8 min di lettura',
+      tags: ['digital transformation', 'workforce', 'technology adoption', 'change management'],
+      tagsIT: ['trasformazione digitale', 'forza lavoro', 'adozione tecnologica', 'gestione del cambiamento'],
+      published: true,
+      featured: true
+    };
+    
+    // Define the leadership post
+    const leadershipPost = {
+      slug: 'adaptive-leadership-volatile-markets',
+      title: 'Adaptive Leadership in Volatile Markets: Steering Through Uncertainty',
+      titleIT: 'Leadership Adattiva nei Mercati Volatili: Guidare Attraverso l\'Incertezza',
+      excerpt: 'Learn how adaptive leadership approaches can help navigate increasingly volatile business environments.',
+      excerptIT: 'Scopri come gli approcci di leadership adattiva possono aiutare a navigare in ambienti di business sempre più volatili.',
+      date: '15 May 2025',
+      dateIT: '15 Maggio 2025',
+      category: 'Leadership',
+      categoryIT: 'Leadership',
+      content: 'Content for Adaptive Leadership blog post',
+      contentIT: 'Contenuto per il blog post sulla Leadership Adattiva',
+      author: 'Luciano Tumminello',
+      authorImageUrl: `${window.location.origin}/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png`,
+      imageUrl: leadershipImageUrl,
+      desktopImageUrl: leadershipImageUrl,
+      readingTime: '10 min read',
+      readingTimeIT: '10 min di lettura',
+      tags: ['leadership', 'volatility', 'business strategy', 'resilience'],
+      tagsIT: ['leadership', 'volatilità', 'strategia aziendale', 'resilienza'],
+      published: true,
+      featured: false
+    };
+    
+    // Define the AI transformation post
+    const aiTransformationPost = {
+      slug: 'ai-transformation-practical-roadmap',
+      title: 'AI Transformation: A Practical Roadmap for Business Leaders',
+      titleIT: 'Trasformazione AI: Una Roadmap Pratica per Leader Aziendali',
+      excerpt: 'Explore a step-by-step approach to implementing AI transformation in your organization.',
+      excerptIT: 'Esplora un approccio passo-passo per implementare la trasformazione AI nella tua organizzazione.',
+      date: '5 May 2025',
+      dateIT: '5 Maggio 2025',
+      category: 'Artificial Intelligence',
+      categoryIT: 'Intelligenza Artificiale',
+      content: 'Content for AI Transformation blog post',
+      contentIT: 'Contenuto per il blog post sulla Trasformazione AI',
+      author: 'Luciano Tumminello',
+      authorImageUrl: `${window.location.origin}/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png`,
+      imageUrl: aiTransformationImageUrl,
+      desktopImageUrl: aiTransformationImageUrl,
+      readingTime: '9 min read',
+      readingTimeIT: '9 min di lettura',
+      tags: ['artificial intelligence', 'digital transformation', 'technology implementation', 'business strategy'],
+      tagsIT: ['intelligenza artificiale', 'trasformazione digitale', 'implementazione tecnologica', 'strategia aziendale'],
+      published: true,
+      featured: false
+    };
     
     // In a real app, this would fetch from a database or API
     // Import the blog post data with guaranteed image URLs
@@ -52,7 +119,9 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     // Return all posts with agile backbone guaranteed to be included
     return {
       'agile-backbone-resilient-operational-models': agileBackbone as BlogPost,
-      // Add other posts here as needed
+      'human-tech-equation': techHumanEquation as BlogPost,
+      'adaptive-leadership-volatile-markets': leadershipPost as BlogPost,
+      'ai-transformation-practical-roadmap': aiTransformationPost as BlogPost
     };
   } catch (error) {
     console.error("Error loading blog posts:", error);

@@ -3,9 +3,10 @@ import React from "react";
 import BlogCard from "./BlogCard";
 import BlogPagination from "./BlogPagination";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { BlogPost } from "@/types";
 
 interface BlogListProps {
-  posts: Array<{slug?: string; [key: string]: any}>;
+  posts: BlogPost[];
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalPages: number;
