@@ -14,6 +14,12 @@ export const getAllBlogPosts = async (): Promise<BlogPostsStore> => {
     // Log the current state of the blog posts
     console.log("Getting all blog posts, count:", Object.keys(updatedBlogPosts).length);
     console.log("Available blog post slugs:", Object.keys(updatedBlogPosts).join(", "));
+    
+    // Add additional logging for debugging
+    Object.entries(updatedBlogPosts).forEach(([slug, post]) => {
+      console.log(`Post ${slug}: title=${post.title}, published=${post.published !== false}`);
+    });
+    
     return { ...updatedBlogPosts };
   } catch (error) {
     console.error("Error getting all blog posts:", error);

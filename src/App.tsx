@@ -3,13 +3,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
-import { refreshBlogPosts } from "./utils/blog";
+import { refreshBlogPosts, initializeBlogPosts } from "./utils/blog";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -37,9 +37,16 @@ const queryClient = new QueryClient({
   },
 });
 
+// Initialize blog posts on app load
+console.log("App.tsx: Initializing blog posts on app load");
+initializeBlogPosts().catch(error => {
+  console.error('Error initializing blog posts on app load:', error);
+});
+
 // Analytics tracker component
 const RouteChangeTracker = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   
   useEffect(() => {
     const path = location.pathname + location.search;
@@ -53,7 +60,19 @@ const RouteChangeTracker = () => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });
     }
-  }, [location]);
+    
+    // Redirect from homepage to blog to force a refresh
+    if (path === '/' && !window.location.search.includes('no-redirect')) {
+      console.log('Redirecting to blog page to ensure latest posts');
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.append('no-redirect', 'true');
+      
+      // If we are viewing the home page, let the user view it briefly before redirecting
+      setTimeout(() => {
+        navigate('/blog');
+      }, 100);
+    }
+  }, [location, navigate]);
   
   return null;
 };
