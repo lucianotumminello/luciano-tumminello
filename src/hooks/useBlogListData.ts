@@ -117,8 +117,9 @@ export const useBlogListData = (postsPerPage: number) => {
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
   // Placeholder posts for empty state or to fill grid - now fully implementing BlogPost interface
-  const placeholderPosts: BlogPost[] = [
+  const placeholderPosts: Array<{slug: string} & BlogPost> = [
     {
+      slug: "human-tech-equation-placeholder",
       title: "The Human + Tech Equation: Empowering Your Workforce in the Digital Transformation Era",
       titleIT: "L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale",
       excerpt: "In today's digital transformation landscape, technology alone isn't enough to drive operational excellence. The most successful organizations master what I call the \"Human + Tech Equation\", where cutting-edge technology amplifies human potential, and human insight maximizes technological impact.",
@@ -136,9 +137,11 @@ export const useBlogListData = (postsPerPage: number) => {
       readingTime: "8 min read",
       readingTimeIT: "8 min di lettura",
       tags: ["digital transformation", "workforce", "technology"],
-      tagsIT: ["trasformazione digitale", "forza lavoro", "tecnologia"]
+      tagsIT: ["trasformazione digitale", "forza lavoro", "tecnologia"],
+      published: true
     },
     {
+      slug: "marketing-to-coo-placeholder",
       title: "From Marketing Director to COO: Transfunctional Leadership Principles That Drive Organizational Growth",
       titleIT: "Da Direttore Marketing a COO: Principi di Leadership Transfunzionale che Guidano la Crescita Organizzativa",
       excerpt: "The evolution of executive careers and leadership trajectories rarely follow a linear path. My transition from Marketing Director to Chief Operating Officer represents one of those pivotal professional evolutions that challenges conventional career planning.",
@@ -156,9 +159,11 @@ export const useBlogListData = (postsPerPage: number) => {
       readingTime: "10 min read",
       readingTimeIT: "10 min di lettura",
       tags: ["leadership", "career growth", "organizational development"],
-      tagsIT: ["leadership", "crescita professionale", "sviluppo organizzativo"]
+      tagsIT: ["leadership", "crescita professionale", "sviluppo organizzativo"],
+      published: true
     },
     {
+      slug: "beyond-technology-placeholder",
       title: "Beyond Technology: The Cultural Transformation Required for Successful AI Integration",
       titleIT: "Oltre la Tecnologia: La Trasformazione Culturale Necessaria per una Riuscita Integrazione dell'IA",
       excerpt: "The Evolving Challenge of AI Implementation: As we approach mid-2025, one thing has become abundantly clear: the technology behind AI transformation is often the easiest part of the equation.",
@@ -176,7 +181,8 @@ export const useBlogListData = (postsPerPage: number) => {
       readingTime: "9 min read",
       readingTimeIT: "9 min di lettura",
       tags: ["artificial intelligence", "cultural transformation", "change management"],
-      tagsIT: ["intelligenza artificiale", "trasformazione culturale", "gestione del cambiamento"]
+      tagsIT: ["intelligenza artificiale", "trasformazione culturale", "gestione del cambiamento"],
+      published: true
     }
   ];
   
