@@ -17,8 +17,14 @@ export const getAllBlogPosts = async (): Promise<BlogPostsStore> => {
     
     // Add additional logging for debugging
     Object.entries(updatedBlogPosts).forEach(([slug, post]) => {
-      console.log(`Post ${slug}: title=${post.title}, published=${post.published !== false}`);
+      console.log(`Post ${slug}: title=${post.title}, published=${post.published !== false}, featured=${!!post.featured}`);
     });
+    
+    // Check if we have the agile backbone post, if not, force a re-initialization
+    if (!updatedBlogPosts['agile-backbone-resilient-operational-models']) {
+      console.warn("Agile backbone post not found in store, forcing re-initialization");
+      await refreshBlogPosts(true); // Force refresh
+    }
     
     return { ...updatedBlogPosts };
   } catch (error) {

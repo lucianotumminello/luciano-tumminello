@@ -14,7 +14,7 @@ export const updatedBlogPosts: BlogPostsStore = {};
 export const initializeBlogPosts = async (): Promise<void> => {
   try {
     console.log("Initializing blog posts store");
-    const posts = await fetchBlogPostsFromServer();
+    const posts = await fetchBlogPostsFromServer(true); // Force fresh fetch
     
     // Clear the updatedBlogPosts object
     Object.keys(updatedBlogPosts).forEach(key => {
@@ -64,13 +64,16 @@ export const saveBlogPostsToStorage = async (posts: BlogPostsStore): Promise<voi
 };
 
 // Force a refresh of posts from the server
-export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
+export const refreshBlogPosts = async (forceRefresh = false): Promise<BlogPostsStore> => {
   try {
-    console.log("Refreshing blog posts from server");
-    // Invalidate cache to force a fresh fetch
-    invalidateBlogPostsCache();
+    console.log(`Refreshing blog posts from server (force=${forceRefresh})`);
     
-    const refreshedPosts = await fetchBlogPostsFromServer();
+    // Always invalidate cache when forcing a refresh
+    if (forceRefresh) {
+      invalidateBlogPostsCache();
+    }
+    
+    const refreshedPosts = await fetchBlogPostsFromServer(forceRefresh);
     
     // Update our in-memory store to match the refreshed data
     Object.keys(updatedBlogPosts).forEach(key => {

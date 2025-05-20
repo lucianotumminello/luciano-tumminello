@@ -10,7 +10,8 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     const agileBackbone = await import('./blogs/agile-backbone.json').then(m => ({
       slug: 'agile-backbone-resilient-operational-models',
       ...m.default,
-      published: true // Explicitly set published to true
+      published: true, // Explicitly set published to true
+      featured: true   // Mark as featured to ensure visibility
     }));
     
     // Ensure the agile backbone post has the most recent date to appear first
@@ -21,9 +22,9 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     // Format Italian date (day month year)
     agileBackbone.dateIT = `${currentDate.getDate()} ${currentDate.toLocaleString('it-IT', { month: 'long' })} ${currentDate.getFullYear()}`;
     
-    console.log("Agile backbone post prepared:", agileBackbone.title);
+    console.log("Agile backbone post prepared:", agileBackbone.title, "published:", agileBackbone.published);
     
-    // Return all posts
+    // Return all posts with agile backbone guaranteed to be included
     return {
       'agile-backbone-resilient-operational-models': agileBackbone as BlogPost,
       // Add other posts here as needed

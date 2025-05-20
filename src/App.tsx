@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,11 +36,13 @@ const queryClient = new QueryClient({
   },
 });
 
-// Initialize blog posts on app load
-console.log("App.tsx: Initializing blog posts on app load");
-initializeBlogPosts().catch(error => {
-  console.error('Error initializing blog posts on app load:', error);
-});
+// Initialize blog posts on app load with force refresh
+console.log("App.tsx: Initializing blog posts on app load with force refresh");
+initializeBlogPosts()
+  .then(() => refreshBlogPosts(true)) // Force refresh after initialization
+  .catch(error => {
+    console.error('Error initializing blog posts on app load:', error);
+  });
 
 // Analytics tracker component
 const RouteChangeTracker = () => {
@@ -53,24 +54,18 @@ const RouteChangeTracker = () => {
     const title = document.title;
     trackPageView(path, title);
     
-    // Refresh blog posts when visiting the blog page
+    // Always refresh blog posts when visiting the blog page to ensure latest content
     if (path === '/blog') {
-      console.log('Blog page visited, refreshing blog posts');
-      refreshBlogPosts().catch(error => {
+      console.log('Blog page visited, force refreshing blog posts');
+      refreshBlogPosts(true).catch(error => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });
     }
     
-    // Redirect from homepage to blog to force a refresh
+    // Redirect from homepage to blog only once to avoid infinite loops
     if (path === '/' && !window.location.search.includes('no-redirect')) {
-      console.log('Redirecting to blog page to ensure latest posts');
-      const searchParams = new URLSearchParams(window.location.search);
-      searchParams.append('no-redirect', 'true');
-      
-      // If we are viewing the home page, let the user view it briefly before redirecting
-      setTimeout(() => {
-        navigate('/blog');
-      }, 100);
+      console.log('Homepage visited, redirecting to blog page with no-redirect flag');
+      navigate('/blog?no-redirect=true');
     }
   }, [location, navigate]);
   
