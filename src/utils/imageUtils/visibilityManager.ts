@@ -29,6 +29,9 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
           // Add width and height attributes to prevent layout shifts
           if (!img.width) img.width = 1200;
           if (!img.height) img.height = 675;
+          
+          // Set explicit object-fit
+          img.style.objectFit = 'cover';
         }
       });
       
@@ -45,6 +48,20 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
           // Add width and height attributes to prevent layout shifts
           if (!img.width) img.width = 640;
           if (!img.height) img.height = 360;
+          
+          // Set explicit object-fit
+          img.style.objectFit = 'cover';
+        }
+      });
+      
+      // For images in blog cards add special handling
+      const blogCardImages = document.querySelectorAll('.card img');
+      blogCardImages.forEach(img => {
+        if (img instanceof HTMLImageElement) {
+          // Ensure card images are displayed with proper sizing
+          img.style.objectFit = 'cover';
+          img.style.width = '100%';
+          img.style.height = '100%';
         }
       });
       

@@ -42,7 +42,7 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     
     // Add explicit styles to prevent Content Layout Shifts
     if (!attrs.includes('style=')) {
-      newAttrs += ' style="aspect-ratio: auto; max-width: 100%;"';
+      newAttrs += ' style="aspect-ratio: auto; max-width: 100%; object-fit: cover;"';
     }
     
     return `<img ${newAttrs}>`;
@@ -81,8 +81,8 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
       if (isMainImage) {
         // Add display style to ensure correct visibility based on device type
         const displayStyle = isMobile ? 
-          'style="display: block !important; width: 100%;"' : 
-          'style="display: block !important; width: 100%;"';
+          'style="display: block !important; width: 100%; object-fit: cover;"' : 
+          'style="display: block !important; width: 100%; object-fit: cover;"';
         
         // Add responsive class
         const responsiveClass = isMobile ? 'mobile-blog-image' : 'desktop-blog-image';

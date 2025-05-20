@@ -9,9 +9,21 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     const absoluteDesktopImageUrl = `${window.location.origin}/lovable-uploads/d5e3f45f-8a7d-4b07-bbb7-f08116f5abe0.png`;
     const absoluteMobileImageUrl = `${window.location.origin}/lovable-uploads/38137f5b-3d3e-4ccd-a77e-63481f021d09.png`;
     
+    // Tech + Human Equation image
+    const techHumanImageUrl = `${window.location.origin}/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png`;
+    
+    // Leadership image
+    const leadershipImageUrl = `${window.location.origin}/lovable-uploads/8acfc057-4507-4e63-b83a-78639ade9695.png`;
+    
+    // AI Transformation image
+    const aiTransformationImageUrl = `${window.location.origin}/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png`;
+    
     console.log("Image URLs being used:", {
       desktop: absoluteDesktopImageUrl,
-      mobile: absoluteMobileImageUrl
+      mobile: absoluteMobileImageUrl,
+      techHuman: techHumanImageUrl,
+      leadership: leadershipImageUrl,
+      aiTransformation: aiTransformationImageUrl
     });
     
     // In a real app, this would fetch from a database or API

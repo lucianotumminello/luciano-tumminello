@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +17,7 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { getAllBlogPosts } from "@/utils/blog";
 import { useToast } from "@/hooks/use-toast";
+import { optimizeImagesInContent } from "@/utils/imageUtils";
 
 const Blog = () => {
   const { toast } = useToast();
@@ -153,51 +155,49 @@ const Blog = () => {
   
   const placeholderPosts = [
     {
-      id: 2,
-      title: "Coming Soon",
-      titleIT: "Prossimamente",
-      excerpt: "Coming Soon",
-      excerptIT: "Prossimamente",
-      date: "March 22, 2023",
-      dateIT: "22 Marzo 2023",
-      category: "UI Design",
-      categoryIT: "UI Design",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+      title: "The Human + Tech Equation: Empowering Your Workforce in the Digital Transformation Era",
+      titleIT: "L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale",
+      excerpt: "In today's digital transformation landscape, technology alone isn't enough to drive operational excellence. The most successful organizations master what I call the \"Human + Tech Equation\", where cutting-edge technology amplifies human potential, and human insight maximizes technological impact.",
+      excerptIT: "Nel panorama attuale della trasformazione digitale, la tecnologia da sola non è sufficiente per guidare l'eccellenza operativa. Le organizzazioni di maggior successo padroneggiano quella che chiamo \"L'Equazione Umano + Tecnologia\", dove la tecnologia all'avanguardia amplifica il potenziale umano, e l'intuizione umana massimizza l'impatto tecnologico.",
+      date: "16 May 2022",
+      dateIT: "16 Maggio 2022",
+      category: "Digital Transformation",
+      categoryIT: "Trasformazione Digitale",
+      imageUrl: "/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png",
+      desktopImageUrl: "/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png"
     },
     {
-      id: 3,
-      title: "Coming Soon",
-      titleIT: "Prossimamente",
-      excerpt: "Coming Soon",
-      excerptIT: "Prossimamente",
-      date: "February 8, 2023",
-      dateIT: "8 Febbraio 2023",
-      category: "Development",
-      categoryIT: "Sviluppo",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+      title: "From Marketing Director to COO: Transfunctional Leadership Principles That Drive Organizational Growth",
+      titleIT: "Da Direttore Marketing a COO: Principi di Leadership Transfunzionale che Guidano la Crescita Organizzativa",
+      excerpt: "The evolution of executive careers and leadership trajectories rarely follow a linear path. My transition from Marketing Director to Chief Operating Officer represents one of those pivotal professional evolutions that challenges conventional career planning.",
+      excerptIT: "L'evoluzione delle carriere dirigenziali e delle traiettorie di leadership raramente segue un percorso lineare. La mia transizione da Direttore Marketing a Chief Operating Officer rappresenta una di quelle evoluzioni professionali cruciali che sfidano la pianificazione convenzionale della carriera.",
+      date: "2 May 2022",
+      dateIT: "2 Maggio 2022",
+      category: "Leadership",
+      categoryIT: "Leadership",
+      imageUrl: "/lovable-uploads/8acfc057-4507-4e63-b83a-78639ade9695.png",
+      desktopImageUrl: "/lovable-uploads/8acfc057-4507-4e63-b83a-78639ade9695.png"
     },
     {
-      id: 4,
-      title: "Coming Soon",
-      titleIT: "Prossimamente",
-      excerpt: "Coming Soon",
-      excerptIT: "Prossimamente",
-      date: "January 17, 2023",
-      dateIT: "17 Gennaio 2023",
-      category: "Design Systems",
-      categoryIT: "Sistemi di Design",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
+      title: "Beyond Technology: The Cultural Transformation Required for Successful AI Integration",
+      titleIT: "Oltre la Tecnologia: La Trasformazione Culturale Necessaria per una Riuscita Integrazione dell'IA",
+      excerpt: "The Evolving Challenge of AI Implementation: As we approach mid-2025, one thing has become abundantly clear: the technology behind AI transformation is often the easiest part of the equation.",
+      excerptIT: "La Sfida in Evoluzione dell'Implementazione dell'IA: Avvicinandoci alla metà del 2025, una cosa è diventata abbondantemente chiara: la tecnologia dietro la trasformazione dell'IA è spesso la parte più facile dell'equazione.",
+      date: "17 April 2022",
+      dateIT: "17 Aprile 2022",
+      category: "AI & Digital Transformation",
+      categoryIT: "IA & Trasformazione Digitale",
+      imageUrl: "/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png",
+      desktopImageUrl: "/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png"
     }
   ];
   
   const neededPlaceholders = Math.max(0, POSTS_PER_PAGE - currentPosts.length);
-  const allPosts = [
-    ...currentPosts,
-    ...placeholderPosts.slice(0, neededPlaceholders)
-  ];
+  
+  // When no actual posts are available, use all placeholders
+  const allPosts = currentPosts.length > 0 ? 
+    [...currentPosts, ...placeholderPosts.slice(0, neededPlaceholders)] : 
+    placeholderPosts;
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -221,7 +221,7 @@ const Blog = () => {
         <div className="container mx-auto max-w-5xl">
           <div className="mb-12 text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
-            <p className="text-lg text-gray-600 mx-auto max-w-3xl text-justify">
+            <p className="text-lg text-gray-600 mx-auto max-w-3xl">
               {isItalian 
                 ? "Approfondimenti strategici sulla trasformazione digitale, le operazioni globali e il marketing basato sui dati."
                 : "Strategic insights on digital transformation, global operations, and data-driven marketing."
@@ -237,40 +237,43 @@ const Blog = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {allPosts.map((post, index) => (
-                  <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
-                    <div className="relative aspect-[16/9] overflow-hidden">
+                  <Card key={index} className="overflow-hidden border border-gray-100 shadow hover:shadow-md transition-all duration-300">
+                    <div className="relative h-48 overflow-hidden">
                       <img 
                         src={post.imageUrl || (post.desktopImageUrl || "")} 
                         alt={isItalian ? post.titleIT : post.title} 
                         className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+                        loading={index < 2 ? "eager" : "lazy"}
                       />
                     </div>
                     <CardContent className="p-6">
                       <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                        <span className="bg-gray-100 px-2 py-1 rounded-full">
+                        <span className="inline-block px-2 py-1 text-xs bg-gray-100 rounded">
                           {isItalian ? post.categoryIT : post.category}
                         </span>
                         <span>•</span>
-                        <div className="flex items-center whitespace-nowrap">
+                        <div className="flex items-center">
                           <CalendarIcon className="h-3 w-3 mr-1" />
                           {formatDate(isItalian ? post.dateIT : post.date)}
                         </div>
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
+                      <h2 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
                         {'slug' in post ? (
-                          <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
+                          <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
+                            {isItalian ? post.titleIT : post.title}
+                          </Link>
                         ) : (
                           isItalian ? post.titleIT : post.title
                         )}
                       </h2>
-                      <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
+                      <p className="text-gray-600 mb-4 text-sm line-clamp-3">{isItalian ? post.excerptIT : post.excerpt}</p>
                       {'slug' in post ? (
                         <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
                           {isItalian ? "Leggi di più →" : "Read More →"}
                         </Link>
                       ) : (
                         <span className="text-gray-400 font-medium text-sm">
-                          {isItalian ? "Prossimamente..." : "Coming Soon..."}
+                          {isItalian ? "Leggi di più →" : "Read More →"}
                         </span>
                       )}
                     </CardContent>
@@ -281,43 +284,33 @@ const Blog = () => {
               {totalPages > 1 && (
                 <Pagination className="mt-8">
                   <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                          className="cursor-pointer"
+                        />
+                      </PaginationItem>
+                    )}
+                    
                     <PaginationItem>
-                      <PaginationPrevious 
-                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                      />
+                      <PaginationLink isActive>1</PaginationLink>
                     </PaginationItem>
                     
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <PaginationItem key={i + 1}>
-                        <PaginationLink
-                          onClick={() => setCurrentPage(i + 1)}
-                          isActive={currentPage === i + 1}
-                          className="cursor-pointer"
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
+                    <PaginationItem>
+                      <PaginationLink>2</PaginationLink>
+                    </PaginationItem>
                     
                     <PaginationItem>
                       <PaginationNext 
                         onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        className="cursor-pointer"
                       />
                     </PaginationItem>
                   </PaginationContent>
                 </Pagination>
               )}
             </>
-          )}
-          
-          {/* Visual debug indicator (hidden in production) */}
-          {process.env.NODE_ENV !== 'production' && (
-            <div className="text-xs text-gray-400 text-center mt-4">
-              Last refreshed: {new Date(lastRefresh).toLocaleTimeString()} | 
-              Posts in memory: {blogPosts.length}
-            </div>
           )}
         </div>
       </main>
