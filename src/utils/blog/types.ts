@@ -7,4 +7,9 @@ export type BlogPostsStore = {
 };
 
 // For use with arrays of blog posts
-export type BlogPostWithId = BlogPost & { id?: string };
+export type BlogPostWithId = BlogPost & { 
+  id?: string;
+  permanent?: boolean;
+  featured?: boolean;
+  publishedAt?: string;
+};
