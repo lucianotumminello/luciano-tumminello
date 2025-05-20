@@ -17,7 +17,7 @@ export const getAllBlogPosts = async (): Promise<BlogPostsStore> => {
     
     // Add additional logging for debugging
     Object.entries(updatedBlogPosts).forEach(([slug, post]) => {
-      console.log(`Post ${slug}: title=${post.title}, published=${post.published !== false}, featured=${!!post.featured}`);
+      console.log(`Post ${slug}: title=${post.title}, published=${post.published !== false}, featured=${post.featured || false}`);
     });
     
     // Check if we have the agile backbone post, if not, force a re-initialization
