@@ -1,4 +1,3 @@
-
 /**
  * Optimizes images in HTML content for better loading performance and responsive display
  * @param content - HTML content to process
@@ -179,4 +178,28 @@ const isElementInViewport = (element: HTMLElement): boolean => {
     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
+};
+
+/**
+ * Updates all avatar images with the new author profile image
+ */
+export const updateAuthorAvatars = (): void => {
+  try {
+    // Find all author avatar images in the page
+    const avatarImages = document.querySelectorAll('img[alt="Luciano Tumminello"]');
+    
+    // Update each avatar with the new image URL
+    avatarImages.forEach(img => {
+      if (img instanceof HTMLImageElement) {
+        // Only update if not already using the new image
+        if (!img.src.includes('19242fa3-00e7-4e41-8c2b-26680a3c9ec8')) {
+          img.src = "/lovable-uploads/19242fa3-00e7-4e41-8c2b-26680a3c9ec8.png";
+        }
+      }
+    });
+    
+    console.log(`Updated ${avatarImages.length} author avatar images`);
+  } catch (error) {
+    console.error("Error updating author avatar images:", error);
+  }
 };

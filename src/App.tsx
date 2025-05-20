@@ -10,6 +10,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
 import { refreshBlogPosts } from "./utils/blog";
+import { updateAuthorAvatars } from "./utils/imageUtils";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -52,6 +53,15 @@ const RouteChangeTracker = () => {
       refreshBlogPosts().catch(error => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });
+    }
+    
+    // Update author avatars on blog post pages
+    if (path.startsWith('/blog/')) {
+      console.log('Blog post page visited, updating author avatars');
+      // Use a small delay to ensure the DOM is fully loaded
+      setTimeout(() => {
+        updateAuthorAvatars();
+      }, 500);
     }
   }, [location]);
   

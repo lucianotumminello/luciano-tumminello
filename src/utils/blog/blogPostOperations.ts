@@ -2,6 +2,7 @@
 import { BlogPost } from '@/types';
 import { BlogPostsStore } from './types';
 import { updatedBlogPosts, saveBlogPostsToStorage } from './blogPostsStore';
+import { DEFAULT_AUTHOR_IMAGE } from './constants';
 
 /**
  * Creates a new blog post
@@ -12,13 +13,15 @@ import { updatedBlogPosts, saveBlogPostsToStorage } from './blogPostsStore';
 export const createBlogPost = async (newPost: BlogPost, slug: string): Promise<boolean> => {
   try {
     // Make sure the published flag is set to true by default if not specified
-    const postWithPublishedFlag = {
+    // Also ensure the author image URL is set to the default if not specified
+    const postWithDefaults = {
       ...newPost,
-      published: newPost.published !== false
+      published: newPost.published !== false,
+      authorImageUrl: newPost.authorImageUrl || DEFAULT_AUTHOR_IMAGE
     };
     
     // Add the new post to the updated blog posts
-    updatedBlogPosts[slug] = { ...postWithPublishedFlag };
+    updatedBlogPosts[slug] = { ...postWithDefaults };
     
     // Save the updated blog posts to storage
     await saveBlogPostsToStorage({ ...updatedBlogPosts });
@@ -44,16 +47,17 @@ export const updateBlogPost = async (slug: string, updatedPost: BlogPost): Promi
       return false;
     }
     
-    // Ensure the published flag is preserved unless explicitly set
-    const postWithPublishedFlag = {
+    // Ensure the published flag and author image are preserved unless explicitly set
+    const postWithDefaults = {
       ...updatedPost,
       published: updatedPost.published !== undefined 
         ? updatedPost.published 
-        : (updatedBlogPosts[slug].published !== false)
+        : (updatedBlogPosts[slug].published !== false),
+      authorImageUrl: updatedPost.authorImageUrl || updatedBlogPosts[slug].authorImageUrl || DEFAULT_AUTHOR_IMAGE
     };
     
     // Update the blog post
-    updatedBlogPosts[slug] = { ...postWithPublishedFlag };
+    updatedBlogPosts[slug] = { ...postWithDefaults };
     
     // Save the updated blog posts to storage
     await saveBlogPostsToStorage({ ...updatedBlogPosts });
@@ -112,7 +116,8 @@ export const duplicateBlogPost = async (originalSlug: string): Promise<BlogPost 
     const newPost: BlogPost = { 
       ...originalPost, 
       slug: newSlug,
-      published: originalPost.published !== false // Ensure published flag is preserved
+      published: originalPost.published !== false, // Ensure published flag is preserved
+      authorImageUrl: originalPost.authorImageUrl || DEFAULT_AUTHOR_IMAGE // Ensure author image is set
     };
     
     // Add the new post to the updated blog posts
@@ -170,7 +175,8 @@ export const makeBlogPostPermanent = async (
     const originalPost = updatedBlogPosts[temporarySlug];
     const permanentPost = { 
       ...originalPost,
-      published: published // Explicitly set the published flag
+      published: published, // Explicitly set the published flag
+      authorImageUrl: originalPost.authorImageUrl || DEFAULT_AUTHOR_IMAGE // Ensure author image is set
     };
     
     // Add the permanent post to the updated blog posts
