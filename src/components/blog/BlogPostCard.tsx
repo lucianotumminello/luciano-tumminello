@@ -3,22 +3,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarIcon } from "lucide-react";
+import { BlogPost } from "./types";
 
 interface BlogPostCardProps {
-  post: {
-    slug?: string;
-    title: string;
-    titleIT: string;
-    excerpt: string;
-    excerptIT: string;
-    date: string;
-    dateIT: string;
-    category: string;
-    categoryIT: string;
-    imageUrl: string;
-    desktopImageUrl?: string;
-    published?: boolean;
-  };
+  post: Pick<BlogPost, 'slug' | 'title' | 'titleIT' | 'excerpt' | 'excerptIT' | 'date' | 'dateIT' | 'category' | 'categoryIT' | 'imageUrl' | 'desktopImageUrl' | 'published'>;
   isItalian: boolean;
   formatDate: (dateStr: string) => string;
 }

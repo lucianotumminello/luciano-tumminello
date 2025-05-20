@@ -1,22 +1,10 @@
 
 import React from "react";
 import BlogPostCard from "./BlogPostCard";
+import { BlogPost } from "./types";
 
 interface BlogPostListProps {
-  posts: Array<{
-    slug?: string;
-    title: string;
-    titleIT: string;
-    excerpt: string;
-    excerptIT: string;
-    date: string;
-    dateIT: string;
-    category: string;
-    categoryIT: string;
-    imageUrl: string;
-    desktopImageUrl?: string;
-    published?: boolean;
-  }>;
+  posts: Array<Pick<BlogPost, 'slug' | 'title' | 'titleIT' | 'excerpt' | 'excerptIT' | 'date' | 'dateIT' | 'category' | 'categoryIT' | 'imageUrl' | 'desktopImageUrl' | 'published'>>;
   isItalian: boolean;
   formatDate: (dateStr: string) => string;
 }

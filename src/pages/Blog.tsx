@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
@@ -10,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import BlogPostList from "@/components/blog/BlogPostList";
 import BlogPagination from "@/components/blog/BlogPagination";
 import BlogLoading from "@/components/blog/BlogLoading";
+import { BlogPost } from "@/components/blog/types";
 
 const Blog = () => {
   const { toast } = useToast();
@@ -17,7 +17,7 @@ const Blog = () => {
   const isItalian = language === "it";
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
+  const [blogPosts, setBlogPosts] = useState<Array<BlogPost & {slug: string}>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
@@ -145,9 +145,9 @@ const Blog = () => {
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  const placeholderPosts = [
+  // Define placeholder posts with the correct structure
+  const placeholderPosts: Pick<BlogPost, 'title' | 'titleIT' | 'excerpt' | 'excerptIT' | 'date' | 'dateIT' | 'category' | 'categoryIT' | 'imageUrl' | 'desktopImageUrl' | 'published'>[] = [
     {
-      id: 2,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
@@ -160,7 +160,6 @@ const Blog = () => {
       desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
-      id: 3,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
@@ -173,7 +172,6 @@ const Blog = () => {
       desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
-      id: 4,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
