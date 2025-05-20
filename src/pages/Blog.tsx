@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet-async";
@@ -25,10 +24,9 @@ const Blog = () => {
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  // Placeholder posts for when there are not enough real posts
+  // Update placeholder posts to match the expected interface with all required fields
   const placeholderPosts = [
     {
-      id: 2,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
@@ -41,7 +39,6 @@ const Blog = () => {
       desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
-      id: 3,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
@@ -54,7 +51,6 @@ const Blog = () => {
       desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
-      id: 4,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",

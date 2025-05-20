@@ -8,7 +8,20 @@ export const useBlogPosts = () => {
   const { toast } = useToast();
   const { language } = useLanguage();
   const isItalian = language === "it";
-  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
+  const [blogPosts, setBlogPosts] = useState<Array<{
+    slug: string;
+    title: string;
+    titleIT: string;
+    excerpt: string;
+    excerptIT: string;
+    date: string;
+    dateIT: string;
+    category: string;
+    categoryIT: string;
+    imageUrl: string;
+    desktopImageUrl: string;
+    [key: string]: any;
+  }>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
