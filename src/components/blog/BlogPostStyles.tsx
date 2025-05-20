@@ -25,6 +25,13 @@ const BlogPostStyles = () => {
           }
         }
         
+        /* Force image visibility */
+        #blog-desktop-image, #blog-mobile-image {
+          max-width: 100% !important;
+          height: auto !important;
+          object-fit: cover !important;
+        }
+        
         /* Enhanced blog content styling */
         .prose {
           max-width: 100%;

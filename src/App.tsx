@@ -48,17 +48,20 @@ initializeBlogPosts()
   })
   .then(() => {
     console.log("Blog posts initialization and refresh completed successfully");
+    // Immediate additional refresh to ensure images load
+    refreshBlogPosts(true);
+    
     // Extra force refresh after a delay to ensure content is loaded
     setTimeout(() => {
       console.log("Performing additional force refresh after delay");
       refreshBlogPosts(true);
-    }, 2000);
+    }, 1000);
     
     // Add even more refresh attempts to ensure images are loaded
     setTimeout(() => {
       console.log("Performing second additional force refresh");
       refreshBlogPosts(true);
-    }, 5000);
+    }, 3000);
     
     // Final check to ensure images are properly displayed
     setTimeout(() => {
@@ -75,11 +78,15 @@ initializeBlogPosts()
             desktopImg.style.display = "block";
             mobileImg.style.display = "none";
           }
+          
+          // Force reflow
+          desktopImg.offsetHeight;
+          mobileImg.offsetHeight;
         }
       };
       
       updateImageVisibility();
-    }, 10000);
+    }, 5000);
   })
   .catch(error => {
     console.error('Error initializing blog posts on app load:', error);
@@ -101,6 +108,29 @@ const RouteChangeTracker = () => {
       refreshBlogPosts(true).catch(error => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });
+      
+      // Additional refresh for blog post pages to ensure images load
+      if (path.startsWith('/blog/')) {
+        setTimeout(() => {
+          console.log('Additional refresh for blog post page');
+          refreshBlogPosts(true);
+          
+          // Check image visibility
+          const desktopImg = document.getElementById("blog-desktop-image");
+          const mobileImg = document.getElementById("blog-mobile-image");
+          
+          console.log("Desktop image element:", desktopImg);
+          console.log("Mobile image element:", mobileImg);
+          
+          if (desktopImg instanceof HTMLImageElement) {
+            console.log("Desktop image src:", desktopImg.src);
+          }
+          
+          if (mobileImg instanceof HTMLImageElement) {
+            console.log("Mobile image src:", mobileImg.src);
+          }
+        }, 1500);
+      }
     }
     
     // When on homepage, force another refresh with a delay

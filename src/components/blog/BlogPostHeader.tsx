@@ -93,12 +93,16 @@ const BlogPostHeader = ({
       setTimeout(updateImageVisibility, delay)
     );
     
+    // Log image URLs for debugging
+    console.log("Desktop image URL:", desktopImageUrl);
+    console.log("Mobile image URL:", imageUrl);
+    
     return () => {
       window.removeEventListener("resize", updateImageVisibility);
       clearTimeout(timer);
       additionalTimers.forEach(clearTimeout);
     };
-  }, [isMobile]);
+  }, [isMobile, desktopImageUrl, imageUrl]);
   
   // Force reload images with timestamp to prevent caching
   const timestamp = new Date().getTime();
@@ -137,6 +141,7 @@ const BlogPostHeader = ({
               fetchPriority="high"
               width="640"
               height="360"
+              style={{ display: isMobile ? 'block' : 'none' }} 
             />
           </AspectRatio>
         </div>

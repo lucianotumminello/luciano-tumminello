@@ -22,7 +22,7 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     // Format Italian date (day month year)
     agileBackbone.dateIT = `${currentDate.getDate()} ${currentDate.toLocaleString('it-IT', { month: 'long' })} ${currentDate.getFullYear()}`;
     
-    // Set the images with the uploaded desktop and mobile images
+    // Set the images with absolute URLs for the uploaded desktop and mobile images
     agileBackbone.desktopImageUrl = "/lovable-uploads/60a39c76-8315-4488-a078-c15504c4d378.png";
     agileBackbone.imageUrl = "/lovable-uploads/b0f9a030-7151-4f74-a9c5-f535cda6c46c.png";
     
