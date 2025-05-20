@@ -10,6 +10,8 @@ import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
 import { refreshBlogPosts } from "./utils/blog";
+// Import our utility to make blog posts available
+import "@/utils/blog/makeBlogPostsAvailable";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
