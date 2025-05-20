@@ -12,9 +12,9 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
       ...m.default,
       published: true, // Explicitly set published to true
       featured: true,  // Mark as featured to ensure visibility
-      // Add these image URLs for the blog post
-      imageUrl: "/lovable-uploads/38137f5b-3d3e-4ccd-a77e-63481f021d09.png", // Mobile image
-      desktopImageUrl: "/lovable-uploads/d5e3f45f-8a7d-4b07-bbb7-f08116f5abe0.png" // Desktop image
+      // Set fixed absolute URLs for the blog post images
+      imageUrl: `${window.location.origin}/lovable-uploads/38137f5b-3d3e-4ccd-a77e-63481f021d09.png`, // Mobile image with absolute path
+      desktopImageUrl: `${window.location.origin}/lovable-uploads/d5e3f45f-8a7d-4b07-bbb7-f08116f5abe0.png` // Desktop image with absolute path
     }));
     
     // Ensure the agile backbone post has the most recent date to appear first
@@ -26,7 +26,7 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     agileBackbone.dateIT = `${currentDate.getDate()} ${currentDate.toLocaleString('it-IT', { month: 'long' })} ${currentDate.getFullYear()}`;
     
     console.log("Agile backbone post prepared:", agileBackbone.title, "published:", agileBackbone.published);
-    console.log("Blog post images:", agileBackbone.imageUrl, agileBackbone.desktopImageUrl);
+    console.log("Blog post images (absolute URLs):", agileBackbone.imageUrl, agileBackbone.desktopImageUrl);
     
     // Return all posts with agile backbone guaranteed to be included
     return {

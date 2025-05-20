@@ -35,31 +35,50 @@ const BlogPostHeader = ({
   const isItalian = language === "it";
   const isMobile = useIsMobile();
   
-  // Add effect to force image refresh when component mounts
+  // Force image loading and visibility on component mount
   useEffect(() => {
-    // Force browser to reload images by adding timestamp to URL
-    const timestamp = new Date().getTime();
-    const refreshImages = () => {
-      const desktopImg = document.querySelector('.desktop-blog-image') as HTMLImageElement;
-      const mobileImg = document.querySelector('.mobile-blog-image') as HTMLImageElement;
+    const timestamp = Date.now();
+    
+    // Force reload all images
+    const loadAndForceImages = () => {
+      console.log("Forcing image refresh with timestamp:", timestamp);
       
-      if (desktopImg && desktopImg.src) {
-        const originalSrc = desktopImg.src.split('?')[0];
-        desktopImg.src = `${originalSrc}?t=${timestamp}`;
-      }
+      // Create new image elements to force browser to load fresh copies
+      const preloadDesktopImage = new Image();
+      preloadDesktopImage.src = `${desktopImageUrl}?t=${timestamp}`;
       
-      if (mobileImg && mobileImg.src) {
-        const originalSrc = mobileImg.src.split('?')[0];
-        mobileImg.src = `${originalSrc}?t=${timestamp}`;
-      }
+      const preloadMobileImage = new Image();
+      preloadMobileImage.src = `${imageUrl}?t=${timestamp}`;
+      
+      // Update existing images in the DOM
+      setTimeout(() => {
+        const desktopImg = document.querySelector('.desktop-blog-image') as HTMLImageElement;
+        const mobileImg = document.querySelector('.mobile-blog-image') as HTMLImageElement;
+        
+        if (desktopImg) {
+          desktopImg.src = `${desktopImageUrl}?t=${timestamp}`;
+          desktopImg.style.display = isMobile ? 'none' : 'block';
+          console.log("Desktop image updated:", desktopImg.src);
+        }
+        
+        if (mobileImg) {
+          mobileImg.src = `${imageUrl}?t=${timestamp}`;
+          mobileImg.style.display = isMobile ? 'block' : 'none';
+          console.log("Mobile image updated:", mobileImg.src);
+        }
+      }, 100);
     };
     
-    // Apply immediately and after a short delay to ensure images are refreshed
-    refreshImages();
-    const timer = setTimeout(refreshImages, 100);
+    // Run multiple times to ensure images are loaded
+    loadAndForceImages();
+    const timer1 = setTimeout(loadAndForceImages, 500);
+    const timer2 = setTimeout(loadAndForceImages, 1500);
     
-    return () => clearTimeout(timer);
-  }, [imageUrl, desktopImageUrl]);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [imageUrl, desktopImageUrl, isMobile]);
   
   // Format date for consistent display - if it's not already formatted
   const formatDate = (dateStr: string) => {
@@ -97,9 +116,9 @@ const BlogPostHeader = ({
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Desktop image - hidden on mobile */}
+            {/* Desktop image - explicit styling to force display */}
             <img 
-              src={desktopImageUrl} 
+              src={`${desktopImageUrl}?t=${Date.now()}`} 
               alt={title}
               className="desktop-blog-image w-full h-full object-cover"
               loading="eager"
@@ -108,13 +127,13 @@ const BlogPostHeader = ({
               height="675"
               style={{
                 aspectRatio: "16/9",
-                display: isMobile ? 'none' : 'block'
+                display: isMobile ? 'none !important' : 'block !important'
               }}
             />
             
-            {/* Mobile image - hidden on desktop */}
+            {/* Mobile image - explicit styling to force display */}
             <img 
-              src={imageUrl} 
+              src={`${imageUrl}?t=${Date.now()}`} 
               alt={title}
               className="mobile-blog-image w-full h-full object-cover"
               loading="eager"
@@ -123,7 +142,7 @@ const BlogPostHeader = ({
               height="360"
               style={{
                 aspectRatio: "16/9",
-                display: isMobile ? 'block' : 'none'
+                display: isMobile ? 'block !important' : 'none !important'
               }}
             />
           </AspectRatio>

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -36,13 +37,34 @@ const queryClient = new QueryClient({
   },
 });
 
-// Initialize blog posts on app load with force refresh
-console.log("App.tsx: Initializing blog posts on app load with force refresh");
-initializeBlogPosts()
-  .then(() => refreshBlogPosts(true)) // Force refresh after initialization
-  .catch(error => {
-    console.error('Error initializing blog posts on app load:', error);
-  });
+// Force refresh blog posts immediately
+console.log("App.tsx: Force refreshing blog posts on app load");
+
+// Multiple refreshes to ensure data is loaded
+const forceMultipleRefreshes = async () => {
+  try {
+    console.log("Initializing blog posts...");
+    await initializeBlogPosts();
+    
+    console.log("First refresh...");
+    await refreshBlogPosts(true);
+    
+    // Additional refreshes with delays
+    setTimeout(async () => {
+      console.log("Second refresh after delay...");
+      await refreshBlogPosts(true);
+    }, 2000);
+    
+    setTimeout(async () => {
+      console.log("Final refresh after delay...");
+      await refreshBlogPosts(true);
+    }, 5000);
+  } catch (error) {
+    console.error('Error in blog post refresh sequence:', error);
+  }
+};
+
+forceMultipleRefreshes();
 
 // Analytics tracker component
 const RouteChangeTracker = () => {
@@ -54,19 +76,26 @@ const RouteChangeTracker = () => {
     const title = document.title;
     trackPageView(path, title);
     
-    // Always refresh blog posts when visiting the blog page to ensure latest content
-    if (path === '/blog') {
-      console.log('Blog page visited, force refreshing blog posts');
+    // Always refresh blog posts when visiting any page to ensure latest content
+    console.log('Page visited, refreshing blog posts');
+    refreshBlogPosts(true).catch(error => {
+      console.error('Error refreshing blog posts on page visit:', error);
+    });
+    
+    // Periodic refresh every minute
+    const intervalId = setInterval(() => {
       refreshBlogPosts(true).catch(error => {
-        console.error('Error refreshing blog posts on blog page visit:', error);
+        console.error('Error in periodic blog refresh:', error);
       });
-    }
+    }, 60000);
     
     // Redirect from homepage to blog only once to avoid infinite loops
     if (path === '/' && !window.location.search.includes('no-redirect')) {
       console.log('Homepage visited, redirecting to blog page with no-redirect flag');
       navigate('/blog?no-redirect=true');
     }
+    
+    return () => clearInterval(intervalId);
   }, [location, navigate]);
   
   return null;

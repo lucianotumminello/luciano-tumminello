@@ -24,12 +24,12 @@ const BlogPostStyles: React.FC = () => {
         height: auto;
       }
       
-      /* Desktop images - important to ensure display */
+      /* Desktop images - ensure display with !important */
       .desktop-blog-image {
         display: block !important;
       }
       
-      /* Mobile images - important to ensure proper display */
+      /* Mobile images - ensure display with !important */
       .mobile-blog-image {
         display: none !important;
       }
@@ -152,6 +152,20 @@ const BlogPostStyles: React.FC = () => {
         display: block !important;
         visibility: visible !important;
         font-family: inherit !important;
+      }
+      
+      /* Add global rules to ensure images are always visible */
+      img.desktop-blog-image, img.mobile-blog-image {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+      
+      /* Make sure image containers are visible */
+      div:has(> img.desktop-blog-image), 
+      div:has(> img.mobile-blog-image) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
       
       @media (max-width: 768px) {
