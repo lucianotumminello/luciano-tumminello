@@ -8,8 +8,7 @@ export {
   updateBlogPost, 
   deleteBlogPost,
   duplicateBlogPost,
-  makeBlogPostPermanent,
-  publishAgileBlogPost
+  makeBlogPostPermanent
 } from './blogPostOperations';
 
 // Export initial data
