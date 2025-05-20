@@ -17,7 +17,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
   const isItalian = language === "it";
-  const [translatedContent, setTranslatedContent] = React.useState<string>("");
+  const [translatedContent, setTranslatedContent] = React.useState<string>(content || "");
   
   // Enhanced detection for the Human + Tech Equation blog post
   const isHumanTechEquationPost = React.useMemo(() => {
@@ -130,6 +130,12 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
           } else if (heading.tagName === 'H3') {
             heading.classList.add('text-xl', 'text-gray-700');
           }
+        });
+        
+        // Fix image display
+        const images = document.querySelectorAll('.prose img');
+        images.forEach(img => {
+          img.setAttribute('style', 'display: block !important; visibility: visible !important; max-width: 100%; height: auto; margin: 1.5rem auto;');
         });
       };
       

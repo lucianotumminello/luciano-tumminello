@@ -14,7 +14,7 @@ const BlogPostStyles = () => {
     .prose li { margin-top: 0.5rem; margin-bottom: 0.5rem; }
     .prose li > ul, .prose li > ol { margin-top: 0.5rem; margin-bottom: 0.5rem; }
     .prose blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 4px solid #e5e7eb; font-style: italic; color: #6b7280; }
-    .prose img { margin: 1.5rem auto; border-radius: 0.375rem; }
+    .prose img { margin: 1.5rem auto; border-radius: 0.375rem; max-width: 100%; height: auto; }
     .prose a { color: #2563eb; text-decoration: none; }
     .prose a:hover { text-decoration: underline; }
     .prose code { font-family: monospace; font-size: 0.875em; color: #111827; background-color: #f3f4f6; padding: 0.2rem 0.4rem; border-radius: 0.25rem; }
@@ -27,6 +27,8 @@ const BlogPostStyles = () => {
     #marketing-desktop-image img, #marketing-mobile-image img { max-width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
     .related-resources { margin-top: 3rem; padding: 1.5rem; background-color: #f9fafb; border-radius: 0.5rem; }
     .related-resources h3 { margin-top: 0 !important; }
+    .prose h3, .prose h4 { display: block !important; visibility: visible !important; }
+    .prose img, .prose p img { display: block !important; visibility: visible !important; max-width: 100%; height: auto; }
     @media (max-width: 768px) {
       .prose h1 { font-size: 1.875rem; }
       .prose h2 { font-size: 1.5rem; }

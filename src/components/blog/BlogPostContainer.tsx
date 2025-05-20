@@ -39,6 +39,13 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
   const isItalian = language === "it";
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   
+  // Ensure author image URL is valid and consistent
+  const authorImageUrl = post.authorImageUrl || "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
+  
+  // Ensure image URLs are valid
+  const imageUrl = post.imageUrl || "/lovable-uploads/774dee17-e52b-4ce1-aedc-5467f7d73e4e.png";
+  const desktopImageUrl = post.desktopImageUrl || "/lovable-uploads/b54e2da2-5be2-4293-a2ba-77f343e1c1ad.png";
+  
   // Simplified intersection observer for better mobile performance
   useEffect(() => {
     if (!('IntersectionObserver' in window)) {
@@ -73,9 +80,9 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         date={isItalian ? post.dateIT : post.date}
         readingTime={isItalian ? post.readingTimeIT : post.readingTime}
         author={post.author}
-        authorImageUrl={post.authorImageUrl}
-        imageUrl={isMobile ? post.imageUrl : post.desktopImageUrl}
-        desktopImageUrl={post.desktopImageUrl}
+        authorImageUrl={authorImageUrl}
+        imageUrl={isMobile ? imageUrl : desktopImageUrl}
+        desktopImageUrl={desktopImageUrl}
       />
       
       <BlogPostContent 
@@ -105,7 +112,7 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
               <BlogPostFooter 
                 tags={isItalian ? post.tagsIT : post.tags}
                 authorName={post.author}
-                authorImageUrl={post.authorImageUrl}
+                authorImageUrl={authorImageUrl}
                 translationPrefix={isItalian ? "it" : "en"}
               />
             </div>
