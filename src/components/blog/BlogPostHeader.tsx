@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -34,49 +34,57 @@ const BlogPostHeader = ({
   const { language } = useLanguage();
   const isItalian = language === "it";
   const isMobile = useIsMobile();
+  const [timestamp, setTimestamp] = useState(Date.now());
   
-  // Force image loading and visibility on component mount
+  // Refresh images every second until they load
   useEffect(() => {
-    const timestamp = Date.now();
+    console.log("BlogPostHeader mounting with images:", {
+      mobile: imageUrl,
+      desktop: desktopImageUrl,
+      isMobile
+    });
     
-    // Force reload all images
-    const loadAndForceImages = () => {
-      console.log("Forcing image refresh with timestamp:", timestamp);
-      
-      // Create new image elements to force browser to load fresh copies
-      const preloadDesktopImage = new Image();
-      preloadDesktopImage.src = `${desktopImageUrl}?t=${timestamp}`;
-      
-      const preloadMobileImage = new Image();
-      preloadMobileImage.src = `${imageUrl}?t=${timestamp}`;
-      
-      // Update existing images in the DOM
-      setTimeout(() => {
-        const desktopImg = document.querySelector('.desktop-blog-image') as HTMLImageElement;
-        const mobileImg = document.querySelector('.mobile-blog-image') as HTMLImageElement;
-        
-        if (desktopImg) {
-          desktopImg.src = `${desktopImageUrl}?t=${timestamp}`;
-          desktopImg.style.display = isMobile ? 'none' : 'block';
-          console.log("Desktop image updated:", desktopImg.src);
-        }
-        
-        if (mobileImg) {
-          mobileImg.src = `${imageUrl}?t=${timestamp}`;
-          mobileImg.style.display = isMobile ? 'block' : 'none';
-          console.log("Mobile image updated:", mobileImg.src);
-        }
-      }, 100);
-    };
+    // Force image refresh immediately
+    setTimestamp(Date.now());
     
-    // Run multiple times to ensure images are loaded
-    loadAndForceImages();
-    const timer1 = setTimeout(loadAndForceImages, 500);
-    const timer2 = setTimeout(loadAndForceImages, 1500);
+    // Set up multiple refresh intervals
+    const intervals = [
+      setInterval(() => {
+        console.log("Refreshing images with new timestamp");
+        setTimestamp(Date.now());
+        
+        // Direct DOM manipulation as a last resort
+        const updateImagesDirectly = () => {
+          const desktopImgs = document.querySelectorAll('.desktop-blog-image');
+          const mobileImgs = document.querySelectorAll('.mobile-blog-image');
+          
+          console.log(`Found ${desktopImgs.length} desktop and ${mobileImgs.length} mobile images to update`);
+          
+          desktopImgs.forEach(img => {
+            if (img instanceof HTMLImageElement) {
+              img.src = `${desktopImageUrl}?t=${Date.now()}`;
+              img.style.display = isMobile ? 'none' : 'block';
+            }
+          });
+          
+          mobileImgs.forEach(img => {
+            if (img instanceof HTMLImageElement) {
+              img.src = `${imageUrl}?t=${Date.now()}`;
+              img.style.display = isMobile ? 'block' : 'none';
+            }
+          });
+        };
+        
+        updateImagesDirectly();
+      }, 1000),
+      
+      setInterval(() => {
+        setTimestamp(Date.now());
+      }, 3000)
+    ];
     
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      intervals.forEach(clearInterval);
     };
   }, [imageUrl, desktopImageUrl, isMobile]);
   
@@ -106,6 +114,16 @@ const BlogPostHeader = ({
   
   const formattedDate = formatDate(date);
   
+  // Determine final image URLs with cache-busting
+  const finalMobileImgUrl = `${imageUrl}?t=${timestamp}`;
+  const finalDesktopImgUrl = `${desktopImageUrl}?t=${timestamp}`;
+  
+  console.log("Rendering with URLs:", {
+    mobile: finalMobileImgUrl,
+    desktop: finalDesktopImgUrl,
+    shouldShowMobile: isMobile
+  });
+  
   return (
     <div className="mb-8">
       <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
@@ -116,9 +134,9 @@ const BlogPostHeader = ({
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Desktop image - explicit styling to force display */}
+            {/* Desktop image */}
             <img 
-              src={`${desktopImageUrl}?t=${Date.now()}`} 
+              src={finalDesktopImgUrl}
               alt={title}
               className="desktop-blog-image w-full h-full object-cover"
               loading="eager"
@@ -126,23 +144,27 @@ const BlogPostHeader = ({
               width="1200"
               height="675"
               style={{
-                aspectRatio: "16/9",
-                display: isMobile ? 'none !important' : 'block !important'
+                display: isMobile ? 'none' : 'block',
+                visibility: 'visible',
+                opacity: 1,
+                aspectRatio: "16/9"
               }}
             />
             
-            {/* Mobile image - explicit styling to force display */}
+            {/* Mobile image */}
             <img 
-              src={`${imageUrl}?t=${Date.now()}`} 
+              src={finalMobileImgUrl}
               alt={title}
               className="mobile-blog-image w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"
-              width="640"
+              width="640" 
               height="360"
               style={{
-                aspectRatio: "16/9",
-                display: isMobile ? 'block !important' : 'none !important'
+                display: isMobile ? 'block' : 'none',
+                visibility: 'visible',
+                opacity: 1,
+                aspectRatio: "16/9"
               }}
             />
           </AspectRatio>

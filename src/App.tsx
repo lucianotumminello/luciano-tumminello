@@ -37,7 +37,7 @@ const queryClient = new QueryClient({
   },
 });
 
-// Force refresh blog posts immediately
+// Force refresh blog posts immediately with more aggressive approach
 console.log("App.tsx: Force refreshing blog posts on app load");
 
 // Multiple refreshes to ensure data is loaded
@@ -46,19 +46,31 @@ const forceMultipleRefreshes = async () => {
     console.log("Initializing blog posts...");
     await initializeBlogPosts();
     
-    console.log("First refresh...");
-    await refreshBlogPosts(true);
+    // Refresh in quick succession to ensure data loads
+    const refreshSequence = async () => {
+      for (let i = 0; i < 5; i++) {
+        console.log(`Blog refresh attempt ${i + 1}...`);
+        await refreshBlogPosts(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    };
     
-    // Additional refreshes with delays
-    setTimeout(async () => {
-      console.log("Second refresh after delay...");
-      await refreshBlogPosts(true);
-    }, 2000);
+    // Execute immediately
+    refreshSequence();
     
-    setTimeout(async () => {
-      console.log("Final refresh after delay...");
-      await refreshBlogPosts(true);
-    }, 5000);
+    // Then set up periodic refreshes
+    const intervals = [
+      setInterval(() => refreshBlogPosts(true), 2000), // Every 2 seconds
+      setInterval(() => refreshBlogPosts(true), 5000), // Every 5 seconds
+      setInterval(() => refreshBlogPosts(true), 15000) // Every 15 seconds
+    ];
+    
+    // Clear intervals after 1 minute
+    setTimeout(() => {
+      intervals.forEach(clearInterval);
+      console.log("Cleared aggressive refresh intervals");
+    }, 60000);
+    
   } catch (error) {
     console.error('Error in blog post refresh sequence:', error);
   }

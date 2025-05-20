@@ -27,11 +27,15 @@ const BlogPostStyles: React.FC = () => {
       /* Desktop images - ensure display with !important */
       .desktop-blog-image {
         display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
       
       /* Mobile images - ensure display with !important */
       .mobile-blog-image {
         display: none !important;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
       
       /* Link styling for better visibility */
@@ -168,6 +172,19 @@ const BlogPostStyles: React.FC = () => {
         opacity: 1 !important;
       }
       
+      /* Force display based on media query */
+      @media (min-width: 769px) {
+        .desktop-blog-image {
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+        
+        .mobile-blog-image {
+          display: none !important;
+        }
+      }
+      
       @media (max-width: 768px) {
         /* Hide desktop images on mobile */
         .desktop-blog-image {
@@ -177,6 +194,8 @@ const BlogPostStyles: React.FC = () => {
         /* Show mobile images on mobile */
         .mobile-blog-image {
           display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
         }
         
         /* Mobile content optimization */
