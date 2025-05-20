@@ -1,10 +1,10 @@
 
 import { BlogPost } from "@/types";
+import { BlogPostWithId } from "../types";
 
-const beyondRecognitionPost: BlogPost = {
-  id: "beyond-recognition",
-  title: "Beyond Recognition: The Future of Digital Identity Authentication",
+const beyondRecognitionPost: BlogPostWithId = {
   slug: "beyond-recognition-future-digital-identity-authentication",
+  title: "Beyond Recognition: The Future of Digital Identity Authentication",
   date: "2024-04-15",
   author: "Luciano Tumminello",
   category: "Digital Security",
@@ -111,7 +111,14 @@ As we navigate this transition, the goal remains the same: creating digital expe
   authorImageUrl: "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png",
   permanent: true,
   featured: true,
-  publishedAt: "2024-04-15T09:30:00Z"
+  publishedAt: "2024-04-15T09:30:00Z",
+  titleIT: "Oltre il Riconoscimento: Il Futuro dell'Autenticazione dell'Identità Digitale",
+  excerptIT: "Esplorando l'evoluzione dell'autenticazione dell'identità digitale dalle password ai sistemi biometrici avanzati e ai framework di autenticazione continua basati sull'IA.",
+  contentIT: "# Oltre il Riconoscimento: Il Futuro dell'Autenticazione dell'Identità Digitale\n\nIn un mondo sempre più digitale, verificare chi sei online è diventato una pietra angolare della sicurezza...",
+  dateIT: "15 aprile 2024",
+  categoryIT: "Sicurezza Digitale",
+  tagsIT: ["Identità Digitale", "Autenticazione", "Sicurezza", "Biometria", "IA"],
+  readingTimeIT: "8 min di lettura"
 };
 
 export default beyondRecognitionPost;

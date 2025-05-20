@@ -31,7 +31,7 @@ export {
 } from './blogServerStorage';
 
 // Export types
-export type { BlogPostsStore } from './types';
+export type { BlogPostsStore, BlogPostWithId } from './types';
 
 // Force-import the utility to make the blog post permanent
 import './makeBeyondRecognitionPermanent';

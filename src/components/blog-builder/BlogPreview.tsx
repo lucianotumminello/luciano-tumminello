@@ -101,7 +101,6 @@ export const BlogPreview = ({ isOpen, onOpenChange, previewData }: BlogPreviewPr
                       alt="Desktop preview" 
                       className="max-h-full object-contain"
                       loading="eager"
-                      importance="high"
                     />
                   ) : (
                     <span className="text-gray-400">No image</span>
@@ -117,7 +116,6 @@ export const BlogPreview = ({ isOpen, onOpenChange, previewData }: BlogPreviewPr
                       alt="Mobile preview" 
                       className="max-h-full object-contain"
                       loading="eager"
-                      importance="high"
                     />
                   ) : (
                     <span className="text-gray-400">No image</span>

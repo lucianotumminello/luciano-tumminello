@@ -1,17 +1,17 @@
 
 import beyondRecognitionPost from './initialBlogPosts/beyondRecognitionPost';
 import { BlogPost } from "@/types";
+import { BlogPostWithId } from "./types";
 
 // Initial blog posts that are always available
-const initialBlogPosts: BlogPost[] = [
+const initialBlogPosts: BlogPostWithId[] = [
   // Beyond Recognition post
   beyondRecognitionPost,
   
   // Human + Tech Equation post
   {
-    id: "human-tech-equation",
-    title: "The Human + Tech Equation: Empowering Your Workforce in the Digital Transformation Era",
     slug: "human-tech-equation-empowering-workforce-digital-transformation",
+    title: "The Human + Tech Equation: Empowering Your Workforce in the Digital Transformation Era",
     date: "2025-05-16",
     author: "Luciano Tumminello",
     category: "Digital Transformation",
@@ -113,14 +113,20 @@ When organizations get this equation right, digital transformation delivers on i
     authorImageUrl: "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png",
     permanent: true,
     featured: true,
-    publishedAt: "2025-05-16T08:45:00Z"
+    publishedAt: "2025-05-16T08:45:00Z",
+    titleIT: "L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale",
+    excerptIT: "Una trasformazione digitale di successo si basa sul giusto equilibrio tra implementazione tecnologica e valorizzazione umana. Questo articolo esplora strategie per i leader per creare una forza lavoro abilitata alla tecnologia mantenendo gli elementi umani che guidano l'innovazione.",
+    contentIT: "# L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale\n\nLa trasformazione digitale rimane in cima alla lista delle priorità strategiche di praticamente ogni organizzazione...",
+    dateIT: "16 maggio 2025",
+    categoryIT: "Trasformazione Digitale",
+    tagsIT: ["Trasformazione Digitale", "Sviluppo della Forza Lavoro", "Gestione del Cambiamento", "Adozione Tecnologica", "Leadership"],
+    readingTimeIT: "7 min di lettura"
   },
   
   // Agile Backbone post
   {
-    id: "agile-backbone",
-    title: "The Agile Backbone: Building Resilient and Adaptive Operational Models for a Volatile World",
     slug: "agile-backbone-building-resilient-adaptive-operational-models",
+    title: "The Agile Backbone: Building Resilient and Adaptive Operational Models for a Volatile World",
     date: "2025-05-20",
     author: "Luciano Tumminello",
     category: "Operations Strategy",
@@ -268,8 +274,24 @@ This isn't about choosing between efficiency and adaptability, but rather buildi
     authorImageUrl: "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png",
     permanent: true,
     featured: true,
-    publishedAt: "2025-05-20T10:15:00Z"
+    publishedAt: "2025-05-20T10:15:00Z",
+    titleIT: "La Spina Dorsale Agile: Costruire Modelli Operativi Resilienti e Adattivi per un Mondo Volatile",
+    excerptIT: "I modelli operativi tradizionali si stanno rivelando insufficienti nell'attuale ambiente aziendale volatile. Questo articolo delinea framework per costruire operazioni veramente adattive che possono cambiare rapidamente mantenendo le funzioni aziendali principali.",
+    contentIT: "# La Spina Dorsale Agile: Costruire Modelli Operativi Resilienti e Adattivi per un Mondo Volatile\n\nIn un ambiente aziendale caratterizzato da crescente volatilità, incertezza, complessità e ambiguità (VUCA)...",
+    dateIT: "20 maggio 2025",
+    categoryIT: "Strategia Operativa",
+    tagsIT: ["Operazioni Agili", "Resilienza Organizzativa", "Leadership Adattiva", "Continuità Aziendale", "Gestione delle Crisi"],
+    readingTimeIT: "9 min di lettura"
   }
 ];
 
-export default initialBlogPosts;
+// Convert from array to object format expected by the BlogPostsStore type
+const initialBlogPostsStore: Record<string, Omit<BlogPost, "slug">> = {};
+initialBlogPosts.forEach(post => {
+  if (post.slug) {
+    const { slug, ...postWithoutSlug } = post;
+    initialBlogPostsStore[slug] = postWithoutSlug;
+  }
+});
+
+export default initialBlogPostsStore;
