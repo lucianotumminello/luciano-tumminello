@@ -187,4 +187,3 @@ const BlogPostStyles: React.FC = () => {
 };
 
 export default BlogPostStyles;
-

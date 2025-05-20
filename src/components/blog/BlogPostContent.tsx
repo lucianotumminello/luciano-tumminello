@@ -31,17 +31,33 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     );
   }, [content]);
   
+  // Detection for the Agile Backbone blog post
+  const isAgileBackbonePost = React.useMemo(() => {
+    return content && (
+      content.includes("The Agile Backbone") || 
+      content.includes("Building Resilient and Adaptive") ||
+      content.includes("agile-backbone") ||
+      content.includes("La Spina Dorsale Agile")
+    );
+  }, [content]);
+  
   // Generate a unique content key for the specific blog post
-  const contentKey = isHumanTechEquationPost ? 
-    `human-tech-equation-${language}` : 
-    `blog-content-${Math.random().toString(36).substring(7)}`;
+  const contentKey = React.useMemo(() => {
+    if (isHumanTechEquationPost) {
+      return `human-tech-equation-${language}`;
+    } else if (isAgileBackbonePost) {
+      return `agile-backbone-${language}`;
+    } else {
+      return `blog-content-${Math.random().toString(36).substring(7)}`;
+    }
+  }, [isHumanTechEquationPost, isAgileBackbonePost, language]);
   
   React.useEffect(() => {
-    // For the target blog post, always use the full translation from translateText
-    if (isHumanTechEquationPost && isItalian && content) {
+    // For special blog posts, always use the full translation from translateText
+    if ((isHumanTechEquationPost || isAgileBackbonePost) && isItalian && content) {
       const translate = async () => {
         try {
-          console.log("Loading full Italian translation for Human + Tech Equation blog post");
+          console.log(`Loading full Italian translation for ${isHumanTechEquationPost ? 'Human + Tech Equation' : 'Agile Backbone'} blog post`);
           const result = await translateText(content, 'en', 'it');
           console.log("Translation completed, length:", result.length);
           setTranslatedContent(result);
@@ -55,7 +71,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     } else {
       setTranslatedContent(content);
     }
-  }, [content, isItalian, isHumanTechEquationPost]);
+  }, [content, isItalian, isHumanTechEquationPost, isAgileBackbonePost]);
   
   // Process and enhance the content for proper display
   const modifiedContent = React.useMemo(() => {
@@ -77,7 +93,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
-    if (isHumanTechEquationPost) {
+    if (isHumanTechEquationPost || isAgileBackbonePost) {
       updateImageVisibility(true, isMobile);
       
       // Additional force-update in case the previous call didn't work
@@ -96,7 +112,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       fixNestedLists();
       setTimeout(fixNestedLists, 1000);
     }
-  }, [content, isMobile, isHumanTechEquationPost, language]);
+  }, [content, isMobile, isHumanTechEquationPost, isAgileBackbonePost, language]);
   
   return (
     <article className={`bg-white rounded-lg shadow-md p-4 md:p-6 mb-8 ${isMobile ? 'content-mobile-optimized' : ''}`}>
@@ -113,4 +129,3 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
 };
 
 export default BlogPostContent;
-
