@@ -5,13 +5,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  contain: content; /* CSS Containment for performance */
 }
 
 /* Critical blog post styles for immediate render */
 .blog-header {
   margin-bottom: 2rem;
-  contain: layout; /* Optimize layout calculation */
 }
 
 .blog-header img {
@@ -19,27 +17,17 @@
   height: auto;
   object-fit: cover;
   display: block;
-  content-visibility: auto; /* Modern optimization */
-  contain: paint; /* Optimize paint operations */
 }
 
-/* Base text styling for all devices with optimized paint properties */
+/* Base text styling for all devices */
 h1, h2, h3 {
   color: rgb(31 41 55);
   text-rendering: optimizeLegibility;
-  contain: style layout; /* Optimize rendering */
 }
 
 p {
   color: rgb(75 85 99);
   text-rendering: optimizeSpeed;
-  contain: style; /* Optimize style calculations */
-}
-
-/* Performance optimization for images */
-img {
-  content-visibility: auto;
-  contain: paint;
 }
 
 /* Disable animations for users who prefer reduced motion */
@@ -72,7 +60,6 @@ img {
   .blog-header img {
     height: auto;
     max-height: 260px;
-    content-visibility: auto; /* Modern optimization */
   }
   
   /* Optimize text for mobile */
@@ -92,13 +79,13 @@ img {
 
 /* Optimize layout calculations */
 .layout-optimized {
-  contain: layout;
+  /* Removed contain: layout; for Edge compatibility */
   content-visibility: auto;
 }
 
-/* Optimize rendering performance with containment */
+/* Optimize rendering performance */
 .render-optimized {
-  contain: paint layout style;
+  /* Removed contain properties for Edge compatibility */
   will-change: transform;
   transform: translateZ(0); /* Hardware acceleration */
 }
@@ -113,5 +100,29 @@ img {
 @media (hover: none) {
   a, button {
     -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Edge-specific CSS fixes */
+.browser-edge img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix for Edge preview in lovable.dev */
+.browser-edge #root {
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Ensure iframe preview works correctly */
+@media (max-width: 1200px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  #root {
+    max-width: 100%;
+    width: 100%;
   }
 }

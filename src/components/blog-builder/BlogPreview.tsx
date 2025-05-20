@@ -16,12 +16,37 @@ export const BlogPreview = ({ isOpen, onOpenChange, previewData }: BlogPreviewPr
 
   const handleCopyJson = () => {
     if (previewData) {
-      const blogPostJson = JSON.stringify(previewData, null, 2);
-      navigator.clipboard.writeText(blogPostJson);
-      toast({
-        title: "Copied!",
-        description: "Blog post data copied to clipboard (for backup purposes)"
-      });
+      try {
+        const blogPostJson = JSON.stringify(previewData, null, 2);
+        navigator.clipboard.writeText(blogPostJson)
+          .then(() => {
+            toast({
+              title: "Copied!",
+              description: "Blog post data copied to clipboard (for backup purposes)"
+            });
+          })
+          .catch(err => {
+            console.error("Clipboard write failed:", err);
+            // Fallback for browsers with restricted clipboard access
+            const textArea = document.createElement("textarea");
+            textArea.value = blogPostJson;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            toast({
+              title: "Copied!",
+              description: "Blog post data copied to clipboard (for backup purposes)"
+            });
+          });
+      } catch (error) {
+        console.error("Error copying to clipboard:", error);
+        toast({
+          title: "Error",
+          description: "Could not copy data to clipboard",
+          variant: "destructive"
+        });
+      }
     }
   };
 
@@ -75,6 +100,8 @@ export const BlogPreview = ({ isOpen, onOpenChange, previewData }: BlogPreviewPr
                       src={previewData.desktopImageUrl} 
                       alt="Desktop preview" 
                       className="max-h-full object-contain"
+                      loading="eager"
+                      importance="high"
                     />
                   ) : (
                     <span className="text-gray-400">No image</span>
@@ -89,6 +116,8 @@ export const BlogPreview = ({ isOpen, onOpenChange, previewData }: BlogPreviewPr
                       src={previewData.imageUrl} 
                       alt="Mobile preview" 
                       className="max-h-full object-contain"
+                      loading="eager"
+                      importance="high"
                     />
                   ) : (
                     <span className="text-gray-400">No image</span>
