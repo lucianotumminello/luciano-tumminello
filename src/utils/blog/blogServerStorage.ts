@@ -1,3 +1,4 @@
+
 import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
 import initialBlogPosts from "./initialBlogPosts";
@@ -92,18 +93,9 @@ export const fetchBlogPostsFromServer = async (forceRefresh = false): Promise<Bl
       return { ...cachedBlogPosts };
     }
     
-    // Always ensure the agile backbone post is included
-    try {
-      console.log("Importing agile backbone post directly as fallback");
-      const { getBlogPosts } = await import('@/data/blogList');
-      const dataPosts = await getBlogPosts();
-      return { ...initialBlogPosts, ...dataPosts };
-    } catch (innerError) {
-      console.error("Error importing data posts:", innerError);
-      // Fall back to initial posts if we can't fetch from the server and have no cache
-      console.log("Using initial blog posts as fallback");
-      return { ...initialBlogPosts };
-    }
+    // Fall back to initial posts if we can't fetch from the server and have no cache
+    console.log("Using initial blog posts as fallback");
+    return { ...initialBlogPosts };
   }
 };
 

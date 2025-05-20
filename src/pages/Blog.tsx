@@ -1,15 +1,21 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Card, CardContent } from "@/components/ui/card";
+import { CalendarIcon } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
 import { useState, useEffect, useCallback } from "react";
 import { getAllBlogPosts } from "@/utils/blog";
 import { useToast } from "@/hooks/use-toast";
-import BlogPostList from "@/components/blog/BlogPostList";
-import BlogPagination from "@/components/blog/BlogPagination";
-import BlogLoading from "@/components/blog/BlogLoading";
-import { BlogPost } from "@/components/blog/types";
 
 const Blog = () => {
   const { toast } = useToast();
@@ -17,7 +23,7 @@ const Blog = () => {
   const isItalian = language === "it";
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogPosts, setBlogPosts] = useState<Array<BlogPost & {slug: string}>>([]);
+  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
@@ -145,9 +151,9 @@ const Blog = () => {
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  // Define placeholder posts with the correct structure
-  const placeholderPosts: Pick<BlogPost, 'title' | 'titleIT' | 'excerpt' | 'excerptIT' | 'date' | 'dateIT' | 'category' | 'categoryIT' | 'imageUrl' | 'desktopImageUrl' | 'published'>[] = [
+  const placeholderPosts = [
     {
+      id: 2,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
@@ -160,6 +166,7 @@ const Blog = () => {
       desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
+      id: 3,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
@@ -172,6 +179,7 @@ const Blog = () => {
       desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
     },
     {
+      id: 4,
       title: "Coming Soon",
       titleIT: "Prossimamente",
       excerpt: "Coming Soon",
@@ -222,20 +230,85 @@ const Blog = () => {
           </div>
           
           {isLoading ? (
-            <BlogLoading />
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
           ) : (
             <>
-              <BlogPostList 
-                posts={allPosts}
-                isItalian={isItalian}
-                formatDate={formatDate}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                {allPosts.map((post, index) => (
+                  <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <img 
+                        src={post.imageUrl || (post.desktopImageUrl || "")} 
+                        alt={isItalian ? post.titleIT : post.title} 
+                        className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                        <span className="bg-gray-100 px-2 py-1 rounded-full">
+                          {isItalian ? post.categoryIT : post.category}
+                        </span>
+                        <span>•</span>
+                        <div className="flex items-center whitespace-nowrap">
+                          <CalendarIcon className="h-3 w-3 mr-1" />
+                          {formatDate(isItalian ? post.dateIT : post.date)}
+                        </div>
+                      </div>
+                      <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
+                        {'slug' in post ? (
+                          <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
+                        ) : (
+                          isItalian ? post.titleIT : post.title
+                        )}
+                      </h2>
+                      <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
+                      {'slug' in post ? (
+                        <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
+                          {isItalian ? "Leggi di più →" : "Read More →"}
+                        </Link>
+                      ) : (
+                        <span className="text-gray-400 font-medium text-sm">
+                          {isItalian ? "Prossimamente..." : "Coming Soon..."}
+                        </span>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-              <BlogPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
-              />
+              {totalPages > 1 && (
+                <Pagination className="mt-8">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <PaginationItem key={i + 1}>
+                        <PaginationLink
+                          onClick={() => setCurrentPage(i + 1)}
+                          isActive={currentPage === i + 1}
+                          className="cursor-pointer"
+                        >
+                          {i + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              )}
             </>
           )}
           

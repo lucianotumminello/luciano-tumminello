@@ -115,10 +115,9 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
           mobileImg.style.cssText = "display: block !important";
           
           // Add explicit dimensions to prevent layout shifts
-          const mobileImgElement = mobileImg.querySelector('img');
-          if (mobileImgElement instanceof HTMLImageElement) {
-            mobileImgElement.setAttribute('width', '100%');
-            mobileImgElement.setAttribute('height', 'auto');
+          if (mobileImg instanceof HTMLImageElement) {
+            mobileImg.setAttribute('width', '100%');
+            mobileImg.setAttribute('height', 'auto');
           }
         } else {
           // Desktop display
@@ -126,10 +125,9 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
           mobileImg.style.cssText = "display: none !important";
           
           // Add explicit dimensions to prevent layout shifts
-          const desktopImgElement = desktopImg.querySelector('img');
-          if (desktopImgElement instanceof HTMLImageElement) {
-            desktopImgElement.setAttribute('width', '100%');
-            desktopImgElement.setAttribute('height', 'auto');
+          if (desktopImg instanceof HTMLImageElement) {
+            desktopImg.setAttribute('width', '100%');
+            desktopImg.setAttribute('height', 'auto');
           }
         }
       }

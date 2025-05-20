@@ -17,7 +17,7 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
   const isItalian = language === "it";
-  const [translatedContent, setTranslatedContent] = React.useState<string>(content || "");
+  const [translatedContent, setTranslatedContent] = React.useState<string>("");
   
   // Enhanced detection for the Human + Tech Equation blog post
   const isHumanTechEquationPost = React.useMemo(() => {
@@ -118,24 +118,6 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
         const parentLists = document.querySelectorAll('ul, ol');
         parentLists.forEach(list => {
           list.setAttribute('style', 'display: block !important; visibility: visible !important;');
-        });
-        
-        // Fix heading styles to ensure consistent formatting
-        const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
-        headings.forEach(heading => {
-          heading.classList.add('font-bold', 'mt-6', 'mb-3');
-          
-          if (heading.tagName === 'H2') {
-            heading.classList.add('text-2xl', 'text-gray-800', 'border-b', 'border-gray-200', 'pb-2');
-          } else if (heading.tagName === 'H3') {
-            heading.classList.add('text-xl', 'text-gray-700');
-          }
-        });
-        
-        // Fix image display
-        const images = document.querySelectorAll('.prose img');
-        images.forEach(img => {
-          img.setAttribute('style', 'display: block !important; visibility: visible !important; max-width: 100%; height: auto; margin: 1.5rem auto;');
         });
       };
       
