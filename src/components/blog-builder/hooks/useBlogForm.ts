@@ -3,12 +3,21 @@ import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { BlogFormData } from "../BlogFormTypes";
+import { textToHtml } from "@/utils/contentFormatter";
 
 export const useBlogForm = (initialData: BlogFormData) => {
-  const [activeTab, setActiveTab] = useState<string>("editor");
+  const [activeTab, setActiveTab] = useState<string>("edit");
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const [previewContent, setPreviewContent] = useState({
+    title: initialData.title || "",
+    date: initialData.date || "",
+    content: textToHtml(initialData.content || ""),
+    category: initialData.category || "",
+    desktopImageUrl: initialData.desktopImageUrl || "",
+    imageUrl: initialData.imageUrl || "",
+  });
   
   const blogForm = useForm<BlogFormData>({
     defaultValues: initialData
@@ -17,7 +26,32 @@ export const useBlogForm = (initialData: BlogFormData) => {
   // Reset form when initialData changes (when editing a different post)
   useEffect(() => {
     blogForm.reset(initialData);
+    setPreviewContent({
+      title: initialData.title || "",
+      date: initialData.date || "",
+      content: textToHtml(initialData.content || ""),
+      category: initialData.category || "",
+      desktopImageUrl: initialData.desktopImageUrl || "",
+      imageUrl: initialData.imageUrl || "",
+    });
   }, [initialData, blogForm]);
+  
+  // Update preview content when form values change
+  useEffect(() => {
+    const subscription = blogForm.watch((value) => {
+      if (value) {
+        setPreviewContent({
+          title: value.title || "",
+          date: value.date || "",
+          content: textToHtml(value.content || ""),
+          category: value.category || "",
+          desktopImageUrl: value.desktopImageUrl || "",
+          imageUrl: value.imageUrl || "",
+        });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [blogForm.watch]);
   
   // Handle file upload (Word, PDF, Text)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,14 +100,6 @@ export const useBlogForm = (initialData: BlogFormData) => {
       fileInputRef.current.value = "";
     }
   };
-  
-  // Update content ref when form value changes
-  useEffect(() => {
-    const subscription = blogForm.watch(() => {
-      // This keeps our ref updated with the latest form values
-    });
-    return () => subscription.unsubscribe();
-  }, [blogForm.watch]);
 
   return {
     activeTab,
@@ -81,6 +107,7 @@ export const useBlogForm = (initialData: BlogFormData) => {
     contentRef,
     fileInputRef,
     blogForm,
-    handleFileUpload
+    handleFileUpload,
+    previewContent
   };
 };

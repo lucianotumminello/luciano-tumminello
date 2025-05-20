@@ -1,4 +1,5 @@
 
+import { BlogPost } from '@/types';
 import { updatedBlogPosts, refreshBlogPosts } from "./blogPostsStore";
 import { BlogPostsStore } from "./types";
 
@@ -25,14 +26,34 @@ export const getAllBlogPosts = async (): Promise<BlogPostsStore> => {
  * @param slug The slug of the blog post
  * @returns The blog post or undefined if not found
  */
-export const getBlogPost = async (slug: string): Promise<(Omit<import('@/types').BlogPost, "slug"> | undefined)> => {
+export const getBlogPost = async (slug: string): Promise<BlogPost | undefined> => {
   try {
     // First, refresh the blog posts from the server to ensure we have the latest data
     await refreshBlogPosts();
     
-    return updatedBlogPosts[slug] ? { ...updatedBlogPosts[slug] } : undefined;
+    if (!updatedBlogPosts[slug]) {
+      return undefined;
+    }
+    
+    const post = {
+      ...updatedBlogPosts[slug],
+      // Ensure required fields are present
+      slug,
+      published: updatedBlogPosts[slug].published !== false
+    } as BlogPost;
+    
+    return post;
   } catch (error) {
     console.error(`Error getting blog post ${slug}:`, error);
-    return updatedBlogPosts[slug] ? { ...updatedBlogPosts[slug] } : undefined;
+    
+    if (!updatedBlogPosts[slug]) {
+      return undefined;
+    }
+    
+    return {
+      ...updatedBlogPosts[slug],
+      slug,
+      published: updatedBlogPosts[slug].published !== false
+    } as BlogPost;
   }
 };

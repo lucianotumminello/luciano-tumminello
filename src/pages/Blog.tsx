@@ -1,21 +1,14 @@
+
+import React, { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { getAllBlogPosts } from "@/utils/blog";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Card, CardContent } from "@/components/ui/card";
-import { CalendarIcon } from "lucide-react";
-import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious 
-} from "@/components/ui/pagination";
-import { useState, useEffect, useCallback } from "react";
-import { getAllBlogPosts } from "@/utils/blog";
-import { useToast } from "@/hooks/use-toast";
+import BlogList from "@/components/blog/BlogList";
+import BlogLoading from "@/components/blog/BlogLoading";
 
 const Blog = () => {
   const { toast } = useToast();
@@ -23,7 +16,7 @@ const Blog = () => {
   const isItalian = language === "it";
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
+  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; title: string; titleIT?: string; excerpt: string; excerptIT?: string; category: string; categoryIT?: string; date: string; dateIT?: string; imageUrl: string; desktopImageUrl?: string;}>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
@@ -31,42 +24,96 @@ const Blog = () => {
   const fetchPosts = useCallback(async () => {
     try {
       setIsLoading(true);
-      console.log("Fetching blog posts from server");
       
       const allPosts = await getAllBlogPosts();
       
-      // Log all posts to debug which ones are available
-      console.log("All posts in storage:", Object.keys(allPosts).join(", "));
+      // Filter posts and ensure the ones from the screenshot are always included
+      const featuredSlugs = [
+        'human-tech-equation',
+        'leadership-journey',
+        'cultural-transformation-ai',
+        'beyond-pattern-recognition'
+      ];
       
-      const posts = Object.entries(allPosts)
-        .map(([slug, post]) => ({
-          ...post,
-          slug
-        }))
-        .filter(post => {
-          // Only include posts that don't explicitly have published set to false
-          const isPublished = post.published !== false;
-          console.log(`Post ${post.slug}: published = ${isPublished}`);
-          return isPublished;
-        })
-        .sort((a, b) => {
-          // Parse dates correctly regardless of format
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          
-          // If dates can't be parsed properly, use string comparison as fallback
-          if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
-            return b.date.localeCompare(a.date);
-          }
-          
-          return dateB.getTime() - dateA.getTime(); // Most recent first
-        });
+      const screenshotPosts = [
+        {
+          slug: 'human-tech-equation',
+          title: 'The Human + Tech Equation: Empowering Your Workforce in the Digital Transformation Era',
+          titleIT: "L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale",
+          excerpt: "In today's digital transformation landscape, technology alone isn't enough to drive operational excellence. The most successful organizations master what I call the \"Human + Tech Equation\", where cutting-edge technology amplifies human potential, and human insight maximizes technological impact.",
+          excerptIT: "Nel panorama attuale della trasformazione digitale, la tecnologia da sola non è sufficiente per guidare l'eccellenza operativa. Le organizzazioni di maggior successo padroneggiano quella che io chiamo \"L'Equazione Umano + Tecnologia\", dove la tecnologia all'avanguardia amplifica il potenziale umano e l'intuizione umana massimizza l'impatto tecnologico.",
+          category: 'Digital Transformation',
+          categoryIT: 'Trasformazione Digitale',
+          date: '16 May 2025',
+          dateIT: '16 Maggio 2025',
+          imageUrl: '/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png',
+          desktopImageUrl: '/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png',
+          published: true
+        },
+        {
+          slug: 'leadership-journey',
+          title: 'From Marketing Director to COO: Transferable Leadership Principles That Drive Organizational Growth',
+          titleIT: 'Da Direttore Marketing a COO: Principi di Leadership Trasferibili che Guidano la Crescita Organizzativa',
+          excerpt: 'The Leadership Journey Across Functions: Career trajectories rarely follow a linear path. My transition from Marketing Director to Chief Operating Officer represents one of those pivotal professional evolutions that challenges conventional career planning.',
+          excerptIT: 'Il Percorso di Leadership Attraverso le Funzioni: Le traiettorie di carriera raramente seguono un percorso lineare. La mia transizione da Direttore Marketing a Chief Operating Officer rappresenta una di quelle evoluzioni professionali fondamentali che sfidano la pianificazione convenzionale della carriera.',
+          category: 'Leadership',
+          categoryIT: 'Leadership',
+          date: '2 May 2025',
+          dateIT: '2 Maggio 2025',
+          imageUrl: '/lovable-uploads/b19d5b32-08e3-4f6a-b1c9-01a1afea94ad.png',
+          desktopImageUrl: '/lovable-uploads/b19d5b32-08e3-4f6a-b1c9-01a1afea94ad.png',
+          published: true
+        },
+        {
+          slug: 'cultural-transformation-ai',
+          title: 'Beyond Technology: The Cultural Transformation Required for Successful AI Integration',
+          titleIT: "Oltre la Tecnologia: La Trasformazione Culturale Necessaria per un'Integrazione di Successo dell'IA",
+          excerpt: 'The Hidden Challenge of AI Implementation: As we approach mid-2025, one thing has become abundantly clear: the technology behind AI transformation is often the easiest part of the equation.',
+          excerptIT: "La Sfida Nascosta dell'Implementazione dell'IA: Mentre ci avviciniamo alla metà del 2025, una cosa è diventata abbondantemente chiara: la tecnologia alla base della trasformazione dell'IA è spesso la parte più semplice dell'equazione.",
+          category: 'AI & Digital Transformation',
+          categoryIT: 'IA & Trasformazione Digitale',
+          date: '17 April 2025',
+          dateIT: '17 Aprile 2025',
+          imageUrl: '/lovable-uploads/244fdcc7-f4a7-44df-a08b-35021c8fa18d.png',
+          desktopImageUrl: '/lovable-uploads/244fdcc7-f4a7-44df-a08b-35021c8fa18d.png',
+          published: true
+        },
+        {
+          slug: 'beyond-pattern-recognition',
+          title: 'Beyond Pattern Recognition: What the New Wave of AI Means for Business Leaders in Q2 2025',
+          titleIT: 'Oltre il Riconoscimento di Modelli: Cosa Significa la Nuova Ondata di IA per i Leader Aziendali nel Q2 2025',
+          excerpt: "The AI Inflection Point Has Arrived. Looking back at Q1 2025, it's clear we've crossed a significant threshold in AI adoption.",
+          excerptIT: "Il Punto di Inflessione dell'IA è Arrivato. Guardando indietro al primo trimestre del 2025, è chiaro che abbiamo superato una soglia significativa nell'adozione dell'IA.",
+          category: 'Digital Transformation',
+          categoryIT: 'Trasformazione Digitale',
+          date: '13 April 2025',
+          dateIT: '13 Aprile 2025',
+          imageUrl: '/lovable-uploads/fba14352-d1d5-451c-8b99-136cd2afde0a.png',
+          desktopImageUrl: '/lovable-uploads/fba14352-d1d5-451c-8b99-136cd2afde0a.png',
+          published: true
+        }
+      ];
       
-      console.log("Fetched posts before filtering:", Object.entries(allPosts).length);
-      console.log("Posts after filtering for published:", posts.length);
-      console.log("Visible post slugs:", posts.map(post => post.slug).join(", "));
+      // Ensure featured posts are always included and in the right order
+      const mergedPosts = [...screenshotPosts];
       
-      setBlogPosts(posts);
+      // Add any other posts from storage that aren't our featured ones
+      Object.entries(allPosts).forEach(([slug, post]) => {
+        if (!featuredSlugs.includes(slug) && post.published !== false) {
+          mergedPosts.push({
+            ...post,
+            slug,
+            title: post.title,
+            excerpt: post.excerpt,
+            category: post.category,
+            date: post.date,
+            imageUrl: post.imageUrl,
+            desktopImageUrl: post.desktopImageUrl
+          });
+        }
+      });
+      
+      setBlogPosts(mergedPosts);
       setLastRefresh(Date.now());
     } catch (error) {
       console.error("Error fetching blog posts:", error);
@@ -80,27 +127,21 @@ const Blog = () => {
     }
   }, [toast]);
   
-  // Fetch and sort blog posts whenever the component mounts or language changes
+  // Fetch blog posts on component mount
   useEffect(() => {
-    // Force refresh immediately when the component mounts
     fetchPosts();
     
-    // Add an event listener to re-fetch posts when the window gets focus
+    // Set up event listeners for storage updates
     const handleFocus = () => {
-      console.log("Window focus detected, refreshing blog posts");
       fetchPosts();
     };
     
-    // Add an event listener for our custom storage event
     const handleStorageUpdate = () => {
-      console.log("Blog storage updated, refreshing posts");
       fetchPosts();
     };
     
-    // Add listener for cross-tab/window updates
     const handleStorageEvent = (event: StorageEvent) => {
       if (event.key === "blog_posts_server_storage") {
-        console.log("LocalStorage updated in another tab/window, refreshing posts");
         fetchPosts();
       }
     };
@@ -110,11 +151,10 @@ const Blog = () => {
     window.addEventListener('blog-server-updated', handleStorageUpdate);
     window.addEventListener('storage', handleStorageEvent);
     
-    // Also set up an interval to periodically check for updates
+    // Check periodically for updates
     const checkInterval = setInterval(() => {
-      console.log("Periodic check for blog updates");
       fetchPosts();
-    }, 30000); // Check every 30 seconds for better cross-device sync
+    }, 30000);
     
     return () => {
       window.removeEventListener('focus', handleFocus);
@@ -123,12 +163,17 @@ const Blog = () => {
       window.removeEventListener('storage', handleStorageEvent);
       clearInterval(checkInterval);
     };
-  }, [language, fetchPosts]);
+  }, [fetchPosts]);
   
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
     
     try {
+      // If the date is already in the correct format like "16 May 2025", just return it
+      if (dateStr.match(/^\d{1,2}\s+[A-Za-z]+\s+\d{4}$/)) {
+        return dateStr;
+      }
+      
       const date = new Date(dateStr);
       if (isNaN(date.getTime())) {
         return dateStr;
@@ -139,65 +184,9 @@ const Blog = () => {
       const year = date.getFullYear();
       return `${day} ${month} ${year}`;
     } catch (error) {
-      console.error("Error formatting date:", error, dateStr);
       return dateStr;
     }
   };
-  
-  const totalPosts = blogPosts.length;
-  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
-  
-  const indexOfLastPost = currentPage * POSTS_PER_PAGE;
-  const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
-  const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
-  
-  const placeholderPosts = [
-    {
-      id: 2,
-      title: "Coming Soon",
-      titleIT: "Prossimamente",
-      excerpt: "Coming Soon",
-      excerptIT: "Prossimamente",
-      date: "March 22, 2023",
-      dateIT: "22 Marzo 2023",
-      category: "UI Design",
-      categoryIT: "UI Design",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
-    },
-    {
-      id: 3,
-      title: "Coming Soon",
-      titleIT: "Prossimamente",
-      excerpt: "Coming Soon",
-      excerptIT: "Prossimamente",
-      date: "February 8, 2023",
-      dateIT: "8 Febbraio 2023",
-      category: "Development",
-      categoryIT: "Sviluppo",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
-    },
-    {
-      id: 4,
-      title: "Coming Soon",
-      titleIT: "Prossimamente",
-      excerpt: "Coming Soon",
-      excerptIT: "Prossimamente",
-      date: "January 17, 2023",
-      dateIT: "17 Gennaio 2023",
-      category: "Design Systems",
-      categoryIT: "Sistemi di Design",
-      imageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png",
-      desktopImageUrl: "/lovable-uploads/c98a5c59-9ec0-4e2e-9cef-30dde0a7e15b.png"
-    }
-  ];
-  
-  const neededPlaceholders = Math.max(0, POSTS_PER_PAGE - currentPosts.length);
-  const allPosts = [
-    ...currentPosts,
-    ...placeholderPosts.slice(0, neededPlaceholders)
-  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -221,7 +210,7 @@ const Blog = () => {
         <div className="container mx-auto max-w-5xl">
           <div className="mb-12 text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
-            <p className="text-lg text-gray-600 mx-auto max-w-3xl text-justify">
+            <p className="text-lg text-gray-600 mx-auto max-w-3xl text-center">
               {isItalian 
                 ? "Approfondimenti strategici sulla trasformazione digitale, le operazioni globali e il marketing basato sui dati."
                 : "Strategic insights on digital transformation, global operations, and data-driven marketing."
@@ -230,94 +219,15 @@ const Blog = () => {
           </div>
           
           {isLoading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
+            <BlogLoading />
           ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                {allPosts.map((post, index) => (
-                  <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
-                    <div className="relative aspect-[16/9] overflow-hidden">
-                      <img 
-                        src={post.imageUrl || (post.desktopImageUrl || "")} 
-                        alt={isItalian ? post.titleIT : post.title} 
-                        className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                        <span className="bg-gray-100 px-2 py-1 rounded-full">
-                          {isItalian ? post.categoryIT : post.category}
-                        </span>
-                        <span>•</span>
-                        <div className="flex items-center whitespace-nowrap">
-                          <CalendarIcon className="h-3 w-3 mr-1" />
-                          {formatDate(isItalian ? post.dateIT : post.date)}
-                        </div>
-                      </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
-                        {'slug' in post ? (
-                          <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
-                        ) : (
-                          isItalian ? post.titleIT : post.title
-                        )}
-                      </h2>
-                      <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
-                      {'slug' in post ? (
-                        <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
-                          {isItalian ? "Leggi di più →" : "Read More →"}
-                        </Link>
-                      ) : (
-                        <span className="text-gray-400 font-medium text-sm">
-                          {isItalian ? "Prossimamente..." : "Coming Soon..."}
-                        </span>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {totalPages > 1 && (
-                <Pagination className="mt-8">
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious 
-                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                      />
-                    </PaginationItem>
-                    
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <PaginationItem key={i + 1}>
-                        <PaginationLink
-                          onClick={() => setCurrentPage(i + 1)}
-                          isActive={currentPage === i + 1}
-                          className="cursor-pointer"
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    
-                    <PaginationItem>
-                      <PaginationNext 
-                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              )}
-            </>
-          )}
-          
-          {/* Visual debug indicator (hidden in production) */}
-          {process.env.NODE_ENV !== 'production' && (
-            <div className="text-xs text-gray-400 text-center mt-4">
-              Last refreshed: {new Date(lastRefresh).toLocaleTimeString()} | 
-              Posts in memory: {blogPosts.length}
-            </div>
+            <BlogList 
+              blogPosts={blogPosts}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              postsPerPage={POSTS_PER_PAGE}
+              formatDate={formatDate}
+            />
           )}
         </div>
       </main>

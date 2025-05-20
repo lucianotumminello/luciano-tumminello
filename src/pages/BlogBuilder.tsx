@@ -9,6 +9,10 @@ import { BlogBuilderHeader } from "@/components/blog-builder/BlogBuilderHeader";
 import { EditingNotice } from "@/components/blog-builder/EditingNotice";
 import { BlogForm } from "@/components/blog-builder/BlogForm";
 import { BlogPreview } from "@/components/blog-builder/BlogPreview";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { makeBlogPostPermanent } from "@/utils/blog";
 
 const BlogBuilder = () => {
   const {
@@ -40,8 +44,54 @@ const BlogBuilder = () => {
     selectPostToEdit,
     cancelEditing,
     duplicateCurrentPost,
-    duplicatePost
+    duplicatePost,
+    refreshBlogPosts
   } = useBlogBuilder();
+
+  const [permanentSlugDialogOpen, setPermanentSlugDialogOpen] = useState(false);
+  const [permanentSlug, setPermanentSlug] = useState("");
+  const [isPermanentSaving, setIsPermanentSaving] = useState(false);
+
+  const handleMakePermanent = () => {
+    // Generate a clean slug from the title
+    const suggestedSlug = formValues.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
+      
+    setPermanentSlug(suggestedSlug);
+    setPermanentSlugDialogOpen(true);
+  };
+
+  const confirmMakePermanent = async () => {
+    if (!selectedPost || !permanentSlug) return;
+    
+    setIsPermanentSaving(true);
+    
+    try {
+      // Call the utility function to make the post permanent
+      const success = await makeBlogPostPermanent(
+        selectedPost,
+        permanentSlug,
+        true // Always publish the permanent post
+      );
+      
+      if (success) {
+        // Refresh the blog posts list
+        await refreshBlogPosts();
+        
+        // Select the new permanent post for editing
+        selectPostToEdit(permanentSlug);
+        
+        // Close the dialog
+        setPermanentSlugDialogOpen(false);
+      }
+    } catch (error) {
+      console.error("Error making blog post permanent:", error);
+    } finally {
+      setIsPermanentSaving(false);
+    }
+  };
 
   if (!isAuthenticated) {
     return (
@@ -92,6 +142,7 @@ const BlogBuilder = () => {
             setDesktopImageFile={setDesktopImageFile}
             setMobileImageFile={setMobileImageFile}
             onDuplicate={isUpdateMode ? duplicateCurrentPost : undefined}
+            onMakePermanent={isUpdateMode ? handleMakePermanent : undefined}
           />
 
           <BlogPreview 
@@ -101,6 +152,50 @@ const BlogBuilder = () => {
           />
 
           <FormattingGuide />
+          
+          <Dialog open={permanentSlugDialogOpen} onOpenChange={setPermanentSlugDialogOpen}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Make Post Permanent</DialogTitle>
+                <DialogDescription>
+                  Create a clean, permanent URL for this post. This will make the post accessible across all devices and browsers.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                <div className="space-y-2">
+                  <label htmlFor="permanentSlug" className="text-sm font-medium">
+                    Permanent URL Slug
+                  </label>
+                  <Input 
+                    id="permanentSlug"
+                    value={permanentSlug}
+                    onChange={(e) => setPermanentSlug(e.target.value)}
+                    placeholder="your-post-title"
+                    className="w-full"
+                  />
+                  <p className="text-xs text-gray-500">
+                    The post will be accessible at: yoursite.com/blog/{permanentSlug}
+                  </p>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setPermanentSlugDialogOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  onClick={confirmMakePermanent}
+                  disabled={!permanentSlug || isPermanentSaving}
+                >
+                  {isPermanentSaving ? "Saving..." : "Confirm & Publish"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </main>
       <Footer />

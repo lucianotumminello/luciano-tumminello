@@ -1,45 +1,57 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Save, Copy, Send } from "lucide-react";
+import { Save, Copy, Send, Link } from "lucide-react";
 
 interface BlogFormActionsProps {
   onApplyLayout: () => void;
   isPublishing: boolean;
   isUpdateMode: boolean;
   onDuplicate?: () => void;
+  onMakePermanent?: () => void;
 }
 
 export const BlogFormActions = ({
   onApplyLayout,
   isPublishing,
   isUpdateMode,
-  onDuplicate
+  onDuplicate,
+  onMakePermanent
 }: BlogFormActionsProps) => {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex gap-2">
+    <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap gap-2">
         <Button 
           type="button" 
           variant="outline" 
-          size="lg"
           onClick={onApplyLayout}
           className="flex items-center gap-2"
         >
           <Save className="h-5 w-5" />
-          Apply Layout
+          Format Content
         </Button>
         
         {isUpdateMode && onDuplicate && (
           <Button
             type="button"
             variant="outline"
-            size="lg"
             onClick={onDuplicate}
             className="flex items-center gap-2"
           >
             <Copy className="h-5 w-5" />
             Duplicate
+          </Button>
+        )}
+        
+        {isUpdateMode && onMakePermanent && (
+          <Button
+            type="button"
+            variant="default"
+            onClick={onMakePermanent}
+            className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700"
+          >
+            <Link className="h-5 w-5" />
+            Make Permanent
           </Button>
         )}
       </div>
