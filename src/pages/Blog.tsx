@@ -1,153 +1,22 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Card, CardContent } from "@/components/ui/card";
-import { CalendarIcon } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious 
-} from "@/components/ui/pagination";
-import { useState, useEffect, useCallback } from "react";
-import { getAllBlogPosts, refreshBlogPosts } from "@/utils/blog";
-import { useToast } from "@/hooks/use-toast";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from "react";
+import BlogList from "@/components/blog/BlogList";
+import BlogPagination from "@/components/blog/BlogPagination";
+import useBlogPosts from "@/hooks/useBlogPosts";
 
 const Blog = () => {
-  const { toast } = useToast();
   const { language } = useLanguage();
   const isItalian = language === "it";
-  const isMobile = useIsMobile();
   const POSTS_PER_PAGE = 4;
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
-  // Function to fetch and sort blog posts
-  const fetchPosts = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      console.log("Fetching blog posts from server");
-      
-      // Force refresh posts first
-      await refreshBlogPosts(true);
-      
-      const allPosts = await getAllBlogPosts();
-      
-      // Log all posts to debug which ones are available
-      console.log("All posts in storage:", Object.keys(allPosts).join(", "));
-      
-      const posts = Object.entries(allPosts)
-        .map(([slug, post]) => ({
-          ...post,
-          slug
-        }))
-        .filter(post => {
-          // Only include posts that don't explicitly have published set to false
-          const isPublished = post.published !== false;
-          console.log(`Post ${post.slug}: published = ${isPublished}`);
-          return isPublished;
-        })
-        .sort((a, b) => {
-          // Parse dates correctly regardless of format
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          
-          // If dates can't be parsed properly, use string comparison as fallback
-          if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
-            return b.date.localeCompare(a.date);
-          }
-          
-          return dateB.getTime() - dateA.getTime(); // Most recent first
-        });
-      
-      console.log("Fetched posts before filtering:", Object.entries(allPosts).length);
-      console.log("Posts after filtering for published:", posts.length);
-      console.log("Visible post slugs:", posts.map(post => post.slug).join(", "));
-      
-      setBlogPosts(posts);
-      setLastRefresh(Date.now());
-    } catch (error) {
-      console.error("Error fetching blog posts:", error);
-      toast({
-        title: "Error loading blog posts",
-        description: "There was a problem loading the blog posts",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [toast]);
-  
-  // Fetch and sort blog posts whenever the component mounts or language changes
-  useEffect(() => {
-    // Force refresh immediately when the component mounts
-    fetchPosts();
-    
-    // Add an event listener to re-fetch posts when the window gets focus
-    const handleFocus = () => {
-      console.log("Window focus detected, refreshing blog posts");
-      fetchPosts();
-    };
-    
-    // Add an event listener for our custom storage event
-    const handleStorageUpdate = () => {
-      console.log("Blog storage updated, refreshing posts");
-      fetchPosts();
-    };
-    
-    // Add listener for cross-tab/window updates
-    const handleStorageEvent = (event: StorageEvent) => {
-      if (event.key === "blog_posts_server_storage") {
-        console.log("LocalStorage updated in another tab/window, refreshing posts");
-        fetchPosts();
-      }
-    };
-    
-    window.addEventListener('focus', handleFocus);
-    window.addEventListener('blog-storage-updated', handleStorageUpdate);
-    window.addEventListener('blog-server-updated', handleStorageUpdate);
-    window.addEventListener('storage', handleStorageEvent);
-    
-    // Also set up an interval to periodically check for updates
-    const checkInterval = setInterval(() => {
-      console.log("Periodic check for blog updates");
-      fetchPosts();
-    }, 30000); // Check every 30 seconds for better cross-device sync
-    
-    return () => {
-      window.removeEventListener('focus', handleFocus);
-      window.removeEventListener('blog-storage-updated', handleStorageUpdate);
-      window.removeEventListener('blog-server-updated', handleStorageUpdate);
-      window.removeEventListener('storage', handleStorageEvent);
-      clearInterval(checkInterval);
-    };
-  }, [language, fetchPosts]);
-  
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    
-    try {
-      const date = new Date(dateStr);
-      if (isNaN(date.getTime())) {
-        return dateStr;
-      }
-      
-      const day = date.getDate();
-      const month = date.toLocaleString(isItalian ? 'it-IT' : 'en-US', { month: 'long' });
-      const year = date.getFullYear();
-      return `${day} ${month} ${year}`;
-    } catch (error) {
-      console.error("Error formatting date:", error, dateStr);
-      return dateStr;
-    }
-  };
+  // Use the custom hook to handle blog posts
+  const { blogPosts, isLoading, lastRefresh, formatDate } = useBlogPosts();
   
   const totalPosts = blogPosts.length;
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
@@ -156,6 +25,7 @@ const Blog = () => {
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
+  // Placeholder posts for when there are not enough real posts
   const placeholderPosts = [
     {
       id: 2,
@@ -240,83 +110,17 @@ const Blog = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                {allPosts.map((post, index) => (
-                  <Card key={index} className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300">
-                    <div className="relative aspect-[16/9] overflow-hidden">
-                      {/* Add force refresh cache busting to images */}
-                      <img 
-                        src={`${isMobile ? post.imageUrl : (post.desktopImageUrl || post.imageUrl)}?t=${lastRefresh}`} 
-                        alt={isItalian ? post.titleIT : post.title} 
-                        className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
-                        loading={index < 2 ? "eager" : "lazy"}
-                        fetchPriority={index < 2 ? "high" : "auto"}
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                        <span className="bg-gray-100 px-2 py-1 rounded-full">
-                          {isItalian ? post.categoryIT : post.category}
-                        </span>
-                        <span>•</span>
-                        <div className="flex items-center whitespace-nowrap">
-                          <CalendarIcon className="h-3 w-3 mr-1" />
-                          {formatDate(isItalian ? post.dateIT : post.date)}
-                        </div>
-                      </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-primary transition-colors">
-                        {'slug' in post ? (
-                          <Link to={`/blog/${post.slug}`}>{isItalian ? post.titleIT : post.title}</Link>
-                        ) : (
-                          isItalian ? post.titleIT : post.title
-                        )}
-                      </h2>
-                      <p className="text-gray-600 mb-4 text-justify">{isItalian ? post.excerptIT : post.excerpt}</p>
-                      {'slug' in post ? (
-                        <Link to={`/blog/${post.slug}`} className="text-primary font-medium text-sm hover:underline">
-                          {isItalian ? "Leggi di più →" : "Read More →"}
-                        </Link>
-                      ) : (
-                        <span className="text-gray-400 font-medium text-sm">
-                          {isItalian ? "Prossimamente..." : "Coming Soon..."}
-                        </span>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <BlogList 
+                posts={allPosts} 
+                lastRefresh={lastRefresh} 
+                formatDate={formatDate} 
+              />
 
-              {totalPages > 1 && (
-                <Pagination className="mt-8">
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious 
-                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                      />
-                    </PaginationItem>
-                    
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <PaginationItem key={i + 1}>
-                        <PaginationLink
-                          onClick={() => setCurrentPage(i + 1)}
-                          isActive={currentPage === i + 1}
-                          className="cursor-pointer"
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    
-                    <PaginationItem>
-                      <PaginationNext 
-                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              )}
+              <BlogPagination 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                onPageChange={setCurrentPage} 
+              />
             </>
           )}
           
