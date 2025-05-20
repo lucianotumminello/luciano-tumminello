@@ -63,14 +63,13 @@ const BlogPostHeader = ({
   
   // Add useEffect to ensure images are properly loaded and displayed
   useEffect(() => {
-    // Force proper image loading by adding small delay
-    const timer = setTimeout(() => {
-      const desktopImg = document.getElementById("marketing-desktop-image");
-      const mobileImg = document.getElementById("marketing-mobile-image");
+    // Function to update image visibility based on screen size
+    const updateImageVisibility = () => {
+      const desktopImg = document.getElementById("blog-desktop-image");
+      const mobileImg = document.getElementById("blog-mobile-image");
       
       if (desktopImg && mobileImg) {
-        console.log("BlogPostHeader: Updating image visibility");
-        if (isMobile) {
+        if (window.innerWidth <= 768) {
           desktopImg.style.display = "none";
           mobileImg.style.display = "block";
         } else {
@@ -78,9 +77,21 @@ const BlogPostHeader = ({
           mobileImg.style.display = "none";
         }
       }
-    }, 100);
+    };
     
-    return () => clearTimeout(timer);
+    // Call initially
+    updateImageVisibility();
+    
+    // Set up listener for window resizes
+    window.addEventListener("resize", updateImageVisibility);
+    
+    // Add a small delay to ensure images are properly displayed after render
+    const timer = setTimeout(updateImageVisibility, 100);
+    
+    return () => {
+      window.removeEventListener("resize", updateImageVisibility);
+      clearTimeout(timer);
+    };
   }, [isMobile]);
   
   // Force reload images with timestamp to prevent caching
@@ -96,35 +107,29 @@ const BlogPostHeader = ({
       
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
-          <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Use different images for desktop and mobile with improved visibility management */}
+          <AspectRatio ratio={16/9} className="bg-gray-100 relative">
+            {/* Desktop image */}
             <img 
-              id="marketing-desktop-image"
+              id="blog-desktop-image"
               src={desktopImageWithCache} 
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover absolute top-0 left-0"
               loading="eager"
               fetchPriority="high"
               width="1200"
               height="675"
-              style={{
-                aspectRatio: "16/9", 
-                display: isMobile ? "none" : "block"
-              }}
             />
+            
+            {/* Mobile image */}
             <img 
-              id="marketing-mobile-image"
+              id="blog-mobile-image"
               src={mobileImageWithCache} 
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover absolute top-0 left-0"
               loading="eager"
               fetchPriority="high"
               width="640"
               height="360"
-              style={{
-                aspectRatio: "16/9", 
-                display: isMobile ? "block" : "none"
-              }}
             />
           </AspectRatio>
         </div>

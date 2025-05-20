@@ -1,192 +1,75 @@
 
-import React from "react";
+import React from 'react';
 
-const BlogPostStyles: React.FC = () => {
+const BlogPostStyles = () => {
   return (
-    <style>
-      {`
-      .prose p {
-        text-align: justify;
-        color: rgb(75 85 99);
-        margin-bottom: 1rem;
+    <style jsx="true">{`
+      /* Responsive image handling */
+      @media (max-width: 768px) {
+        #blog-desktop-image {
+          display: none !important;
+        }
+        #blog-mobile-image {
+          display: block !important;
+        }
       }
       
-      .prose h1, .prose h2, .prose h3 {
-        color: rgb(31 41 55);
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
+      @media (min-width: 769px) {
+        #blog-desktop-image {
+          display: block !important;
+        }
+        #blog-mobile-image {
+          display: none !important;
+        }
+      }
+      
+      /* Enhanced blog content styling */
+      .prose {
+        max-width: 100%;
       }
       
       .prose img {
         max-width: 100%;
         height: auto;
+        border-radius: 0.375rem;
+        margin: 1.5rem 0;
       }
       
-      /* Desktop images - important to ensure display */
-      .desktop-image-container,
-      .marketing-desktop-image {
-        display: block !important;
-        margin: 2rem 0;
-        width: 100%;
-      }
-      
-      /* Mobile images - important to ensure proper display */
-      .mobile-image-container,
-      .marketing-mobile-image {
-        display: none !important;
-        margin: 2rem 0;
-        width: 100%;
-      }
-      
-      /* Link styling for better visibility */
-      .prose a {
-        color: #2563eb;
-        text-decoration: underline;
-        font-weight: 500;
-      }
-      
-      .prose a:hover {
-        color: #1d4ed8;
-        text-decoration: underline;
-      }
-      
-      /* Related resources section styling */
-      .related-resources {
-        padding-top: 1.5rem;
+      .prose h2 {
         margin-top: 2rem;
-        border-top: 1px solid #e5e7eb;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 700;
       }
       
-      .related-resources h3 {
+      .prose h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
         font-size: 1.25rem;
         font-weight: 600;
-        margin-bottom: 0.75rem;
       }
       
-      .related-resources ul {
-        list-style-type: disc;
+      .prose ul, .prose ol {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
         padding-left: 1.5rem;
       }
       
-      .related-resources li {
+      .prose li {
+        margin-top: 0.5rem;
         margin-bottom: 0.5rem;
       }
       
-      /* Ensure consistent styling between English and Italian versions */
-      [lang="it"] h1, 
-      [lang="en"] h1 {
-        font-size: 2.25rem;
-        line-height: 1.3;
-        font-weight: 700;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-      }
-      
-      [lang="it"] h2, 
-      [lang="en"] h2 {
-        font-size: 1.75rem;
-        line-height: 1.3;
+      .prose strong {
         font-weight: 600;
-        margin-top: 1.75rem;
-        margin-bottom: 1rem;
       }
       
-      [lang="it"] h3, 
-      [lang="en"] h3 {
-        font-size: 1.5rem;
-        line-height: 1.3;
-        font-weight: 600;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
+      .related-resources {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
       }
-      
-      /* Ensure list items are properly displayed in both languages */
-      [lang="it"] ul,
-      [lang="en"] ul {
-        list-style-type: disc !important;
-        padding-left: 1.5rem !important;
-        margin: 1rem 0 !important;
-        display: block !important;
-      }
-      
-      [lang="it"] ol,
-      [lang="en"] ol {
-        list-style-type: decimal !important;
-        padding-left: 1.5rem !important;
-        margin: 1rem 0 !important;
-        display: block !important;
-      }
-      
-      [lang="it"] li,
-      [lang="en"] li {
-        margin-bottom: 0.5rem !important;
-        display: list-item !important;
-        visibility: visible !important;
-      }
-      
-      /* Force visibility of nested lists */
-      [lang="it"] li > ul,
-      [lang="it"] li > ol,
-      [lang="en"] li > ul,
-      [lang="en"] li > ol {
-        margin-top: 0.5rem !important;
-        margin-bottom: 1rem !important;
-        display: block !important;
-        visibility: visible !important;
-      }
-      
-      [lang="it"] p,
-      [lang="it"] li,
-      [lang="en"] p,
-      [lang="en"] li {
-        line-height: 1.6;
-      }
-      
-      [lang="it"] ul,
-      [lang="it"] ol,
-      [lang="en"] ul,
-      [lang="en"] ol {
-        margin-top: 0.75rem;
-        margin-bottom: 1rem;
-      }
-      
-      /* Force heading consistency regardless of language */
-      [lang="it"] h1, [lang="it"] h2, [lang="it"] h3,
-      [lang="en"] h1, [lang="en"] h2, [lang="en"] h3 {
-        display: block !important;
-        visibility: visible !important;
-        font-family: inherit !important;
-      }
-      
-      @media (max-width: 768px) {
-        /* Hide desktop images on mobile */
-        .desktop-image-container,
-        .marketing-desktop-image,
-        #marketing-desktop-image {
-          display: none !important;
-        }
-        
-        /* Show mobile images on mobile */
-        .mobile-image-container,
-        .marketing-mobile-image,
-        #marketing-mobile-image {
-          display: block !important;
-        }
-        
-        /* Mobile content optimization */
-        .content-mobile-optimized p {
-          font-size: 0.95rem;
-          line-height: 1.5;
-          margin-bottom: 0.75rem;
-        }
-        
-        .content-mobile-optimized img {
-          height: auto !important;
-          width: 100% !important;
-        }
-      }
-      `}
-    </style>
+    `}</style>
   );
 };
 
