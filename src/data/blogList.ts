@@ -6,8 +6,8 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     console.log("Getting blog posts from data source");
     
     // Absolute URLs to ensure images load properly
-    const absoluteDesktopImageUrl = `${window.location.origin}/lovable-uploads/d5e3f45f-8a7d-4b07-bbb7-f08116f5abe0.png`;
-    const absoluteMobileImageUrl = `${window.location.origin}/lovable-uploads/38137f5b-3d3e-4ccd-a77e-63481f021d09.png`;
+    const absoluteDesktopImageUrl = `${window.location.origin}/lovable-uploads/c56fe5c9-34cb-42b9-8433-a72f8b7696de.png`;
+    const absoluteMobileImageUrl = `${window.location.origin}/lovable-uploads/387e53d2-d045-4b94-8e84-99c29ed8299f.png`;
     
     // Tech + Human Equation image
     const techHumanImageUrl = `${window.location.origin}/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png`;
