@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect } from "react";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -60,6 +61,28 @@ const BlogPostHeader = ({
   
   const formattedDate = formatDate(date);
   
+  // Add useEffect to ensure images are properly loaded and displayed
+  useEffect(() => {
+    // Force proper image loading by adding small delay
+    const timer = setTimeout(() => {
+      const desktopImg = document.getElementById("marketing-desktop-image");
+      const mobileImg = document.getElementById("marketing-mobile-image");
+      
+      if (desktopImg && mobileImg) {
+        console.log("BlogPostHeader: Updating image visibility");
+        if (isMobile) {
+          desktopImg.style.display = "none";
+          mobileImg.style.display = "block";
+        } else {
+          desktopImg.style.display = "block";
+          mobileImg.style.display = "none";
+        }
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [isMobile]);
+  
   return (
     <div className="mb-8">
       <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
@@ -70,7 +93,7 @@ const BlogPostHeader = ({
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Use different images for desktop and mobile */}
+            {/* Use different images for desktop and mobile with improved visibility management */}
             <img 
               id="marketing-desktop-image"
               src={desktopImageUrl} 

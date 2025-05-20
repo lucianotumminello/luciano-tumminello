@@ -37,8 +37,10 @@ const queryClient = new QueryClient({
   },
 });
 
-// Initialize blog posts on app load with force refresh
+// Initialize blog posts on app load with force refresh multiple times
 console.log("App.tsx: Initializing blog posts on app load with force refresh");
+
+// Immediately initialize blogs
 initializeBlogPosts()
   .then(() => {
     console.log("Force refreshing blog posts after initialization");
@@ -46,6 +48,11 @@ initializeBlogPosts()
   })
   .then(() => {
     console.log("Blog posts initialization and refresh completed successfully");
+    // Extra force refresh after a delay to ensure content is loaded
+    setTimeout(() => {
+      console.log("Performing additional force refresh after delay");
+      refreshBlogPosts(true);
+    }, 2000);
   })
   .catch(error => {
     console.error('Error initializing blog posts on app load:', error);
@@ -61,9 +68,9 @@ const RouteChangeTracker = () => {
     const title = document.title;
     trackPageView(path, title);
     
-    // Always refresh blog posts when visiting the blog page to ensure latest content
-    if (path === '/blog') {
-      console.log('Blog page visited, force refreshing blog posts');
+    // Always refresh blog posts when visiting the blog page or a blog post to ensure latest content
+    if (path === '/blog' || path.startsWith('/blog/')) {
+      console.log('Blog page or post visited, force refreshing blog posts');
       refreshBlogPosts(true).catch(error => {
         console.error('Error refreshing blog posts on blog page visit:', error);
       });

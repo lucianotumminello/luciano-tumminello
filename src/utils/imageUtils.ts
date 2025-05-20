@@ -1,3 +1,4 @@
+
 /**
  * Optimizes images in HTML content for better loading performance and responsive display
  * @param content - HTML content to process
@@ -86,20 +87,24 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
         console.log("Found marketing images in DOM, applying visibility styles");
         
         // Create style element for media queries
-        const styleEl = document.createElement('style');
-        styleEl.innerHTML = `
-          @media (max-width: 768px) {
-            #marketing-desktop-image { display: none !important; }
-            #marketing-mobile-image { display: block !important; }
-          }
-          @media (min-width: 769px) {
-            #marketing-desktop-image { display: block !important; }
-            #marketing-mobile-image { display: none !important; }
-          }
-        `;
-        document.head.appendChild(styleEl);
+        const existingStyle = document.getElementById("responsive-image-styles");
+        if (!existingStyle) {
+          const styleEl = document.createElement('style');
+          styleEl.id = "responsive-image-styles";
+          styleEl.innerHTML = `
+            @media (max-width: 768px) {
+              #marketing-desktop-image { display: none !important; }
+              #marketing-mobile-image { display: block !important; }
+            }
+            @media (min-width: 769px) {
+              #marketing-desktop-image { display: block !important; }
+              #marketing-mobile-image { display: none !important; }
+            }
+          `;
+          document.head.appendChild(styleEl);
+        }
         
-        // Set initial state based on current device
+        // Set initial state based on current device with important flag
         if (isMobile) {
           // Mobile display
           desktopImg.style.cssText = "display: none !important";
@@ -111,6 +116,17 @@ export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobi
         }
         
         console.log(`Images visibility set for ${isMobile ? 'mobile' : 'desktop'} display`);
+        
+        // Force re-render with timeout to ensure styles are applied
+        setTimeout(() => {
+          if (isMobile) {
+            desktopImg.style.cssText = "display: none !important";
+            mobileImg.style.cssText = "display: block !important";
+          } else {
+            desktopImg.style.cssText = "display: block !important";
+            mobileImg.style.cssText = "display: none !important";
+          }
+        }, 100);
       } else {
         console.log("Marketing images not found in DOM");
       }
