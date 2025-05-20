@@ -33,7 +33,5 @@ export {
 // Export types
 export type { BlogPostsStore } from './types';
 
-// Force-import the utilities to make the blog posts permanent
+// Force-import the utility to make the blog post permanent
 import './makeBeyondRecognitionPermanent';
-import './makeAgileBackbonePermanent';
-import './makeHumanTechEquationPermanent';
