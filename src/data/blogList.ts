@@ -22,7 +22,7 @@ export const getBlogPosts = async (): Promise<Record<string, BlogPost>> => {
     const techHumanEquation = {
       slug: 'human-tech-equation',
       title: 'The Human + Tech Equation: Empowering Your Workforce in Digital Transformation',
-      titleIT: 'L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nella Trasformazione Digitale',
+      titleIT: 'L\'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nella Trasformazione Digitale',
       excerpt: 'Discover how the right balance of human expertise and technology creates successful digital transformation.',
       excerptIT: 'Scopri come il giusto equilibrio tra competenza umana e tecnologia crea una trasformazione digitale di successo.',
       date: '10 May 2025',
