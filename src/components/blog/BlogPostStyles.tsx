@@ -1,218 +1,109 @@
 
-import React from "react";
+import React from 'react';
 
 const BlogPostStyles: React.FC = () => {
   return (
-    <>
-      {/* @ts-ignore */}
-      <style jsx="true" global="true">
-      {`
-      .prose p {
-        text-align: justify;
-        color: rgb(75 85 99);
-        margin-bottom: 1rem;
-      }
-      
-      .prose h1, .prose h2, .prose h3 {
-        color: rgb(31 41 55);
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-      }
-      
-      .prose img {
-        max-width: 100%;
-        height: auto;
-      }
-      
-      /* Desktop images - ensure display with !important */
-      .desktop-blog-image {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-      
-      /* Mobile images - ensure display with !important */
-      .mobile-blog-image {
-        display: none !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-      
-      /* Link styling for better visibility */
-      .prose a {
-        color: #2563eb;
-        text-decoration: underline;
-        font-weight: 500;
-      }
-      
-      .prose a:hover {
-        color: #1d4ed8;
-        text-decoration: underline;
-      }
-      
-      /* Related resources section styling */
-      .related-resources {
-        padding-top: 1.5rem;
+    <style jsx global>{`
+      /* Enhanced styling for blog post content */
+      .prose h2 {
+        font-size: 1.75rem;
         margin-top: 2rem;
-        border-top: 1px solid #e5e7eb;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        color: #1f2937;
+        line-height: 1.3;
       }
       
-      .related-resources h3 {
-        font-size: 1.25rem;
-        font-weight: 600;
+      .prose h3 {
+        font-size: 1.4rem;
+        margin-top: 1.75rem;
         margin-bottom: 0.75rem;
+        font-weight: 600;
+        color: #1f2937;
+        line-height: 1.4;
       }
       
-      .related-resources ul {
-        list-style-type: disc;
+      .prose h4, .prose h5, .prose h6 {
+        font-size: 1.2rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #1f2937;
+        line-height: 1.4;
+      }
+      
+      .prose p {
+        margin-bottom: 1rem;
+        line-height: 1.7;
+      }
+      
+      .prose ul, .prose ol {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
         padding-left: 1.5rem;
       }
       
-      .related-resources li {
-        margin-bottom: 0.5rem;
-      }
-      
-      /* Ensure consistent styling between English and Italian versions */
-      [lang="it"] h1, 
-      [lang="en"] h1 {
-        font-size: 2.25rem;
-        line-height: 1.3;
-        font-weight: 700;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-      }
-      
-      [lang="it"] h2, 
-      [lang="en"] h2 {
-        font-size: 1.75rem;
-        line-height: 1.3;
-        font-weight: 600;
-        margin-top: 1.75rem;
-        margin-bottom: 1rem;
-      }
-      
-      [lang="it"] h3, 
-      [lang="en"] h3 {
-        font-size: 1.5rem;
-        line-height: 1.3;
-        font-weight: 600;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-      }
-      
-      /* Ensure list items are properly displayed in both languages */
-      [lang="it"] ul,
-      [lang="en"] ul {
-        list-style-type: disc !important;
-        padding-left: 1.5rem !important;
-        margin: 1rem 0 !important;
-        display: block !important;
-      }
-      
-      [lang="it"] ol,
-      [lang="en"] ol {
-        list-style-type: decimal !important;
-        padding-left: 1.5rem !important;
-        margin: 1rem 0 !important;
-        display: block !important;
-      }
-      
-      [lang="it"] li,
-      [lang="en"] li {
-        margin-bottom: 0.5rem !important;
+      .prose li {
+        margin-bottom: 0.25rem;
+        position: relative;
         display: list-item !important;
-        visibility: visible !important;
       }
       
-      /* Force visibility of nested lists */
-      [lang="it"] li > ul,
-      [lang="it"] li > ol,
-      [lang="en"] li > ul,
-      [lang="en"] li > ol {
-        margin-top: 0.5rem !important;
-        margin-bottom: 1rem !important;
+      .prose ul li {
+        list-style-type: disc;
+      }
+      
+      .prose ol li {
+        list-style-type: decimal;
+      }
+      
+      .prose li > ul, .prose li > ol {
+        margin-top: 0.25rem;
+        margin-bottom: 0.5rem;
+        visibility: visible !important;
+        display: block !important;
+      }
+      
+      .prose blockquote {
+        border-left: 4px solid #e5e7eb;
+        padding-left: 1rem;
+        font-style: italic;
+        margin: 1rem 0;
+      }
+      
+      .prose a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+      
+      .prose a:hover {
+        text-decoration: underline;
+      }
+      
+      .prose img {
+        margin: 1.5rem 0;
+        border-radius: 0.375rem;
+        max-width: 100%;
+      }
+      
+      .prose .related-resources {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+      }
+      
+      /* Make sure all headers are visible and properly styled */
+      .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
         display: block !important;
         visibility: visible !important;
       }
       
-      [lang="it"] p,
-      [lang="it"] li,
-      [lang="en"] p,
-      [lang="en"] li {
-        line-height: 1.6;
-      }
-      
-      [lang="it"] ul,
-      [lang="it"] ol,
-      [lang="en"] ul,
-      [lang="en"] ol {
-        margin-top: 0.75rem;
-        margin-bottom: 1rem;
-      }
-      
-      /* Force heading consistency regardless of language */
-      [lang="it"] h1, [lang="it"] h2, [lang="it"] h3,
-      [lang="en"] h1, [lang="en"] h2, [lang="en"] h3 {
+      /* Ensure nested elements in the blog post display properly */
+      .prose ul, .prose ol, .prose li, .prose p, .prose blockquote {
         display: block !important;
         visibility: visible !important;
-        font-family: inherit !important;
       }
-      
-      /* Add global rules to ensure images are always visible */
-      img.desktop-blog-image, img.mobile-blog-image {
-        opacity: 1 !important;
-        visibility: visible !important;
-      }
-      
-      /* Make sure image containers are visible */
-      div:has(> img.desktop-blog-image), 
-      div:has(> img.mobile-blog-image) {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-      
-      /* Force display based on media query */
-      @media (min-width: 769px) {
-        .desktop-blog-image {
-          display: block !important;
-          visibility: visible !important;
-          opacity: 1 !important;
-        }
-        
-        .mobile-blog-image {
-          display: none !important;
-        }
-      }
-      
-      @media (max-width: 768px) {
-        /* Hide desktop images on mobile */
-        .desktop-blog-image {
-          display: none !important;
-        }
-        
-        /* Show mobile images on mobile */
-        .mobile-blog-image {
-          display: block !important;
-          visibility: visible !important;
-          opacity: 1 !important;
-        }
-        
-        /* Mobile content optimization */
-        .content-mobile-optimized p {
-          font-size: 0.95rem;
-          line-height: 1.5;
-          margin-bottom: 0.75rem;
-        }
-        
-        .content-mobile-optimized img {
-          height: auto !important;
-          width: 100% !important;
-        }
-      }
-      `}
-      </style>
-    </>
+    `}</style>
   );
 };
 

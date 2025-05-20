@@ -36,11 +36,21 @@ const BlogPostHeader = ({
   const isMobile = useIsMobile();
   const [timestamp, setTimestamp] = useState(Date.now());
   
+  // Use absolute URLs for image paths if they're relative
+  const getAbsoluteUrl = (url: string) => {
+    if (url.startsWith('http') || url.startsWith('data:')) return url;
+    return `${window.location.origin}${url}`;
+  };
+  
+  const absoluteImageUrl = getAbsoluteUrl(imageUrl);
+  const absoluteDesktopImageUrl = getAbsoluteUrl(desktopImageUrl);
+  const absoluteAuthorImageUrl = getAbsoluteUrl(authorImageUrl);
+  
   // Refresh images every second until they load
   useEffect(() => {
     console.log("BlogPostHeader mounting with images:", {
-      mobile: imageUrl,
-      desktop: desktopImageUrl,
+      mobile: absoluteImageUrl,
+      desktop: absoluteDesktopImageUrl,
       isMobile
     });
     
@@ -62,14 +72,14 @@ const BlogPostHeader = ({
           
           desktopImgs.forEach(img => {
             if (img instanceof HTMLImageElement) {
-              img.src = `${desktopImageUrl}?t=${Date.now()}`;
+              img.src = `${absoluteDesktopImageUrl}?t=${Date.now()}`;
               img.style.display = isMobile ? 'none' : 'block';
             }
           });
           
           mobileImgs.forEach(img => {
             if (img instanceof HTMLImageElement) {
-              img.src = `${imageUrl}?t=${Date.now()}`;
+              img.src = `${absoluteImageUrl}?t=${Date.now()}`;
               img.style.display = isMobile ? 'block' : 'none';
             }
           });
@@ -86,7 +96,7 @@ const BlogPostHeader = ({
     return () => {
       intervals.forEach(clearInterval);
     };
-  }, [imageUrl, desktopImageUrl, isMobile]);
+  }, [absoluteImageUrl, absoluteDesktopImageUrl, isMobile]);
   
   // Format date for consistent display - if it's not already formatted
   const formatDate = (dateStr: string) => {
@@ -115,13 +125,14 @@ const BlogPostHeader = ({
   const formattedDate = formatDate(date);
   
   // Determine final image URLs with cache-busting
-  const finalMobileImgUrl = `${imageUrl}?t=${timestamp}`;
-  const finalDesktopImgUrl = `${desktopImageUrl}?t=${timestamp}`;
+  const finalMobileImgUrl = `${absoluteImageUrl}?t=${timestamp}`;
+  const finalDesktopImgUrl = `${absoluteDesktopImageUrl}?t=${timestamp}`;
   
   console.log("Rendering with URLs:", {
     mobile: finalMobileImgUrl,
     desktop: finalDesktopImgUrl,
-    shouldShowMobile: isMobile
+    shouldShowMobile: isMobile,
+    author: absoluteAuthorImageUrl
   });
   
   return (
@@ -198,7 +209,7 @@ const BlogPostHeader = ({
           
           <div className="flex items-center mt-3 md:mt-6">
             <Avatar className="h-8 w-8 mr-2 md:mr-3">
-              <AvatarImage src={authorImageUrl} alt={author} />
+              <AvatarImage src={absoluteAuthorImageUrl} alt={author} />
               <AvatarFallback>{author.charAt(0)}</AvatarFallback>
             </Avatar>
             <span className="font-medium">{author}</span>

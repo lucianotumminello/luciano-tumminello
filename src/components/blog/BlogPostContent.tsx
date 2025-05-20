@@ -3,7 +3,7 @@ import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { optimizeImagesInContent, updateImageVisibility } from "@/utils/imageUtils";
-import { ensureOutgoingLinks } from "@/utils/blogContentUtils";
+import { ensureOutgoingLinks, enhanceContentFormatting } from "@/utils/blogContentUtils";
 import AprilBlogPostContent from "./AprilBlogPostContent";
 import BlogPostStyles from "./BlogPostStyles";
 import { translateText } from "@/utils/blogUtils";
@@ -80,6 +80,9 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     // First apply general processing
     let processedContent = optimizeImagesInContent(translatedContent, isMobile);
     
+    // Enhance formatting for headers and lists
+    processedContent = enhanceContentFormatting(processedContent);
+    
     // Then handle the special case for the Human + Tech Equation post
     if (isHumanTechEquationPost) {
       console.log("Using dedicated component for Human + Tech Equation blog post");
@@ -94,18 +97,20 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
   // Effect to ensure proper image visibility after rendering
   React.useEffect(() => {
     if (isHumanTechEquationPost || isAgileBackbonePost) {
+      // Force image visibility update multiple times
       updateImageVisibility(true, isMobile);
       
-      // Additional force-update in case the previous call didn't work
-      setTimeout(() => {
-        updateImageVisibility(true, isMobile);
-      }, 500);
+      const timeouts = [
+        setTimeout(() => updateImageVisibility(true, isMobile), 500),
+        setTimeout(() => updateImageVisibility(true, isMobile), 1500),
+        setTimeout(() => updateImageVisibility(true, isMobile), 2500)
+      ];
       
       // Additional fix for nested lists
       const fixNestedLists = () => {
         const nestedLists = document.querySelectorAll('li > ul, li > ol');
         nestedLists.forEach(list => {
-          list.setAttribute('style', 'display: block !important; margin-top: 0.5rem; visibility: visible !important;');
+          list.setAttribute('style', 'display: block !important; margin-top: 0.5rem; margin-bottom: 0.5rem; visibility: visible !important;');
         });
         
         // Ensure all list items are properly displayed
@@ -117,12 +122,26 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
         // Fix parent lists
         const parentLists = document.querySelectorAll('ul, ol');
         parentLists.forEach(list => {
-          list.setAttribute('style', 'display: block !important; visibility: visible !important;');
+          list.setAttribute('style', 'display: block !important; visibility: visible !important; margin-top: 1rem; margin-bottom: 1rem;');
+        });
+        
+        // Fix headings
+        const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
+        headings.forEach(heading => {
+          heading.setAttribute('style', 'display: block !important; visibility: visible !important; margin-top: 1.5rem; margin-bottom: 0.75rem;');
         });
       };
       
       fixNestedLists();
-      setTimeout(fixNestedLists, 1000);
+      const listTimeouts = [
+        setTimeout(fixNestedLists, 1000),
+        setTimeout(fixNestedLists, 2000)
+      ];
+      
+      return () => {
+        timeouts.forEach(clearTimeout);
+        listTimeouts.forEach(clearTimeout);
+      };
     }
   }, [content, isMobile, isHumanTechEquationPost, isAgileBackbonePost, language]);
   
