@@ -522,32 +522,6 @@ export const useBlogBuilder = () => {
     }
   };
 
-  // Directly expose the refresh blog posts function
-  const refreshBlogPosts = async () => {
-    try {
-      const refreshedPosts = await getAllBlogPosts();
-      setBlogPosts(refreshedPosts);
-      
-      // Update publish states
-      const initialPublishStates: Record<string, boolean> = {};
-      Object.entries(refreshedPosts).forEach(([slug, post]) => {
-        initialPublishStates[slug] = post.published !== false;
-      });
-      setPublishStates(initialPublishStates);
-      
-      console.log("Blog posts refreshed successfully");
-      return refreshedPosts;
-    } catch (error) {
-      console.error("Error refreshing blog posts:", error);
-      toast({
-        title: "Error",
-        description: "Failed to refresh blog posts",
-        variant: "destructive",
-      });
-      return null;
-    }
-  };
-
   return {
     isAuthenticated,
     setIsAuthenticated,
@@ -588,7 +562,6 @@ export const useBlogBuilder = () => {
     cancelEditing,
     getCurrentFormattedDate,
     duplicateCurrentPost,
-    duplicatePost,
-    refreshBlogPosts
+    duplicatePost
   };
 };

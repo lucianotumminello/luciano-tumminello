@@ -22,9 +22,6 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
   // and a fallback is provided, use the fallback
   const displayText = translatedText === textKey && fallback ? fallback : translatedText;
   
-  // Ensure we escape any apostrophes and quotes properly
-  const safeDisplayText = displayText.replace(/'/g, "\\'").replace(/"/g, '\\"');
-  
   return (
     <Component className={className} lang={textKey.startsWith('it.') ? 'it' : 'en'}>
       {displayText}

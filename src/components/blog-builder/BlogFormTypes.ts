@@ -10,7 +10,6 @@ export interface BlogFormData {
   tags: string;
   desktopImageUrl: string;
   imageUrl: string;
-  permanentSlug?: string;
 }
 
 export interface BlogFormProps {
@@ -25,7 +24,6 @@ export interface BlogFormProps {
   setDesktopImageFile: React.Dispatch<React.SetStateAction<File | null>>;
   setMobileImageFile: React.Dispatch<React.SetStateAction<File | null>>;
   onDuplicate?: () => void;
-  onMakePermanent?: () => void;
 }
 
 export interface BlogFormSectionProps {
