@@ -69,13 +69,32 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     return match;
   });
   
-  // Convert large images to WebP format when possible
+  // Apply specific classes for responsive images based on device
   processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
-    if (imgSrc.match(/\.(jpe?g|png)$/) && !imgSrc.includes('?format=webp')) {
-      const newSrc = `${imgSrc}?format=webp`;
-      return `<img ${before}src="${newSrc}"${after}>`;
+    // Add responsive classes if not present already
+    if (!match.includes('class="') || 
+        (!match.includes('desktop-blog-image') && !match.includes('mobile-blog-image'))) {
+      
+      // Determine if this is likely a main content image (not an icon or small image)
+      const isMainImage = !imgSrc.includes('icon') && !imgSrc.includes('avatar');
+      
+      if (isMainImage) {
+        // Add display style to ensure correct visibility based on device type
+        const displayStyle = isMobile ? 
+          'style="display: block !important; width: 100%;"' : 
+          'style="display: block !important; width: 100%;"';
+        
+        // Add responsive class
+        const responsiveClass = isMobile ? 'mobile-blog-image' : 'desktop-blog-image';
+        
+        if (!match.includes('class=')) {
+          after = `class="${responsiveClass}" ${displayStyle} ${after}`;
+        } else {
+          after = after.replace(/class="([^"]*)"/, `class="$1 ${responsiveClass}" ${displayStyle}`);
+        }
+      }
     }
-    return match;
+    return `<img ${before}src="${imgSrc}"${after}>`;
   });
   
   return processedContent;
@@ -89,48 +108,66 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
 export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobile: boolean) => {
   if (contentContainsTargetPost) {
     try {
-      const desktopImg = document.getElementById("marketing-desktop-image");
-      const mobileImg = document.getElementById("marketing-mobile-image");
+      // Force refresh of image URLs with timestamp to prevent caching issues
+      const timestamp = new Date().getTime();
       
-      if (desktopImg && mobileImg) {
-        console.log("Found marketing images in DOM, applying final visibility styles");
-        
-        // Create style element for media queries
+      // Find all blog images and update visibility
+      const desktopImages = document.querySelectorAll('.desktop-blog-image');
+      const mobileImages = document.querySelectorAll('.mobile-blog-image');
+      
+      console.log(`Found ${desktopImages.length} desktop and ${mobileImages.length} mobile images`);
+      
+      // Update desktop images
+      desktopImages.forEach(img => {
+        if (img instanceof HTMLImageElement) {
+          // Force reload by adding timestamp
+          const originalSrc = img.src.split('?')[0];
+          img.src = `${originalSrc}?t=${timestamp}`;
+          
+          // Set visibility based on device
+          img.style.display = isMobile ? 'none' : 'block';
+          
+          // Add width and height attributes to prevent layout shifts
+          if (!img.width) img.width = 1200;
+          if (!img.height) img.height = 675;
+        }
+      });
+      
+      // Update mobile images
+      mobileImages.forEach(img => {
+        if (img instanceof HTMLImageElement) {
+          // Force reload by adding timestamp
+          const originalSrc = img.src.split('?')[0];
+          img.src = `${originalSrc}?t=${timestamp}`;
+          
+          // Set visibility based on device
+          img.style.display = isMobile ? 'block' : 'none';
+          
+          // Add width and height attributes to prevent layout shifts
+          if (!img.width) img.width = 640;
+          if (!img.height) img.height = 360;
+        }
+      });
+      
+      // Add media query styles to head
+      const styleId = 'responsive-blog-images';
+      if (!document.getElementById(styleId)) {
         const styleEl = document.createElement('style');
+        styleEl.id = styleId;
         styleEl.innerHTML = `
           @media (max-width: 768px) {
-            #marketing-desktop-image { display: none !important; }
-            #marketing-mobile-image { display: block !important; }
+            .desktop-blog-image { display: none !important; }
+            .mobile-blog-image { display: block !important; }
           }
           @media (min-width: 769px) {
-            #marketing-desktop-image { display: block !important; }
-            #marketing-mobile-image { display: none !important; }
+            .desktop-blog-image { display: block !important; }
+            .mobile-blog-image { display: none !important; }
           }
         `;
         document.head.appendChild(styleEl);
-        
-        if (isMobile) {
-          // Mobile display
-          desktopImg.style.cssText = "display: none !important";
-          mobileImg.style.cssText = "display: block !important";
-          
-          // Add explicit dimensions to prevent layout shifts
-          if (mobileImg instanceof HTMLImageElement) {
-            mobileImg.setAttribute('width', '100%');
-            mobileImg.setAttribute('height', 'auto');
-          }
-        } else {
-          // Desktop display
-          desktopImg.style.cssText = "display: block !important";
-          mobileImg.style.cssText = "display: none !important";
-          
-          // Add explicit dimensions to prevent layout shifts
-          if (desktopImg instanceof HTMLImageElement) {
-            desktopImg.setAttribute('width', '100%');
-            desktopImg.setAttribute('height', 'auto');
-          }
-        }
       }
+      
+      console.log("Image visibility updated based on device type");
     } catch (error) {
       console.error("Error updating image visibility:", error);
     }

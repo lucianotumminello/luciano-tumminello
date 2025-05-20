@@ -3,7 +3,9 @@ import React from "react";
 
 const BlogPostStyles: React.FC = () => {
   return (
-    <style>
+    <>
+      {/* @ts-ignore */}
+      <style jsx="true" global="true">
       {`
       .prose p {
         text-align: justify;
@@ -23,19 +25,13 @@ const BlogPostStyles: React.FC = () => {
       }
       
       /* Desktop images - important to ensure display */
-      .desktop-image-container,
-      .marketing-desktop-image {
+      .desktop-blog-image {
         display: block !important;
-        margin: 2rem 0;
-        width: 100%;
       }
       
       /* Mobile images - important to ensure proper display */
-      .mobile-image-container,
-      .marketing-mobile-image {
+      .mobile-blog-image {
         display: none !important;
-        margin: 2rem 0;
-        width: 100%;
       }
       
       /* Link styling for better visibility */
@@ -160,16 +156,12 @@ const BlogPostStyles: React.FC = () => {
       
       @media (max-width: 768px) {
         /* Hide desktop images on mobile */
-        .desktop-image-container,
-        .marketing-desktop-image,
-        #marketing-desktop-image {
+        .desktop-blog-image {
           display: none !important;
         }
         
         /* Show mobile images on mobile */
-        .mobile-image-container,
-        .marketing-mobile-image,
-        #marketing-mobile-image {
+        .mobile-blog-image {
           display: block !important;
         }
         
@@ -186,7 +178,8 @@ const BlogPostStyles: React.FC = () => {
         }
       }
       `}
-    </style>
+      </style>
+    </>
   );
 };
 

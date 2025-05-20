@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect } from "react";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -33,6 +34,32 @@ const BlogPostHeader = ({
   const { language } = useLanguage();
   const isItalian = language === "it";
   const isMobile = useIsMobile();
+  
+  // Add effect to force image refresh when component mounts
+  useEffect(() => {
+    // Force browser to reload images by adding timestamp to URL
+    const timestamp = new Date().getTime();
+    const refreshImages = () => {
+      const desktopImg = document.querySelector('.desktop-blog-image') as HTMLImageElement;
+      const mobileImg = document.querySelector('.mobile-blog-image') as HTMLImageElement;
+      
+      if (desktopImg && desktopImg.src) {
+        const originalSrc = desktopImg.src.split('?')[0];
+        desktopImg.src = `${originalSrc}?t=${timestamp}`;
+      }
+      
+      if (mobileImg && mobileImg.src) {
+        const originalSrc = mobileImg.src.split('?')[0];
+        mobileImg.src = `${originalSrc}?t=${timestamp}`;
+      }
+    };
+    
+    // Apply immediately and after a short delay to ensure images are refreshed
+    refreshImages();
+    const timer = setTimeout(refreshImages, 100);
+    
+    return () => clearTimeout(timer);
+  }, [imageUrl, desktopImageUrl]);
   
   // Format date for consistent display - if it's not already formatted
   const formatDate = (dateStr: string) => {
@@ -70,16 +97,34 @@ const BlogPostHeader = ({
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Simplified image loading strategy for faster mobile rendering */}
+            {/* Desktop image - hidden on mobile */}
             <img 
-              src={isMobile ? imageUrl : desktopImageUrl} 
+              src={desktopImageUrl} 
               alt={title}
-              className="w-full h-full object-cover"
+              className="desktop-blog-image w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"
-              width={isMobile ? "640" : "1200"}
-              height={isMobile ? "360" : "675"}
-              style={{aspectRatio: "16/9"}}
+              width="1200"
+              height="675"
+              style={{
+                aspectRatio: "16/9",
+                display: isMobile ? 'none' : 'block'
+              }}
+            />
+            
+            {/* Mobile image - hidden on desktop */}
+            <img 
+              src={imageUrl} 
+              alt={title}
+              className="mobile-blog-image w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width="640"
+              height="360"
+              style={{
+                aspectRatio: "16/9",
+                display: isMobile ? 'block' : 'none'
+              }}
             />
           </AspectRatio>
         </div>
