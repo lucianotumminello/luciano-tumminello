@@ -74,7 +74,7 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
         readingTime={isItalian ? post.readingTimeIT : post.readingTime}
         author={post.author}
         authorImageUrl={post.authorImageUrl}
-        imageUrl={post.imageUrl}
+        imageUrl={isMobile ? post.imageUrl : post.desktopImageUrl}
         desktopImageUrl={post.desktopImageUrl}
       />
       

@@ -119,6 +119,18 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
         parentLists.forEach(list => {
           list.setAttribute('style', 'display: block !important; visibility: visible !important;');
         });
+        
+        // Fix heading styles to ensure consistent formatting
+        const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
+        headings.forEach(heading => {
+          heading.classList.add('font-bold', 'mt-6', 'mb-3');
+          
+          if (heading.tagName === 'H2') {
+            heading.classList.add('text-2xl', 'text-gray-800', 'border-b', 'border-gray-200', 'pb-2');
+          } else if (heading.tagName === 'H3') {
+            heading.classList.add('text-xl', 'text-gray-700');
+          }
+        });
       };
       
       fixNestedLists();

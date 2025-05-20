@@ -1,192 +1,42 @@
 
-import React from "react";
+import React from 'react';
 
-const BlogPostStyles: React.FC = () => {
+const BlogPostStyles = () => {
+  const styles = `
+    .prose h1 { font-size: 2.25rem; margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+    .prose h2 { font-size: 1.75rem; margin-top: 1.75rem; margin-bottom: 0.75rem; font-weight: 700; color: #1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.375rem; }
+    .prose h3 { font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; color: #374151; }
+    .prose h4 { font-size: 1.25rem; margin-top: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; color: #4b5563; }
+    .prose p { margin-top: 1rem; margin-bottom: 1rem; line-height: 1.7; }
+    .prose strong { font-weight: 600; color: #111827; }
+    .prose ul { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.5rem; list-style-type: disc; }
+    .prose ol { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.5rem; list-style-type: decimal; }
+    .prose li { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+    .prose li > ul, .prose li > ol { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+    .prose blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 4px solid #e5e7eb; font-style: italic; color: #6b7280; }
+    .prose img { margin: 1.5rem auto; border-radius: 0.375rem; }
+    .prose a { color: #2563eb; text-decoration: none; }
+    .prose a:hover { text-decoration: underline; }
+    .prose code { font-family: monospace; font-size: 0.875em; color: #111827; background-color: #f3f4f6; padding: 0.2rem 0.4rem; border-radius: 0.25rem; }
+    .prose pre { margin: 1.5rem 0; padding: 1rem; background-color: #1f2937; color: #e5e7eb; border-radius: 0.375rem; overflow-x: auto; }
+    .prose pre code { background-color: transparent; padding: 0; color: inherit; }
+    .prose table { width: 100%; margin: 1.5rem 0; border-collapse: collapse; }
+    .prose th { padding: 0.5rem; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e7eb; }
+    .prose td { padding: 0.5rem; border-bottom: 1px solid #e5e7eb; }
+    .content-mobile-optimized img { width: 100% !important; height: auto !important; }
+    #marketing-desktop-image img, #marketing-mobile-image img { max-width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .related-resources { margin-top: 3rem; padding: 1.5rem; background-color: #f9fafb; border-radius: 0.5rem; }
+    .related-resources h3 { margin-top: 0 !important; }
+    @media (max-width: 768px) {
+      .prose h1 { font-size: 1.875rem; }
+      .prose h2 { font-size: 1.5rem; }
+      .prose h3 { font-size: 1.25rem; }
+      .prose h4 { font-size: 1.125rem; }
+    }
+  `;
+
   return (
-    <style>
-      {`
-      .prose p {
-        text-align: justify;
-        color: rgb(75 85 99);
-        margin-bottom: 1rem;
-      }
-      
-      .prose h1, .prose h2, .prose h3 {
-        color: rgb(31 41 55);
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-      }
-      
-      .prose img {
-        max-width: 100%;
-        height: auto;
-      }
-      
-      /* Desktop images - important to ensure display */
-      .desktop-image-container,
-      .marketing-desktop-image {
-        display: block !important;
-        margin: 2rem 0;
-        width: 100%;
-      }
-      
-      /* Mobile images - important to ensure proper display */
-      .mobile-image-container,
-      .marketing-mobile-image {
-        display: none !important;
-        margin: 2rem 0;
-        width: 100%;
-      }
-      
-      /* Link styling for better visibility */
-      .prose a {
-        color: #2563eb;
-        text-decoration: underline;
-        font-weight: 500;
-      }
-      
-      .prose a:hover {
-        color: #1d4ed8;
-        text-decoration: underline;
-      }
-      
-      /* Related resources section styling */
-      .related-resources {
-        padding-top: 1.5rem;
-        margin-top: 2rem;
-        border-top: 1px solid #e5e7eb;
-      }
-      
-      .related-resources h3 {
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin-bottom: 0.75rem;
-      }
-      
-      .related-resources ul {
-        list-style-type: disc;
-        padding-left: 1.5rem;
-      }
-      
-      .related-resources li {
-        margin-bottom: 0.5rem;
-      }
-      
-      /* Ensure consistent styling between English and Italian versions */
-      [lang="it"] h1, 
-      [lang="en"] h1 {
-        font-size: 2.25rem;
-        line-height: 1.3;
-        font-weight: 700;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-      }
-      
-      [lang="it"] h2, 
-      [lang="en"] h2 {
-        font-size: 1.75rem;
-        line-height: 1.3;
-        font-weight: 600;
-        margin-top: 1.75rem;
-        margin-bottom: 1rem;
-      }
-      
-      [lang="it"] h3, 
-      [lang="en"] h3 {
-        font-size: 1.5rem;
-        line-height: 1.3;
-        font-weight: 600;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-      }
-      
-      /* Ensure list items are properly displayed in both languages */
-      [lang="it"] ul,
-      [lang="en"] ul {
-        list-style-type: disc !important;
-        padding-left: 1.5rem !important;
-        margin: 1rem 0 !important;
-        display: block !important;
-      }
-      
-      [lang="it"] ol,
-      [lang="en"] ol {
-        list-style-type: decimal !important;
-        padding-left: 1.5rem !important;
-        margin: 1rem 0 !important;
-        display: block !important;
-      }
-      
-      [lang="it"] li,
-      [lang="en"] li {
-        margin-bottom: 0.5rem !important;
-        display: list-item !important;
-        visibility: visible !important;
-      }
-      
-      /* Force visibility of nested lists */
-      [lang="it"] li > ul,
-      [lang="it"] li > ol,
-      [lang="en"] li > ul,
-      [lang="en"] li > ol {
-        margin-top: 0.5rem !important;
-        margin-bottom: 1rem !important;
-        display: block !important;
-        visibility: visible !important;
-      }
-      
-      [lang="it"] p,
-      [lang="it"] li,
-      [lang="en"] p,
-      [lang="en"] li {
-        line-height: 1.6;
-      }
-      
-      [lang="it"] ul,
-      [lang="it"] ol,
-      [lang="en"] ul,
-      [lang="en"] ol {
-        margin-top: 0.75rem;
-        margin-bottom: 1rem;
-      }
-      
-      /* Force heading consistency regardless of language */
-      [lang="it"] h1, [lang="it"] h2, [lang="it"] h3,
-      [lang="en"] h1, [lang="en"] h2, [lang="en"] h3 {
-        display: block !important;
-        visibility: visible !important;
-        font-family: inherit !important;
-      }
-      
-      @media (max-width: 768px) {
-        /* Hide desktop images on mobile */
-        .desktop-image-container,
-        .marketing-desktop-image,
-        #marketing-desktop-image {
-          display: none !important;
-        }
-        
-        /* Show mobile images on mobile */
-        .mobile-image-container,
-        .marketing-mobile-image,
-        #marketing-mobile-image {
-          display: block !important;
-        }
-        
-        /* Mobile content optimization */
-        .content-mobile-optimized p {
-          font-size: 0.95rem;
-          line-height: 1.5;
-          margin-bottom: 0.75rem;
-        }
-        
-        .content-mobile-optimized img {
-          height: auto !important;
-          width: 100% !important;
-        }
-      }
-      `}
-    </style>
+    <style dangerouslySetInnerHTML={{ __html: styles }} />
   );
 };
 

@@ -1,3 +1,4 @@
+
 /**
  * Inserts marketing-related images into the blog content
  * @param content - HTML content to process
@@ -7,7 +8,7 @@ export const insertMarketingImages = (content: string): string => {
   // Add marketing transformation images
   const desktopImageHtml = `
     <div id="marketing-desktop-image" class="marketing-desktop-image">
-      <img src="/lovable-uploads/c55bb2b1-05a5-45ac-bbbf-cc6b91fb736a.png" 
+      <img src="/lovable-uploads/b54e2da2-5be2-4293-a2ba-77f343e1c1ad.png" 
            alt="Digital Marketing Transformation" 
            loading="lazy" 
            width="800" 
@@ -18,7 +19,7 @@ export const insertMarketingImages = (content: string): string => {
   
   const mobileImageHtml = `
     <div id="marketing-mobile-image" class="marketing-mobile-image">
-      <img src="/lovable-uploads/c74c218a-484f-41d3-b0f4-c8275873c98c.png" 
+      <img src="/lovable-uploads/774dee17-e52b-4ce1-aedc-5467f7d73e4e.png" 
            alt="Digital Marketing Transformation Mobile" 
            loading="lazy" 
            width="400" 
