@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,46 +36,13 @@ const queryClient = new QueryClient({
   },
 });
 
-// Force refresh blog posts immediately with more aggressive approach
-console.log("App.tsx: Force refreshing blog posts on app load");
-
-// Multiple refreshes to ensure data is loaded
-const forceMultipleRefreshes = async () => {
-  try {
-    console.log("Initializing blog posts...");
-    await initializeBlogPosts();
-    
-    // Refresh in quick succession to ensure data loads
-    const refreshSequence = async () => {
-      for (let i = 0; i < 5; i++) {
-        console.log(`Blog refresh attempt ${i + 1}...`);
-        await refreshBlogPosts(true);
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-    };
-    
-    // Execute immediately
-    refreshSequence();
-    
-    // Then set up periodic refreshes
-    const intervals = [
-      setInterval(() => refreshBlogPosts(true), 2000), // Every 2 seconds
-      setInterval(() => refreshBlogPosts(true), 5000), // Every 5 seconds
-      setInterval(() => refreshBlogPosts(true), 15000) // Every 15 seconds
-    ];
-    
-    // Clear intervals after 1 minute
-    setTimeout(() => {
-      intervals.forEach(clearInterval);
-      console.log("Cleared aggressive refresh intervals");
-    }, 60000);
-    
-  } catch (error) {
-    console.error('Error in blog post refresh sequence:', error);
-  }
-};
-
-forceMultipleRefreshes();
+// Initialize blog posts on app load with force refresh
+console.log("App.tsx: Initializing blog posts on app load with force refresh");
+initializeBlogPosts()
+  .then(() => refreshBlogPosts(true)) // Force refresh after initialization
+  .catch(error => {
+    console.error('Error initializing blog posts on app load:', error);
+  });
 
 // Analytics tracker component
 const RouteChangeTracker = () => {
@@ -88,26 +54,19 @@ const RouteChangeTracker = () => {
     const title = document.title;
     trackPageView(path, title);
     
-    // Always refresh blog posts when visiting any page to ensure latest content
-    console.log('Page visited, refreshing blog posts');
-    refreshBlogPosts(true).catch(error => {
-      console.error('Error refreshing blog posts on page visit:', error);
-    });
-    
-    // Periodic refresh every minute
-    const intervalId = setInterval(() => {
+    // Always refresh blog posts when visiting the blog page to ensure latest content
+    if (path === '/blog') {
+      console.log('Blog page visited, force refreshing blog posts');
       refreshBlogPosts(true).catch(error => {
-        console.error('Error in periodic blog refresh:', error);
+        console.error('Error refreshing blog posts on blog page visit:', error);
       });
-    }, 60000);
+    }
     
     // Redirect from homepage to blog only once to avoid infinite loops
     if (path === '/' && !window.location.search.includes('no-redirect')) {
       console.log('Homepage visited, redirecting to blog page with no-redirect flag');
       navigate('/blog?no-redirect=true');
     }
-    
-    return () => clearInterval(intervalId);
   }, [location, navigate]);
   
   return null;

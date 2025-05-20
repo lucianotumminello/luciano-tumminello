@@ -39,21 +39,6 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
   const isItalian = language === "it";
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   
-  // Function to ensure absolute URLs
-  const getAbsoluteUrl = (url: string) => {
-    if (!url) return "";
-    if (url.startsWith('http') || url.startsWith('data:')) return url;
-    return `${window.location.origin}${url}`;
-  };
-  
-  // Processed post data with absolute URLs
-  const processedPost = {
-    ...post,
-    authorImageUrl: getAbsoluteUrl(post.authorImageUrl),
-    imageUrl: getAbsoluteUrl(post.imageUrl),
-    desktopImageUrl: getAbsoluteUrl(post.desktopImageUrl)
-  };
-  
   // Simplified intersection observer for better mobile performance
   useEffect(() => {
     if (!('IntersectionObserver' in window)) {
@@ -82,19 +67,19 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
   return (
     <>
       <BlogPostHeader 
-        title={isItalian ? processedPost.titleIT : processedPost.title}
-        excerpt={isItalian ? processedPost.excerptIT : processedPost.excerpt}
-        category={isItalian ? processedPost.categoryIT : processedPost.category}
-        date={isItalian ? processedPost.dateIT : processedPost.date}
-        readingTime={isItalian ? processedPost.readingTimeIT : processedPost.readingTime}
-        author={processedPost.author}
-        authorImageUrl={processedPost.authorImageUrl}
-        imageUrl={processedPost.imageUrl}
-        desktopImageUrl={processedPost.desktopImageUrl}
+        title={isItalian ? post.titleIT : post.title}
+        excerpt={isItalian ? post.excerptIT : post.excerpt}
+        category={isItalian ? post.categoryIT : post.category}
+        date={isItalian ? post.dateIT : post.date}
+        readingTime={isItalian ? post.readingTimeIT : post.readingTime}
+        author={post.author}
+        authorImageUrl={post.authorImageUrl}
+        imageUrl={post.imageUrl}
+        desktopImageUrl={post.desktopImageUrl}
       />
       
       <BlogPostContent 
-        content={isItalian ? processedPost.contentIT : processedPost.content} 
+        content={isItalian ? post.contentIT : post.content} 
       />
       
       {/* Moved: Read More Articles button - placed after content but before footer */}
@@ -118,9 +103,9 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div className="w-full md:w-2/3">
               <BlogPostFooter 
-                tags={isItalian ? processedPost.tagsIT : processedPost.tags}
-                authorName={processedPost.author}
-                authorImageUrl={processedPost.authorImageUrl}
+                tags={isItalian ? post.tagsIT : post.tags}
+                authorName={post.author}
+                authorImageUrl={post.authorImageUrl}
                 translationPrefix={isItalian ? "it" : "en"}
               />
             </div>
@@ -128,7 +113,7 @@ const BlogPostContainer = ({ post, pageUrl }: BlogPostContainerProps) => {
             <div className="md:ml-auto">
               <ShareButtons 
                 pageUrl={pageUrl}
-                title={isItalian ? processedPost.titleIT : processedPost.title}
+                title={isItalian ? post.titleIT : post.title}
                 translationPrefix={isItalian ? "it" : "en"}
               />
             </div>

@@ -1,107 +1,182 @@
 
 /**
- * Updates image visibility based on device type
- * @param force Whether to force the update regardless of current state
- * @param isMobile Whether the current device is mobile
+ * Optimizes images in HTML content for better loading performance and responsive display
+ * @param content - HTML content to process
+ * @param isMobile - Whether the device is mobile
+ * @returns Processed HTML content with optimized images
  */
-export const updateImageVisibility = (force: boolean = false, isMobile: boolean = false): void => {
-  // Find all desktop and mobile images
-  const desktopImages = document.querySelectorAll('.desktop-blog-image');
-  const mobileImages = document.querySelectorAll('.mobile-blog-image');
+export const optimizeImagesInContent = (content: string, isMobile: boolean): string => {
+  if (!content) return "";
   
-  if (desktopImages.length || mobileImages.length || force) {
-    console.log(`Updating image visibility for ${desktopImages.length} desktop and ${mobileImages.length} mobile images. Mobile mode: ${isMobile}`);
-    
-    // Handle desktop images
-    desktopImages.forEach(img => {
-      if (img instanceof HTMLImageElement) {
-        img.style.display = isMobile ? 'none' : 'block';
-        img.style.visibility = 'visible';
-        img.style.opacity = '1';
-      }
-    });
-    
-    // Handle mobile images
-    mobileImages.forEach(img => {
-      if (img instanceof HTMLImageElement) {
-        img.style.display = isMobile ? 'block' : 'none';
-        img.style.visibility = 'visible';
-        img.style.opacity = '1';
-      }
-    });
-    
-    // Also handle any responsive images that should change based on device
-    const responsiveImages = document.querySelectorAll('.responsive-blog-image');
-    responsiveImages.forEach(img => {
-      if (img instanceof HTMLImageElement) {
-        const mobileUrl = img.dataset.mobileUrl;
-        const desktopUrl = img.dataset.desktopUrl;
-        
-        if (mobileUrl && desktopUrl) {
-          img.src = isMobile ? mobileUrl : desktopUrl;
-          img.style.display = 'block';
-          img.style.visibility = 'visible';
-          img.style.opacity = '1';
-        }
-      }
-    });
-  }
-};
-
-/**
- * Optimizes images in HTML content for mobile or desktop
- * @param content The HTML content containing images
- * @param isMobile Whether the content should be optimized for mobile
- * @returns The content with optimized images
- */
-export const optimizeImagesInContent = (content: string, isMobile: boolean = false): string => {
-  if (!content) return '';
+  // Process content for mobile optimization
+  let processedContent = content;
   
-  // This is a simplistic approach - in a real app, consider using a proper HTML parser
-  let optimizedContent = content;
+  // Add loading="lazy", decoding="async", and fetchpriority attributes to all images
+  processedContent = processedContent.replace(/<img\s+([^>]*)>/g, (match, attrs) => {
+    // Skip if image already has proper attributes
+    if (attrs.includes('loading="lazy"') && 
+        attrs.includes('decoding="async"') && 
+        attrs.includes('fetchpriority')) return match;
+    
+    let newAttrs = attrs;
+    
+    // Add loading attribute if missing
+    if (!attrs.includes('loading=')) {
+      newAttrs += ' loading="lazy"';
+    }
+    
+    // Add decoding attribute if missing
+    if (!attrs.includes('decoding=')) {
+      newAttrs += ' decoding="async"';
+    }
+    
+    // Add fetchpriority attribute if missing
+    if (!attrs.includes('fetchpriority')) {
+      newAttrs += ' fetchpriority="auto"';
+    }
+    
+    // Add width and height attributes if missing to prevent layout shifts
+    if (!attrs.includes('width=') && !attrs.includes('height=')) {
+      newAttrs += ' width="800" height="auto"';
+    }
+    
+    // Add explicit styles to prevent Content Layout Shifts
+    if (!attrs.includes('style=')) {
+      newAttrs += ' style="aspect-ratio: auto; max-width: 100%;"';
+    }
+    
+    return `<img ${newAttrs}>`;
+  });
   
-  // Add responsive classes to images
-  optimizedContent = optimizedContent.replace(
-    /<img([^>]*)>/g, 
-    (match, attributes) => {
-      // Don't modify if already has responsive classes
-      if (attributes.includes('desktop-blog-image') || attributes.includes('mobile-blog-image')) {
-        return match;
+  // Add srcset for responsive images when possible
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
+    // Skip already optimized images or SVGs
+    if (match.includes('srcset=') || imgSrc.endsWith('.svg')) return match;
+    
+    // Only add srcset for local images
+    if (imgSrc.startsWith('/') && !before.includes('srcset=') && !after.includes('srcset=')) {
+      // Generate responsive srcset
+      const srcset = `srcset="${imgSrc} 1x, ${imgSrc} 2x"`;
+      
+      // Add sizes attribute if missing
+      let sizesAttr = '';
+      if (!match.includes('sizes=')) {
+        sizesAttr = ' sizes="(max-width: 768px) 100vw, 800px"';
       }
       
-      // Add responsive styles
-      return `<img${attributes} class="w-full h-auto" style="max-width:100%;">`;
+      return `<img ${before}src="${imgSrc}" ${srcset}${sizesAttr}${after}>`;
     }
-  );
+    return match;
+  });
   
-  // Add lazy loading to images that don't already have it
-  optimizedContent = optimizedContent.replace(
-    /<img([^>]*)(?!loading=)([^>]*)>/g,
-    (match, attributesBefore, attributesAfter) => {
-      if (match.includes('loading=')) {
-        return match; // Skip if already has loading attribute
-      }
-      return `<img${attributesBefore} loading="lazy"${attributesAfter}>`;
+  // Convert large images to WebP format when possible
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
+    if (imgSrc.match(/\.(jpe?g|png)$/) && !imgSrc.includes('?format=webp')) {
+      const newSrc = `${imgSrc}?format=webp`;
+      return `<img ${before}src="${newSrc}"${after}>`;
     }
-  );
+    return match;
+  });
   
-  return optimizedContent;
+  return processedContent;
 };
 
 /**
- * Gets the optimal image URL based on device type
- * @param mobileUrl The URL for mobile devices
- * @param desktopUrl The URL for desktop devices
- * @param isMobile Whether the current device is mobile
- * @returns The optimal image URL
+ * Updates image visibility based on screen size
+ * @param contentContainsTargetPost - Whether the content contains the target post
+ * @param isMobile - Whether the device is mobile
  */
-export const getOptimalImageUrl = (
-  mobileUrl: string, 
-  desktopUrl: string,
-  isMobile: boolean = false
-): string => {
-  if (isMobile) {
-    return mobileUrl || desktopUrl; // Fallback to desktop if mobile not available
+export const updateImageVisibility = (contentContainsTargetPost: boolean, isMobile: boolean) => {
+  if (contentContainsTargetPost) {
+    try {
+      const desktopImg = document.getElementById("marketing-desktop-image");
+      const mobileImg = document.getElementById("marketing-mobile-image");
+      
+      if (desktopImg && mobileImg) {
+        console.log("Found marketing images in DOM, applying final visibility styles");
+        
+        // Create style element for media queries
+        const styleEl = document.createElement('style');
+        styleEl.innerHTML = `
+          @media (max-width: 768px) {
+            #marketing-desktop-image { display: none !important; }
+            #marketing-mobile-image { display: block !important; }
+          }
+          @media (min-width: 769px) {
+            #marketing-desktop-image { display: block !important; }
+            #marketing-mobile-image { display: none !important; }
+          }
+        `;
+        document.head.appendChild(styleEl);
+        
+        if (isMobile) {
+          // Mobile display
+          desktopImg.style.cssText = "display: none !important";
+          mobileImg.style.cssText = "display: block !important";
+          
+          // Add explicit dimensions to prevent layout shifts
+          if (mobileImg instanceof HTMLImageElement) {
+            mobileImg.setAttribute('width', '100%');
+            mobileImg.setAttribute('height', 'auto');
+          }
+        } else {
+          // Desktop display
+          desktopImg.style.cssText = "display: block !important";
+          mobileImg.style.cssText = "display: none !important";
+          
+          // Add explicit dimensions to prevent layout shifts
+          if (desktopImg instanceof HTMLImageElement) {
+            desktopImg.setAttribute('width', '100%');
+            desktopImg.setAttribute('height', 'auto');
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error updating image visibility:", error);
+    }
   }
-  return desktopUrl || mobileUrl; // Fallback to mobile if desktop not available
+};
+
+/**
+ * Optimizes a specific image for loading performance
+ * @param imgElement - Image element to optimize
+ */
+export const optimizeSingleImage = (imgElement: HTMLImageElement) => {
+  // Skip if already optimized
+  if (imgElement.hasAttribute('data-optimized')) return;
+  
+  // Set loading strategy
+  const isAboveFold = isElementInViewport(imgElement);
+  imgElement.loading = isAboveFold ? 'eager' : 'lazy';
+  imgElement.decoding = isAboveFold ? 'sync' : 'async';
+  
+  // Set fetchpriority
+  imgElement.setAttribute('fetchpriority', isAboveFold ? 'high' : 'auto');
+  
+  // Add explicit dimensions to prevent CLS
+  if (!imgElement.hasAttribute('width') && !imgElement.hasAttribute('height') && 
+      imgElement.naturalWidth && imgElement.naturalHeight) {
+    imgElement.width = imgElement.naturalWidth;
+    imgElement.height = imgElement.naturalHeight;
+    
+    // Set aspect ratio to prevent layout shifts
+    imgElement.style.aspectRatio = `${imgElement.naturalWidth}/${imgElement.naturalHeight}`;
+  }
+  
+  // Mark as optimized
+  imgElement.setAttribute('data-optimized', 'true');
+};
+
+/**
+ * Checks if element is in viewport
+ * @param element - Element to check
+ */
+const isElementInViewport = (element: HTMLElement): boolean => {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
 };

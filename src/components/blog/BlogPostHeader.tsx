@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect, useState } from "react";
 
 interface BlogPostHeaderProps {
   title: string;
@@ -34,69 +33,6 @@ const BlogPostHeader = ({
   const { language } = useLanguage();
   const isItalian = language === "it";
   const isMobile = useIsMobile();
-  const [timestamp, setTimestamp] = useState(Date.now());
-  
-  // Use absolute URLs for image paths if they're relative
-  const getAbsoluteUrl = (url: string) => {
-    if (url.startsWith('http') || url.startsWith('data:')) return url;
-    return `${window.location.origin}${url}`;
-  };
-  
-  const absoluteImageUrl = getAbsoluteUrl(imageUrl);
-  const absoluteDesktopImageUrl = getAbsoluteUrl(desktopImageUrl);
-  const absoluteAuthorImageUrl = getAbsoluteUrl(authorImageUrl);
-  
-  // Refresh images every second until they load
-  useEffect(() => {
-    console.log("BlogPostHeader mounting with images:", {
-      mobile: absoluteImageUrl,
-      desktop: absoluteDesktopImageUrl,
-      isMobile
-    });
-    
-    // Force image refresh immediately
-    setTimestamp(Date.now());
-    
-    // Set up multiple refresh intervals
-    const intervals = [
-      setInterval(() => {
-        console.log("Refreshing images with new timestamp");
-        setTimestamp(Date.now());
-        
-        // Direct DOM manipulation as a last resort
-        const updateImagesDirectly = () => {
-          const desktopImgs = document.querySelectorAll('.desktop-blog-image');
-          const mobileImgs = document.querySelectorAll('.mobile-blog-image');
-          
-          console.log(`Found ${desktopImgs.length} desktop and ${mobileImgs.length} mobile images to update`);
-          
-          desktopImgs.forEach(img => {
-            if (img instanceof HTMLImageElement) {
-              img.src = `${absoluteDesktopImageUrl}?t=${Date.now()}`;
-              img.style.display = isMobile ? 'none' : 'block';
-            }
-          });
-          
-          mobileImgs.forEach(img => {
-            if (img instanceof HTMLImageElement) {
-              img.src = `${absoluteImageUrl}?t=${Date.now()}`;
-              img.style.display = isMobile ? 'block' : 'none';
-            }
-          });
-        };
-        
-        updateImagesDirectly();
-      }, 1000),
-      
-      setInterval(() => {
-        setTimestamp(Date.now());
-      }, 3000)
-    ];
-    
-    return () => {
-      intervals.forEach(clearInterval);
-    };
-  }, [absoluteImageUrl, absoluteDesktopImageUrl, isMobile]);
   
   // Format date for consistent display - if it's not already formatted
   const formatDate = (dateStr: string) => {
@@ -124,17 +60,6 @@ const BlogPostHeader = ({
   
   const formattedDate = formatDate(date);
   
-  // Determine final image URLs with cache-busting
-  const finalMobileImgUrl = `${absoluteImageUrl}?t=${timestamp}`;
-  const finalDesktopImgUrl = `${absoluteDesktopImageUrl}?t=${timestamp}`;
-  
-  console.log("Rendering with URLs:", {
-    mobile: finalMobileImgUrl,
-    desktop: finalDesktopImgUrl,
-    shouldShowMobile: isMobile,
-    author: absoluteAuthorImageUrl
-  });
-  
   return (
     <div className="mb-8">
       <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary transition-colors mb-6">
@@ -145,38 +70,16 @@ const BlogPostHeader = ({
       <Card className="mb-8 overflow-hidden border-0 shadow-lg blog-header">
         <div className="w-full">
           <AspectRatio ratio={16/9} className="bg-gray-100">
-            {/* Desktop image */}
+            {/* Simplified image loading strategy for faster mobile rendering */}
             <img 
-              src={finalDesktopImgUrl}
+              src={isMobile ? imageUrl : desktopImageUrl} 
               alt={title}
-              className="desktop-blog-image w-full h-full object-cover"
+              className="w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"
-              width="1200"
-              height="675"
-              style={{
-                display: isMobile ? 'none' : 'block',
-                visibility: 'visible',
-                opacity: 1,
-                aspectRatio: "16/9"
-              }}
-            />
-            
-            {/* Mobile image */}
-            <img 
-              src={finalMobileImgUrl}
-              alt={title}
-              className="mobile-blog-image w-full h-full object-cover"
-              loading="eager"
-              fetchPriority="high"
-              width="640" 
-              height="360"
-              style={{
-                display: isMobile ? 'block' : 'none',
-                visibility: 'visible',
-                opacity: 1,
-                aspectRatio: "16/9"
-              }}
+              width={isMobile ? "640" : "1200"}
+              height={isMobile ? "360" : "675"}
+              style={{aspectRatio: "16/9"}}
             />
           </AspectRatio>
         </div>
@@ -209,7 +112,7 @@ const BlogPostHeader = ({
           
           <div className="flex items-center mt-3 md:mt-6">
             <Avatar className="h-8 w-8 mr-2 md:mr-3">
-              <AvatarImage src={absoluteAuthorImageUrl} alt={author} />
+              <AvatarImage src={authorImageUrl} alt={author} />
               <AvatarFallback>{author.charAt(0)}</AvatarFallback>
             </Avatar>
             <span className="font-medium">{author}</span>
