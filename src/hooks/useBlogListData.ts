@@ -2,11 +2,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { getAllBlogPosts } from "@/utils/blog";
+import { BlogPost } from "@/types";
 
 export const useBlogListData = (postsPerPage: number) => {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogPosts, setBlogPosts] = useState<Array<{slug: string; [key: string]: any}>>([]);
+  const [blogPosts, setBlogPosts] = useState<Array<{slug: string} & BlogPost>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   
@@ -115,43 +116,67 @@ export const useBlogListData = (postsPerPage: number) => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  // Placeholder posts for empty state or to fill grid
-  const placeholderPosts = [
+  // Placeholder posts for empty state or to fill grid - now fully implementing BlogPost interface
+  const placeholderPosts: BlogPost[] = [
     {
       title: "The Human + Tech Equation: Empowering Your Workforce in the Digital Transformation Era",
       titleIT: "L'Equazione Umano + Tecnologia: Potenziare la Forza Lavoro nell'Era della Trasformazione Digitale",
       excerpt: "In today's digital transformation landscape, technology alone isn't enough to drive operational excellence. The most successful organizations master what I call the \"Human + Tech Equation\", where cutting-edge technology amplifies human potential, and human insight maximizes technological impact.",
       excerptIT: "Nel panorama attuale della trasformazione digitale, la tecnologia da sola non è sufficiente per guidare l'eccellenza operativa. Le organizzazioni di maggior successo padroneggiano quella che chiamo \"L'Equazione Umano + Tecnologia\", dove la tecnologia all'avanguardia amplifica il potenziale umano, e l'intuizione umana massimizza l'impatto tecnologico.",
+      content: "Full content for The Human + Tech Equation blog post",
+      contentIT: "Contenuto completo per il post del blog L'Equazione Umano + Tecnologia",
+      author: "Luciano Tumminello",
+      authorImageUrl: `${window.location.origin}/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png`,
       date: "16 May 2022",
       dateIT: "16 Maggio 2022",
       category: "Digital Transformation",
       categoryIT: "Trasformazione Digitale",
       imageUrl: "/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png",
-      desktopImageUrl: "/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png"
+      desktopImageUrl: "/lovable-uploads/1c4f0abf-cb15-40e3-b058-28964ed52ed8.png",
+      readingTime: "8 min read",
+      readingTimeIT: "8 min di lettura",
+      tags: ["digital transformation", "workforce", "technology"],
+      tagsIT: ["trasformazione digitale", "forza lavoro", "tecnologia"]
     },
     {
       title: "From Marketing Director to COO: Transfunctional Leadership Principles That Drive Organizational Growth",
       titleIT: "Da Direttore Marketing a COO: Principi di Leadership Transfunzionale che Guidano la Crescita Organizzativa",
       excerpt: "The evolution of executive careers and leadership trajectories rarely follow a linear path. My transition from Marketing Director to Chief Operating Officer represents one of those pivotal professional evolutions that challenges conventional career planning.",
       excerptIT: "L'evoluzione delle carriere dirigenziali e delle traiettorie di leadership raramente segue un percorso lineare. La mia transizione da Direttore Marketing a Chief Operating Officer rappresenta una di quelle evoluzioni professionali cruciali che sfidano la pianificazione convenzionale della carriera.",
+      content: "Full content for From Marketing Director to COO blog post",
+      contentIT: "Contenuto completo per il post del blog Da Direttore Marketing a COO",
+      author: "Luciano Tumminello",
+      authorImageUrl: `${window.location.origin}/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png`,
       date: "2 May 2022",
       dateIT: "2 Maggio 2022",
       category: "Leadership",
       categoryIT: "Leadership",
       imageUrl: "/lovable-uploads/8acfc057-4507-4e63-b83a-78639ade9695.png",
-      desktopImageUrl: "/lovable-uploads/8acfc057-4507-4e63-b83a-78639ade9695.png"
+      desktopImageUrl: "/lovable-uploads/8acfc057-4507-4e63-b83a-78639ade9695.png",
+      readingTime: "10 min read",
+      readingTimeIT: "10 min di lettura",
+      tags: ["leadership", "career growth", "organizational development"],
+      tagsIT: ["leadership", "crescita professionale", "sviluppo organizzativo"]
     },
     {
       title: "Beyond Technology: The Cultural Transformation Required for Successful AI Integration",
       titleIT: "Oltre la Tecnologia: La Trasformazione Culturale Necessaria per una Riuscita Integrazione dell'IA",
       excerpt: "The Evolving Challenge of AI Implementation: As we approach mid-2025, one thing has become abundantly clear: the technology behind AI transformation is often the easiest part of the equation.",
       excerptIT: "La Sfida in Evoluzione dell'Implementazione dell'IA: Avvicinandoci alla metà del 2025, una cosa è diventata abbondantemente chiara: la tecnologia dietro la trasformazione dell'IA è spesso la parte più facile dell'equazione.",
+      content: "Full content for Beyond Technology blog post",
+      contentIT: "Contenuto completo per il post del blog Oltre la Tecnologia",
+      author: "Luciano Tumminello",
+      authorImageUrl: `${window.location.origin}/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png`,
       date: "17 April 2022",
       dateIT: "17 Aprile 2022",
       category: "AI & Digital Transformation",
       categoryIT: "IA & Trasformazione Digitale",
       imageUrl: "/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png",
-      desktopImageUrl: "/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png"
+      desktopImageUrl: "/lovable-uploads/1f7719b4-812c-4079-9d7b-b4698fad762e.png",
+      readingTime: "9 min read",
+      readingTimeIT: "9 min di lettura",
+      tags: ["artificial intelligence", "cultural transformation", "change management"],
+      tagsIT: ["intelligenza artificiale", "trasformazione culturale", "gestione del cambiamento"]
     }
   ];
   
