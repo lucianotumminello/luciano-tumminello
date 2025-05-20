@@ -3,7 +3,7 @@ import React from 'react';
 
 const BlogPostStyles = () => {
   return (
-    <style jsx="true">{`
+    <style jsx global>{`
       /* Responsive image handling */
       @media (max-width: 768px) {
         #blog-desktop-image {

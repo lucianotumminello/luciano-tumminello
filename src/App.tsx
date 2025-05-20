@@ -59,6 +59,27 @@ initializeBlogPosts()
       console.log("Performing second additional force refresh");
       refreshBlogPosts(true);
     }, 5000);
+    
+    // Final check to ensure images are properly displayed
+    setTimeout(() => {
+      console.log("Final check for image visibility");
+      const updateImageVisibility = () => {
+        const desktopImg = document.getElementById("blog-desktop-image");
+        const mobileImg = document.getElementById("blog-mobile-image");
+        
+        if (desktopImg && mobileImg) {
+          if (window.innerWidth <= 768) {
+            desktopImg.style.display = "none";
+            mobileImg.style.display = "block";
+          } else {
+            desktopImg.style.display = "block";
+            mobileImg.style.display = "none";
+          }
+        }
+      };
+      
+      updateImageVisibility();
+    }, 10000);
   })
   .catch(error => {
     console.error('Error initializing blog posts on app load:', error);

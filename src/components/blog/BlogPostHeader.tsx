@@ -88,15 +88,22 @@ const BlogPostHeader = ({
     // Add a small delay to ensure images are properly displayed after render
     const timer = setTimeout(updateImageVisibility, 100);
     
+    // Additional force updates at different intervals
+    const additionalTimers = [500, 1000, 2000].map(delay => 
+      setTimeout(updateImageVisibility, delay)
+    );
+    
     return () => {
       window.removeEventListener("resize", updateImageVisibility);
       clearTimeout(timer);
+      additionalTimers.forEach(clearTimeout);
     };
   }, [isMobile]);
   
   // Force reload images with timestamp to prevent caching
-  const desktopImageWithCache = `${desktopImageUrl}?t=${new Date().getTime()}`;
-  const mobileImageWithCache = `${imageUrl}?t=${new Date().getTime()}`;
+  const timestamp = new Date().getTime();
+  const desktopImageWithCache = `${desktopImageUrl}?t=${timestamp}`;
+  const mobileImageWithCache = `${imageUrl}?t=${timestamp}`;
   
   return (
     <div className="mb-8">
