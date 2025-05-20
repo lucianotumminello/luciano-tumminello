@@ -105,7 +105,19 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
       const fixNestedLists = () => {
         const nestedLists = document.querySelectorAll('li > ul, li > ol');
         nestedLists.forEach(list => {
-          list.setAttribute('style', 'display: block !important; margin-top: 0.5rem;');
+          list.setAttribute('style', 'display: block !important; margin-top: 0.5rem; visibility: visible !important;');
+        });
+        
+        // Ensure all list items are properly displayed
+        const listItems = document.querySelectorAll('ul > li, ol > li');
+        listItems.forEach(item => {
+          item.setAttribute('style', 'display: list-item !important; visibility: visible !important;');
+        });
+        
+        // Fix parent lists
+        const parentLists = document.querySelectorAll('ul, ol');
+        parentLists.forEach(list => {
+          list.setAttribute('style', 'display: block !important; visibility: visible !important;');
         });
       };
       

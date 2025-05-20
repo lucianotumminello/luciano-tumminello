@@ -13,6 +13,7 @@ export const getAllBlogPosts = async (): Promise<BlogPostsStore> => {
     
     // Log the current state of the blog posts
     console.log("Getting all blog posts, count:", Object.keys(updatedBlogPosts).length);
+    console.log("Available blog post slugs:", Object.keys(updatedBlogPosts).join(", "));
     return { ...updatedBlogPosts };
   } catch (error) {
     console.error("Error getting all blog posts:", error);
@@ -30,6 +31,7 @@ export const getBlogPost = async (slug: string): Promise<(Omit<import('@/types')
     // First, refresh the blog posts from the server to ensure we have the latest data
     await refreshBlogPosts();
     
+    console.log(`Getting blog post with slug ${slug}, exists: ${!!updatedBlogPosts[slug]}`);
     return updatedBlogPosts[slug] ? { ...updatedBlogPosts[slug] } : undefined;
   } catch (error) {
     console.error(`Error getting blog post ${slug}:`, error);
