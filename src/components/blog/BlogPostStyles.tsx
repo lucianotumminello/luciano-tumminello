@@ -4,7 +4,8 @@ import React from 'react';
 const BlogPostStyles = () => {
   return (
     <>
-      <style jsx global>{`
+      {/* @ts-ignore */}
+      <style jsx="true" global="true">{`
         /* Responsive image handling */
         @media (max-width: 768px) {
           #blog-desktop-image {
