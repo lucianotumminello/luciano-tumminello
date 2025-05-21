@@ -38,7 +38,10 @@ export const syncFromDecapCms = async (): Promise<void> => {
           
           if (post.slug) {
             blogPosts[post.slug] = { ...post };
-            delete blogPosts[post.slug].slug; // Remove slug from the content as it's the key
+            // We're handling the slug property separately since it's the key in our store
+            const postWithoutSlug = { ...post };
+            delete postWithoutSlug.slug;
+            blogPosts[post.slug] = postWithoutSlug;
           }
         }
       });
