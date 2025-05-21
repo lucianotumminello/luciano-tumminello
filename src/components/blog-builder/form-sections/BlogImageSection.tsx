@@ -63,6 +63,8 @@ export const BlogImageSection = ({
                   src={URL.createObjectURL(desktopImageFile)}
                   alt="Desktop preview"
                   className="h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             )}
@@ -111,6 +113,8 @@ export const BlogImageSection = ({
                   src={URL.createObjectURL(mobileImageFile)}
                   alt="Mobile preview"
                   className="h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             )}

@@ -10,6 +10,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
 import { refreshBlogPosts } from "./utils/blog";
+import { initPerformanceOptimizations } from "./utils/performanceUtils";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -47,6 +48,13 @@ const RouteChangeTracker = () => {
   
   return null;
 };
+
+// Initialize performance optimizations
+if (typeof window !== 'undefined') {
+  window.addEventListener('DOMContentLoaded', () => {
+    initPerformanceOptimizations();
+  });
+}
 
 // Create the QueryClient inside the App component
 const App = () => {

@@ -41,11 +41,10 @@ export const syncFromDecapCms = async (): Promise<void> => {
             const slug = post.slug;
             
             // Create a new object without the slug property
-            const postWithoutSlug = { ...post };
-            delete postWithoutSlug.slug;
+            const { slug: _, ...postWithoutSlug } = post;
             
             // Store the post in the blog posts store using the slug as the key
-            blogPosts[slug] = postWithoutSlug;
+            blogPosts[slug] = postWithoutSlug as BlogPost;
           }
         }
       });
@@ -143,8 +142,7 @@ if (typeof window !== 'undefined') {
           // Update or add the post
           const post = data.entry.data;
           if (post.slug) {
-            const postData = { ...post };
-            delete postData.slug; // Remove slug as it's the key
+            const { slug: _, ...postData } = post;
             posts[post.slug] = postData;
             
             // Save to server storage
