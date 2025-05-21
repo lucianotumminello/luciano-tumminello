@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luciano Tumminello - Content Manager</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!-- Ensure the Identity widget is fully loaded first -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
@@ -19,8 +20,22 @@
             window.netlifyIdentity.on("login", () => {
               document.location.href = "/admin/";
             });
+          } else {
+            console.log("User already logged in:", user);
           }
         });
+        
+        // Handle login events
+        window.netlifyIdentity.on("login", () => {
+          console.log("User logged in successfully");
+          // Give time for login process to complete
+          setTimeout(() => {
+            // Reload the admin page to refresh the CMS with authentication
+            window.location.reload();
+          }, 500);
+        });
+      } else {
+        console.error("Netlify Identity widget not found");
       }
 
       // Add a safety check for CMS initialization
@@ -30,6 +45,8 @@
           if (!window.CMS) {
             console.log("CMS failed to initialize, reloading...");
             window.location.reload();
+          } else {
+            console.log("CMS initialized successfully");
           }
         }, 2000);
       });

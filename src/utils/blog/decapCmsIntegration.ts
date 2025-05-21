@@ -77,28 +77,44 @@ if (typeof window !== 'undefined') {
       if (window.CMS) {
         console.log('Decap CMS detected, setting up event listeners');
         
+        // Register event listeners for CMS events
         window.CMS.registerEventListener({
           name: 'postPublished',
           handler: async (data: any) => {
             console.log('Post published in Decap CMS:', data);
             
-            // Get the current posts
-            const posts = { ...updatedBlogPosts };
-            
-            // Update or add the post
-            const post = data.entry.data;
-            if (post.slug) {
-              const { slug: _, ...postData } = post;
-              posts[post.slug] = postData;
+            try {
+              // Get the current posts
+              const posts = { ...updatedBlogPosts };
               
-              // Save to server storage
-              await saveBlogPostsToServer(posts);
-              console.log(`Post ${post.slug} saved successfully`);
+              // Update or add the post
+              const post = data.entry.data;
+              if (post.slug) {
+                const { slug: _, ...postData } = post;
+                posts[post.slug] = postData as BlogPost;
+                
+                // Save to server storage
+                await saveBlogPostsToServer(posts);
+                console.log(`Post ${post.slug} saved successfully`);
+              }
+            } catch (error) {
+              console.error('Error handling post publish event:', error);
             }
           }
         });
+        
+        // Setup additional event listeners as needed
+        window.CMS.registerEventListener({
+          name: 'preSave',
+          handler: async (data: any) => {
+            console.log('Pre-save event in Decap CMS:', data);
+            // Additional pre-save processing can be added here
+          }
+        });
+      } else {
+        console.warn('Decap CMS not detected after timeout');
       }
-    }, 1000); // Wait 1 second for CMS to initialize
+    }, 2000); // Wait 2 seconds for CMS to initialize
   });
 }
 
