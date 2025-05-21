@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Toaster } from "@/components/ui/toaster";
-import { Sonner } from "@/components/ui/sonner";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 
 const DecapAdmin = () => {
   useEffect(() => {
@@ -41,7 +41,7 @@ const DecapAdmin = () => {
       
       {/* Add toasters outside of Suspense boundary */}
       <Toaster />
-      <Sonner />
+      <SonnerToaster />
     </div>
   );
 };
