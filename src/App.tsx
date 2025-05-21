@@ -70,7 +70,7 @@ if (typeof window !== 'undefined') {
 // App content with routing - Moving this into a separate component to avoid React hook issues
 const AppContent = () => {
   return (
-    <>
+    <div className="app-wrapper">
       <RouteChangeTracker />
       <TooltipProvider>
         <Toaster />
@@ -96,22 +96,24 @@ const AppContent = () => {
         </Suspense>
         <CookieConsent />
       </TooltipProvider>
-    </>
+    </div>
   );
 };
 
 // Main App component - Ensuring proper nesting of providers
 const App = () => {
   return (
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <LanguageProvider>
-            <AppContent />
-          </LanguageProvider>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </HelmetProvider>
+    <React.StrictMode>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <LanguageProvider>
+              <AppContent />
+            </LanguageProvider>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </React.StrictMode>
   );
 };
 
