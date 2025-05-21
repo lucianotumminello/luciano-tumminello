@@ -85,13 +85,11 @@ const AppContent = () => {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/blog-builder" element={<BlogBuilder />} />
-            <Route path="/admin/*" element={<DecapAdmin />} />
-            {/* Redirect for Netlify Identity */}
             <Route path="/admin" element={<Navigate to="/admin/" replace />} />
+            <Route path="/admin/*" element={<DecapAdmin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          <CookieConsent />
         </TooltipProvider>
       </Suspense>
       {/* Place toasts outside the Suspense boundary */}

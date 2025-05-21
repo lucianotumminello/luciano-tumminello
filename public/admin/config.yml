@@ -10,6 +10,9 @@ local_backend: true
 media_folder: "public/lovable-uploads"
 public_folder: "/lovable-uploads"
 
+# Make config load correctly
+load_config_file: false
+
 # Collections define the structure for content types
 collections:
   - name: "blog"

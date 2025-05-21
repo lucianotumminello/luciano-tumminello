@@ -4,9 +4,6 @@ import { BlogPostsStore } from "./types";
 import { getBlogPostsFromCache, saveBlogPostsToServer } from "./blogServerStorage";
 import { updatedBlogPosts } from "./blogPostsStore";
 
-// This file provides integration between Decap CMS and our blog system
-// When running in the browser, filesystem operations will be skipped
-
 /**
  * Synchronizes blog posts from Decap CMS content directory to our blog storage
  * This function is meant to be called during build time or by a serverless function
@@ -73,31 +70,35 @@ const parseFrontmatter = (frontmatter: string): BlogPost & { slug?: string } => 
  * This is meant to be used in the browser
  */
 if (typeof window !== 'undefined') {
-  window.addEventListener('DOMContentLoaded', () => {
-    // Listen for Decap CMS events if available
-    if (window.CMS) {
-      console.log('Decap CMS detected, setting up event listeners');
-      
-      window.CMS.registerEventListener({
-        name: 'postPublished',
-        handler: async (data: any) => {
-          console.log('Post published in Decap CMS:', data);
-          
-          // Get the current posts
-          const posts = { ...updatedBlogPosts };
-          
-          // Update or add the post
-          const post = data.entry.data;
-          if (post.slug) {
-            const { slug: _, ...postData } = post;
-            posts[post.slug] = postData;
+  // Use DOMContentLoaded to ensure the CMS is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    // Set a timeout to wait for CMS to be initialized
+    setTimeout(() => {
+      if (window.CMS) {
+        console.log('Decap CMS detected, setting up event listeners');
+        
+        window.CMS.registerEventListener({
+          name: 'postPublished',
+          handler: async (data: any) => {
+            console.log('Post published in Decap CMS:', data);
             
-            // Save to server storage
-            await saveBlogPostsToServer(posts);
+            // Get the current posts
+            const posts = { ...updatedBlogPosts };
+            
+            // Update or add the post
+            const post = data.entry.data;
+            if (post.slug) {
+              const { slug: _, ...postData } = post;
+              posts[post.slug] = postData;
+              
+              // Save to server storage
+              await saveBlogPostsToServer(posts);
+              console.log(`Post ${post.slug} saved successfully`);
+            }
           }
-        }
-      });
-    }
+        });
+      }
+    }, 1000); // Wait 1 second for CMS to initialize
   });
 }
 

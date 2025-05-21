@@ -22,6 +22,17 @@
           }
         });
       }
+
+      // Add a safety check for CMS initialization
+      window.addEventListener('load', function() {
+        // If CMS didn't initialize properly after 2 seconds, try to reload
+        setTimeout(() => {
+          if (!window.CMS) {
+            console.log("CMS failed to initialize, reloading...");
+            window.location.reload();
+          }
+        }, 2000);
+      });
     </script>
   </body>
 </html>
