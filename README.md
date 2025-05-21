@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
 
-## Project info
+# Luciano Tumminello Website
 
-**URL**: https://lovable.dev/projects/8aa3d967-43bb-4f11-be92-aed73f754a76
+## CMS Setup Instructions
 
-## How can I edit this code?
+This website uses Decap CMS (formerly Netlify CMS) to manage blog content. To set up the CMS:
 
-There are several ways of editing your application.
+1. Deploy the site to Netlify
+2. Enable Netlify Identity
+   - Go to Site Settings > Identity > Enable Identity
+   - Set registration to Invite Only
+   - Enable Git Gateway: Settings > Identity > Services > Git Gateway > Enable
+3. Invite yourself as a user
+   - Go to Identity tab in Netlify dashboard
+   - Click Invite users
+   - Enter your email address
+4. Accept the invitation
+   - Click the link in the invitation email
+   - Set up your password
+5. Access the CMS at `/admin/`
 
-**Use Lovable**
+## Local Development
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8aa3d967-43bb-4f11-be92-aed73f754a76) and start prompting.
+For local development with the CMS:
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Install the Netlify CLI: `npm install netlify-cli -g`
+2. Run `netlify dev` to start local development server with Netlify Identity
+3. Access the local CMS at `http://localhost:8888/admin/`
 
-**Use your preferred IDE**
+## Content Structure
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Blog posts are stored in `content/blog/` and are accessible through Decap CMS. 
+Images are stored in `public/lovable-uploads/` directory.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Features
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/8aa3d967-43bb-4f11-be92-aed73f754a76) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Multilingual blog posts (English/Italian)
+- Responsive design for all devices
+- Server-side content storage
+- Cross-browser and cross-session accessibility

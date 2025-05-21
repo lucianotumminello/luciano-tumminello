@@ -1,0 +1,40 @@
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Use local_backend for local development
+local_backend: true
+
+# Media folder where uploads will be stored
+media_folder: "public/lovable-uploads"
+public_folder: "/lovable-uploads"
+
+# Collections define the structure for content types
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title (English)", name: "title", widget: "string" }
+      - { label: "Title (Italian)", name: "titleIT", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Slug must contain only lowercase letters, numbers, and hyphens"] }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Date (Italian Format)", name: "dateIT", widget: "string" }
+      - { label: "Author", name: "author", widget: "string", default: "Luciano Tumminello" }
+      - { label: "Author Image", name: "authorImageUrl", widget: "image" }
+      - { label: "Desktop Image", name: "desktopImageUrl", widget: "image" }
+      - { label: "Mobile Image", name: "imageUrl", widget: "image" }
+      - { label: "Category (English)", name: "category", widget: "string" }
+      - { label: "Category (Italian)", name: "categoryIT", widget: "string" }
+      - { label: "Tags (English)", name: "tags", widget: "list" }
+      - { label: "Tags (Italian)", name: "tagsIT", widget: "list" }
+      - { label: "Excerpt (English)", name: "excerpt", widget: "text" }
+      - { label: "Excerpt (Italian)", name: "excerptIT", widget: "text" }
+      - { label: "Reading Time (English)", name: "readingTime", widget: "string" }
+      - { label: "Reading Time (Italian)", name: "readingTimeIT", widget: "string" }
+      - { label: "Content (English)", name: "content", widget: "markdown" }
+      - { label: "Content (Italian)", name: "contentIT", widget: "markdown" }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
