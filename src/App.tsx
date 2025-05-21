@@ -28,6 +28,17 @@ const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const BlogBuilder = lazy(() => import("./pages/BlogBuilder"));
 const DecapAdmin = lazy(() => import("./pages/DecapAdmin"));
 
+// Create the QueryClient instance outside of component render
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000, // 1 minute
+      gcTime: 5 * 60 * 1000, // 5 minutes (replaces cacheTime)
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 // Analytics tracker component
 const RouteChangeTracker = () => {
   const location = useLocation();
@@ -56,60 +67,51 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// Create the QueryClient instance outside of component render
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000, // 1 minute
-      gcTime: 5 * 60 * 1000, // 5 minutes (replaces cacheTime)
-      refetchOnWindowFocus: false,
-    },
-  },
-});
-
-// App content with routing
-const AppRoutes = () => {
+// App content with routing - Moving this into a separate component to avoid React hook issues
+const AppContent = () => {
   return (
-    <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/career" element={<ProfessionalJourney />} />
-        <Route path="/education" element={<Education />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/cookie-policy" element={<CookiePolicy />} />
-        <Route path="/blog-builder" element={<BlogBuilder />} />
-        <Route path="/admin/*" element={<DecapAdmin />} />
-        {/* Redirect for Netlify Identity */}
-        <Route path="/admin" element={<Navigate to="/admin/" replace />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Suspense>
+    <>
+      <RouteChangeTracker />
+      <Toaster />
+      <Sonner />
+      <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/career" element={<ProfessionalJourney />} />
+          <Route path="/education" element={<Education />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/blog-builder" element={<BlogBuilder />} />
+          <Route path="/admin/*" element={<DecapAdmin />} />
+          {/* Redirect for Netlify Identity */}
+          <Route path="/admin" element={<Navigate to="/admin/" replace />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+      <CookieConsent />
+    </>
   );
 };
 
-// Main App component
+// Main App component - Ensuring proper nesting of providers
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
         <LanguageProvider>
           <BrowserRouter>
             <TooltipProvider>
-              <RouteChangeTracker />
-              <Toaster />
-              <Sonner />
-              <AppRoutes />
-              <CookieConsent />
+              <AppContent />
             </TooltipProvider>
           </BrowserRouter>
         </LanguageProvider>
-      </HelmetProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 
