@@ -1,4 +1,5 @@
 
+import React, { Suspense, useEffect, lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { HelmetProvider } from 'react-helmet-async';
-import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
 import { refreshBlogPosts } from "./utils/blog";
@@ -67,15 +67,15 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// App content with routing - Moving this into a separate component to avoid React hook issues
+// App content with proper component structure
 const AppContent = () => {
   return (
     <div className="app-wrapper">
       <RouteChangeTracker />
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
+      <Toaster />
+      <Sonner />
+      <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
+        <TooltipProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
@@ -93,9 +93,9 @@ const AppContent = () => {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </Suspense>
-        <CookieConsent />
-      </TooltipProvider>
+          <CookieConsent />
+        </TooltipProvider>
+      </Suspense>
     </div>
   );
 };
