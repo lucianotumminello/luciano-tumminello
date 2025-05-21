@@ -67,13 +67,11 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// App content with proper component structure
+// App content component with proper structure
 const AppContent = () => {
   return (
     <div className="app-wrapper">
       <RouteChangeTracker />
-      <Toaster />
-      <Sonner />
       <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
         <TooltipProvider>
           <Routes>
@@ -96,11 +94,14 @@ const AppContent = () => {
           <CookieConsent />
         </TooltipProvider>
       </Suspense>
+      {/* Place toasts outside the Suspense boundary */}
+      <Toaster />
+      <Sonner />
     </div>
   );
 };
 
-// Main App component - Ensuring proper nesting of providers
+// Main App component with correctly nested providers
 const App = () => {
   return (
     <React.StrictMode>
