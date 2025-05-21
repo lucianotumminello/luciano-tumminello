@@ -56,6 +56,35 @@ if (typeof window !== 'undefined') {
   });
 }
 
+// App content component to properly use context providers
+const AppContent = () => {
+  return (
+    <BrowserRouter>
+      <RouteChangeTracker />
+      <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/career" element={<ProfessionalJourney />} />
+          <Route path="/education" element={<Education />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/blog-builder" element={<BlogBuilder />} />
+          <Route path="/admin/*" element={<DecapAdmin />} />
+          {/* Redirect for Netlify Identity */}
+          <Route path="/admin" element={<Navigate to="/admin/" replace />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+      <CookieConsent />
+    </BrowserRouter>
+  );
+};
+
 // Create the QueryClient inside the App component
 const App = () => {
   // Create queryClient inside the component function
@@ -71,37 +100,15 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+      <HelmetProvider>
         <LanguageProvider>
-          <HelmetProvider>
+          <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
-              <RouteChangeTracker />
-              <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/career" element={<ProfessionalJourney />} />
-                  <Route path="/education" element={<Education />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:slug" element={<BlogPost />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="/cookie-policy" element={<CookiePolicy />} />
-                  <Route path="/blog-builder" element={<BlogBuilder />} />
-                  <Route path="/admin/*" element={<DecapAdmin />} />
-                  {/* Redirect for Netlify Identity */}
-                  <Route path="/admin" element={<Navigate to="/admin/" replace />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-              <CookieConsent />
-            </BrowserRouter>
-          </HelmetProvider>
+            <AppContent />
+          </TooltipProvider>
         </LanguageProvider>
-      </TooltipProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   );
 };
