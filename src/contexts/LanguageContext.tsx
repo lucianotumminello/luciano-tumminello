@@ -25,7 +25,7 @@ interface LanguageProviderProps {
   children: ReactNode;
 }
 
-export const LanguageProvider = ({ children }: LanguageProviderProps) => {
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState<Language>("en");
   const [isInitialized, setIsInitialized] = useState(false);
   
