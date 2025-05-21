@@ -25,7 +25,7 @@ export const syncFromDecapCms = async (): Promise<void> => {
         if (file.endsWith('.md') || file.endsWith('.json')) {
           const filePath = path.join(contentDir, file);
           const content = fs.readFileSync(filePath, 'utf8');
-          let post: BlogPost;
+          let post: BlogPost & { slug?: string };
           
           if (file.endsWith('.md')) {
             // Parse markdown frontmatter
@@ -37,11 +37,15 @@ export const syncFromDecapCms = async (): Promise<void> => {
           }
           
           if (post.slug) {
-            blogPosts[post.slug] = { ...post };
-            // We're handling the slug property separately since it's the key in our store
+            // Store the slug separately before removing it from the post object
+            const slug = post.slug;
+            
+            // Create a new object without the slug property
             const postWithoutSlug = { ...post };
             delete postWithoutSlug.slug;
-            blogPosts[post.slug] = postWithoutSlug;
+            
+            // Store the post in the blog posts store using the slug as the key
+            blogPosts[slug] = postWithoutSlug;
           }
         }
       });
@@ -90,7 +94,7 @@ export const syncToDecapCms = async (): Promise<void> => {
  * @param frontmatter The frontmatter content
  * @returns BlogPost object
  */
-const parseFrontmatter = (frontmatter: string): BlogPost => {
+const parseFrontmatter = (frontmatter: string): BlogPost & { slug?: string } => {
   const lines = frontmatter.trim().split('\n');
   const post: Record<string, any> = {};
   
@@ -115,7 +119,7 @@ const parseFrontmatter = (frontmatter: string): BlogPost => {
     }
   });
   
-  return post as BlogPost;
+  return post as BlogPost & { slug?: string };
 };
 
 /**
