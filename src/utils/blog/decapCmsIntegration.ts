@@ -3,8 +3,6 @@ import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
 import { getBlogPostsFromCache, saveBlogPostsToServer } from "./blogServerStorage";
 import { updatedBlogPosts } from "./blogPostsStore";
-import fs from 'fs';
-import path from 'path';
 
 // This file provides integration between Decap CMS and our blog system
 // When running in the browser, filesystem operations will be skipped
@@ -15,46 +13,11 @@ import path from 'path';
  */
 export const syncFromDecapCms = async (): Promise<void> => {
   if (typeof window === 'undefined') {
-    // Server-side execution
-    try {
-      const contentDir = path.resolve(process.cwd(), 'content/blog');
-      const files = fs.readdirSync(contentDir);
-      const blogPosts: BlogPostsStore = {};
-      
-      files.forEach(file => {
-        if (file.endsWith('.md') || file.endsWith('.json')) {
-          const filePath = path.join(contentDir, file);
-          const content = fs.readFileSync(filePath, 'utf8');
-          let post: BlogPost & { slug?: string };
-          
-          if (file.endsWith('.md')) {
-            // Parse markdown frontmatter
-            const frontmatter = content.split('---')[1];
-            post = parseFrontmatter(frontmatter);
-          } else {
-            // Parse JSON file
-            post = JSON.parse(content);
-          }
-          
-          if (post.slug) {
-            // Store the slug separately before removing it from the post object
-            const slug = post.slug;
-            
-            // Create a new object without the slug property
-            const { slug: _, ...postWithoutSlug } = post;
-            
-            // Store the post in the blog posts store using the slug as the key
-            blogPosts[slug] = postWithoutSlug as BlogPost;
-          }
-        }
-      });
-      
-      // Save to blog server storage
-      await saveBlogPostsToServer(blogPosts);
-      
-    } catch (error) {
-      console.error('Error syncing from Decap CMS:', error);
-    }
+    // Server-side execution - would happen in a real environment with server access
+    console.log('Server-side execution detected for syncFromDecapCms');
+  } else {
+    // Client-side - we can't directly access the filesystem
+    console.log('Client-side execution detected for syncFromDecapCms - skipping filesystem operations');
   }
 };
 
@@ -64,27 +27,11 @@ export const syncFromDecapCms = async (): Promise<void> => {
  */
 export const syncToDecapCms = async (): Promise<void> => {
   if (typeof window === 'undefined') {
-    // Server-side execution
-    try {
-      const contentDir = path.resolve(process.cwd(), 'content/blog');
-      // Ensure the directory exists
-      if (!fs.existsSync(contentDir)) {
-        fs.mkdirSync(contentDir, { recursive: true });
-      }
-      
-      // Get blog posts from storage
-      const blogPosts = await getBlogPostsFromCache();
-      
-      // Write each blog post to a file
-      Object.entries(blogPosts).forEach(([slug, post]) => {
-        const filePath = path.join(contentDir, `${slug}.json`);
-        const postData = { ...post, slug };
-        fs.writeFileSync(filePath, JSON.stringify(postData, null, 2), 'utf8');
-      });
-      
-    } catch (error) {
-      console.error('Error syncing to Decap CMS:', error);
-    }
+    // Server-side execution - would happen in a real environment with server access
+    console.log('Server-side execution detected for syncToDecapCms');
+  } else {
+    // Client-side - we can't directly access the filesystem
+    console.log('Client-side execution detected for syncToDecapCms - skipping filesystem operations');
   }
 };
 

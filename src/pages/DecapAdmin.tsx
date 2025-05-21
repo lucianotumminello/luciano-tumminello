@@ -4,6 +4,14 @@ import { Helmet } from 'react-helmet-async';
 
 const DecapAdmin = () => {
   useEffect(() => {
+    // Check if Netlify Identity is available
+    if (window.netlifyIdentity) {
+      // Init Netlify Identity
+      window.netlifyIdentity.init({
+        APIUrl: 'https://lovable.app/.netlify/identity'
+      });
+    }
+    
     // Redirect to the admin page
     window.location.href = '/admin/';
   }, []);
@@ -12,6 +20,7 @@ const DecapAdmin = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white">
       <Helmet>
         <title>Content Manager | Luciano Tumminello</title>
+        <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
       </Helmet>
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-4">Redirecting to Content Manager...</h1>
@@ -25,3 +34,10 @@ const DecapAdmin = () => {
 };
 
 export default DecapAdmin;
+
+// Add type definition for the netlify identity
+declare global {
+  interface Window {
+    netlifyIdentity: any;
+  }
+}
