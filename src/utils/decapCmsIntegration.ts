@@ -35,14 +35,19 @@ export const initIdentityWidget = (): void => {
             // You can add custom behavior here
           });
 
-          // Initialize the widget
+          // Initialize the widget with the correct API URL - using the site URL without the .netlify subdomain
           window.netlifyIdentity.init({
-            APIUrl: 'https://lovable-project.netlify.app/.netlify/identity'
+            APIUrl: window.location.origin + '/.netlify/identity'
           });
         }
       };
 
       document.head.appendChild(script);
+    } else {
+      // If widget is already loaded, just initialize it
+      window.netlifyIdentity.init({
+        APIUrl: window.location.origin + '/.netlify/identity'
+      });
     }
   }
 };

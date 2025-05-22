@@ -1,8 +1,10 @@
+
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Edit, Settings } from "lucide-react";
 import LanguageSelector from "./LanguageSelector";
 import TranslatedText from "./TranslatedText";
+import { Button } from "./ui/button";
 
 const navItems = [
   { path: "/about", translationKey: "navbar.about" },
@@ -49,19 +51,45 @@ const Header = () => {
               </Link>
             ))}
             
-            {/* Admin Link for authorized users */}
-            <Link
-              to="/admin"
-              className="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary"
-            >
-              Admin
-            </Link>
+            <div className="flex items-center space-x-2">
+              {/* Content Editor Link */}
+              <Link to="/blog-builder">
+                <Button variant="outline" size="sm" className="flex items-center gap-1">
+                  <Edit className="h-4 w-4" />
+                  <span className="hidden sm:inline">Content Editor</span>
+                </Button>
+              </Link>
+              
+              {/* CMS Admin Link */}
+              <Link to="/admin">
+                <Button variant="outline" size="sm" className="flex items-center gap-1">
+                  <Settings className="h-4 w-4" />
+                  <span className="hidden sm:inline">CMS</span>
+                </Button>
+              </Link>
+            </div>
             
             <LanguageSelector />
           </nav>
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center">
+            <div className="flex items-center space-x-2">
+              {/* Mobile Content Editor Link */}
+              <Link to="/blog-builder">
+                <Button variant="outline" size="sm" className="flex items-center gap-1 p-1.5">
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </Link>
+              
+              {/* Mobile CMS Admin Link */}
+              <Link to="/admin">
+                <Button variant="outline" size="sm" className="flex items-center gap-1 p-1.5">
+                  <Settings className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+            
             <LanguageSelector />
             <button
               onClick={toggleMenu}
@@ -94,15 +122,6 @@ const Header = () => {
                   <TranslatedText textKey={item.translationKey} />
                 </Link>
               ))}
-              
-              {/* Admin Link for mobile */}
-              <Link
-                to="/admin"
-                onClick={closeMenu}
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-primary"
-              >
-                Admin
-              </Link>
             </nav>
           </div>
         )}

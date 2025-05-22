@@ -38,3 +38,4 @@ collections:
       - { label: "Body", name: "content", widget: "markdown" }
       - { label: "Body (Italian)", name: "contentIT", widget: "markdown" }
       - { label: "Published", name: "published", widget: "boolean", default: true }
+

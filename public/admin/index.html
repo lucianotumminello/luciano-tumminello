@@ -15,6 +15,11 @@
       // Initialize authentication when the CMS is ready
       window.addEventListener('DOMContentLoaded', (event) => {
         if (window.netlifyIdentity) {
+          // Use the correct API URL for identity
+          window.netlifyIdentity.init({
+            APIUrl: window.location.origin + '/.netlify/identity'
+          });
+          
           window.netlifyIdentity.on("init", user => {
             if (!user) {
               window.netlifyIdentity.on("login", () => {
