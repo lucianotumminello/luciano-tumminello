@@ -5,7 +5,7 @@ import { saveBlogPostsToStorage, updatedBlogPosts } from "./blog/blogPostsStore"
 
 // Initialize Netlify Identity for authentication when in non-admin routes
 export const initializeNetlifyIdentity = (): void => {
-  if (window.location.pathname !== '/admin/' && typeof document !== 'undefined') {
+  if (typeof document !== 'undefined') {
     // Load the Netlify Identity Widget script
     const script = document.createElement('script');
     script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
@@ -15,9 +15,12 @@ export const initializeNetlifyIdentity = (): void => {
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on('init', (user) => {
           if (!user) {
-            window.netlifyIdentity.on('login', () => {
-              document.location.href = '/admin/';
-            });
+            // Only redirect to /admin/ after login if not on the admin page already
+            if (window.location.pathname !== '/admin/' && window.location.pathname !== '/admin') {
+              window.netlifyIdentity.on('login', () => {
+                document.location.href = '/admin/';
+              });
+            }
           }
         });
       }

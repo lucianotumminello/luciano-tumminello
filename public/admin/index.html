@@ -25,6 +25,19 @@
         text-align: center;
         margin-top: 4rem;
       }
+      .retry-button {
+        background-color: #3182ce;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        border: none;
+        font-size: 0.875rem;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+      .retry-button:hover {
+        background-color: #2c5282;
+      }
     </style>
   </head>
   <body>
@@ -36,6 +49,7 @@
     <script>
       // Global error handling
       window.addEventListener('error', function(event) {
+        console.error('CMS Error:', event);
         const rootEl = document.getElementById('nc-root');
         if (rootEl) {
           rootEl.innerHTML = `
@@ -43,8 +57,8 @@
               <h3>CMS Error</h3>
               <p>There was a problem loading the CMS. Please check your configuration and try again.</p>
               <p>Error details: ${event.message}</p>
-              <button onclick="window.location.reload()">Try Again</button>
-              <button onclick="window.location.href = '/'">Return to Site</button>
+              <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+              <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
             </div>
           `;
         }
@@ -54,11 +68,29 @@
       const loadIdentity = () => {
         const script = document.createElement('script');
         script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+        script.async = true;
+        script.onerror = () => {
+          console.error('Failed to load Netlify Identity widget');
+          const rootEl = document.getElementById('nc-root');
+          if (rootEl) {
+            rootEl.innerHTML = `
+              <div class="error-message">
+                <h3>Authentication Error</h3>
+                <p>Failed to load authentication system. Please check your internet connection.</p>
+                <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+              </div>
+            `;
+          }
+        };
+        
         script.onload = () => {
+          console.log('Netlify Identity loaded');
           if (window.netlifyIdentity) {
             window.netlifyIdentity.on('init', user => {
+              console.log('Netlify Identity initialized', user ? 'with user' : 'without user');
               if (!user) {
                 window.netlifyIdentity.on('login', () => {
+                  console.log('User logged in, reloading admin');
                   document.location.href = '/admin/';
                 });
               }
@@ -72,12 +104,32 @@
       const loadCMS = () => {
         const script = document.createElement('script');
         script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+        script.async = true;
+        script.onerror = () => {
+          console.error('Failed to load Decap CMS');
+          const rootEl = document.getElementById('nc-root');
+          if (rootEl) {
+            rootEl.innerHTML = `
+              <div class="error-message">
+                <h3>CMS Loading Error</h3>
+                <p>Failed to load the content management system. Please try again later.</p>
+                <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+              </div>
+            `;
+          }
+        };
         document.body.appendChild(script);
       };
       
       // Initialize everything
+      console.log('Starting CMS initialization');
       loadIdentity();
-      loadCMS();
+      
+      // Give Identity a moment to load before loading CMS
+      setTimeout(() => {
+        console.log('Loading CMS');
+        loadCMS();
+      }, 500);
     </script>
   </body>
 </html>
