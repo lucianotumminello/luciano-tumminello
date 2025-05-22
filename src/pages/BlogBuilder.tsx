@@ -9,12 +9,8 @@ import { BlogBuilderHeader } from "@/components/blog-builder/BlogBuilderHeader";
 import { EditingNotice } from "@/components/blog-builder/EditingNotice";
 import { BlogForm } from "@/components/blog-builder/BlogForm";
 import { BlogPreview } from "@/components/blog-builder/BlogPreview";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 
 const BlogBuilder = () => {
-  const { toast } = useToast();
   const {
     isAuthenticated,
     setIsAuthenticated,
@@ -78,24 +74,11 @@ const BlogBuilder = () => {
             onDuplicatePost={duplicatePost}
           />
           
-          <div className="flex justify-between items-center mb-6">
-            <EditingNotice 
-              isUpdateMode={isUpdateMode}
-              selectedPost={selectedPost}
-              blogPosts={blogPosts}
-            />
-            
-            <Link to="/admin">
-              <Button variant="outline" className="flex items-center gap-2">
-                <span>Use New CMS</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-              </Button>
-            </Link>
-          </div>
+          <EditingNotice 
+            isUpdateMode={isUpdateMode}
+            selectedPost={selectedPost}
+            blogPosts={blogPosts}
+          />
           
           <BlogForm 
             initialData={formValues}

@@ -20,18 +20,9 @@ const TranslatedText: React.FC<TranslatedTextProps> = ({
   const { t } = useLanguage();
   const translatedText = t(textKey);
   
-  // Process text to handle apostrophes correctly
-  const processText = (text: string): string => {
-    if (!text) return "";
-    return text
-      .replace(/(\w)'(\w)/g, "$1'$2") // Replace straight apostrophes between words
-      .replace(/L'([A-Za-z])/g, "L'$1"); // Fix L'articolo type constructs
-  };
-  
   // If the translation is the same as the key (meaning no translation found)
   // and a fallback is provided, use the fallback
-  const rawDisplayText = (translatedText === textKey && fallback) ? fallback : translatedText;
-  const displayText = processText(rawDisplayText);
+  const displayText = (translatedText === textKey && fallback) ? fallback : translatedText;
   
   // Check for Italian language based on the key prefix or specific blog post
   const { language } = useLanguage();

@@ -37,16 +37,6 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
     `blog-content-${Math.random().toString(36).substring(7)}`;
   
   React.useEffect(() => {
-    // Fix for properly handling apostrophes in Italian content
-    const processContent = (rawContent: string): string => {
-      if (!rawContent) return "";
-      
-      // Replace problematic apostrophes with proper ones
-      return rawContent
-        .replace(/(\w)'(\w)/g, "$1'$2") // Replace straight apostrophes between words
-        .replace(/L'([A-Za-z])/g, "L'$1"); // Fix L'articolo type constructs
-    };
-    
     // For the target blog post, always use the full translation from translateText
     if (isHumanTechEquationPost && isItalian && content) {
       const translate = async () => {
@@ -54,16 +44,16 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
           console.log("Loading full Italian translation for Human + Tech Equation blog post");
           const result = await translateText(content, 'en', 'it');
           console.log("Translation completed, length:", result.length);
-          setTranslatedContent(processContent(result));
+          setTranslatedContent(result);
         } catch (error) {
           console.error("Translation error:", error);
-          setTranslatedContent(processContent(content)); // Fallback to original content
+          setTranslatedContent(content); // Fallback to original content
         }
       };
       
       translate();
     } else {
-      setTranslatedContent(processContent(content));
+      setTranslatedContent(content);
     }
   }, [content, isItalian, isHumanTechEquationPost]);
   
@@ -123,3 +113,4 @@ const BlogPostContent: React.FC<BlogPostContentProps> = ({ content }) => {
 };
 
 export default BlogPostContent;
+

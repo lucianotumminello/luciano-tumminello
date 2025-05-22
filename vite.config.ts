@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => ({
       // Optimize React build
       tsDecorators: true,
       jsxImportSource: "react",
+      // Remove styled-components plugin that's causing the error
     }),
     mode === 'development' &&
     componentTagger(),

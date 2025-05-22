@@ -25,7 +25,7 @@ interface LanguageProviderProps {
   children: ReactNode;
 }
 
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   const [language, setLanguage] = useState<Language>("en");
   const [isInitialized, setIsInitialized] = useState(false);
   
@@ -34,7 +34,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     // First, check if there's a stored language preference
     const storedLanguage = localStorage.getItem("preferredLanguage");
     if (storedLanguage === "en" || storedLanguage === "it") {
-      setLanguage(storedLanguage as Language);
+      setLanguage(storedLanguage);
       setIsInitialized(true);
       return;
     }

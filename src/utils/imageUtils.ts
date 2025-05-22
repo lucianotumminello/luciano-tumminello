@@ -69,6 +69,15 @@ export const optimizeImagesInContent = (content: string, isMobile: boolean): str
     return match;
   });
   
+  // Convert large images to WebP format when possible
+  processedContent = processedContent.replace(/<img\s+([^>]*)src="([^"]+)"([^>]*)>/g, (match, before, imgSrc, after) => {
+    if (imgSrc.match(/\.(jpe?g|png)$/) && !imgSrc.includes('?format=webp')) {
+      const newSrc = `${imgSrc}?format=webp`;
+      return `<img ${before}src="${newSrc}"${after}>`;
+    }
+    return match;
+  });
+  
   return processedContent;
 };
 
