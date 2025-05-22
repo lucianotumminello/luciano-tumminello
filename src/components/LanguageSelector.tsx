@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const LanguageSelector = () => {
-  const { language, changeLanguage } = useLanguage();
+  const { language, setLanguage } = useLanguage();
 
   const handleLanguageChange = (newLanguage: "en" | "it") => {
-    changeLanguage(newLanguage);
+    setLanguage(newLanguage);
     console.log(`Changed language to: ${newLanguage}`);
   };
 

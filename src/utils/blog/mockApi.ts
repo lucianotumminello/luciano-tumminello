@@ -1,6 +1,7 @@
 
 // This file mocks a server API for blog posts
-import { BlogPost, BlogPostsStore } from "@/types";
+import { BlogPost } from "@/types";
+import { BlogPostsStore } from "./types";
 import initialBlogPosts from "./initialBlogPosts";
 
 // Local storage key
@@ -59,4 +60,14 @@ export const syncWithDecapCMS = async (): Promise<void> => {
   // This function would sync data between our mock API and Decap CMS
   // In a real implementation, this would pull from your git-based content
   console.log("Syncing with Decap CMS...");
+};
+
+// Adding mockApiReset for tests
+export const mockApiReset = (): void => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(initialBlogPosts));
+    console.log("Blog posts reset to initial state");
+  } catch (error) {
+    console.error("Error resetting blog posts:", error);
+  }
 };

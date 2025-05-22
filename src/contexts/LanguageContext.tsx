@@ -1,14 +1,12 @@
 
 import React, { createContext, useContext, useState } from 'react';
-import translations from '@/translations';
+import { translations, Language, TranslationKey } from '@/translations';
 
-type Language = 'en' | 'it';
-
-interface LanguageContextType {
+type LanguageContextType = {
   language: Language;
   setLanguage: (language: Language) => void;
   t: (key: string) => string;
-}
+};
 
 const defaultContextValue: LanguageContextType = {
   language: 'en',
