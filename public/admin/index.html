@@ -15,9 +15,10 @@
       // Initialize authentication when the CMS is ready
       window.addEventListener('DOMContentLoaded', (event) => {
         if (window.netlifyIdentity) {
-          // Use the correct API URL for identity
+          // Use the correct API URL for identity - without .netlify subdomain
+          // This is crucial for local development and deployment
           window.netlifyIdentity.init({
-            APIUrl: window.location.origin + '/.netlify/identity'
+            APIUrl: 'https://api.netlify.com'
           });
           
           window.netlifyIdentity.on("init", user => {
@@ -27,6 +28,8 @@
               });
             }
           });
+        } else {
+          console.error('Netlify Identity widget not loaded');
         }
       });
     </script>

@@ -1,21 +1,38 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { initIdentityWidget } from '../utils/decapCmsIntegration';
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
 
 const DecapAdmin = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Initialize the Identity widget for auth
-    initIdentityWidget();
+    // Try to initialize the Identity widget for auth with error handling
+    try {
+      initIdentityWidget();
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to initialize Netlify Identity widget:', err);
+      setError('Failed to load authentication system. Please try again later.');
+      setLoading(false);
+    }
   }, []);
 
   const handleOpenLogin = () => {
     if (window.netlifyIdentity) {
       window.netlifyIdentity.open();
     } else {
-      console.error('Netlify Identity widget not loaded');
+      setError('Authentication system not available. Please refresh the page and try again.');
     }
   };
 
@@ -40,10 +57,26 @@ const DecapAdmin = () => {
           <Button
             onClick={handleOpenLogin}
             className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded"
+            disabled={loading}
           >
-            Sign In
+            {loading ? 'Loading...' : 'Sign In'}
           </Button>
         </div>
+
+        {/* Error Dialog */}
+        <Dialog open={!!error} onOpenChange={() => setError(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Authentication Error</DialogTitle>
+              <DialogDescription>
+                {error}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex justify-end">
+              <Button onClick={() => setError(null)}>Close</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

@@ -35,9 +35,9 @@ export const initIdentityWidget = (): void => {
             // You can add custom behavior here
           });
 
-          // Initialize the widget with the correct API URL - using the site URL without the .netlify subdomain
+          // Initialize the widget with the correct API URL
           window.netlifyIdentity.init({
-            APIUrl: window.location.origin + '/.netlify/identity'
+            APIUrl: 'https://api.netlify.com'
           });
         }
       };
@@ -46,7 +46,7 @@ export const initIdentityWidget = (): void => {
     } else {
       // If widget is already loaded, just initialize it
       window.netlifyIdentity.init({
-        APIUrl: window.location.origin + '/.netlify/identity'
+        APIUrl: 'https://api.netlify.com'
       });
     }
   }
