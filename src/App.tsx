@@ -102,17 +102,15 @@ const AppContent = () => {
 // Main App component with correctly nested providers
 const App = () => {
   return (
-    <React.StrictMode>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <LanguageProvider>
-              <AppContent />
-            </LanguageProvider>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </HelmetProvider>
-    </React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <HelmetProvider>
+          <LanguageProvider>
+            <AppContent />
+          </LanguageProvider>
+        </HelmetProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 };
 
