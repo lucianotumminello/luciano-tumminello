@@ -1,59 +1,62 @@
 
-import { BlogPostsStore } from "./types";
+// This file mocks a server API for blog posts
+import { BlogPost, BlogPostsStore } from "@/types";
 import initialBlogPosts from "./initialBlogPosts";
 
-// This file simulates a server API for development and testing
-// It uses localStorage to persist data between sessions
-// In production, this would be replaced with real API calls to your backend
+// Local storage key
+const STORAGE_KEY = "blog_posts_server_storage";
 
-const MOCK_API_STORAGE_KEY = "blog_posts_server_storage";
-
-// Initialize the mock server with initial data
-export const initializeMockServer = () => {
-  try {
-    const existingData = localStorage.getItem(MOCK_API_STORAGE_KEY);
-    if (!existingData) {
-      localStorage.setItem(MOCK_API_STORAGE_KEY, JSON.stringify(initialBlogPosts));
-      console.log("Mock API server initialized with initial blog posts");
-    }
-  } catch (error) {
-    console.error("Error initializing mock API server:", error);
-  }
-};
-
-// Get all posts from the mock server
+// Get blog posts from local storage or use initial posts
 export const mockApiGetAllPosts = (): BlogPostsStore => {
   try {
-    const data = localStorage.getItem(MOCK_API_STORAGE_KEY);
-    if (data) {
-      return JSON.parse(data);
+    const storedData = localStorage.getItem(STORAGE_KEY);
+    if (storedData) {
+      return JSON.parse(storedData);
     }
+    // No stored data found, return initial posts and save them
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(initialBlogPosts));
     return { ...initialBlogPosts };
   } catch (error) {
-    console.error("Error getting posts from mock API server:", error);
+    console.error("Error loading blog posts from mock API:", error);
     return { ...initialBlogPosts };
   }
 };
 
-// Save posts to the mock server
+// Save blog posts to local storage
 export const mockApiSavePosts = (posts: BlogPostsStore): void => {
   try {
-    localStorage.setItem(MOCK_API_STORAGE_KEY, JSON.stringify(posts));
-    console.log("Posts saved to mock API server");
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    console.log("Blog posts saved to mock API");
   } catch (error) {
-    console.error("Error saving posts to mock API server:", error);
+    console.error("Error saving blog posts to mock API:", error);
   }
 };
 
-// Reset the mock server to initial data
-export const mockApiReset = (): void => {
+// Update or create a blog post in local storage
+export const mockApiUpdatePost = (slug: string, post: BlogPost): void => {
   try {
-    localStorage.setItem(MOCK_API_STORAGE_KEY, JSON.stringify(initialBlogPosts));
-    console.log("Mock API server reset to initial data");
+    const posts = mockApiGetAllPosts();
+    posts[slug] = post;
+    mockApiSavePosts(posts);
   } catch (error) {
-    console.error("Error resetting mock API server:", error);
+    console.error(`Error updating blog post ${slug} in mock API:`, error);
   }
 };
 
-// Initialize the mock server when this module is imported
-initializeMockServer();
+// Delete a blog post from local storage
+export const mockApiDeletePost = (slug: string): void => {
+  try {
+    const posts = mockApiGetAllPosts();
+    delete posts[slug];
+    mockApiSavePosts(posts);
+  } catch (error) {
+    console.error(`Error deleting blog post ${slug} from mock API:`, error);
+  }
+};
+
+// Method to integrate with Decap CMS
+export const syncWithDecapCMS = async (): Promise<void> => {
+  // This function would sync data between our mock API and Decap CMS
+  // In a real implementation, this would pull from your git-based content
+  console.log("Syncing with Decap CMS...");
+};
