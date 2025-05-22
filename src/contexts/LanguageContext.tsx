@@ -34,7 +34,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     // First, check if there's a stored language preference
     const storedLanguage = localStorage.getItem("preferredLanguage");
     if (storedLanguage === "en" || storedLanguage === "it") {
-      setLanguage(storedLanguage);
+      setLanguage(storedLanguage as Language);
       setIsInitialized(true);
       return;
     }
