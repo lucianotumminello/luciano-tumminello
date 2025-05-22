@@ -46,8 +46,28 @@ const Header = () => {
           <NavLink to="/contact" textKey="nav.contact" />
         </nav>
         
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           <LanguageSelector />
+          
+          {/* Admin buttons */}
+          <div className="hidden md:flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-xs" 
+              asChild
+            >
+              <Link to="/blog-builder">Content Editor</Link>
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-xs" 
+              asChild
+            >
+              <Link to="/admin">CMS</Link>
+            </Button>
+          </div>
           
           {/* Mobile Menu Button */}
           <button
@@ -137,6 +157,28 @@ const Header = () => {
             >
               {t("nav.contact")}
             </Link>
+            
+            {/* Mobile admin links */}
+            <div className="flex space-x-2 px-3 py-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs flex-1" 
+                asChild
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Link to="/blog-builder">Content Editor</Link>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs flex-1" 
+                asChild
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Link to="/admin">CMS</Link>
+              </Button>
+            </div>
             
             <div className="px-3 py-2 flex items-center">
               <LanguageSelector />

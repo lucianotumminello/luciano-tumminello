@@ -35,3 +35,18 @@ export type { BlogPostsStore } from './types';
 
 // Force-import the utility to make the blog post permanent
 import './makeBeyondRecognitionPermanent';
+
+// Import CMS integration
+import { syncDecapCmsEntries } from '../decapCmsIntegration';
+
+// Perform initial sync with CMS (will be expanded in a full implementation)
+if (typeof window !== 'undefined') {
+  // Wait for the page to load before syncing
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      syncDecapCmsEntries().catch(error => {
+        console.error('Error syncing with Decap CMS on initial load:', error);
+      });
+    }, 2000);
+  });
+}

@@ -10,6 +10,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
 import { refreshBlogPosts } from "./utils/blog";
+import { initializeNetlifyIdentity } from "./utils/decapCmsIntegration";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -25,6 +26,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const BlogBuilder = lazy(() => import("./pages/BlogBuilder"));
+const DecapAdmin = lazy(() => import("./pages/DecapAdmin"));
 
 // Create queryClient with better caching strategy
 const queryClient = new QueryClient({
@@ -58,6 +60,11 @@ const RouteChangeTracker = () => {
   return null;
 };
 
+// Initialize Netlify Identity on app start
+if (typeof window !== 'undefined') {
+  initializeNetlifyIdentity();
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -79,6 +86,7 @@ const App = () => (
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/blog-builder" element={<BlogBuilder />} />
+                <Route path="/admin" element={<DecapAdmin />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
