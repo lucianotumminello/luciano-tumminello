@@ -24,7 +24,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
-const DecapAdmin = lazy(() => import("./components/DecapAdmin"));
+const BlogBuilder = lazy(() => import("./pages/BlogBuilder"));
 
 // Create queryClient with better caching strategy
 const queryClient = new QueryClient({
@@ -60,10 +60,12 @@ const RouteChangeTracker = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <HelmetProvider>
-        <BrowserRouter>
-          <TooltipProvider>
+    <TooltipProvider>
+      <LanguageProvider>
+        <HelmetProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
             <RouteChangeTracker />
             <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
               <Routes>
@@ -76,18 +78,16 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
-                <Route path="/admin" element={<DecapAdmin />} />
+                <Route path="/blog-builder" element={<BlogBuilder />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
-            <Toaster />
-            <Sonner />
             <CookieConsent />
-          </TooltipProvider>
-        </BrowserRouter>
-      </HelmetProvider>
-    </LanguageProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </LanguageProvider>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
