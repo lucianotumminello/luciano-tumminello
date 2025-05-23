@@ -13,8 +13,9 @@ const DecapAdmin = () => {
     try {
       // Direct redirection approach
       const handleRedirect = () => {
+        console.log('Executing CMS redirect with timestamp:', Date.now());
         // Force a full page load to the admin path with cache-busting parameter
-        window.location.href = `/admin/index.html?t=${Date.now()}`;
+        window.location.href = `/admin/#/?t=${Date.now()}`;
       };
       
       // Start redirection after a short delay
@@ -34,6 +35,7 @@ const DecapAdmin = () => {
   const retryRedirect = () => {
     setError(null);
     setRedirectAttempts(prev => prev + 1);
+    toast('Retrying CMS redirect...', { duration: 3000 });
   };
 
   return (
