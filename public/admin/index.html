@@ -5,7 +5,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Management System</title>
+    <script>
+      // Force disable service workers for admin path to prevent caching issues
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (let registration of registrations) {
+            registration.unregister();
+            console.log('[CMS] Unregistered service worker');
+          }
+        });
+      }
+      
+      // Clear cache for CMS resources
+      if ('caches' in window) {
+        caches.keys().then(function(cacheNames) {
+          cacheNames.forEach(function(cacheName) {
+            caches.delete(cacheName);
+            console.log('[CMS] Cleared cache:', cacheName);
+          });
+        });
+      }
+    </script>
+    <!-- Make sure config is loaded with the correct MIME type -->
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+    <!-- Load config validator first -->
+    <script src="/admin/config-loader.js"></script>
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -36,6 +60,7 @@
         font-size: 0.875rem;
         cursor: pointer;
         margin-top: 1rem;
+        margin-right: 0.5rem;
       }
       .retry-button:hover {
         background-color: #2c5282;
@@ -51,6 +76,7 @@
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
+        display: none;
       }
       .loader {
         border: 4px solid #f3f3f3;
@@ -65,6 +91,15 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
+      #cms-load-timeout {
+        display: none;
+        margin-top: 2rem;
+        padding: 1rem;
+        background-color: #fffaf0;
+        border: 1px solid #feebc8;
+        border-radius: 0.25rem;
+        text-align: left;
+      }
     </style>
   </head>
   <body>
@@ -73,6 +108,13 @@
         <div class="loader"></div>
         <p>Loading CMS...</p>
       </div>
+    </div>
+    <div id="cms-load-timeout">
+      <h3>CMS is taking longer than expected</h3>
+      <p>Try one of these options:</p>
+      <button onclick="forceReload()" class="retry-button">Force Reload</button>
+      <button onclick="tryBackupCMS()" class="retry-button">Try Backup CMS</button>
+      <button onclick="window.location.href = '/'" class="retry-button">Return to Site</button>
     </div>
     <div id="debug-info" class="debug-info"></div>
     <script>
@@ -100,6 +142,33 @@
         document.getElementById('debug-info').style.display = 'block';
       }
       
+      // Show backup options if loading takes too long
+      setTimeout(() => {
+        const cms = window.CMS;
+        if (!cms) {
+          document.getElementById('cms-load-timeout').style.display = 'block';
+        }
+      }, 15000);
+      
+      // Force reload function for backup option
+      function forceReload() {
+        logDebug('Force reloading page and clearing cache');
+        if ('caches' in window) {
+          caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => caches.delete(cacheName));
+            window.location.href = `/admin/index.html?forcereload=true&t=${Date.now()}`;
+          });
+        } else {
+          window.location.href = `/admin/index.html?forcereload=true&t=${Date.now()}`;
+        }
+      }
+      
+      // Try backup CMS function
+      function tryBackupCMS() {
+        logDebug('Loading backup CMS version');
+        loadBackupCMS();
+      }
+      
       // Global error handling
       window.addEventListener('error', function(event) {
         logDebug(`Error: ${event.message}`);
@@ -110,7 +179,8 @@
               <h3>CMS Error</h3>
               <p>There was a problem loading the CMS. Please check your configuration and try again.</p>
               <p>Error details: ${event.message}</p>
-              <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+              <button class="retry-button" onclick="forceReload()">Try Again</button>
+              <button class="retry-button" onclick="tryBackupCMS()">Try Backup CMS</button>
               <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
               <button class="retry-button" onclick="toggleDebug()">Show Debug Info</button>
             </div>
@@ -151,7 +221,7 @@
                 <div class="error-message">
                   <h3>Authentication Error</h3>
                   <p>Failed to load authentication system. Please check your internet connection.</p>
-                  <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+                  <button class="retry-button" onclick="forceReload()">Try Again</button>
                   <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
                 </div>
               `;
@@ -195,12 +265,13 @@
             return;
           }
           
+          // Make sure we're using the correct script URL and version
           const script = document.createElement('script');
           script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
           script.async = true;
           
           script.onerror = () => {
-            logDebug(`Failed to load Decap CMS on attempt ${retryCount + 1}`);
+            logDebug(`Failed to load Decap CMS on attempt ${retryCount + 1}, retrying...`);
             
             setTimeout(() => {
               initCMS(retryCount + 1).then(resolve).catch(reject);
@@ -209,11 +280,54 @@
           
           script.onload = () => {
             logDebug('Decap CMS script loaded successfully');
-            resolve(true);
+            
+            // Additional check to see if CMS was properly initialized
+            setTimeout(() => {
+              if (window.CMS) {
+                logDebug('CMS object successfully initialized');
+                resolve(true);
+              } else {
+                logDebug('CMS object not found after script load, trying again...');
+                if (retryCount < 3) {
+                  initCMS(retryCount + 1).then(resolve).catch(reject);
+                } else {
+                  reject(new Error('CMS failed to initialize after multiple attempts'));
+                }
+              }
+            }, 1000);
           };
           
           document.body.appendChild(script);
         });
+      };
+      
+      // Load backup script if standard loading fails
+      const loadBackupCMS = () => {
+        logDebug('Attempting to load CMS from backup CDN');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js';
+        script.async = true;
+        
+        script.onload = () => {
+          logDebug('Backup CMS script loaded');
+        };
+        
+        script.onerror = () => {
+          logDebug('Even backup CMS failed to load');
+          const rootEl = document.getElementById('nc-root');
+          if (rootEl) {
+            rootEl.innerHTML = `
+              <div class="error-message">
+                <h3>Critical CMS Error</h3>
+                <p>Unable to load the CMS from multiple sources. Please check your network connection and try again.</p>
+                <button class="retry-button" onclick="forceReload()">Try Again</button>
+                <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
+              </div>
+            `;
+          }
+        };
+        
+        document.body.appendChild(script);
       };
       
       // Main initialization function with error handling
@@ -229,14 +343,20 @@
           
           logDebug('CMS initialization complete');
         } catch (err) {
-          logDebug(`CMS initialization failed: ${err.message}`);
+          logDebug(`CMS initialization failed: ${err.message}. Trying backup method...`);
+          
+          // Try backup loading method
+          loadBackupCMS();
+          
           const rootEl = document.getElementById('nc-root');
           if (rootEl) {
             rootEl.innerHTML = `
               <div class="error-message">
                 <h3>CMS Loading Error</h3>
-                <p>Failed to load the content management system. Error: ${err.message}</p>
-                <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+                <p>Failed to load the content management system. Attempting backup method...</p>
+                <p>Error details: ${err.message}</p>
+                <button class="retry-button" onclick="forceReload()">Try Again</button>
+                <button class="retry-button" onclick="tryBackupCMS()">Try Backup CMS</button>
                 <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
                 <button class="retry-button" onclick="toggleDebug()">Show Debug Info</button>
               </div>

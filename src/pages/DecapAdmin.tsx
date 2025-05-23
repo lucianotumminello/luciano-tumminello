@@ -54,13 +54,42 @@ const DecapAdmin = () => {
         document.head.appendChild(script);
       };
 
+      // Clear cache to avoid stale resources
+      const clearCache = () => {
+        addDebugLog('Clearing cache for CMS resources');
+        
+        // Clear service workers
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for (let registration of registrations) {
+              registration.unregister();
+              addDebugLog('Unregistered service worker');
+            }
+          });
+        }
+        
+        // Clear cache storage
+        if ('caches' in window) {
+          caches.keys().then(function(cacheNames) {
+            cacheNames.forEach(function(cacheName) {
+              caches.delete(cacheName);
+              addDebugLog(`Cleared cache: ${cacheName}`);
+            });
+          });
+        }
+      };
+
       // Direct navigation to admin page
       const proceedToCMS = () => {
         addDebugLog('Proceeding to CMS');
+        
+        // Clear cache before navigation
+        clearCache();
+        
         const directNavigation = () => {
           addDebugLog(`Navigating directly to admin at: ${new Date().toISOString()}`);
           // Force bypass cache with timestamp
-          const adminUrl = `/admin/index.html?t=${Date.now()}`;
+          const adminUrl = `/admin/index.html?t=${Date.now()}&source=react-app`;
           // Use standard navigation rather than React router
           window.location.href = adminUrl;
         };
@@ -117,12 +146,19 @@ const DecapAdmin = () => {
   
   const directAccess = () => {
     addDebugLog('Attempting direct access to /admin/index.html');
-    window.location.href = `/admin/index.html?direct=true&t=${Date.now()}`;
+    // Force cache bust with timestamp
+    window.location.href = `/admin/index.html?direct=true&nocache=${Date.now()}`;
   };
 
   const alternativeAccess = () => {
     addDebugLog('Attempting alternative access to admin/');
-    window.location.href = `/admin/?t=${Date.now()}`;
+    window.location.href = `/admin/?alternative=true&nocache=${Date.now()}`;
+  };
+  
+  const forceCDNAccess = () => {
+    addDebugLog('Attempting to load CMS directly from CDN');
+    const url = 'https://unpkg.com/decap-cms@^3.0.0/dist/index.html';
+    window.open(url, '_blank');
   };
 
   return (
@@ -223,6 +259,7 @@ const DecapAdmin = () => {
                 <li>Check if your browser is blocking any scripts or cookies</li>
                 <li>Try the direct access and alternative access options below</li>
                 <li>Ensure that the Git Gateway is properly configured if you're using Netlify</li>
+                <li>If none of these work, try accessing the CMS directly from the CDN</li>
               </ol>
               <div className="pt-4 flex flex-wrap gap-2">
                 <Button
@@ -235,6 +272,12 @@ const DecapAdmin = () => {
                   variant="outline"
                 >
                   Alternative Access
+                </Button>
+                <Button
+                  onClick={forceCDNAccess}
+                  variant="outline"
+                >
+                  Load From CDN
                 </Button>
                 <Button
                   onClick={() => navigate('/')}

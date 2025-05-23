@@ -56,6 +56,42 @@ export const initializeNetlifyIdentity = (): void => {
   }
 };
 
+// This function will initialize Decap CMS manually (used in admin/index.html)
+export const initializeDecapCMS = (): void => {
+  if (typeof window === 'undefined') return;
+  
+  console.log('Manually initializing Decap CMS');
+  
+  // Check if CMS is already loaded
+  if (window.CMS) {
+    console.log('CMS already available in window object');
+    return;
+  }
+  
+  // Load Decap CMS script
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+  script.async = true;
+  
+  script.onload = () => {
+    console.log('Decap CMS script loaded successfully');
+    // Give it a moment to initialize
+    setTimeout(() => {
+      if (window.CMS) {
+        console.log('CMS object available after script load');
+      } else {
+        console.error('CMS object not found after script load');
+      }
+    }, 1000);
+  };
+  
+  script.onerror = () => {
+    console.error('Failed to load Decap CMS script');
+  };
+  
+  document.body.appendChild(script);
+};
+
 // Sync Decap CMS entries with our blog post store
 export const syncDecapCmsEntries = async (): Promise<void> => {
   try {
@@ -75,5 +111,6 @@ declare global {
       on: (event: string, callback: (user?: any) => void) => void;
       open: (command?: string) => void;
     };
+    CMS?: any; // Decap CMS global object
   }
 }
