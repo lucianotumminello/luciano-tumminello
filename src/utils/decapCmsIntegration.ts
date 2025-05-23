@@ -6,11 +6,22 @@ import { saveBlogPostsToStorage, updatedBlogPosts } from "./blog/blogPostsStore"
 // Initialize Netlify Identity for authentication when in non-admin routes
 export const initializeNetlifyIdentity = (): void => {
   if (typeof document !== 'undefined') {
+    // Check if we're on the admin page
+    const isAdminPage = window.location.pathname.includes('/admin');
+    
+    // Don't load Netlify Identity if we're already on the admin page
+    if (isAdminPage) {
+      console.log('Already on admin page, skipping Netlify Identity initialization');
+      return;
+    }
+    
     // Check if the script is already loaded
     if (document.getElementById('netlify-identity-widget')) {
       console.log('Netlify Identity widget already loaded');
       return;
     }
+    
+    console.log('Loading Netlify Identity widget from non-admin page');
     
     // Load the Netlify Identity Widget script
     const script = document.createElement('script');
@@ -24,13 +35,13 @@ export const initializeNetlifyIdentity = (): void => {
         window.netlifyIdentity.on('init', (user) => {
           console.log('Netlify Identity initialized', user ? 'with user' : 'without user');
           
-          // Only redirect to admin after login if not on the admin page
-          const isAdminPage = window.location.pathname.includes('/admin');
-          
-          if (!user && !isAdminPage) {
+          if (!user) {
             window.netlifyIdentity.on('login', () => {
               console.log('User logged in, redirecting to admin');
-              document.location.href = '/admin/index.html';
+              // Use a timeout to ensure identity is fully processed
+              setTimeout(() => {
+                document.location.href = '/admin/index.html?loginRedirect=true';
+              }, 500);
             });
           }
         });

@@ -51,7 +51,6 @@
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
-        display: none;
       }
       .loader {
         border: 4px solid #f3f3f3;
@@ -77,19 +76,27 @@
     </div>
     <div id="debug-info" class="debug-info"></div>
     <script>
-      // Function to log to the debug panel
+      // Function to log to the debug panel and console
       function logDebug(message) {
-        console.log(message);
+        console.log('[CMS]', message);
         const debugEl = document.getElementById('debug-info');
         if (debugEl) {
+          debugEl.style.display = 'block';
           const logLine = document.createElement('div');
           logLine.innerText = `[${new Date().toLocaleTimeString()}] ${message}`;
           debugEl.appendChild(logLine);
         }
       }
       
-      // Show debug panel in development
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      // Show URL parameters for debugging
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramDebug = Array.from(urlParams).map(([key, value]) => `${key}: ${value}`).join(', ');
+      logDebug(`Page loaded with params: ${paramDebug || 'none'}`);
+      
+      // Show debug panel in development or when requested
+      if (window.location.hostname === 'localhost' || 
+          window.location.hostname === '127.0.0.1' || 
+          urlParams.has('debug')) {
         document.getElementById('debug-info').style.display = 'block';
       }
       
@@ -105,101 +112,149 @@
               <p>Error details: ${event.message}</p>
               <button class="retry-button" onclick="window.location.reload()">Try Again</button>
               <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
+              <button class="retry-button" onclick="toggleDebug()">Show Debug Info</button>
             </div>
           `;
         }
       });
       
+      function toggleDebug() {
+        const debugEl = document.getElementById('debug-info');
+        if (debugEl) {
+          debugEl.style.display = debugEl.style.display === 'block' ? 'none' : 'block';
+        }
+      }
+      
       // Initialize Netlify Identity for authentication
       const loadIdentity = () => {
         logDebug('Starting Netlify Identity loading');
-        // Check if already loaded
-        if (window.netlifyIdentity) {
-          logDebug('Netlify Identity already loaded');
-          initCMS();
-          return;
-        }
-        
-        const script = document.createElement('script');
-        script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-        script.async = true;
-        script.onerror = () => {
-          logDebug('Failed to load Netlify Identity widget');
-          const rootEl = document.getElementById('nc-root');
-          if (rootEl) {
-            rootEl.innerHTML = `
-              <div class="error-message">
-                <h3>Authentication Error</h3>
-                <p>Failed to load authentication system. Please check your internet connection.</p>
-                <button class="retry-button" onclick="window.location.reload()">Try Again</button>
-                <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
-              </div>
-            `;
-          }
-        };
-        
-        script.onload = () => {
-          logDebug('Netlify Identity loaded');
+        return new Promise((resolve, reject) => {
+          // Check if already loaded
           if (window.netlifyIdentity) {
-            window.netlifyIdentity.on('init', user => {
-              logDebug('Netlify Identity initialized' + (user ? ' with user' : ' without user'));
-              // Load CMS after identity is ready
-              initCMS();
-              
-              // Setup login event handling
-              if (!user) {
-                window.netlifyIdentity.on('login', () => {
-                  logDebug('User logged in, reloading admin');
-                  // Use a slight delay to ensure everything is ready
-                  setTimeout(() => {
-                    document.location.href = '/admin/';
-                  }, 300);
-                });
-              }
-            });
+            logDebug('Netlify Identity already loaded');
+            resolve(window.netlifyIdentity);
+            return;
           }
-        };
-        
-        document.head.appendChild(script);
+          
+          const script = document.createElement('script');
+          script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+          script.async = true;
+          
+          script.onerror = () => {
+            const error = 'Failed to load Netlify Identity widget';
+            logDebug(error);
+            reject(new Error(error));
+            
+            const rootEl = document.getElementById('nc-root');
+            if (rootEl) {
+              rootEl.innerHTML = `
+                <div class="error-message">
+                  <h3>Authentication Error</h3>
+                  <p>Failed to load authentication system. Please check your internet connection.</p>
+                  <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+                  <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
+                </div>
+              `;
+            }
+          };
+          
+          script.onload = () => {
+            logDebug('Netlify Identity loaded');
+            if (window.netlifyIdentity) {
+              window.netlifyIdentity.on('init', user => {
+                logDebug('Netlify Identity initialized' + (user ? ' with user' : ' without user'));
+                resolve(window.netlifyIdentity);
+                
+                // Setup login event handling
+                if (!user) {
+                  window.netlifyIdentity.on('login', () => {
+                    logDebug('User logged in, reloading admin');
+                    // Use a slight delay to ensure everything is ready
+                    setTimeout(() => {
+                      document.location.href = '/admin/?login=success';
+                    }, 300);
+                  });
+                }
+              });
+            } else {
+              reject(new Error('Netlify Identity not available after loading'));
+            }
+          };
+          
+          document.head.appendChild(script);
+        });
       };
       
-      // Load Decap CMS
-      const initCMS = () => {
-        logDebug('Initializing Decap CMS');
-        const script = document.createElement('script');
-        script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
-        script.async = true;
-        script.onerror = () => {
-          logDebug('Failed to load Decap CMS');
+      // Load Decap CMS with retry
+      const initCMS = (retryCount = 0) => {
+        logDebug(`Initializing Decap CMS (attempt: ${retryCount + 1})`);
+        
+        return new Promise((resolve, reject) => {
+          if (retryCount >= 3) {
+            reject(new Error('Failed to load Decap CMS after multiple attempts'));
+            return;
+          }
+          
+          const script = document.createElement('script');
+          script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+          script.async = true;
+          
+          script.onerror = () => {
+            logDebug(`Failed to load Decap CMS on attempt ${retryCount + 1}`);
+            
+            setTimeout(() => {
+              initCMS(retryCount + 1).then(resolve).catch(reject);
+            }, 1000);
+          };
+          
+          script.onload = () => {
+            logDebug('Decap CMS script loaded successfully');
+            resolve(true);
+          };
+          
+          document.body.appendChild(script);
+        });
+      };
+      
+      // Main initialization function with error handling
+      const initialize = async () => {
+        try {
+          logDebug('Starting CMS initialization');
+          
+          // Step 1: Initialize Netlify Identity
+          await loadIdentity();
+          
+          // Step 2: Initialize Decap CMS
+          await initCMS();
+          
+          logDebug('CMS initialization complete');
+        } catch (err) {
+          logDebug(`CMS initialization failed: ${err.message}`);
           const rootEl = document.getElementById('nc-root');
           if (rootEl) {
             rootEl.innerHTML = `
               <div class="error-message">
                 <h3>CMS Loading Error</h3>
-                <p>Failed to load the content management system. Please try again later.</p>
+                <p>Failed to load the content management system. Error: ${err.message}</p>
                 <button class="retry-button" onclick="window.location.reload()">Try Again</button>
                 <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
+                <button class="retry-button" onclick="toggleDebug()">Show Debug Info</button>
               </div>
             `;
           }
-        };
-        
-        document.body.appendChild(script);
+        }
       };
       
-      // Initialize everything
-      logDebug('Starting CMS initialization');
-      
-      // Wait for DOM to be fully loaded
+      // Start initialization when DOM is loaded
       document.addEventListener('DOMContentLoaded', () => {
         logDebug('DOM loaded, starting initialization');
-        loadIdentity();
+        initialize();
       });
       
       // Failsafe if DOMContentLoaded already fired
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
         logDebug('DOM already loaded, starting initialization immediately');
-        setTimeout(() => loadIdentity(), 100);
+        setTimeout(() => initialize(), 100);
       }
     </script>
   </body>

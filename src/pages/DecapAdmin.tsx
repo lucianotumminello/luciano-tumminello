@@ -5,47 +5,124 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const DecapAdmin = () => {
   const [error, setError] = useState<string | null>(null);
   const [redirectAttempts, setRedirectAttempts] = useState(0);
   const [showTroubleshooting, setShowTroubleshooting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showDebugInfo, setShowDebugInfo] = useState(false);
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
   const navigate = useNavigate();
+  
+  const addDebugLog = (message: string) => {
+    console.log(`[CMS Debug]: ${message}`);
+    setDebugLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${message}`]);
+  };
   
   useEffect(() => {
     try {
-      console.log('Starting CMS redirect process, attempt:', redirectAttempts + 1);
+      addDebugLog(`Starting CMS redirect process, attempt: ${redirectAttempts + 1}`);
+      setLoading(true);
       
-      // Direct navigation to admin page
-      const redirectToCMS = () => {
-        console.log('Executing CMS redirect at:', new Date().toISOString());
-        
-        // Try direct navigation to admin folder
-        window.location.href = `/admin/index.html?t=${Date.now()}`;
+      // Check if Netlify Identity script is loaded
+      const checkIdentityLoaded = () => {
+        if (window.netlifyIdentity) {
+          addDebugLog('Netlify Identity found in window object');
+          return true;
+        }
+        return false;
       };
       
-      // Start redirect after a short delay to allow console logs to be visible
-      const redirectTimer = setTimeout(() => {
-        redirectToCMS();
-      }, 800);
+      // Load Netlify Identity if not already loaded
+      const loadNetlifyIdentity = () => {
+        addDebugLog('Loading Netlify Identity script');
+        const script = document.createElement('script');
+        script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+        script.async = true;
+        script.onload = () => {
+          addDebugLog('Netlify Identity script loaded successfully');
+          proceedToCMS();
+        };
+        script.onerror = () => {
+          addDebugLog('Failed to load Netlify Identity script');
+          setError('Failed to load authentication. Please check your internet connection.');
+          setLoading(false);
+        };
+        document.head.appendChild(script);
+      };
+
+      // Direct navigation to admin page
+      const proceedToCMS = () => {
+        addDebugLog('Proceeding to CMS');
+        const directNavigation = () => {
+          addDebugLog(`Navigating directly to admin at: ${new Date().toISOString()}`);
+          // Force bypass cache with timestamp
+          const adminUrl = `/admin/index.html?t=${Date.now()}`;
+          // Use standard navigation rather than React router
+          window.location.href = adminUrl;
+        };
+        
+        // Check if admin page is accessible
+        fetch(`/admin/index.html?check=${Date.now()}`)
+          .then(response => {
+            if (response.ok) {
+              addDebugLog('Admin page accessible, proceeding with direct navigation');
+              directNavigation();
+            } else {
+              throw new Error(`Failed to access admin page: ${response.status}`);
+            }
+          })
+          .catch(err => {
+            addDebugLog(`Error checking admin page: ${err.message}`);
+            setError(`Failed to access CMS. Error: ${err.message}`);
+            setLoading(false);
+          });
+      };
       
-      return () => clearTimeout(redirectTimer);
-    } catch (err) {
-      console.error('Error during CMS redirection:', err);
-      setError('Failed to redirect to CMS. Please try again or contact support.');
-      toast.error('CMS redirect failed. Please try again.');
+      // Initialize the process
+      const initProcess = () => {
+        if (checkIdentityLoaded()) {
+          proceedToCMS();
+        } else {
+          loadNetlifyIdentity();
+        }
+      };
+      
+      // Start the process after a short delay
+      const timer = setTimeout(() => {
+        initProcess();
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    } catch (err: any) {
+      addDebugLog(`Critical error: ${err?.message || 'Unknown error'}`);
+      setError('An unexpected error occurred. Please try again or contact support.');
+      setLoading(false);
     }
   }, [redirectAttempts]);
 
   const retryRedirect = () => {
-    console.log('Retrying CMS redirect...');
+    addDebugLog('Manually retrying CMS redirect...');
     setError(null);
     setRedirectAttempts(prev => prev + 1);
     toast('Retrying CMS redirect...', { duration: 3000 });
   };
   
-  const openTroubleshootingDialog = () => {
+  const openTroubleshooting = () => {
     setShowTroubleshooting(true);
+  };
+  
+  const directAccess = () => {
+    addDebugLog('Attempting direct access to /admin/index.html');
+    window.location.href = `/admin/index.html?direct=true&t=${Date.now()}`;
+  };
+
+  const alternativeAccess = () => {
+    addDebugLog('Attempting alternative access to admin/');
+    window.location.href = `/admin/?t=${Date.now()}`;
   };
 
   return (
@@ -68,7 +145,13 @@ const DecapAdmin = () => {
                   Try Again
                 </Button>
                 <Button 
-                  onClick={openTroubleshootingDialog}
+                  onClick={directAccess}
+                  variant="outline"
+                >
+                  Direct Access
+                </Button>
+                <Button 
+                  onClick={openTroubleshooting}
                   variant="outline"
                 >
                   Troubleshooting
@@ -79,6 +162,22 @@ const DecapAdmin = () => {
                 >
                   Return to Site
                 </Button>
+              </div>
+              <div className="mt-4">
+                <Button
+                  onClick={() => setShowDebugInfo(!showDebugInfo)}
+                  variant="ghost"
+                  size="sm"
+                >
+                  {showDebugInfo ? 'Hide' : 'Show'} Debug Info
+                </Button>
+                {showDebugInfo && (
+                  <div className="mt-2 p-3 bg-slate-50 text-left rounded text-xs overflow-auto max-h-64">
+                    {debugLogs.map((log, i) => (
+                      <div key={i} className="mb-1">{log}</div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ) : (
@@ -97,7 +196,7 @@ const DecapAdmin = () => {
                 </p>
                 <div className="mt-8 text-left">
                   <button
-                    onClick={openTroubleshootingDialog}
+                    onClick={openTroubleshooting}
                     className="text-gray-500 text-sm underline hover:text-gray-700"
                   >
                     Having trouble? View troubleshooting tips
@@ -119,20 +218,29 @@ const DecapAdmin = () => {
               <p>If you're having trouble accessing the CMS, try these steps:</p>
               <ol className="list-decimal list-inside space-y-2">
                 <li>Make sure you have a stable internet connection</li>
-                <li>Try accessing the CMS directly by going to <code>/admin/index.html</code></li>
                 <li>Clear your browser cache and cookies</li>
                 <li>Try using a different browser</li>
                 <li>Check if your browser is blocking any scripts or cookies</li>
+                <li>Try the direct access and alternative access options below</li>
                 <li>Ensure that the Git Gateway is properly configured if you're using Netlify</li>
               </ol>
-              <div className="pt-4">
+              <div className="pt-4 flex flex-wrap gap-2">
                 <Button
-                  onClick={() => {
-                    window.location.href = '/admin/index.html?t=' + Date.now();
-                  }}
-                  className="mr-2"
+                  onClick={directAccess}
                 >
-                  Direct Access to CMS
+                  Direct Access
+                </Button>
+                <Button
+                  onClick={alternativeAccess}
+                  variant="outline"
+                >
+                  Alternative Access
+                </Button>
+                <Button
+                  onClick={() => navigate('/')}
+                  variant="secondary"
+                >
+                  Return to Site
                 </Button>
                 <Button
                   variant="outline"
@@ -145,6 +253,23 @@ const DecapAdmin = () => {
           </DialogDescription>
         </DialogContent>
       </Dialog>
+      
+      {/* Debug Sheet */}
+      <Sheet open={showDebugInfo && loading} onOpenChange={() => loading && setShowDebugInfo(false)}>
+        <SheetContent side="bottom" className="h-1/3">
+          <SheetHeader>
+            <SheetTitle>CMS Debug Information</SheetTitle>
+          </SheetHeader>
+          <SheetDescription>
+            <div className="text-xs font-mono overflow-auto max-h-full">
+              {debugLogs.map((log, i) => (
+                <div key={i} className="py-1 border-b border-slate-100">{log}</div>
+              ))}
+              {loading && <div className="py-1 animate-pulse">Processing...</div>}
+            </div>
+          </SheetDescription>
+        </SheetContent>
+      </Sheet>
     </>
   );
 };
