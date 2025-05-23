@@ -1,16 +1,16 @@
 
 backend:
   name: git-gateway
-  branch: main # Branch to update (can be configured)
+  branch: main
   commit_messages:
-    create: "Create {{collection}} "{{slug}}""
-    update: "Update {{collection}} "{{slug}}""
-    delete: "Delete {{collection}} "{{slug}}""
-    uploadMedia: "Upload "{{path}}""
-    deleteMedia: "Delete "{{path}}""
+    create: "Create {{collection}} \"{{slug}}\""
+    update: "Update {{collection}} \"{{slug}}\""
+    delete: "Delete {{collection}} \"{{slug}}\""
+    uploadMedia: "Upload \"{{path}}\""
+    deleteMedia: "Delete \"{{path}}\""
 
-media_folder: "public/uploads" # Media will be stored in this folder in the repo
-public_folder: "/uploads" # Media will be accessed from this path on the frontend
+media_folder: "public/uploads"
+public_folder: "/uploads"
 
 # For local development only - to be removed in production
 local_backend: true

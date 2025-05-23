@@ -143,8 +143,11 @@
           if (window.netlifyIdentity) {
             window.netlifyIdentity.on('init', user => {
               logDebug('Netlify Identity initialized' + (user ? ' with user' : ' without user'));
+              // Load CMS after identity is ready
+              initCMS();
+              
+              // Setup login event handling
               if (!user) {
-                // Set up login handler
                 window.netlifyIdentity.on('login', () => {
                   logDebug('User logged in, reloading admin');
                   // Use a slight delay to ensure everything is ready
@@ -155,9 +158,6 @@
               }
             });
           }
-          
-          // Load CMS after identity is ready
-          initCMS();
         };
         
         document.head.appendChild(script);
@@ -184,10 +184,6 @@
           }
         };
         
-        script.onload = () => {
-          logDebug('Decap CMS script loaded');
-        };
-        
         document.body.appendChild(script);
       };
       
@@ -202,7 +198,7 @@
       
       // Failsafe if DOMContentLoaded already fired
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        logDebug('DOM already loaded, starting initialization');
+        logDebug('DOM already loaded, starting initialization immediately');
         setTimeout(() => loadIdentity(), 100);
       }
     </script>

@@ -23,15 +23,15 @@ export const initializeNetlifyIdentity = (): void => {
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on('init', (user) => {
           console.log('Netlify Identity initialized', user ? 'with user' : 'without user');
-          if (!user) {
-            // Only redirect to admin after login if not on the admin page
-            const isAdminPage = window.location.pathname.includes('/admin');
-            if (!isAdminPage) {
-              window.netlifyIdentity.on('login', () => {
-                console.log('User logged in, redirecting to admin');
-                document.location.href = '/admin/';
-              });
-            }
+          
+          // Only redirect to admin after login if not on the admin page
+          const isAdminPage = window.location.pathname.includes('/admin');
+          
+          if (!user && !isAdminPage) {
+            window.netlifyIdentity.on('login', () => {
+              console.log('User logged in, redirecting to admin');
+              document.location.href = '/admin/index.html';
+            });
           }
         });
       }
@@ -49,22 +49,9 @@ export const initializeNetlifyIdentity = (): void => {
 export const syncDecapCmsEntries = async (): Promise<void> => {
   try {
     // In a real implementation, this would fetch from the CMS API or Git
-    // For now, we'll just log that this function was called
     console.log('Syncing blog posts from Decap CMS');
     
-    // Future implementation would fetch entries and update the store:
-    // const entries = await fetchEntriesFromCMS();
-    // const updatedStore: BlogPostsStore = {};
-    
-    // entries.forEach(entry => {
-    //   updatedStore[entry.slug] = {
-    //     title: entry.title,
-    //     titleIT: entry.titleIT,
-    //     ...rest of fields...
-    //   };
-    // });
-    
-    // await saveBlogPostsToStorage(updatedStore);
+    // Future implementation would fetch entries and update the store
   } catch (error) {
     console.error('Error syncing with Decap CMS:', error);
   }
