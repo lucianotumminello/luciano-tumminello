@@ -63,6 +63,16 @@ export const initializeDecapCMS = (): void => {
   
   console.log('Manually initializing Decap CMS');
   
+  // Clear caches and service workers that might be causing issues
+  if ('caches' in window) {
+    caches.keys().then(cacheNames => {
+      cacheNames.forEach(cacheName => {
+        caches.delete(cacheName);
+        console.log(`Cleared cache: ${cacheName}`);
+      });
+    });
+  }
+  
   // Check if CMS is already loaded
   if (window.CMS) {
     console.log('CMS already available in window object');
@@ -84,96 +94,71 @@ export const initializeDecapCMS = (): void => {
     link.href = `/admin/config.yml?t=${Date.now()}`;
     document.head.appendChild(link);
     console.log('Added missing config link to document head');
+  } else {
+    // Refresh the config link to force reload
+    configLink.href = `/admin/config.yml?t=${Date.now()}`;
+    console.log('Refreshed existing config link');
   }
   
-  // Load Decap CMS script
-  const script = document.createElement('script');
-  script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
-  script.crossOrigin = 'anonymous';
-  script.async = true;
-  
-  script.onload = () => {
-    console.log('Decap CMS script loaded successfully');
-    // Give it a moment to initialize
-    setTimeout(() => {
-      if (window.CMS) {
-        console.log('CMS object available after script load');
-        
-        try {
-          // Attempt initialization
-          window.CMS.init();
-          console.log('CMS initialization triggered');
-          
-          // Register success event listener
-          window.CMS.registerEventListener({
-            name: 'cms-loaded',
-            handler: () => {
-              console.log('CMS fully loaded and initialized');
-            }
-          });
-        } catch (e) {
-          console.error('Error during CMS init:', e);
-        }
-      } else {
-        console.error('CMS object not found after script load');
-        
-        // Fallback initialization
-        try {
-          console.log('Attempting fallback CMS initialization');
-          const fallbackScript = document.createElement('script');
-          fallbackScript.innerHTML = `
-            if (window.netlifyIdentity) {
-              window.netlifyIdentity.on('init', user => {
-                if (!user) {
-                  window.netlifyIdentity.on('login', () => {
-                    document.location.href = '/admin/';
-                  });
-                }
-              });
-            }
-            
-            // Try to init CMS after delay
-            setTimeout(() => {
-              if (window.CMS) {
-                console.log('Delayed CMS init triggered');
-                window.CMS.init();
-              }
-            }, 1000);
-          `;
-          document.body.appendChild(fallbackScript);
-        } catch (err) {
-          console.error('Fallback initialization failed:', err);
-        }
-      }
-    }, 1000);
-  };
-  
-  script.onerror = () => {
-    console.error('Failed to load Decap CMS script');
+  // Load Decap CMS script with retries
+  const loadCmsScript = (retryCount = 0) => {
+    if (retryCount >= 3) {
+      console.error('Failed to load Decap CMS after multiple attempts');
+      return;
+    }
     
-    // Try alternative CDN as fallback
-    const fallbackScript = document.createElement('script');
-    fallbackScript.src = 'https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js';
-    fallbackScript.crossOrigin = 'anonymous';
-    fallbackScript.async = true;
+    const script = document.createElement('script');
+    script.src = retryCount === 0 ? 
+      'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js' : 
+      'https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js';
+    script.crossOrigin = 'anonymous';
+    script.async = true;
     
-    fallbackScript.onload = () => {
-      console.log('Fallback CMS script loaded successfully');
+    script.onload = () => {
+      console.log(`Decap CMS script loaded successfully (attempt ${retryCount + 1})`);
+      // Give it a moment to initialize
       setTimeout(() => {
         if (window.CMS) {
-          window.CMS.init();
+          console.log('CMS object available after script load');
+          
+          try {
+            // Attempt initialization
+            window.CMS.init();
+            console.log('CMS initialization triggered');
+            
+            // Register success event listener
+            window.CMS.registerEventListener({
+              name: 'cms-loaded',
+              handler: () => {
+                console.log('CMS fully loaded and initialized');
+              }
+            });
+          } catch (e) {
+            console.error('Error during CMS init:', e);
+          }
+        } else {
+          console.error('CMS object not found after script load');
+          if (retryCount < 2) {
+            console.log(`Retrying CMS script load (attempt ${retryCount + 2})`);
+            loadCmsScript(retryCount + 1);
+          }
         }
       }, 1000);
     };
     
-    fallbackScript.onerror = () => {
-      console.error('Even fallback CMS script failed to load');
+    script.onerror = () => {
+      console.error(`Failed to load Decap CMS script (attempt ${retryCount + 1})`);
+      if (retryCount < 2) {
+        console.log(`Retrying with alternative CDN (attempt ${retryCount + 2})`);
+        loadCmsScript(retryCount + 1);
+      }
     };
     
-    document.body.appendChild(fallbackScript);
+    document.body.appendChild(script);
   };
   
-  document.body.appendChild(script);
+  // Start loading the script
+  loadCmsScript();
 };
 
 // Sync Decap CMS entries with our blog post store
@@ -210,6 +195,71 @@ export const diagnoseCmsLoadingIssues = (): void => {
   } else {
     console.log('CMS object is NOT available in window');
   }
+  
+  // Create a diagnostic report in the console
+  console.log('CMS Diagnostic Report:');
+  console.log('---------------------');
+  console.log('URL:', window.location.href);
+  console.log('Pathname:', window.location.pathname);
+  console.log('User Agent:', navigator.userAgent);
+  
+  // Additional diagnostic info
+  if (typeof window.bypassConfigValidation !== 'undefined') {
+    console.log('bypassConfigValidation flag is set:', window.bypassConfigValidation);
+  }
+};
+
+// Additional function to force CMS initialization even if other methods fail
+export const forceLoadDecapCMS = (): void => {
+  console.log('Force loading Decap CMS with all fallbacks...');
+  
+  // Set bypass flag
+  window.bypassConfigValidation = true;
+  
+  // Clear any cached resources
+  if ('caches' in window) {
+    caches.keys().then(cacheNames => {
+      cacheNames.forEach(cacheName => caches.delete(cacheName));
+    });
+  }
+  
+  // Always recreate the config link to ensure fresh config
+  const existingLink = document.querySelector('link[rel="cms-config-url"]');
+  if (existingLink) {
+    document.head.removeChild(existingLink);
+  }
+  
+  const link = document.createElement('link');
+  link.rel = 'cms-config-url';
+  link.type = 'text/yaml';
+  link.href = `/admin/config.yml?force=true&t=${Date.now()}`;
+  document.head.appendChild(link);
+  
+  // Remove any existing CMS scripts
+  document.querySelectorAll('script[src*="decap-cms"]').forEach(script => {
+    document.body.removeChild(script);
+  });
+  
+  // Load the script directly from CDN
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+  script.onload = () => {
+    console.log('Force loaded CMS script, initializing...');
+    setTimeout(() => {
+      if (window.CMS) {
+        try {
+          window.CMS.init();
+          console.log('Forced CMS initialization complete');
+        } catch (e) {
+          console.error('Force init error:', e);
+          alert('CMS initialization failed. Please refresh the page and try again.');
+        }
+      } else {
+        console.error('CMS object not available after forced load');
+      }
+    }, 1000);
+  };
+  document.body.appendChild(script);
 };
 
 // Helper type for the window object to include Netlify Identity

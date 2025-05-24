@@ -25,11 +25,41 @@
           });
         });
       }
+      
+      // Debug helper
+      window.CMSDebug = {
+        logs: [],
+        log: function(message) {
+          const timestamp = new Date().toISOString();
+          console.log(`[CMS Debug ${timestamp}]`, message);
+          this.logs.push({ time: timestamp, message: message });
+          
+          // Update debug panel if visible
+          const debugEl = document.getElementById('debug-info');
+          if (debugEl && debugEl.style.display === 'block') {
+            const logLine = document.createElement('div');
+            logLine.innerText = `[${new Date().toLocaleTimeString()}] ${message}`;
+            debugEl.appendChild(logLine);
+          }
+        },
+        showLogs: function() {
+          document.getElementById('debug-info').style.display = 'block';
+          document.getElementById('debug-info').innerHTML = this.logs.map(log => 
+            `<div>[${new Date(log.time).toLocaleTimeString()}] ${log.message}</div>`
+          ).join('');
+        }
+      };
+      
+      // Record page load
+      window.CMSDebug.log('Page loaded');
     </script>
+    
     <!-- Make sure config is loaded with the correct MIME type -->
-    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+    <link href="/admin/config.yml?nocache=true&t=1747998459535" type="text/yaml" rel="cms-config-url" />
+    
     <!-- Load config validator first -->
-    <script src="/admin/config-loader.js"></script>
+    <script src="/admin/config-loader.js?nocache=true"></script>
+    
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -77,6 +107,8 @@
         margin-left: auto;
         margin-right: auto;
         display: none;
+        max-height: 300px;
+        overflow-y: auto;
       }
       .loader {
         border: 4px solid #f3f3f3;
@@ -99,6 +131,42 @@
         border: 1px solid #feebc8;
         border-radius: 0.25rem;
         text-align: left;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .secondary-button {
+        background-color: #718096;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        border: none;
+        font-size: 0.875rem;
+        cursor: pointer;
+      }
+      .success-button {
+        background-color: #38a169;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        border: none;
+        font-size: 0.875rem;
+        cursor: pointer;
+      }
+      .warning-button {
+        background-color: #dd6b20;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        border: none;
+        font-size: 0.875rem;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -112,34 +180,26 @@
     <div id="cms-load-timeout">
       <h3>CMS is taking longer than expected</h3>
       <p>Try one of these options:</p>
-      <button onclick="forceReload()" class="retry-button">Force Reload</button>
-      <button onclick="tryBackupCMS()" class="retry-button">Try Backup CMS</button>
-      <button onclick="window.location.href = '/'" class="retry-button">Return to Site</button>
+      <div class="action-buttons">
+        <button onclick="forceReload()" class="retry-button">Force Reload</button>
+        <button onclick="tryBackupCMS()" class="success-button">Try Backup CMS</button>
+        <button onclick="manualInitCMS()" class="warning-button">Manual Init</button>
+        <button onclick="window.location.href = '/'" class="secondary-button">Return to Site</button>
+        <button onclick="toggleDebug()" class="secondary-button">Debug Info</button>
+      </div>
     </div>
     <div id="debug-info" class="debug-info"></div>
     <script>
-      // Function to log to the debug panel and console
-      function logDebug(message) {
-        console.log('[CMS]', message);
-        const debugEl = document.getElementById('debug-info');
-        if (debugEl) {
-          debugEl.style.display = 'block';
-          const logLine = document.createElement('div');
-          logLine.innerText = `[${new Date().toLocaleTimeString()}] ${message}`;
-          debugEl.appendChild(logLine);
-        }
-      }
-      
       // Show URL parameters for debugging
       const urlParams = new URLSearchParams(window.location.search);
       const paramDebug = Array.from(urlParams).map(([key, value]) => `${key}: ${value}`).join(', ');
-      logDebug(`Page loaded with params: ${paramDebug || 'none'}`);
+      window.CMSDebug.log(`URL parameters: ${paramDebug || 'none'}`);
       
       // Show debug panel in development or when requested
       if (window.location.hostname === 'localhost' || 
           window.location.hostname === '127.0.0.1' || 
           urlParams.has('debug')) {
-        document.getElementById('debug-info').style.display = 'block';
+        toggleDebug();
       }
       
       // Show backup options if loading takes too long
@@ -147,12 +207,15 @@
         const cms = window.CMS;
         if (!cms) {
           document.getElementById('cms-load-timeout').style.display = 'block';
+          window.CMSDebug.log('CMS not loaded after timeout, showing options');
+        } else {
+          window.CMSDebug.log('CMS object found within timeout period');
         }
-      }, 15000);
+      }, 10000);
       
       // Force reload function for backup option
       function forceReload() {
-        logDebug('Force reloading page and clearing cache');
+        window.CMSDebug.log('Force reloading page and clearing cache');
         if ('caches' in window) {
           caches.keys().then(cacheNames => {
             cacheNames.forEach(cacheName => caches.delete(cacheName));
@@ -165,13 +228,62 @@
       
       // Try backup CMS function
       function tryBackupCMS() {
-        logDebug('Loading backup CMS version');
+        window.CMSDebug.log('Loading backup CMS version');
         loadBackupCMS();
+      }
+      
+      // Manual initialization function
+      function manualInitCMS() {
+        window.CMSDebug.log('Attempting manual CMS initialization');
+        
+        // Set bypass flag
+        window.bypassConfigValidation = true;
+        
+        // Create fresh config link
+        const configLink = document.querySelector('link[rel="cms-config-url"]');
+        if (configLink) {
+          configLink.href = `/admin/config.yml?manual=true&t=${Date.now()}`;
+        } else {
+          const newLink = document.createElement('link');
+          newLink.rel = 'cms-config-url';
+          newLink.type = 'text/yaml';
+          newLink.href = `/admin/config.yml?manual=true&t=${Date.now()}`;
+          document.head.appendChild(newLink);
+        }
+        
+        // Try to load CMS script if not present
+        if (!window.CMS) {
+          const script = document.createElement('script');
+          script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+          script.async = true;
+          script.onload = function() {
+            window.CMSDebug.log('CMS script loaded in manual mode');
+            setTimeout(() => {
+              if (window.CMS) {
+                try {
+                  window.CMS.init();
+                  window.CMSDebug.log('Manual CMS initialization called');
+                } catch (e) {
+                  window.CMSDebug.log('Error in manual CMS init: ' + e.message);
+                }
+              }
+            }, 500);
+          };
+          document.body.appendChild(script);
+        } else {
+          // CMS already loaded, just init
+          try {
+            window.CMS.init();
+            window.CMSDebug.log('CMS init called directly');
+          } catch (e) {
+            window.CMSDebug.log('Error calling CMS.init directly: ' + e.message);
+          }
+        }
       }
       
       // Global error handling
       window.addEventListener('error', function(event) {
-        logDebug(`Error: ${event.message}`);
+        window.CMSDebug.log(`Error: ${event.message}`);
         const rootEl = document.getElementById('nc-root');
         if (rootEl) {
           rootEl.innerHTML = `
@@ -179,10 +291,13 @@
               <h3>CMS Error</h3>
               <p>There was a problem loading the CMS. Please check your configuration and try again.</p>
               <p>Error details: ${event.message}</p>
-              <button class="retry-button" onclick="forceReload()">Try Again</button>
-              <button class="retry-button" onclick="tryBackupCMS()">Try Backup CMS</button>
-              <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
-              <button class="retry-button" onclick="toggleDebug()">Show Debug Info</button>
+              <div class="action-buttons">
+                <button class="retry-button" onclick="forceReload()">Try Again</button>
+                <button class="success-button" onclick="tryBackupCMS()">Try Backup CMS</button>
+                <button class="warning-button" onclick="manualInitCMS()">Manual Init</button>
+                <button class="secondary-button" onclick="window.location.href = '/'">Return to Site</button>
+                <button class="secondary-button" onclick="toggleDebug()">Toggle Debug</button>
+              </div>
             </div>
           `;
         }
@@ -192,16 +307,19 @@
         const debugEl = document.getElementById('debug-info');
         if (debugEl) {
           debugEl.style.display = debugEl.style.display === 'block' ? 'none' : 'block';
+          if (debugEl.style.display === 'block') {
+            window.CMSDebug.showLogs();
+          }
         }
       }
       
       // Initialize Netlify Identity for authentication
       const loadIdentity = () => {
-        logDebug('Starting Netlify Identity loading');
+        window.CMSDebug.log('Starting Netlify Identity loading');
         return new Promise((resolve, reject) => {
           // Check if already loaded
           if (window.netlifyIdentity) {
-            logDebug('Netlify Identity already loaded');
+            window.CMSDebug.log('Netlify Identity already loaded');
             resolve(window.netlifyIdentity);
             return;
           }
@@ -212,7 +330,7 @@
           
           script.onerror = () => {
             const error = 'Failed to load Netlify Identity widget';
-            logDebug(error);
+            window.CMSDebug.log(error);
             reject(new Error(error));
             
             const rootEl = document.getElementById('nc-root');
@@ -221,27 +339,30 @@
                 <div class="error-message">
                   <h3>Authentication Error</h3>
                   <p>Failed to load authentication system. Please check your internet connection.</p>
-                  <button class="retry-button" onclick="forceReload()">Try Again</button>
-                  <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
+                  <div class="action-buttons">
+                    <button class="retry-button" onclick="forceReload()">Try Again</button>
+                    <button class="secondary-button" onclick="window.location.href = '/'">Return to Site</button>
+                    <button class="secondary-button" onclick="toggleDebug()">Debug Info</button>
+                  </div>
                 </div>
               `;
             }
           };
           
           script.onload = () => {
-            logDebug('Netlify Identity loaded');
+            window.CMSDebug.log('Netlify Identity loaded');
             if (window.netlifyIdentity) {
               window.netlifyIdentity.on('init', user => {
-                logDebug('Netlify Identity initialized' + (user ? ' with user' : ' without user'));
+                window.CMSDebug.log('Netlify Identity initialized' + (user ? ' with user' : ' without user'));
                 resolve(window.netlifyIdentity);
                 
                 // Setup login event handling
                 if (!user) {
                   window.netlifyIdentity.on('login', () => {
-                    logDebug('User logged in, reloading admin');
+                    window.CMSDebug.log('User logged in, reloading admin');
                     // Use a slight delay to ensure everything is ready
                     setTimeout(() => {
-                      document.location.href = '/admin/?login=success';
+                      document.location.href = '/admin/?login=success&t=' + Date.now();
                     }, 300);
                   });
                 }
@@ -255,126 +376,134 @@
         });
       };
       
-      // Load Decap CMS with retry
-      const initCMS = (retryCount = 0) => {
-        logDebug(`Initializing Decap CMS (attempt: ${retryCount + 1})`);
+      // Load CMS script separately
+      const loadCmsScript = () => {
+        window.CMSDebug.log('Loading CMS script');
         
         return new Promise((resolve, reject) => {
-          if (retryCount >= 3) {
-            reject(new Error('Failed to load Decap CMS after multiple attempts'));
+          if (window.CMS) {
+            window.CMSDebug.log('CMS already loaded');
+            resolve(window.CMS);
             return;
           }
           
-          // Make sure we're using the correct script URL and version
           const script = document.createElement('script');
           script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
           script.async = true;
           
-          script.onerror = () => {
-            logDebug(`Failed to load Decap CMS on attempt ${retryCount + 1}, retrying...`);
-            
-            setTimeout(() => {
-              initCMS(retryCount + 1).then(resolve).catch(reject);
-            }, 1000);
-          };
-          
           script.onload = () => {
-            logDebug('Decap CMS script loaded successfully');
-            
-            // Additional check to see if CMS was properly initialized
+            window.CMSDebug.log('CMS script loaded');
             setTimeout(() => {
               if (window.CMS) {
-                logDebug('CMS object successfully initialized');
-                resolve(true);
+                window.CMSDebug.log('CMS available after script load');
+                resolve(window.CMS);
               } else {
-                logDebug('CMS object not found after script load, trying again...');
-                if (retryCount < 3) {
-                  initCMS(retryCount + 1).then(resolve).catch(reject);
-                } else {
-                  reject(new Error('CMS failed to initialize after multiple attempts'));
-                }
+                window.CMSDebug.log('CMS not available after script load');
+                reject(new Error('CMS not available after script load'));
               }
-            }, 1000);
+            }, 500);
+          };
+          
+          script.onerror = () => {
+            window.CMSDebug.log('Failed to load CMS script');
+            reject(new Error('Failed to load CMS script'));
           };
           
           document.body.appendChild(script);
         });
       };
       
-      // Load backup script if standard loading fails
+      // Load backup CMS
       const loadBackupCMS = () => {
-        logDebug('Attempting to load CMS from backup CDN');
+        window.CMSDebug.log('Loading backup CMS script');
+        
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js';
         script.async = true;
         
         script.onload = () => {
-          logDebug('Backup CMS script loaded');
+          window.CMSDebug.log('Backup CMS script loaded');
+          setTimeout(() => {
+            if (window.CMS) {
+              try {
+                window.CMS.init();
+                window.CMSDebug.log('Backup CMS initialized');
+              } catch (e) {
+                window.CMSDebug.log('Backup CMS init error: ' + e.message);
+              }
+            }
+          }, 500);
         };
         
         script.onerror = () => {
-          logDebug('Even backup CMS failed to load');
-          const rootEl = document.getElementById('nc-root');
-          if (rootEl) {
-            rootEl.innerHTML = `
-              <div class="error-message">
-                <h3>Critical CMS Error</h3>
-                <p>Unable to load the CMS from multiple sources. Please check your network connection and try again.</p>
+          window.CMSDebug.log('Failed to load backup CMS script');
+          document.getElementById('nc-root').innerHTML = `
+            <div class="error-message">
+              <h3>Critical CMS Error</h3>
+              <p>Unable to load CMS from multiple sources.</p>
+              <div class="action-buttons">
                 <button class="retry-button" onclick="forceReload()">Try Again</button>
-                <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
+                <button class="secondary-button" onclick="window.location.href = '/'">Return to Site</button>
+                <button class="warning-button" onclick="manualInitCMS()">Manual Init</button>
+                <button class="secondary-button" onclick="toggleDebug()">Debug Info</button>
               </div>
-            `;
-          }
+            </div>
+          `;
         };
         
         document.body.appendChild(script);
       };
       
-      // Main initialization function with error handling
-      const initialize = async () => {
+      // Main initialization sequence
+      const initializeAll = async () => {
         try {
-          logDebug('Starting CMS initialization');
+          window.CMSDebug.log('Starting main initialization sequence');
           
-          // Step 1: Initialize Netlify Identity
+          // Step 1: Load identity
           await loadIdentity();
           
-          // Step 2: Initialize Decap CMS
-          await initCMS();
-          
-          logDebug('CMS initialization complete');
-        } catch (err) {
-          logDebug(`CMS initialization failed: ${err.message}. Trying backup method...`);
-          
-          // Try backup loading method
-          loadBackupCMS();
-          
-          const rootEl = document.getElementById('nc-root');
-          if (rootEl) {
-            rootEl.innerHTML = `
-              <div class="error-message">
-                <h3>CMS Loading Error</h3>
-                <p>Failed to load the content management system. Attempting backup method...</p>
-                <p>Error details: ${err.message}</p>
-                <button class="retry-button" onclick="forceReload()">Try Again</button>
-                <button class="retry-button" onclick="tryBackupCMS()">Try Backup CMS</button>
-                <button class="retry-button" onclick="window.location.href = '/'">Return to Site</button>
-                <button class="retry-button" onclick="toggleDebug()">Show Debug Info</button>
-              </div>
-            `;
+          // Step 2: Load CMS (may already be loading via config-loader.js)
+          try {
+            await loadCmsScript();
+          } catch (e) {
+            window.CMSDebug.log('CMS script load failed in main sequence: ' + e.message);
+            // Continue - config-loader.js might have already loaded it
           }
+          
+          // Step 3: Check if we have CMS object or need to wait longer
+          setTimeout(() => {
+            if (window.CMS) {
+              window.CMSDebug.log('CMS object found after delay');
+              try {
+                if (document.getElementById('nc-root').innerText.includes('Loading CMS...')) {
+                  window.CMSDebug.log('CMS appears to be still loading, attempting init');
+                  window.CMS.init();
+                }
+              } catch (e) {
+                window.CMSDebug.log('Error initializing: ' + e.message);
+              }
+            } else {
+              window.CMSDebug.log('CMS object still not found after delay');
+              document.getElementById('cms-load-timeout').style.display = 'block';
+            }
+          }, 5000);
+          
+        } catch (error) {
+          window.CMSDebug.log('Initialization error: ' + error.message);
+          document.getElementById('cms-load-timeout').style.display = 'block';
         }
       };
       
       // Start initialization when DOM is loaded
       document.addEventListener('DOMContentLoaded', () => {
-        logDebug('DOM loaded, starting initialization');
-        initialize();
+        window.CMSDebug.log('DOM loaded, starting full initialization');
+        initializeAll();
       });
       
       // Failsafe if DOMContentLoaded already fired
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        logDebug('DOM already loaded, starting initialization immediately');
-        setTimeout(() => initialize(), 100);
+        window.CMSDebug.log('DOM already loaded, starting initialization immediately');
+        setTimeout(() => initializeAll(), 100);
       }
     </script>
   </body>
