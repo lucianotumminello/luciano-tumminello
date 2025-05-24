@@ -96,7 +96,8 @@ export const initializeDecapCMS = (): void => {
     console.log('Added missing config link to document head');
   } else {
     // Refresh the config link to force reload
-    configLink.href = `/admin/config.yml?t=${Date.now()}`;
+    // Fix: Cast configLink to HTMLLinkElement to access href property
+    (configLink as HTMLLinkElement).href = `/admin/config.yml?t=${Date.now()}`;
     console.log('Refreshed existing config link');
   }
   
@@ -237,7 +238,8 @@ export const forceLoadDecapCMS = (): void => {
   
   // Remove any existing CMS scripts
   document.querySelectorAll('script[src*="decap-cms"]').forEach(script => {
-    document.body.removeChild(script);
+    // Fix: Cast script to HTMLElement to safely remove from body
+    document.body.removeChild(script as HTMLElement);
   });
   
   // Load the script directly from CDN
