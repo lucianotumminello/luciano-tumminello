@@ -96,8 +96,8 @@ export const initializeDecapCMS = (): void => {
     console.log('Added missing config link to document head');
   } else {
     // Refresh the config link to force reload
-    // Fix: Cast configLink to HTMLLinkElement to access href property
-    (configLink as HTMLLinkElement).href = `/admin/config.yml?t=${Date.now()}`;
+    const typedConfigLink = configLink as HTMLLinkElement;
+    typedConfigLink.href = `/admin/config.yml?t=${Date.now()}`;
     console.log('Refreshed existing config link');
   }
   
@@ -210,6 +210,21 @@ export const diagnoseCmsLoadingIssues = (): void => {
   }
 };
 
+// Helper function to safely remove DOM elements
+const safeRemoveElement = (element: Element): boolean => {
+  if (element && element.parentNode) {
+    try {
+      element.parentNode.removeChild(element);
+      console.log('Successfully removed element');
+      return true;
+    } catch (e) {
+      console.error('Error removing element:', e);
+      return false;
+    }
+  }
+  return false;
+};
+
 // Additional function to force CMS initialization even if other methods fail
 export const forceLoadDecapCMS = (): void => {
   console.log('Force loading Decap CMS with all fallbacks...');
@@ -226,8 +241,8 @@ export const forceLoadDecapCMS = (): void => {
   
   // Always recreate the config link to ensure fresh config
   const existingLink = document.querySelector('link[rel="cms-config-url"]');
-  if (existingLink) {
-    document.head.removeChild(existingLink);
+  if (existingLink && existingLink.parentNode) {
+    existingLink.parentNode.removeChild(existingLink);
   }
   
   const link = document.createElement('link');
@@ -236,17 +251,9 @@ export const forceLoadDecapCMS = (): void => {
   link.href = `/admin/config.yml?force=true&t=${Date.now()}`;
   document.head.appendChild(link);
   
-  // Remove any existing CMS scripts - FIX: Check parent node before removal
+  // Remove any existing CMS scripts using our safe removal function
   document.querySelectorAll('script[src*="decap-cms"]').forEach(script => {
-    // Safety check: Only remove if it's actually a child of its parent
-    if (script.parentNode) {
-      try {
-        script.parentNode.removeChild(script);
-        console.log('Removed existing CMS script');
-      } catch (e) {
-        console.error('Error removing script:', e);
-      }
-    }
+    safeRemoveElement(script);
   });
   
   // Load the script directly from CDN

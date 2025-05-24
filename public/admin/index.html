@@ -51,6 +51,20 @@
       
       // Record page load
       window.CMSDebug.log('Page loaded');
+      
+      // Safe element removal function
+      window.safeRemoveElement = function(element) {
+        if (element && element.parentNode) {
+          try {
+            element.parentNode.removeChild(element);
+            return true;
+          } catch (e) {
+            console.error('Failed to remove element:', e);
+            return false;
+          }
+        }
+        return false;
+      };
     </script>
     
     <!-- Make sure config is loaded with the correct MIME type -->
@@ -250,48 +264,29 @@
           document.head.appendChild(newLink);
         }
         
+        // Remove existing CMS scripts
+        document.querySelectorAll('script[src*="decap-cms"]').forEach(script => {
+          window.safeRemoveElement(script);
+        });
+        
         // Try to load CMS script if not present
-        if (!window.CMS) {
-          const script = document.createElement('script');
-          script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
-          script.async = true;
-          script.onload = function() {
-            window.CMSDebug.log('CMS script loaded in manual mode');
-            setTimeout(() => {
-              if (window.CMS) {
-                try {
-                  window.CMS.init();
-                  window.CMSDebug.log('Manual CMS initialization called');
-                } catch (e) {
-                  window.CMSDebug.log('Error in manual CMS init: ' + e.message);
-                }
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+        script.async = true;
+        script.onload = function() {
+          window.CMSDebug.log('CMS script loaded in manual mode');
+          setTimeout(() => {
+            if (window.CMS) {
+              try {
+                window.CMS.init();
+                window.CMSDebug.log('Manual CMS initialization called');
+              } catch (e) {
+                window.CMSDebug.log('Error in manual CMS init: ' + e.message);
               }
-            }, 500);
-          };
-          document.body.appendChild(script);
-        } else {
-          // CMS already loaded, just init
-          try {
-            window.CMS.init();
-            window.CMSDebug.log('CMS init called directly');
-          } catch (e) {
-            window.CMSDebug.log('Error calling CMS.init directly: ' + e.message);
-          }
-        }
-      }
-      
-      // Fix: Safe script removal function for DOM operations
-      function safeRemoveElement(element) {
-        if (element && element.parentNode) {
-          try {
-            element.parentNode.removeChild(element);
-            return true;
-          } catch (e) {
-            console.error('Failed to remove element:', e);
-            return false;
-          }
-        }
-        return false;
+            }
+          }, 500);
+        };
+        document.body.appendChild(script);
       }
       
       // Global error handling
@@ -400,6 +395,11 @@
             return;
           }
           
+          // Remove any existing scripts first
+          document.querySelectorAll('script[src*="decap-cms"]').forEach(script => {
+            window.safeRemoveElement(script);
+          });
+          
           const script = document.createElement('script');
           script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
           script.async = true;
@@ -432,14 +432,7 @@
         
         // First, safely remove existing CMS scripts to avoid conflicts
         document.querySelectorAll('script[src*="decap-cms"]').forEach(script => {
-          if (script && script.parentNode) {
-            try {
-              script.parentNode.removeChild(script);
-              window.CMSDebug.log('Removed existing CMS script before backup');
-            } catch (e) {
-              window.CMSDebug.log('Error removing script: ' + e.message);
-            }
-          }
+          window.safeRemoveElement(script);
         });
         
         const script = document.createElement('script');

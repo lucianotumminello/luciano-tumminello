@@ -2,6 +2,20 @@
 (function() {
   console.log('[Config Loader] Starting config validation');
   
+  // Helper function to safely remove DOM elements
+  function safeRemoveElement(element) {
+    if (element && element.parentNode) {
+      try {
+        element.parentNode.removeChild(element);
+        return true;
+      } catch (e) {
+        console.error('[Config Loader] Error removing element:', e);
+        return false;
+      }
+    }
+    return false;
+  }
+  
   // Improved function to validate YAML syntax with more reliable checks
   function validateYaml(content) {
     try {
@@ -160,6 +174,12 @@
   // Load the CMS script if needed
   function loadCmsScript() {
     console.log('[Config Loader] Loading CMS script');
+    
+    // First remove any existing scripts to avoid conflicts
+    document.querySelectorAll('script[src*="decap-cms"]').forEach(function(scriptEl) {
+      safeRemoveElement(scriptEl);
+    });
+    
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
     script.onload = () => {
@@ -181,6 +201,12 @@
   // Load backup CMS script if primary fails
   function loadBackupCmsScript() {
     console.log('[Config Loader] Loading backup CMS script');
+    
+    // First remove any existing scripts to avoid conflicts
+    document.querySelectorAll('script[src*="decap-cms"]').forEach(function(scriptEl) {
+      safeRemoveElement(scriptEl);
+    });
+    
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js';
     script.onload = () => {
@@ -231,14 +257,29 @@
       // Create or update the config link
       setupConfigLink(true);
       
-      // Load scripts if needed
-      if (!window.CMS && !document.querySelector('script[src*="decap-cms"]')) {
-        loadCmsScript();
-      } else if (window.CMS) {
-        // If CMS is already loaded, try to initialize it directly
-        window.CMS.init();
-        console.log('[Config Loader] Force init: CMS.init() called');
-      }
+      // Clear any existing scripts
+      document.querySelectorAll('script[src*="decap-cms"]').forEach(function(scriptEl) {
+        safeRemoveElement(scriptEl);
+      });
+      
+      // Load a fresh script
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js';
+      script.async = true;
+      script.onload = function() {
+        console.log('[Config Loader] Force loaded CMS script');
+        setTimeout(() => {
+          if (window.CMS) {
+            try {
+              window.CMS.init();
+              console.log('[Config Loader] Force init: CMS.init() called');
+            } catch (e) {
+              console.error('[Config Loader] Force init error:', e);
+            }
+          }
+        }, 500);
+      };
+      document.body.appendChild(script);
       
       // Show a message to the user
       const rootEl = document.getElementById('nc-root');
