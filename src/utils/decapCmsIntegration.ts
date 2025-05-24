@@ -28,6 +28,7 @@ export const initializeNetlifyIdentity = (): void => {
     script.id = 'netlify-identity-widget';
     script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
     script.async = true;
+    script.crossOrigin = 'anonymous';
     
     script.onload = () => {
       console.log('Netlify Identity script loaded');
@@ -40,7 +41,7 @@ export const initializeNetlifyIdentity = (): void => {
               console.log('User logged in, redirecting to admin');
               // Use a timeout to ensure identity is fully processed
               setTimeout(() => {
-                document.location.href = '/admin/index.html?loginRedirect=true';
+                document.location.href = '/admin/?loginRedirect=true';
               }, 500);
             });
           }
@@ -68,9 +69,21 @@ export const initializeDecapCMS = (): void => {
     return;
   }
   
+  // First, ensure config is loaded properly
+  const configLink = document.querySelector('link[rel="cms-config-url"]');
+  if (!configLink) {
+    const link = document.createElement('link');
+    link.rel = 'cms-config-url';
+    link.type = 'text/yaml';
+    link.href = `/admin/config.yml?t=${Date.now()}`;
+    document.head.appendChild(link);
+    console.log('Added missing config link to document head');
+  }
+  
   // Load Decap CMS script
   const script = document.createElement('script');
   script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+  script.crossOrigin = 'anonymous';
   script.async = true;
   
   script.onload = () => {
@@ -79,6 +92,15 @@ export const initializeDecapCMS = (): void => {
     setTimeout(() => {
       if (window.CMS) {
         console.log('CMS object available after script load');
+        
+        // Register success event listener
+        window.CMS.registerEventListener({
+          name: 'cms-loaded',
+          handler: () => {
+            console.log('CMS fully loaded and initialized');
+          }
+        });
+        
       } else {
         console.error('CMS object not found after script load');
       }
@@ -87,6 +109,22 @@ export const initializeDecapCMS = (): void => {
   
   script.onerror = () => {
     console.error('Failed to load Decap CMS script');
+    
+    // Try alternative CDN as fallback
+    const fallbackScript = document.createElement('script');
+    fallbackScript.src = 'https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js';
+    fallbackScript.crossOrigin = 'anonymous';
+    fallbackScript.async = true;
+    
+    fallbackScript.onload = () => {
+      console.log('Fallback CMS script loaded successfully');
+    };
+    
+    fallbackScript.onerror = () => {
+      console.error('Even fallback CMS script failed to load');
+    };
+    
+    document.body.appendChild(fallbackScript);
   };
   
   document.body.appendChild(script);
@@ -112,5 +150,9 @@ declare global {
       open: (command?: string) => void;
     };
     CMS?: any; // Decap CMS global object
+    cmsValidation?: {
+      validate: () => void;
+      showError: (message: string) => void;
+    };
   }
 }
