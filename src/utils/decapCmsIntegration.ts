@@ -66,6 +66,12 @@ export const initializeDecapCMS = (): void => {
   // Check if CMS is already loaded
   if (window.CMS) {
     console.log('CMS already available in window object');
+    try {
+      window.CMS.init();
+      console.log('Manual CMS initialization triggered');
+    } catch (e) {
+      console.error('Error initializing CMS:', e);
+    }
     return;
   }
   
@@ -93,16 +99,51 @@ export const initializeDecapCMS = (): void => {
       if (window.CMS) {
         console.log('CMS object available after script load');
         
-        // Register success event listener
-        window.CMS.registerEventListener({
-          name: 'cms-loaded',
-          handler: () => {
-            console.log('CMS fully loaded and initialized');
-          }
-        });
-        
+        try {
+          // Attempt initialization
+          window.CMS.init();
+          console.log('CMS initialization triggered');
+          
+          // Register success event listener
+          window.CMS.registerEventListener({
+            name: 'cms-loaded',
+            handler: () => {
+              console.log('CMS fully loaded and initialized');
+            }
+          });
+        } catch (e) {
+          console.error('Error during CMS init:', e);
+        }
       } else {
         console.error('CMS object not found after script load');
+        
+        // Fallback initialization
+        try {
+          console.log('Attempting fallback CMS initialization');
+          const fallbackScript = document.createElement('script');
+          fallbackScript.innerHTML = `
+            if (window.netlifyIdentity) {
+              window.netlifyIdentity.on('init', user => {
+                if (!user) {
+                  window.netlifyIdentity.on('login', () => {
+                    document.location.href = '/admin/';
+                  });
+                }
+              });
+            }
+            
+            // Try to init CMS after delay
+            setTimeout(() => {
+              if (window.CMS) {
+                console.log('Delayed CMS init triggered');
+                window.CMS.init();
+              }
+            }, 1000);
+          `;
+          document.body.appendChild(fallbackScript);
+        } catch (err) {
+          console.error('Fallback initialization failed:', err);
+        }
       }
     }, 1000);
   };
@@ -118,6 +159,11 @@ export const initializeDecapCMS = (): void => {
     
     fallbackScript.onload = () => {
       console.log('Fallback CMS script loaded successfully');
+      setTimeout(() => {
+        if (window.CMS) {
+          window.CMS.init();
+        }
+      }, 1000);
     };
     
     fallbackScript.onerror = () => {
@@ -142,6 +188,30 @@ export const syncDecapCmsEntries = async (): Promise<void> => {
   }
 };
 
+// Helper function to diagnose CMS loading issues
+export const diagnoseCmsLoadingIssues = (): void => {
+  console.log('Diagnosing CMS loading issues...');
+  
+  // Check for script loading
+  const cmsScripts = document.querySelectorAll('script[src*="decap-cms"]');
+  console.log(`Found ${cmsScripts.length} CMS script tags`);
+  
+  // Check for config link
+  const configLinks = document.querySelectorAll('link[rel="cms-config-url"]');
+  console.log(`Found ${configLinks.length} config links`);
+  
+  // Check for Netlify Identity
+  const identityScripts = document.querySelectorAll('script[src*="netlify-identity"]');
+  console.log(`Found ${identityScripts.length} Netlify Identity scripts`);
+  
+  // Output CMS status
+  if (window.CMS) {
+    console.log('CMS object is available in window');
+  } else {
+    console.log('CMS object is NOT available in window');
+  }
+};
+
 // Helper type for the window object to include Netlify Identity
 declare global {
   interface Window {
@@ -153,6 +223,8 @@ declare global {
     cmsValidation?: {
       validate: () => void;
       showError: (message: string) => void;
+      forceInitCMS: () => void;
     };
+    bypassConfigValidation?: boolean;
   }
 }
