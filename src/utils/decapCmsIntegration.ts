@@ -236,10 +236,17 @@ export const forceLoadDecapCMS = (): void => {
   link.href = `/admin/config.yml?force=true&t=${Date.now()}`;
   document.head.appendChild(link);
   
-  // Remove any existing CMS scripts
+  // Remove any existing CMS scripts - FIX: Check parent node before removal
   document.querySelectorAll('script[src*="decap-cms"]').forEach(script => {
-    // Fix: Cast script to HTMLElement to safely remove from body
-    document.body.removeChild(script as HTMLElement);
+    // Safety check: Only remove if it's actually a child of its parent
+    if (script.parentNode) {
+      try {
+        script.parentNode.removeChild(script);
+        console.log('Removed existing CMS script');
+      } catch (e) {
+        console.error('Error removing script:', e);
+      }
+    }
   });
   
   // Load the script directly from CDN
