@@ -44,9 +44,9 @@ export const BlogBuilderHeader = ({
         <h1 className="text-3xl font-bold mb-2">Blog Builder</h1>
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-gray-600">Create and edit your blog posts</p>
-          <Badge variant="outline" className="bg-green-50 text-green-800 border-green-300 flex items-center gap-1">
+          <Badge variant="outline" className="bg-blue-50 text-blue-800 border-blue-300 flex items-center gap-1">
             <Save className="h-3 w-3" />
-            Auto-saving to browser storage ({postCount} posts stored)
+            Server storage ({postCount} posts published)
           </Badge>
         </div>
       </div>

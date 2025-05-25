@@ -2,7 +2,6 @@
 import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
 import initialBlogPosts from "./initialBlogPosts";
-import { mockApiGetAllPosts, mockApiSavePosts } from "./mockApi";
 
 // API endpoint for blog posts (this should point to your actual server API)
 const API_ENDPOINT = "/api/blog-posts";
@@ -17,6 +16,52 @@ let cachedBlogPosts: BlogPostsStore | null = null;
 // Last fetch timestamp to control refresh frequency
 let lastFetchTimestamp = 0;
 const FETCH_COOLDOWN_MS = 2000; // Minimum time between fetches to prevent excessive calls
+
+/**
+ * Mock server implementation using a global storage object
+ * This simulates a real server where all users see the same data
+ */
+const mockServerStorage = {
+  // Use a global variable to simulate server storage that persists across all users
+  get data(): BlogPostsStore {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('blog_posts_server_storage');
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch (error) {
+          console.error('Error parsing stored blog posts:', error);
+        }
+      }
+    }
+    return { ...initialBlogPosts };
+  },
+  
+  set data(posts: BlogPostsStore) {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('blog_posts_server_storage', JSON.stringify(posts));
+      // Dispatch event for cross-tab synchronization
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'blog_posts_server_storage',
+        newValue: JSON.stringify(posts),
+        storageArea: localStorage
+      }));
+    }
+  }
+};
+
+/**
+ * Mock API functions that simulate server operations
+ */
+export const mockApiGetAllPosts = (): BlogPostsStore => {
+  console.log("Mock API: Fetching all posts from server storage");
+  return { ...mockServerStorage.data };
+};
+
+export const mockApiSavePosts = (posts: BlogPostsStore): void => {
+  console.log("Mock API: Saving posts to server storage");
+  mockServerStorage.data = posts;
+};
 
 /**
  * Fetches all blog posts from the server
