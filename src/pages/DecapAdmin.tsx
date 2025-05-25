@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet-async';
 
 const DecapAdmin = () => {
   useEffect(() => {
-    // Simple redirect to the admin page
-    window.location.href = '/admin/index.html';
+    // Simple redirect to admin
+    window.location.replace('/admin/');
   }, []);
 
   return (
