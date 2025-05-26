@@ -91,3 +91,30 @@ export const mockApiDeletePost = (slug: string): boolean => {
   }
   return false;
 };
+
+/**
+ * Resets mock server storage to initial blog posts
+ * Used primarily for testing purposes
+ */
+export const mockApiReset = (): void => {
+  try {
+    if (typeof window === 'undefined') {
+      console.warn("Mock API: Cannot reset on server side");
+      return;
+    }
+    
+    const defaultPosts = { ...initialBlogPosts };
+    localStorage.setItem(SERVER_STORAGE_KEY, JSON.stringify(defaultPosts));
+    console.log("Mock API: Reset server storage to initial posts");
+    
+    // Dispatch storage event for cross-tab communication
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: SERVER_STORAGE_KEY,
+      newValue: JSON.stringify(defaultPosts),
+      storageArea: localStorage
+    }));
+  } catch (error) {
+    console.error("Mock API: Error resetting posts:", error);
+    throw error;
+  }
+};
