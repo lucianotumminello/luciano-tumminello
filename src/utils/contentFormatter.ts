@@ -1,4 +1,3 @@
-
 /**
  * Converts plain text to HTML format with advanced formatting
  */
@@ -18,11 +17,13 @@ export function textToHtml(text: string): string {
       const headerClasses = {
         1: 'text-4xl font-bold mb-8 mt-8 text-gray-900',
         2: 'text-3xl font-bold mb-6 mt-12 text-gray-800',
-        3: 'text-2xl font-semibold mb-4 mt-8 text-gray-800',
-        4: 'text-xl font-semibold mb-4 mt-6 text-gray-800'
+        3: 'text-xl font-semibold mb-4 mt-8 text-gray-800',
+        4: 'text-lg font-semibold mb-4 mt-6 text-gray-800',
+        5: 'text-base font-semibold mb-3 mt-5 text-gray-800',
+        6: 'text-sm font-semibold mb-3 mt-4 text-gray-800'
       }[headerLevel] || 'text-lg font-semibold mb-3 mt-5 text-gray-800';
       
-      return `<h${headerLevel} class="${headerClasses}">${headerText}</h${headerLevel}>`;
+      return `<h${Math.min(headerLevel, 6)} class="${headerClasses}">${headerText}</h${Math.min(headerLevel, 6)}>`;
     }
     
     // Check for bullet points
