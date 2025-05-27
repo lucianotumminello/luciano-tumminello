@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
+import TranslatedText from "@/components/TranslatedText";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
@@ -67,7 +68,7 @@ const Index = () => {
       <main className="flex-1">
         {/* H1 heading */}
         <h1 className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center py-8">
-          MARKETING &amp; OPERATIONS LEADER
+          <TranslatedText textKey="home.title" />
         </h1>
         <HeroSection />
         <ProfileImage />
@@ -75,25 +76,45 @@ const Index = () => {
           <CompetenciesSummary />
         </section>
         
-        {/* Adding some outgoing links for better SEO */}
+        {/* Explore More section with proper translations */}
         <section className="py-8 px-4 bg-gray-50">
           <div className="container mx-auto max-w-5xl">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Explore More</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-center">
+              <TranslatedText textKey="explore.title" />
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
               <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
-                <h3 className="text-xl font-medium mb-2">Professional Journey</h3>
-                <p className="text-gray-600 mb-4">Learn about my professional experience and career milestones.</p>
-                <Link to="/career" className="text-primary font-medium hover:underline">View Career Timeline</Link>
+                <h3 className="text-xl font-medium mb-2">
+                  <TranslatedText textKey="explore.professional.title" />
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  <TranslatedText textKey="explore.professional.description" />
+                </p>
+                <Link to="/career" className="text-primary font-medium hover:underline">
+                  <TranslatedText textKey="explore.professional.cta" />
+                </Link>
               </div>
               <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
-                <h3 className="text-xl font-medium mb-2">Educational Background</h3>
-                <p className="text-gray-600 mb-4">Discover my academic qualifications and ongoing learning journey.</p>
-                <Link to="/education" className="text-primary font-medium hover:underline">View Education</Link>
+                <h3 className="text-xl font-medium mb-2">
+                  <TranslatedText textKey="explore.education.title" />
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  <TranslatedText textKey="explore.education.description" />
+                </p>
+                <Link to="/education" className="text-primary font-medium hover:underline">
+                  <TranslatedText textKey="explore.education.cta" />
+                </Link>
               </div>
               <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
-                <h3 className="text-xl font-medium mb-2">Latest Insights</h3>
-                <p className="text-gray-600 mb-4">Read my thoughts on industry trends and marketing strategies.</p>
-                <Link to="/blog" className="text-primary font-medium hover:underline">Read Blog</Link>
+                <h3 className="text-xl font-medium mb-2">
+                  <TranslatedText textKey="explore.insights.title" />
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  <TranslatedText textKey="explore.insights.description" />
+                </p>
+                <Link to="/blog" className="text-primary font-medium hover:underline">
+                  <TranslatedText textKey="explore.insights.cta" />
+                </Link>
               </div>
             </div>
           </div>

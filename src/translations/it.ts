@@ -20,6 +20,18 @@ const it = {
   "home.viewResume": "Visualizza Curriculum",
   "home.professionalJourney": "Visualizza Percorso Professionale",
   
+  // Explore More Section
+  "explore.title": "Esplora di Più",
+  "explore.professional.title": "Percorso Professionale",
+  "explore.professional.description": "Scopri la mia esperienza professionale e le tappe fondamentali della carriera.",
+  "explore.professional.cta": "Visualizza Timeline Carriera",
+  "explore.education.title": "Background Formativo",
+  "explore.education.description": "Scopri le mie qualifiche accademiche e il percorso di apprendimento continuo.",
+  "explore.education.cta": "Visualizza Istruzione",
+  "explore.insights.title": "Ultimi Approfondimenti",
+  "explore.insights.description": "Leggi i miei pensieri sui trend del settore e le strategie di marketing.",
+  "explore.insights.cta": "Leggi Blog",
+  
   // Blog Page
   "blog.title": "Blog",
   "blog.subtitle": "Approfondimenti strategici sulla trasformazione digitale, le operazioni globali e il marketing basato sui dati.",

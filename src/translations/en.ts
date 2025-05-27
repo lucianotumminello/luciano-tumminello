@@ -20,6 +20,18 @@ const en = {
   "home.viewResume": "View Resume",
   "home.professionalJourney": "View Professional Journey",
   
+  // Explore More Section
+  "explore.title": "Explore More",
+  "explore.professional.title": "Professional Journey",
+  "explore.professional.description": "Learn about my professional experience and career milestones.",
+  "explore.professional.cta": "View Career Timeline",
+  "explore.education.title": "Educational Background",
+  "explore.education.description": "Discover my academic qualifications and ongoing learning journey.",
+  "explore.education.cta": "View Education",
+  "explore.insights.title": "Latest Insights",
+  "explore.insights.description": "Read my thoughts on industry trends and marketing strategies.",
+  "explore.insights.cta": "Read Blog",
+  
   // Blog Page
   "blog.title": "Blog",
   "blog.subtitle": "Strategic insights on digital transformation, global operations, and data-driven marketing.",
