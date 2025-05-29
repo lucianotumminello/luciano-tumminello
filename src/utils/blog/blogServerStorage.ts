@@ -2,69 +2,24 @@
 import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
 import initialBlogPosts from "./initialBlogPosts";
+import { permanentStorage } from "./permanentBlogStorage";
 
 // API endpoint for blog posts (this should point to your actual server API)
 const API_ENDPOINT = "/api/blog-posts";
 
-// Flag to determine if we should use the real server API or mock server
+// Flag to determine if we should use the real server API or permanent storage
 // Set this to false when connecting to a real API server
-const USE_MOCK_SERVER = true;
+const USE_PERMANENT_STORAGE = true;
 
 // In-memory cache of blog posts
 let cachedBlogPosts: BlogPostsStore | null = null;
 
 // Last fetch timestamp to control refresh frequency
 let lastFetchTimestamp = 0;
-const FETCH_COOLDOWN_MS = 2000; // Minimum time between fetches to prevent excessive calls
+const FETCH_COOLDOWN_MS = 1000; // Reduced cooldown for better responsiveness
 
 /**
- * Mock server implementation using a global storage object
- * This simulates a real server where all users see the same data
- */
-const mockServerStorage = {
-  // Use a global variable to simulate server storage that persists across all users
-  get data(): BlogPostsStore {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('blog_posts_server_storage');
-      if (stored) {
-        try {
-          return JSON.parse(stored);
-        } catch (error) {
-          console.error('Error parsing stored blog posts:', error);
-        }
-      }
-    }
-    return { ...initialBlogPosts };
-  },
-  
-  set data(posts: BlogPostsStore) {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('blog_posts_server_storage', JSON.stringify(posts));
-      // Dispatch event for cross-tab synchronization
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'blog_posts_server_storage',
-        newValue: JSON.stringify(posts),
-        storageArea: localStorage
-      }));
-    }
-  }
-};
-
-/**
- * Mock API functions that simulate server operations
- */
-export const mockApiGetAllPosts = (): BlogPostsStore => {
-  console.log("Mock API: Fetching all posts from server storage");
-  return { ...mockServerStorage.data };
-};
-
-export const mockApiSavePosts = (posts: BlogPostsStore): void => {
-  console.log("Mock API: Saving posts to server storage");
-  mockServerStorage.data = posts;
-};
-
-/**
- * Fetches all blog posts from the server
+ * Fetches all blog posts from permanent storage or server
  * Ensures cross-device synchronization by always getting the latest data
  * @returns A promise that resolves to all blog posts
  */
@@ -81,11 +36,16 @@ export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
     // Update timestamp whether we successfully fetch or not
     lastFetchTimestamp = now;
     
-    if (USE_MOCK_SERVER) {
-      console.log("Using mock server for fetching blog posts");
-      // Use mock server for development - this uses localStorage which persists across sessions
-      const posts = mockApiGetAllPosts();
+    if (USE_PERMANENT_STORAGE) {
+      console.log("Using permanent storage for fetching blog posts");
+      // Ensure permanent storage is initialized
+      await permanentStorage.initialize();
+      
+      // Get posts from permanent storage
+      const posts = permanentStorage.getPosts();
       cachedBlogPosts = { ...posts };
+      
+      console.log("Fetched blog posts from permanent storage:", Object.keys(posts).length);
       return posts;
     }
     
@@ -120,25 +80,31 @@ export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
       return { ...cachedBlogPosts };
     }
     
-    // Fall back to initial posts if we can't fetch from the server and have no cache
+    // Fall back to initial posts if we can't fetch and have no cache
     console.log("Using initial blog posts as fallback");
     return { ...initialBlogPosts };
   }
 };
 
 /**
- * Saves blog posts to the server
- * Ensures cross-device synchronization by updating server data
+ * Saves blog posts to permanent storage or server
+ * Ensures cross-device synchronization by updating permanent data
  * @param posts The blog posts to save
  * @returns A promise that resolves when the posts have been saved
  */
 export const saveBlogPostsToServer = async (posts: BlogPostsStore): Promise<void> => {
   try {
-    if (USE_MOCK_SERVER) {
-      console.log("Mock server: Saving blog posts to server");
-      // Use mock server for development - this uses localStorage which persists across sessions
-      mockApiSavePosts(posts);
+    if (USE_PERMANENT_STORAGE) {
+      console.log("Permanent storage: Saving blog posts permanently");
+      
+      // Ensure permanent storage is initialized
+      await permanentStorage.initialize();
+      
+      // Save to permanent storage
+      await permanentStorage.savePosts(posts);
       cachedBlogPosts = { ...posts };
+      
+      console.log("Successfully saved blog posts to permanent storage:", Object.keys(posts).length);
       
       // Dispatch an event to notify other tabs/windows of the update
       const blogUpdateEvent = new CustomEvent('blog-server-updated', { detail: posts });
@@ -183,14 +149,14 @@ export const getBlogPostsFromCache = async (): Promise<BlogPostsStore> => {
     return { ...cachedBlogPosts };
   }
   
-  // Cache is empty, fetch from server
+  // Cache is empty, fetch from permanent storage or server
   const posts = await fetchBlogPostsFromServer();
   cachedBlogPosts = { ...posts };
   return posts;
 };
 
 /**
- * Clears the cache to force a fresh fetch from the server
+ * Clears the cache to force a fresh fetch from permanent storage or server
  */
 export const invalidateBlogPostsCache = (): void => {
   cachedBlogPosts = null;
@@ -200,7 +166,7 @@ export const invalidateBlogPostsCache = (): void => {
 // Setup listener for storage events from other tabs/windows (cross-tab communication)
 if (typeof window !== 'undefined') {
   window.addEventListener('storage', (event) => {
-    if (event.key === "blog_posts_server_storage") {
+    if (event.key?.includes('blog') || event.key?.includes('permanent')) {
       console.log("Blog posts updated in another tab/window, refreshing cache");
       invalidateBlogPostsCache();
       // Dispatch event for components to refresh
@@ -209,17 +175,22 @@ if (typeof window !== 'undefined') {
     }
   });
   
-  // Set up a periodic check for updates (for cross-device sync via localStorage)
-  // This helps when two devices are using the same app but not getting storage events
-  if (USE_MOCK_SERVER) {
-    console.log("Setting up periodic refresh for cross-device sync");
-    const REFRESH_INTERVAL = 30000; // 30 seconds
-    setInterval(() => {
-      console.log("Performing periodic blog posts refresh");
-      invalidateBlogPostsCache();
-      // Note: components listening for this event will trigger their own refresh
-      const blogUpdateEvent = new CustomEvent('blog-periodic-refresh');
-      window.dispatchEvent(blogUpdateEvent);
-    }, REFRESH_INTERVAL);
-  }
+  // Set up a periodic check for updates (for cross-device sync)
+  console.log("Setting up periodic refresh for cross-device sync");
+  const REFRESH_INTERVAL = 10000; // 10 seconds for better responsiveness
+  setInterval(async () => {
+    console.log("Performing periodic blog posts refresh");
+    try {
+      const freshPosts = await permanentStorage.refresh();
+      if (JSON.stringify(cachedBlogPosts) !== JSON.stringify(freshPosts)) {
+        console.log("Detected changes during periodic refresh");
+        invalidateBlogPostsCache();
+        // Note: components listening for this event will trigger their own refresh
+        const blogUpdateEvent = new CustomEvent('blog-periodic-refresh');
+        window.dispatchEvent(blogUpdateEvent);
+      }
+    } catch (error) {
+      console.error("Error during periodic refresh:", error);
+    }
+  }, REFRESH_INTERVAL);
 }

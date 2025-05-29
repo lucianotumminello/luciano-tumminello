@@ -30,6 +30,9 @@ export {
   invalidateBlogPostsCache
 } from './blogServerStorage';
 
+// Export permanent storage
+export { permanentStorage } from './permanentBlogStorage';
+
 // Export types
 export type { BlogPostsStore } from './types';
 
