@@ -10,7 +10,7 @@ import {
   deleteBlogPost,
   duplicateBlogPost
 } from './blogPostOperations';
-import { mockApiReset } from './mockApi';
+import { permanentStorage } from './permanentBlogStorage';
 import { BlogPost } from '@/types';
 
 // Run this function from the browser console to test the blog system
@@ -18,8 +18,8 @@ export const runBlogSystemTests = async () => {
   console.log("Running blog system tests...");
   
   try {
-    console.log("1. Resetting mock server to initial state");
-    mockApiReset();
+    console.log("1. Initializing permanent storage");
+    await permanentStorage.initialize();
     
     console.log("2. Getting all blog posts");
     const initialPosts = await getAllBlogPosts();
