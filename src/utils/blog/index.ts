@@ -1,8 +1,8 @@
 
-// Export queries - now with async functions
+// Export queries - now with unified storage
 export { getAllBlogPosts, getBlogPost } from './blogPostQueries';
 
-// Export operations - now with async functions
+// Export operations - now with unified storage
 export { 
   createBlogPost, 
   updateBlogPost, 
@@ -30,8 +30,8 @@ export {
   invalidateBlogPostsCache
 } from './blogServerStorage';
 
-// Export permanent storage
-export { permanentStorage } from './permanentBlogStorage';
+// Export unified storage
+export { unifiedStorage } from './unifiedBlogStorage';
 
 // Export types
 export type { BlogPostsStore } from './types';

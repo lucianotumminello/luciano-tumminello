@@ -6,18 +6,18 @@ import {
   getBlogPostsFromCache,
   invalidateBlogPostsCache
 } from "./blogServerStorage";
-import { permanentStorage } from "./permanentBlogStorage";
+import { unifiedStorage } from "./unifiedBlogStorage";
 
 // In-memory data store that will be updated during the session
 export const updatedBlogPosts: BlogPostsStore = {};
 
-// Initialize the blog posts store
+// Initialize the blog posts store with unified storage
 export const initializeBlogPosts = async (): Promise<void> => {
   try {
-    // Initialize permanent storage first
-    await permanentStorage.initialize();
+    // Initialize unified storage first
+    await unifiedStorage.initialize();
     
-    // Fetch posts from permanent storage
+    // Fetch posts from unified storage
     const posts = await fetchBlogPostsFromServer();
     
     // Clear the updatedBlogPosts object
@@ -30,7 +30,7 @@ export const initializeBlogPosts = async (): Promise<void> => {
       updatedBlogPosts[key] = { ...value };
     });
     
-    console.log("Blog posts initialized with permanent storage:", Object.keys(updatedBlogPosts).length);
+    console.log("Blog posts initialized with unified storage:", Object.keys(updatedBlogPosts).length);
   } catch (error) {
     console.error("Error initializing blog posts:", error);
   }
@@ -41,10 +41,10 @@ initializeBlogPosts().catch(error => {
   console.error("Failed to initialize blog posts:", error);
 });
 
-// Save blog posts to permanent storage
+// Save blog posts to unified storage
 export const saveBlogPostsToStorage = async (posts: BlogPostsStore): Promise<void> => {
   try {
-    // Save to permanent storage
+    // Save to unified storage
     await saveBlogPostsToServer(posts);
     
     // Update our in-memory store to match the stored data
@@ -60,21 +60,21 @@ export const saveBlogPostsToStorage = async (posts: BlogPostsStore): Promise<voi
     const storageEvent = new CustomEvent('blog-storage-updated', { detail: posts });
     window.dispatchEvent(storageEvent);
     
-    console.log("Blog posts saved permanently and events dispatched");
+    console.log("Blog posts saved to unified storage and events dispatched");
   } catch (error) {
     console.error("Error saving blog posts:", error);
     throw error;
   }
 };
 
-// Force a refresh of posts from permanent storage
+// Force a refresh of posts from unified storage
 export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
   try {
     // Invalidate cache to force a fresh fetch
     invalidateBlogPostsCache();
     
-    // Refresh from permanent storage
-    await permanentStorage.refresh();
+    // Refresh from unified storage
+    await unifiedStorage.refresh();
     const refreshedPosts = await fetchBlogPostsFromServer();
     
     // Update our in-memory store to match the refreshed data
@@ -86,7 +86,7 @@ export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
       updatedBlogPosts[key] = { ...value };
     });
     
-    console.log("Blog posts refreshed from permanent storage:", Object.keys(updatedBlogPosts).length);
+    console.log("Blog posts refreshed from unified storage:", Object.keys(updatedBlogPosts).length);
     return { ...updatedBlogPosts };
   } catch (error) {
     console.error("Error refreshing blog posts:", error);
@@ -98,7 +98,7 @@ export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
 if (typeof window !== 'undefined') {
   // Listen for storage events from other tabs/windows
   window.addEventListener('storage', (event) => {
-    if (event.key?.includes('blog') || event.key?.includes('permanent')) {
+    if (event.key?.includes('blog') || event.key?.includes('unified')) {
       console.log("Blog posts updated in another tab/window, refreshing data");
       refreshBlogPosts().catch(error => {
         console.error("Error refreshing blog posts after storage event:", error);
