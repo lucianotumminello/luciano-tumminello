@@ -1,7 +1,7 @@
 
 import { BlogPost } from "@/types";
 import { BlogPostsStore } from "./types";
-import { unifiedStorage } from "./unifiedBlogStorage";
+import { supabaseUnifiedStorage } from "./supabaseUnifiedStorage";
 
 // In-memory cache of blog posts
 let cachedBlogPosts: BlogPostsStore | null = null;
@@ -11,7 +11,7 @@ let lastFetchTimestamp = 0;
 const FETCH_COOLDOWN_MS = 1000;
 
 /**
- * Fetches all blog posts from unified storage
+ * Fetches all blog posts from Supabase
  * This includes both Lovable-created and CMS/Content Editor created posts
  */
 export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
@@ -27,18 +27,15 @@ export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
     // Update timestamp
     lastFetchTimestamp = now;
     
-    // Ensure unified storage is initialized
-    await unifiedStorage.initialize();
-    
-    // Get all posts from unified storage
-    const posts = unifiedStorage.getAllPosts();
+    // Get all posts from Supabase
+    const posts = await supabaseUnifiedStorage.getAllPosts();
     cachedBlogPosts = { ...posts };
     
-    console.log("Fetched blog posts from unified storage:", Object.keys(posts).length);
+    console.log("Fetched blog posts from Supabase:", Object.keys(posts).length);
     return posts;
     
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
+    console.error("Error fetching blog posts from Supabase:", error);
     
     // If we have cached posts, use them
     if (cachedBlogPosts) {
@@ -46,41 +43,37 @@ export const fetchBlogPostsFromServer = async (): Promise<BlogPostsStore> => {
       return { ...cachedBlogPosts };
     }
     
-    // Initialize and try again
-    await unifiedStorage.initialize();
-    const posts = unifiedStorage.getAllPosts();
+    // Try once more
+    const posts = await supabaseUnifiedStorage.getAllPosts();
     cachedBlogPosts = { ...posts };
     return posts;
   }
 };
 
 /**
- * Saves blog posts to unified storage
+ * Saves blog posts to Supabase
  * This works for both Lovable-created and CMS/Content Editor created posts
  */
 export const saveBlogPostsToServer = async (posts: BlogPostsStore): Promise<void> => {
   try {
-    console.log("Saving blog posts to unified storage");
+    console.log("Saving blog posts to Supabase");
     
-    // Ensure unified storage is initialized
-    await unifiedStorage.initialize();
-    
-    // Save each post individually to ensure proper handling
+    // Save each post individually to Supabase
     for (const [slug, post] of Object.entries(posts)) {
-      await unifiedStorage.setPost(slug, post);
+      await supabaseUnifiedStorage.setPost(slug, post);
     }
     
     // Update cache
     cachedBlogPosts = { ...posts };
     
-    console.log("Successfully saved blog posts to unified storage:", Object.keys(posts).length);
+    console.log("Successfully saved blog posts to Supabase:", Object.keys(posts).length);
     
-    // Dispatch events for cross-tab communication
+    // Dispatch events for UI updates
     const blogUpdateEvent = new CustomEvent('blog-server-updated', { detail: posts });
     window.dispatchEvent(blogUpdateEvent);
     
   } catch (error) {
-    console.error("Error saving blog posts:", error);
+    console.error("Error saving blog posts to Supabase:", error);
     throw error;
   }
 };
@@ -93,40 +86,29 @@ export const getBlogPostsFromCache = async (): Promise<BlogPostsStore> => {
     return { ...cachedBlogPosts };
   }
   
-  // Cache is empty, fetch from unified storage
+  // Cache is empty, fetch from Supabase
   const posts = await fetchBlogPostsFromServer();
   cachedBlogPosts = { ...posts };
   return posts;
 };
 
 /**
- * Clears the cache to force a fresh fetch from unified storage
+ * Clears the cache to force a fresh fetch from Supabase
  */
 export const invalidateBlogPostsCache = (): void => {
   cachedBlogPosts = null;
   console.log("Blog posts cache invalidated");
 };
 
-// Setup listener for storage events from other tabs/windows
+// Set up periodic refresh for real-time updates
 if (typeof window !== 'undefined') {
-  window.addEventListener('storage', (event) => {
-    if (event.key?.includes('unified_blog') || event.key?.includes('blog')) {
-      console.log("Blog posts updated in another tab/window, refreshing cache");
-      invalidateBlogPostsCache();
-      // Dispatch event for components to refresh
-      const blogUpdateEvent = new CustomEvent('blog-storage-updated');
-      window.dispatchEvent(blogUpdateEvent);
-    }
-  });
-  
-  // Set up periodic refresh for cross-device sync
-  console.log("Setting up periodic refresh for unified blog storage");
-  const REFRESH_INTERVAL = 10000; // 10 seconds
+  console.log("Setting up periodic refresh for Supabase blog storage");
+  const REFRESH_INTERVAL = 30000; // 30 seconds
   setInterval(async () => {
     try {
-      const freshPosts = await unifiedStorage.refresh();
+      const freshPosts = await supabaseUnifiedStorage.refresh();
       if (JSON.stringify(cachedBlogPosts) !== JSON.stringify(freshPosts)) {
-        console.log("Detected changes during periodic refresh");
+        console.log("Detected changes during periodic refresh from Supabase");
         invalidateBlogPostsCache();
         const blogUpdateEvent = new CustomEvent('blog-periodic-refresh');
         window.dispatchEvent(blogUpdateEvent);

@@ -1,8 +1,8 @@
 
-// Export queries - now with unified storage
+// Export queries - now with Supabase storage
 export { getAllBlogPosts, getBlogPost } from './blogPostQueries';
 
-// Export operations - now with unified storage
+// Export operations - now with Supabase storage
 export { 
   createBlogPost, 
   updateBlogPost, 
@@ -30,8 +30,8 @@ export {
   invalidateBlogPostsCache
 } from './blogServerStorage';
 
-// Export unified storage
-export { unifiedStorage } from './unifiedBlogStorage';
+// Export Supabase storage
+export { supabaseUnifiedStorage } from './supabaseUnifiedStorage';
 
 // Export types
 export type { BlogPostsStore } from './types';
