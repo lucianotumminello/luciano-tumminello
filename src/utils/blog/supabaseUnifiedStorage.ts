@@ -28,7 +28,7 @@ class SupabaseUnifiedBlogStorage {
   /**
    * Initialize the Supabase storage system
    */
-  public async initialize(): Promise<void> => {
+  public async initialize(): Promise<void> {
     if (this.initialized) return;
 
     try {
