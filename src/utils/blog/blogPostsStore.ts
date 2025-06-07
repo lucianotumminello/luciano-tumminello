@@ -6,18 +6,13 @@ import {
   getBlogPostsFromCache,
   invalidateBlogPostsCache
 } from "./blogServerStorage";
-import { supabaseUnifiedStorage } from "./supabaseUnifiedStorage";
 
 // In-memory data store that will be updated during the session
 export const updatedBlogPosts: BlogPostsStore = {};
 
-// Initialize the blog posts store with Supabase
+// Initialize the blog posts store
 export const initializeBlogPosts = async (): Promise<void> => {
   try {
-    // Initialize Supabase storage first
-    await supabaseUnifiedStorage.initialize();
-    
-    // Fetch posts from Supabase
     const posts = await fetchBlogPostsFromServer();
     
     // Clear the updatedBlogPosts object
@@ -30,7 +25,7 @@ export const initializeBlogPosts = async (): Promise<void> => {
       updatedBlogPosts[key] = { ...value };
     });
     
-    console.log("Blog posts initialized with Supabase:", Object.keys(updatedBlogPosts).length);
+    console.log("Blog posts initialized:", Object.keys(updatedBlogPosts).length);
   } catch (error) {
     console.error("Error initializing blog posts:", error);
   }
@@ -41,10 +36,9 @@ initializeBlogPosts().catch(error => {
   console.error("Failed to initialize blog posts:", error);
 });
 
-// Save blog posts to Supabase
+// Save blog posts to the server
 export const saveBlogPostsToStorage = async (posts: BlogPostsStore): Promise<void> => {
   try {
-    // Save to Supabase
     await saveBlogPostsToServer(posts);
     
     // Update our in-memory store to match the stored data
@@ -60,21 +54,20 @@ export const saveBlogPostsToStorage = async (posts: BlogPostsStore): Promise<voi
     const storageEvent = new CustomEvent('blog-storage-updated', { detail: posts });
     window.dispatchEvent(storageEvent);
     
-    console.log("Blog posts saved to Supabase and events dispatched");
+    console.log("Blog posts saved successfully and events dispatched");
   } catch (error) {
     console.error("Error saving blog posts:", error);
     throw error;
   }
 };
 
-// Force a refresh of posts from Supabase
+// Force a refresh of posts from the server
 export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
   try {
     // Invalidate cache to force a fresh fetch
     invalidateBlogPostsCache();
     
-    // Refresh from Supabase
-    const refreshedPosts = await supabaseUnifiedStorage.refresh();
+    const refreshedPosts = await fetchBlogPostsFromServer();
     
     // Update our in-memory store to match the refreshed data
     Object.keys(updatedBlogPosts).forEach(key => {
@@ -85,7 +78,7 @@ export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
       updatedBlogPosts[key] = { ...value };
     });
     
-    console.log("Blog posts refreshed from Supabase:", Object.keys(updatedBlogPosts).length);
+    console.log("Blog posts refreshed from server:", Object.keys(updatedBlogPosts).length);
     return { ...updatedBlogPosts };
   } catch (error) {
     console.error("Error refreshing blog posts:", error);
@@ -95,9 +88,19 @@ export const refreshBlogPosts = async (): Promise<BlogPostsStore> => {
 
 // Listen for various storage update events
 if (typeof window !== 'undefined') {
+  // Listen for storage events from other tabs/windows
+  window.addEventListener('storage', (event) => {
+    if (event.key === "blog_posts_server_storage") {
+      console.log("Blog posts updated in another tab/window, refreshing data");
+      refreshBlogPosts().catch(error => {
+        console.error("Error refreshing blog posts after storage event:", error);
+      });
+    }
+  });
+  
   // Listen for periodic refresh events
   window.addEventListener('blog-periodic-refresh', () => {
-    console.log("Periodic refresh triggered, updating blog posts from Supabase");
+    console.log("Periodic refresh triggered, updating blog posts");
     refreshBlogPosts().catch(error => {
       console.error("Error during periodic refresh:", error);
     });

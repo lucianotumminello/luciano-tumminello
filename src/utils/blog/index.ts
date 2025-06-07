@@ -1,8 +1,8 @@
 
-// Export queries - now with Supabase storage
+// Export queries - now with async functions
 export { getAllBlogPosts, getBlogPost } from './blogPostQueries';
 
-// Export operations - now with Supabase storage
+// Export operations - now with async functions
 export { 
   createBlogPost, 
   updateBlogPost, 
@@ -30,11 +30,8 @@ export {
   invalidateBlogPostsCache
 } from './blogServerStorage';
 
-// Export Supabase storage
-export { supabaseUnifiedStorage } from './supabaseUnifiedStorage';
-
 // Export types
 export type { BlogPostsStore } from './types';
 
-// Export utility functions without auto-execution
-export { default as makeAdaptabilityPostPermanent } from './makeAdaptabilityPostPermanent';
+// Force-import the utility to make the blog post permanent
+import './makeBeyondRecognitionPermanent';
