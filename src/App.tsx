@@ -9,7 +9,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense, useEffect, Component } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
-import { refreshBlogPosts } from "./utils/blog";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -92,14 +91,6 @@ const RouteChangeTracker = () => {
       const path = location.pathname + location.search;
       const title = document.title;
       trackPageView(path, title);
-      
-      // Refresh blog posts when visiting the blog page
-      if (path === '/blog') {
-        console.log('Blog page visited, refreshing blog posts');
-        refreshBlogPosts().catch(error => {
-          console.error('Error refreshing blog posts on blog page visit:', error);
-        });
-      }
     } catch (error) {
       console.error('Error in route tracking:', error);
     }

@@ -2,7 +2,6 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import { initPerformanceOptimizations } from './utils/performanceUtils.ts'
 
 // Immediate initialization for critical performance optimizations
 if (typeof document !== 'undefined') {
@@ -30,15 +29,6 @@ const initGA = () => {
   });
 };
 
-// Defer GA initialization to prevent main thread blocking
-const deferScript = (url: string, callback?: Function) => {
-  const script = document.createElement('script');
-  script.src = url;
-  script.defer = true;
-  script.onload = () => callback?.();
-  document.head.appendChild(script);
-};
-
 // Prioritize core app rendering first
 const initApp = () => {
   // Use createRoot for concurrent features with error handling
@@ -52,12 +42,13 @@ const initApp = () => {
       // Remove loading class after hydration
       document.body.classList.remove('js-loading');
       
-      // Initialize performance optimizations after initial render
-      initPerformanceOptimizations();
-      
       // Defer analytics after app is interactive
       setTimeout(() => {
-        deferScript('https://www.googletagmanager.com/gtag/js?id=G-W020BWHW4V', initGA);
+        const script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-W020BWHW4V';
+        script.defer = true;
+        script.onload = initGA;
+        document.head.appendChild(script);
       }, 3000);
       
     } catch (error) {
@@ -73,45 +64,6 @@ const initApp = () => {
     }
   }
 };
-
-// Register service worker for offline support - with proper error handling and update notification
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    // Defer service worker registration after main content loads
-    setTimeout(() => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(function(registration) {
-          console.log('Service worker registered successfully:', registration.scope);
-          
-          // Check for updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // New content is available, notify user if needed
-                  console.log('New content is available; please refresh.');
-                }
-              });
-            }
-          });
-        })
-        .catch(function(err) {
-          console.log('Service worker registration failed: ', err);
-          // Continue app function even if service worker fails
-        });
-      
-      // Handle updates when user returns to the app
-      let refreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-          refreshing = true;
-          window.location.reload();
-        }
-      });
-    }, 3000);
-  });
-}
 
 // Execute immediately
 initApp();

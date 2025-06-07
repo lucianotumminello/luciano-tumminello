@@ -36,5 +36,5 @@ export { supabaseUnifiedStorage } from './supabaseUnifiedStorage';
 // Export types
 export type { BlogPostsStore } from './types';
 
-// Import utilities but don't execute them immediately to prevent hook errors
-import './makeAdaptabilityPostPermanent';
+// Export utility functions without auto-execution
+export { default as makeAdaptabilityPostPermanent } from './makeAdaptabilityPostPermanent';

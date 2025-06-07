@@ -31,13 +31,5 @@ const makeAdaptabilityPostPermanent = async (): Promise<void> => {
   }
 };
 
-// Execute after a delay to ensure React context is ready
-if (typeof window !== 'undefined') {
-  setTimeout(() => {
-    makeAdaptabilityPostPermanent().catch(error => {
-      console.error('Failed to execute makeAdaptabilityPostPermanent:', error);
-    });
-  }, 5000);
-}
-
+// Only export the function, don't execute it automatically
 export default makeAdaptabilityPostPermanent;
