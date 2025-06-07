@@ -3,12 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { HelmetProvider } from 'react-helmet-async';
-import { lazy, Suspense, useEffect } from 'react';
-import { trackPageView } from "./utils/analytics";
-import CookieConsent from "./components/CookieConsent";
+import { lazy, Suspense } from 'react';
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
@@ -38,41 +36,23 @@ const queryClient = new QueryClient({
   },
 });
 
-// Analytics tracker component
-const RouteChangeTracker = () => {
-  const location = useLocation();
-  
-  useEffect(() => {
-    try {
-      const path = location.pathname + location.search;
-      const title = document.title;
-      trackPageView(path, title);
-    } catch (error) {
-      console.error('Error in route tracking:', error);
-    }
-  }, [location]);
-  
-  return null;
-};
-
-// Loading component
+// Simple loading component
 const LoadingSpinner = () => (
-  <div className="flex h-screen w-full items-center justify-center">
+  <div className="flex h-screen w-full items-center justify-center bg-white">
     <div className="text-center">
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-      <p>Loading...</p>
+      <p className="text-gray-600">Loading...</p>
     </div>
   </div>
 );
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <LanguageProvider>
-          <HelmetProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <LanguageProvider>
             <BrowserRouter>
-              <RouteChangeTracker />
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -89,14 +69,13 @@ const App = () => {
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
-              <CookieConsent />
             </BrowserRouter>
             <Toaster />
             <Sonner />
-          </HelmetProvider>
-        </LanguageProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+          </LanguageProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
