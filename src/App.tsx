@@ -55,44 +55,49 @@ const RouteChangeTracker = () => {
   return null;
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <LanguageProvider>
-        <HelmetProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <RouteChangeTracker />
-            <Suspense fallback={
-              <div className="flex h-screen w-full items-center justify-center">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p>Loading...</p>
-                </div>
-              </div>
-            }>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/career" element={<ProfessionalJourney />} />
-                <Route path="/education" element={<Education />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/cookie-policy" element={<CookiePolicy />} />
-                <Route path="/blog-builder" element={<BlogBuilder />} />
-                <Route path="/admin" element={<SimpleCMS />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-            <CookieConsent />
-          </BrowserRouter>
-        </HelmetProvider>
-      </LanguageProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+// Loading component
+const LoadingSpinner = () => (
+  <div className="flex h-screen w-full items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
 );
+
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <LanguageProvider>
+          <HelmetProvider>
+            <BrowserRouter>
+              <RouteChangeTracker />
+              <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/career" element={<ProfessionalJourney />} />
+                  <Route path="/education" element={<Education />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/cookie-policy" element={<CookiePolicy />} />
+                  <Route path="/blog-builder" element={<BlogBuilder />} />
+                  <Route path="/admin" element={<SimpleCMS />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+              <CookieConsent />
+            </BrowserRouter>
+            <Toaster />
+            <Sonner />
+          </HelmetProvider>
+        </LanguageProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
