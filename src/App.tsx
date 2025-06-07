@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { HelmetProvider } from 'react-helmet-async';
-import { lazy, Suspense, useEffect, ErrorBoundary } from 'react';
+import { lazy, Suspense, useEffect, Component } from 'react';
 import { trackPageView } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
 import { refreshBlogPosts } from "./utils/blog";
@@ -47,22 +47,27 @@ const queryClient = new QueryClient({
 });
 
 // Error boundary component
-class AppErrorBoundary extends ErrorBoundary {
-  constructor(props: any) {
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class AppErrorBoundary extends Component<{ children: React.ReactNode }, ErrorBoundaryState> {
+  constructor(props: { children: React.ReactNode }) {
     super(props);
+    this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     console.error('App Error Boundary caught an error:', error);
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('App Error Boundary error details:', error, errorInfo);
   }
 
   render() {
-    if ((this as any).state?.hasError) {
+    if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
