@@ -31,7 +31,13 @@ const makeAdaptabilityPostPermanent = async (): Promise<void> => {
   }
 };
 
-// Execute immediately when this module is imported
-makeAdaptabilityPostPermanent();
+// Execute after a delay to ensure React context is ready
+if (typeof window !== 'undefined') {
+  setTimeout(() => {
+    makeAdaptabilityPostPermanent().catch(error => {
+      console.error('Failed to execute makeAdaptabilityPostPermanent:', error);
+    });
+  }, 5000);
+}
 
 export default makeAdaptabilityPostPermanent;

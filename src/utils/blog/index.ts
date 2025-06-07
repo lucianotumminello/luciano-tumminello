@@ -36,8 +36,5 @@ export { supabaseUnifiedStorage } from './supabaseUnifiedStorage';
 // Export types
 export type { BlogPostsStore } from './types';
 
-// Force-import the utility to make the blog post permanent
-import './makeBeyondRecognitionPermanent';
-
-// Force-import the utility to make the Adaptability Leadership blog post permanent
+// Import utilities but don't execute them immediately to prevent hook errors
 import './makeAdaptabilityPostPermanent';
