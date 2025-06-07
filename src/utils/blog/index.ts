@@ -38,3 +38,6 @@ export type { BlogPostsStore } from './types';
 
 // Force-import the utility to make the blog post permanent
 import './makeBeyondRecognitionPermanent';
+
+// Force-import the utility to make the Adaptability Leadership blog post permanent
+import './makeAdaptabilityPostPermanent';
