@@ -13,6 +13,7 @@ import { refreshBlogPosts } from "./utils/blog";
 
 // Import the Index page eagerly since it's the landing page
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 
 // Lazy load other pages
 const About = lazy(() => import("./pages/About"));
@@ -26,7 +27,6 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const BlogBuilder = lazy(() => import("./pages/BlogBuilder"));
 const SimpleCMS = lazy(() => import("./pages/SimpleCMS"));
-const Auth = lazy(() => import("./pages/Auth"));
 
 
 // Analytics tracker component
