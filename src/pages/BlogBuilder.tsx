@@ -1,19 +1,25 @@
 
-import { useState } from "react";
-import { SAVED_PASSWORD_KEY, useBlogBuilder } from "@/hooks/useBlogBuilder";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useBlogBuilder } from "@/hooks/useBlogBuilder";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FormattingGuide from "@/components/blog/FormattingGuide";
-import { AuthenticationSection } from "@/components/blog-builder/AuthenticationSection";
 import { BlogBuilderHeader } from "@/components/blog-builder/BlogBuilderHeader";
 import { EditingNotice } from "@/components/blog-builder/EditingNotice";
 import { BlogForm } from "@/components/blog-builder/BlogForm";
 import { BlogPreview } from "@/components/blog-builder/BlogPreview";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const BlogBuilder = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
   const {
-    isAuthenticated,
-    setIsAuthenticated,
     selectedPost,
     isUpdateMode,
     desktopImageFile,
@@ -23,7 +29,6 @@ const BlogBuilder = () => {
     showPreview,
     setShowPreview,
     previewData,
-    rememberPassword,
     blogPosts,
     publishStates,
     isPublishing,
@@ -31,7 +36,6 @@ const BlogBuilder = () => {
     setIsPostListOpen,
     isSaving,
     formValues,
-    handleRememberPasswordChange,
     handleImageUpload,
     applyLayout,
     handlePublishStateChange,
@@ -43,15 +47,56 @@ const BlogBuilder = () => {
     duplicatePost
   } = useBlogBuilder();
 
-  if (!isAuthenticated) {
+  useEffect(() => {
+    // Check authentication status
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+      setLoading(false);
+      
+      if (!session) {
+        navigate("/auth");
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
+      
+      if (!session) {
+        navigate("/auth");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to log out",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "You have been logged out",
+      });
+      navigate("/auth");
+    }
+  };
+
+  if (loading) {
     return (
-      <AuthenticationSection
-        onAuthSuccess={() => setIsAuthenticated(true)}
-        savedPassword={localStorage.getItem(SAVED_PASSWORD_KEY)}
-        rememberPassword={rememberPassword}
-        onRememberPasswordChange={handleRememberPasswordChange}
-      />
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
     );
+  }
+
+  if (!isAuthenticated) {
+    return null;
   }
 
   return (
@@ -70,7 +115,7 @@ const BlogBuilder = () => {
             onSavePublishStates={savePublishStates}
             isSaving={isSaving}
             onCancelEditing={cancelEditing}
-            onLogout={() => setIsAuthenticated(false)}
+            onLogout={handleLogout}
             onDuplicatePost={duplicatePost}
           />
           

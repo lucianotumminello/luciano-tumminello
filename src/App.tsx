@@ -26,6 +26,7 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const BlogBuilder = lazy(() => import("./pages/BlogBuilder"));
 const SimpleCMS = lazy(() => import("./pages/SimpleCMS"));
+const Auth = lazy(() => import("./pages/Auth"));
 
 
 // Analytics tracker component
@@ -69,7 +70,9 @@ const App = () => (
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="/blog-builder" element={<BlogBuilder />} />
-              <Route path="/admin" element={<SimpleCMS />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<BlogBuilder />} />
+              <Route path="/simple-cms" element={<SimpleCMS />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
