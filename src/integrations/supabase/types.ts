@@ -14,7 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blog_posts: {
+        Row: {
+          author: string
+          author_image_url: string | null
+          category: string
+          category_it: string | null
+          content: string
+          content_it: string | null
+          created_at: string | null
+          date: string
+          date_it: string | null
+          desktop_image_url: string | null
+          excerpt: string
+          excerpt_it: string | null
+          id: string
+          image_url: string | null
+          published: boolean | null
+          reading_time: string | null
+          reading_time_it: string | null
+          slug: string
+          tags: string[] | null
+          tags_it: string[] | null
+          title: string
+          title_it: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          author: string
+          author_image_url?: string | null
+          category: string
+          category_it?: string | null
+          content: string
+          content_it?: string | null
+          created_at?: string | null
+          date: string
+          date_it?: string | null
+          desktop_image_url?: string | null
+          excerpt: string
+          excerpt_it?: string | null
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          reading_time?: string | null
+          reading_time_it?: string | null
+          slug: string
+          tags?: string[] | null
+          tags_it?: string[] | null
+          title: string
+          title_it?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          author?: string
+          author_image_url?: string | null
+          category?: string
+          category_it?: string | null
+          content?: string
+          content_it?: string | null
+          created_at?: string | null
+          date?: string
+          date_it?: string | null
+          desktop_image_url?: string | null
+          excerpt?: string
+          excerpt_it?: string | null
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          reading_time?: string | null
+          reading_time_it?: string | null
+          slug?: string
+          tags?: string[] | null
+          tags_it?: string[] | null
+          title?: string
+          title_it?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
