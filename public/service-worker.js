@@ -1,8 +1,8 @@
 
 // Enhanced service worker for caching and performance optimization
-const CACHE_NAME = 'blog-cache-v3';
-const STATIC_CACHE_NAME = 'static-cache-v2';
-const IMAGE_CACHE_NAME = 'image-cache-v2';
+const CACHE_NAME = 'blog-cache-v4';
+const STATIC_CACHE_NAME = 'static-cache-v3';
+const IMAGE_CACHE_NAME = 'image-cache-v3';
 
 // Assets to cache immediately on install
 const STATIC_ASSETS = [
@@ -51,6 +51,11 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
   
   const url = new URL(event.request.url);
+  
+  // Bypass caching for Vite dev server dependencies to avoid stale React copies
+  if (url.pathname.startsWith('/node_modules/.vite/')) {
+    return; // Let the request pass through without SW handling
+  }
   
   // HTML navigation - network first, fallback to cache with 1-day max age
   if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {

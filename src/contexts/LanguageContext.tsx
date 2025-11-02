@@ -122,7 +122,11 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   
   // Wait until country detection is complete before rendering children
   if (!isInitialized) {
-    return null;
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        Loading...
+      </div>
+    );
   }
   
   return (

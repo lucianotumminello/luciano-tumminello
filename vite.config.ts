@@ -18,8 +18,6 @@ export default defineConfig(({ mode }) => ({
     react({
       // Optimize React build
       tsDecorators: true,
-      jsxImportSource: "react",
-      // Remove styled-components plugin that's causing the error
     }),
     mode === 'development' &&
     componentTagger(),
@@ -28,7 +26,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    dedupe: ["react", "react-dom"],
+    dedupe: ["react", "react-dom", "react/jsx-runtime"],
   },
   build: {
     target: 'es2015',
@@ -86,13 +84,12 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: [
-      'react', 
-      'react-dom', 
       'react-router-dom',
       '@tanstack/react-query',
       'react-helmet-async',
       '@supabase/supabase-js'
     ],
+    exclude: ['react', 'react-dom', 'react/jsx-runtime'],
     esbuildOptions: {
       target: 'es2015',
       treeShaking: true,
