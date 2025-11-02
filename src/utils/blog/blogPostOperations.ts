@@ -1,52 +1,28 @@
 
 import { BlogPost } from '@/types';
-import { supabase } from '@/integrations/supabase/client';
-import { invalidateBlogPostsCache } from './blogServerStorage';
+import { BlogPostsStore } from './types';
+import { updatedBlogPosts, saveBlogPostsToStorage } from './blogPostsStore';
 
 /**
- * Creates a new blog post in Supabase
+ * Creates a new blog post
  * @param newPost The new blog post to create
  * @param slug The slug to use for the blog post
  * @returns A promise that resolves to a boolean indicating success
  */
 export const createBlogPost = async (newPost: BlogPost, slug: string): Promise<boolean> => {
   try {
-    console.log("Creating blog post in database:", slug);
+    // Make sure the published flag is set to true by default if not specified
+    const postWithPublishedFlag = {
+      ...newPost,
+      published: newPost.published !== false
+    };
     
-    const { error } = await supabase
-      .from('blog_posts')
-      .insert({
-        slug,
-        title: newPost.title,
-        title_it: newPost.titleIT,
-        excerpt: newPost.excerpt,
-        excerpt_it: newPost.excerptIT,
-        content: newPost.content,
-        content_it: newPost.contentIT,
-        author: newPost.author,
-        author_image_url: newPost.authorImageUrl,
-        date: newPost.date,
-        date_it: newPost.dateIT,
-        category: newPost.category,
-        category_it: newPost.categoryIT,
-        image_url: newPost.imageUrl,
-        desktop_image_url: newPost.desktopImageUrl,
-        reading_time: newPost.readingTime,
-        reading_time_it: newPost.readingTimeIT,
-        tags: newPost.tags,
-        tags_it: newPost.tagsIT,
-        published: newPost.published !== false
-      });
+    // Add the new post to the updated blog posts
+    updatedBlogPosts[slug] = { ...postWithPublishedFlag };
     
-    if (error) {
-      console.error("Error creating blog post:", error);
-      return false;
-    }
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
     
-    // Invalidate cache to force refresh
-    invalidateBlogPostsCache();
-    
-    console.log("Blog post created successfully");
     return true;
   } catch (error) {
     console.error("Error creating blog post:", error);
@@ -55,49 +31,33 @@ export const createBlogPost = async (newPost: BlogPost, slug: string): Promise<b
 };
 
 /**
- * Updates an existing blog post in Supabase
+ * Updates an existing blog post
  * @param slug The slug of the blog post to update
  * @param updatedPost The updated blog post
  * @returns A promise that resolves to a boolean indicating success
  */
 export const updateBlogPost = async (slug: string, updatedPost: BlogPost): Promise<boolean> => {
   try {
-    console.log("Updating blog post in database:", slug);
-    
-    const { error } = await supabase
-      .from('blog_posts')
-      .update({
-        title: updatedPost.title,
-        title_it: updatedPost.titleIT,
-        excerpt: updatedPost.excerpt,
-        excerpt_it: updatedPost.excerptIT,
-        content: updatedPost.content,
-        content_it: updatedPost.contentIT,
-        author: updatedPost.author,
-        author_image_url: updatedPost.authorImageUrl,
-        date: updatedPost.date,
-        date_it: updatedPost.dateIT,
-        category: updatedPost.category,
-        category_it: updatedPost.categoryIT,
-        image_url: updatedPost.imageUrl,
-        desktop_image_url: updatedPost.desktopImageUrl,
-        reading_time: updatedPost.readingTime,
-        reading_time_it: updatedPost.readingTimeIT,
-        tags: updatedPost.tags,
-        tags_it: updatedPost.tagsIT,
-        published: updatedPost.published !== undefined ? updatedPost.published : true
-      })
-      .eq('slug', slug);
-    
-    if (error) {
-      console.error("Error updating blog post:", error);
+    // Check if the blog post exists
+    if (!updatedBlogPosts[slug]) {
+      console.error(`Blog post with slug ${slug} not found.`);
       return false;
     }
     
-    // Invalidate cache to force refresh
-    invalidateBlogPostsCache();
+    // Ensure the published flag is preserved unless explicitly set
+    const postWithPublishedFlag = {
+      ...updatedPost,
+      published: updatedPost.published !== undefined 
+        ? updatedPost.published 
+        : (updatedBlogPosts[slug].published !== false)
+    };
     
-    console.log("Blog post updated successfully");
+    // Update the blog post
+    updatedBlogPosts[slug] = { ...postWithPublishedFlag };
+    
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
     return true;
   } catch (error) {
     console.error(`Error updating blog post ${slug}:`, error);
@@ -106,28 +66,24 @@ export const updateBlogPost = async (slug: string, updatedPost: BlogPost): Promi
 };
 
 /**
- * Deletes a blog post from Supabase
+ * Deletes a blog post
  * @param slug The slug of the blog post to delete
  * @returns A promise that resolves to a boolean indicating success
  */
 export const deleteBlogPost = async (slug: string): Promise<boolean> => {
   try {
-    console.log("Deleting blog post from database:", slug);
-    
-    const { error } = await supabase
-      .from('blog_posts')
-      .delete()
-      .eq('slug', slug);
-    
-    if (error) {
-      console.error("Error deleting blog post:", error);
+    // Check if the blog post exists
+    if (!updatedBlogPosts[slug]) {
+      console.error(`Blog post with slug ${slug} not found.`);
       return false;
     }
     
-    // Invalidate cache to force refresh
-    invalidateBlogPostsCache();
+    // Delete the blog post
+    delete updatedBlogPosts[slug];
     
-    console.log("Blog post deleted successfully");
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
     return true;
   } catch (error) {
     console.error(`Error deleting blog post ${slug}:`, error);
@@ -136,22 +92,14 @@ export const deleteBlogPost = async (slug: string): Promise<boolean> => {
 };
 
 /**
- * Creates a duplicate of an existing blog post in Supabase
+ * Creates a duplicate of an existing blog post
  * @param originalSlug The slug of the blog post to duplicate
  * @returns A promise that resolves to the duplicated post if successful, or null if failed
  */
 export const duplicateBlogPost = async (originalSlug: string): Promise<BlogPost | null> => {
   try {
-    console.log("Duplicating blog post from database:", originalSlug);
-    
-    // Fetch the original post
-    const { data: originalData, error: fetchError } = await supabase
-      .from('blog_posts')
-      .select('*')
-      .eq('slug', originalSlug)
-      .single();
-    
-    if (fetchError || !originalData) {
+    // Check if the original blog post exists
+    if (!updatedBlogPosts[originalSlug]) {
       console.error(`Blog post with slug ${originalSlug} not found.`);
       return null;
     }
@@ -159,67 +107,20 @@ export const duplicateBlogPost = async (originalSlug: string): Promise<BlogPost 
     // Create a new slug with timestamp to ensure uniqueness
     const newSlug = `${originalSlug}-copy-${Date.now()}`;
     
-    // Create the duplicate post
-    const { data: newData, error: insertError } = await supabase
-      .from('blog_posts')
-      .insert({
-        slug: newSlug,
-        title: originalData.title,
-        title_it: originalData.title_it,
-        excerpt: originalData.excerpt,
-        excerpt_it: originalData.excerpt_it,
-        content: originalData.content,
-        content_it: originalData.content_it,
-        author: originalData.author,
-        author_image_url: originalData.author_image_url,
-        date: originalData.date,
-        date_it: originalData.date_it,
-        category: originalData.category,
-        category_it: originalData.category_it,
-        image_url: originalData.image_url,
-        desktop_image_url: originalData.desktop_image_url,
-        reading_time: originalData.reading_time,
-        reading_time_it: originalData.reading_time_it,
-        tags: originalData.tags,
-        tags_it: originalData.tags_it,
-        published: originalData.published
-      })
-      .select()
-      .single();
-    
-    if (insertError || !newData) {
-      console.error("Error creating duplicate post:", insertError);
-      return null;
-    }
-    
-    // Invalidate cache to force refresh
-    invalidateBlogPostsCache();
-    
-    // Convert back to BlogPost format
-    const newPost: BlogPost = {
-      title: newData.title,
-      titleIT: newData.title_it,
-      excerpt: newData.excerpt,
-      excerptIT: newData.excerpt_it,
-      content: newData.content,
-      contentIT: newData.content_it,
-      author: newData.author,
-      authorImageUrl: newData.author_image_url,
-      date: newData.date,
-      dateIT: newData.date_it,
-      category: newData.category,
-      categoryIT: newData.category_it,
-      imageUrl: newData.image_url,
-      desktopImageUrl: newData.desktop_image_url,
-      readingTime: newData.reading_time,
-      readingTimeIT: newData.reading_time_it,
-      tags: newData.tags || [],
-      tagsIT: newData.tags_it || [],
-      published: newData.published,
-      slug: newData.slug
+    // Create a copy of the original blog post
+    const originalPost = updatedBlogPosts[originalSlug];
+    const newPost: BlogPost = { 
+      ...originalPost, 
+      slug: newSlug,
+      published: originalPost.published !== false // Ensure published flag is preserved
     };
     
-    console.log("Blog post duplicated successfully");
+    // Add the new post to the updated blog posts
+    updatedBlogPosts[newSlug] = newPost;
+    
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
+    
     return newPost;
   } catch (error) {
     console.error(`Error duplicating blog post ${originalSlug}:`, error);
@@ -228,7 +129,7 @@ export const duplicateBlogPost = async (originalSlug: string): Promise<BlogPost 
 };
 
 /**
- * Makes a blog post permanent with a clean URL in Supabase
+ * Makes a blog post permanent with a clean URL
  * @param temporarySlug The original/temporary slug
  * @param permanentSlug The new permanent slug
  * @param published Optional flag to explicitly set published status (defaults to true)
@@ -240,84 +141,50 @@ export const makeBlogPostPermanent = async (
   published: boolean = true
 ): Promise<boolean> => {
   try {
-    console.log(`Making blog post permanent: ${temporarySlug} -> ${permanentSlug}`);
-    
     // Check if the original blog post exists
-    const { data: originalData, error: fetchError } = await supabase
-      .from('blog_posts')
-      .select('*')
-      .eq('slug', temporarySlug)
-      .single();
-    
-    if (fetchError || !originalData) {
+    if (!updatedBlogPosts[temporarySlug]) {
       console.error(`Blog post with slug ${temporarySlug} not found.`);
       return false;
     }
     
-    // Check if the permanent slug already exists
-    const { data: existingData } = await supabase
-      .from('blog_posts')
-      .select('slug')
-      .eq('slug', permanentSlug)
-      .single();
-    
-    if (existingData) {
-      console.log(`Permanent post ${permanentSlug} already exists, updating published status`);
+    // Check if the permanent slug already exists to avoid overwriting
+    if (updatedBlogPosts[permanentSlug]) {
+      console.log(`Permanent post ${permanentSlug} already exists, no action needed.`);
       
-      // Update published status
-      const { error: updateError } = await supabase
-        .from('blog_posts')
-        .update({ published })
-        .eq('slug', permanentSlug);
-      
-      if (updateError) {
-        console.error("Error updating published status:", updateError);
-        return false;
+      // Ensure published flag is set to true for the permanent post
+      if (updatedBlogPosts[permanentSlug].published !== published) {
+        console.log(`Updating published status of ${permanentSlug} to ${published}`);
+        updatedBlogPosts[permanentSlug] = {
+          ...updatedBlogPosts[permanentSlug],
+          published: published
+        };
+        
+        // Save the updated blog posts to storage
+        await saveBlogPostsToStorage({ ...updatedBlogPosts });
       }
       
-      // Invalidate cache
-      invalidateBlogPostsCache();
       return true;
     }
     
-    // Create a new post with the permanent slug
-    const { error: insertError } = await supabase
-      .from('blog_posts')
-      .insert({
-        slug: permanentSlug,
-        title: originalData.title,
-        title_it: originalData.title_it,
-        excerpt: originalData.excerpt,
-        excerpt_it: originalData.excerpt_it,
-        content: originalData.content,
-        content_it: originalData.content_it,
-        author: originalData.author,
-        author_image_url: originalData.author_image_url,
-        date: originalData.date,
-        date_it: originalData.date_it,
-        category: originalData.category,
-        category_it: originalData.category_it,
-        image_url: originalData.image_url,
-        desktop_image_url: originalData.desktop_image_url,
-        reading_time: originalData.reading_time,
-        reading_time_it: originalData.reading_time_it,
-        tags: originalData.tags,
-        tags_it: originalData.tags_it,
-        published: published
-      });
+    // Create a copy of the original blog post
+    const originalPost = updatedBlogPosts[temporarySlug];
+    const permanentPost = { 
+      ...originalPost,
+      published: published // Explicitly set the published flag
+    };
     
-    if (insertError) {
-      console.error("Error creating permanent post:", insertError);
-      return false;
-    }
+    // Add the permanent post to the updated blog posts
+    updatedBlogPosts[permanentSlug] = permanentPost;
     
-    // Invalidate cache
-    invalidateBlogPostsCache();
+    // Save the updated blog posts to storage
+    await saveBlogPostsToStorage({ ...updatedBlogPosts });
     
-    console.log(`Blog post made permanent successfully`);
+    console.log(`Blog post made permanent: ${temporarySlug} -> ${permanentSlug}`);
+    console.log(`Published status set to: ${published}`);
+    
     return true;
   } catch (error) {
-    console.error(`Error making blog post permanent:`, error);
+    console.error(`Error making blog post permanent: ${temporarySlug} -> ${permanentSlug}`, error);
     return false;
   }
 };
