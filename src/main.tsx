@@ -1,5 +1,5 @@
 
-import { createRoot } from 'react-dom/client'
+// import { createRoot } from 'react-dom/client' // switched to dynamic import for compatibility
 import App from './App.tsx'
 import './index.css'
 import { initPerformanceOptimizations } from './utils/performanceUtils.ts'
@@ -40,26 +40,25 @@ const deferScript = (url: string, callback?: Function) => {
 };
 
 // Prioritize core app rendering first
-const initApp = () => {
-  // Use createRoot for concurrent features with error handling
+const initApp = async () => {
+  // Use dynamic import for compatibility across React versions
   const rootElement = document.getElementById("root");
-  if (rootElement) {
-    // Create and render with error boundary
+  if (!rootElement) return;
+
+  try {
+    const { createRoot } = await import('react-dom/client');
+    const root = createRoot(rootElement as HTMLElement);
+    root.render(<App />);
+  } catch (e) {
+    console.warn('createRoot not available, falling back to ReactDOM.render', e);
     try {
-      const root = createRoot(rootElement);
-      root.render(<App />);
-      
-      // Remove loading class after hydration
-      document.body.classList.remove('js-loading');
-      
-      // Initialize performance optimizations after initial render
-      initPerformanceOptimizations();
-      
-      // Defer analytics after app is interactive
-      setTimeout(() => {
-        deferScript('https://www.googletagmanager.com/gtag/js?id=G-W020BWHW4V', initGA);
-      }, 3000);
-      
+      const ReactDOMMod: any = await import('react-dom');
+      const render = ReactDOMMod.render || ReactDOMMod.default?.render;
+      if (typeof render === 'function') {
+        render(<App />, rootElement);
+      } else {
+        throw new Error('render not found on react-dom');
+      }
     } catch (error) {
       console.error("Error rendering application:", error);
       // Fallback rendering if main app fails
@@ -70,8 +69,20 @@ const initApp = () => {
           <p>Please try refreshing the page.</p>
         </div>
       `;
+      return;
     }
   }
+  
+  // Remove loading class after hydration
+  document.body.classList.remove('js-loading');
+  
+  // Initialize performance optimizations after initial render
+  initPerformanceOptimizations();
+  
+  // Defer analytics after app is interactive
+  setTimeout(() => {
+    deferScript('https://www.googletagmanager.com/gtag/js?id=G-W020BWHW4V', initGA);
+  }, 3000);
 };
 
 // Register service worker for offline support - with proper error handling and update notification
