@@ -85,10 +85,17 @@ export default defineConfig(({ mode }) => ({
     emptyOutDir: true, // Clean output directory before build
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: [
+      'react', 
+      'react-dom', 
+      'react-router-dom',
+      '@tanstack/react-query',
+      'react-helmet-async',
+      '@supabase/supabase-js'
+    ],
     esbuildOptions: {
       target: 'es2015',
-      treeShaking: true, // Remove unused code
+      treeShaking: true,
       minify: true,
       minifyWhitespace: true,
       minifyIdentifiers: true,
