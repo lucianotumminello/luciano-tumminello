@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { SAVED_PASSWORD_KEY, useBlogBuilder } from "@/hooks/useBlogBuilder";
+import { useBlogBuilder } from "@/hooks/useBlogBuilder";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FormattingGuide from "@/components/blog/FormattingGuide";
@@ -23,7 +24,6 @@ const BlogBuilder = () => {
     showPreview,
     setShowPreview,
     previewData,
-    rememberPassword,
     blogPosts,
     publishStates,
     isPublishing,
@@ -31,7 +31,6 @@ const BlogBuilder = () => {
     setIsPostListOpen,
     isSaving,
     formValues,
-    handleRememberPasswordChange,
     handleImageUpload,
     applyLayout,
     handlePublishStateChange,
@@ -43,13 +42,15 @@ const BlogBuilder = () => {
     duplicatePost
   } = useBlogBuilder();
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsAuthenticated(false);
+  };
+
   if (!isAuthenticated) {
     return (
       <AuthenticationSection
         onAuthSuccess={() => setIsAuthenticated(true)}
-        savedPassword={localStorage.getItem(SAVED_PASSWORD_KEY)}
-        rememberPassword={rememberPassword}
-        onRememberPasswordChange={handleRememberPasswordChange}
       />
     );
   }
@@ -70,7 +71,7 @@ const BlogBuilder = () => {
             onSavePublishStates={savePublishStates}
             isSaving={isSaving}
             onCancelEditing={cancelEditing}
-            onLogout={() => setIsAuthenticated(false)}
+            onLogout={handleLogout}
             onDuplicatePost={duplicatePost}
           />
           

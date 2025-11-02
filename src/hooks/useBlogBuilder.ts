@@ -11,8 +11,7 @@ import {
 } from "@/utils/blogDataManager";
 import { textToHtml, htmlToText, applyStandardLayout } from "@/utils/contentFormatter";
 import { translateText, generateTags, estimateReadingTime } from "@/utils/blogUtils";
-
-export const SAVED_PASSWORD_KEY = "blog_builder_password";
+import { supabase } from "@/integrations/supabase/client";
 export const DEFAULT_AUTHOR = "Luciano Tumminello";
 export const DEFAULT_AUTHOR_IMAGE = "/lovable-uploads/56f210ad-b756-429e-b8fd-f28fbbee4cfc.png";
 
@@ -44,7 +43,6 @@ export const useBlogBuilder = () => {
   const [mobileImageFile, setMobileImageFile] = useState<File | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [previewData, setPreviewData] = useState<BlogPost | null>(null);
-  const [rememberPassword, setRememberPassword] = useState(false);
   const [blogPosts, setBlogPosts] = useState<Record<string, BlogPost>>({});
   const [publishStates, setPublishStates] = useState<Record<string, boolean>>({});
   const [isPublishing, setIsPublishing] = useState(false);
@@ -56,21 +54,47 @@ export const useBlogBuilder = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Check authentication state on mount
   useEffect(() => {
-    try {
-      const savedPassword = localStorage.getItem(SAVED_PASSWORD_KEY);
-      if (savedPassword && savedPassword === "VanBasten9!") {
-        console.log("Auto-login with saved password");
-        setIsAuthenticated(true);
-        setRememberPassword(true);
-        toast({
-          title: "Authentication successful",
-          description: "Welcome to the blog builder!",
-        });
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        // Check if user has admin role
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+
+        if (roleData) {
+          setIsAuthenticated(true);
+        }
       }
-    } catch (error) {
-      console.error("Error accessing localStorage:", error);
-    }
+    };
+
+    checkAuth();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+
+        setIsAuthenticated(!!roleData);
+      } else if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -142,12 +166,6 @@ export const useBlogBuilder = () => {
     }
   }, [isAuthenticated, toast]);
 
-  const handleRememberPasswordChange = (checked: boolean) => {
-    setRememberPassword(checked);
-    if (!checked) {
-      localStorage.removeItem(SAVED_PASSWORD_KEY);
-    }
-  };
 
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -537,8 +555,6 @@ export const useBlogBuilder = () => {
     setShowPreview,
     previewData,
     setPreviewData,
-    rememberPassword,
-    setRememberPassword,
     blogPosts,
     setBlogPosts,
     publishStates,
@@ -552,7 +568,6 @@ export const useBlogBuilder = () => {
     formValues,
     setFormValues,
     isLoading,
-    handleRememberPasswordChange,
     handleImageUpload,
     applyLayout,
     handlePublishStateChange,
