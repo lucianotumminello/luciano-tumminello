@@ -84,20 +84,16 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: [
+      'react',
+      'react-dom',
+      'react-dom/client',
       'react-router-dom',
       '@tanstack/react-query',
       'react-helmet-async',
       '@supabase/supabase-js'
     ],
-    exclude: ['react', 'react-dom', 'react/jsx-runtime'],
     esbuildOptions: {
       target: 'es2015',
-      treeShaking: true,
-      minify: true,
-      minifyWhitespace: true,
-      minifyIdentifiers: true,
-      minifySyntax: true,
-      legalComments: 'none',
     }
   },
   preview: {
