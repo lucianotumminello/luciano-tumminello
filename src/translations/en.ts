@@ -2,11 +2,22 @@
 const en = {
   // Navigation
   "nav.home": "Home",
-  "nav.about": "About Me",
-  "nav.journey": "Career",
+  "nav.about": "About",
+  "nav.journey": "Experience",
+  "nav.experience": "Experience",
+  "nav.services": "Services",
+  "nav.work": "Selected Work",
   "nav.education": "Education",
-  "nav.blog": "Blog",
+  "nav.blog": "Insights",
+  "nav.insights": "Insights",
   "nav.contact": "Contact Me",
+  "nav.cta": "Discuss an Opportunity",
+  "experience.tab.career": "Career",
+  "experience.tab.education": "Education",
+  "services.title": "Services",
+  "services.subtitle": "Coming soon — a curated set of advisory and consulting services.",
+  "work.title": "Selected Work",
+  "work.subtitle": "Coming soon — highlights of selected projects and case studies.",
   
   // Hero Section
   "hero.title": "Luciano Tumminello",
