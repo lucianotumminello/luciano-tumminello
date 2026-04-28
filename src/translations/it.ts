@@ -3,10 +3,21 @@ const it = {
   // Navigation
   "nav.home": "Home",
   "nav.about": "Chi Sono",
-  "nav.journey": "Carriera",
+  "nav.journey": "Esperienza",
+  "nav.experience": "Esperienza",
+  "nav.services": "Servizi",
+  "nav.work": "Lavori Selezionati",
   "nav.education": "Istruzione",
-  "nav.blog": "Blog",
+  "nav.blog": "Approfondimenti",
+  "nav.insights": "Approfondimenti",
   "nav.contact": "Contattami",
+  "nav.cta": "Discuti un'Opportunità",
+  "experience.tab.career": "Carriera",
+  "experience.tab.education": "Istruzione",
+  "services.title": "Servizi",
+  "services.subtitle": "Prossimamente — una selezione di servizi di consulenza e advisory.",
+  "work.title": "Lavori Selezionati",
+  "work.subtitle": "Prossimamente — una selezione di progetti e case study.",
   
   // Hero Section
   "hero.title": "Luciano Tumminello",
