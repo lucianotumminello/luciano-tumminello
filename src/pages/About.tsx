@@ -1,6 +1,7 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { Briefcase, GraduationCap, Globe, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +16,17 @@ const About = () => {
     navigate('/career');
   };
 
+  const isItalian = language === "it";
+  const seoTitle = isItalian
+    ? "Chi sono | Luciano Tumminello"
+    : "About Luciano Tumminello | COO & Marketing Leader";
+  const seoDescription = isItalian
+    ? "Conosci Luciano Tumminello, COO con oltre 16 anni di esperienza in marketing, operazioni e trasformazione digitale in tutta l'Asia-Pacifico."
+    : "Learn about Luciano Tumminello, COO with 16+ years driving marketing, operations, and digital transformation across Asia-Pacific.";
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <SEO title={seoTitle} description={seoDescription} path="/about" />
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="container mx-auto max-w-4xl">
