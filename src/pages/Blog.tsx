@@ -313,7 +313,7 @@ const Blog = () => {
           )}
           
           {/* Visual debug indicator (hidden in production) */}
-          {process.env.NODE_ENV !== 'production' && (
+          {import.meta.env.DEV && (
             <div className="text-xs text-gray-400 text-center mt-4">
               Last refreshed: {new Date(lastRefresh).toLocaleTimeString()} | 
               Posts in memory: {blogPosts.length}
