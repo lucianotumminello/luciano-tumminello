@@ -66,10 +66,6 @@ const Index = () => {
       </Helmet>
       <Header />
       <main className="flex-1">
-        {/* H1 heading */}
-        <h1 className="text-3xl md:text-4xl font-bold tracking-wide text-primary uppercase text-center py-8">
-          <TranslatedText textKey="home.title" />
-        </h1>
         <HeroSection />
         <ProfileImage />
         <section id="core-competencies">
