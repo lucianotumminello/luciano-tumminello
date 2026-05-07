@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import ValuePropositionCards from "@/components/ValuePropositionCards";
+import CredibilityStrip from "@/components/CredibilityStrip";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
 import TranslatedText from "@/components/TranslatedText";
@@ -69,6 +70,7 @@ const Index = () => {
       <main className="flex-1">
         <HeroSection />
         <ValuePropositionCards />
+        <CredibilityStrip />
         <ProfileImage />
         <section id="core-competencies">
           <CompetenciesSummary />

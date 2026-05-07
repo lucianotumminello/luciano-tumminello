@@ -43,6 +43,13 @@ const it = {
   "explore.insights.description": "Leggi i miei pensieri sui trend del settore e le strategie di marketing.",
   "explore.insights.cta": "Leggi Blog",
   
+  // Credibility Strip
+  "credibility.years": "Anni in Marketing e Operazioni",
+  "credibility.industries": "Settori Serviti",
+  "credibility.countries": "Paesi Dove Ho Vissuto e Lavorato",
+  "credibility.team": "Membri del Team Guidati",
+  "credibility.region": "Base di Competenza Regionale",
+  
   // Blog Page
   "blog.title": "Blog",
   "blog.subtitle": "Approfondimenti strategici sulla trasformazione digitale, le operazioni globali e il marketing basato sui dati.",
