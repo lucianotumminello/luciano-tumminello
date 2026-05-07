@@ -43,6 +43,13 @@ const en = {
   "explore.insights.description": "Read my thoughts on industry trends and marketing strategies.",
   "explore.insights.cta": "Read Blog",
   
+  // Credibility Strip
+  "credibility.years": "Years in Marketing and Operations",
+  "credibility.industries": "Industries Served",
+  "credibility.countries": "Countries Lived and Worked In",
+  "credibility.team": "Team Members Led",
+  "credibility.region": "Regional Expertise Base",
+  
   // Blog Page
   "blog.title": "Blog",
   "blog.subtitle": "Strategic insights on digital transformation, global operations, and data-driven marketing.",
