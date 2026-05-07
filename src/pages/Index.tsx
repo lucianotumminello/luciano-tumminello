@@ -70,6 +70,7 @@ const Index = () => {
       <main className="flex-1">
         <HeroSection />
         <ValuePropositionCards />
+        <CredibilityStrip />
         <ProfileImage />
         <section id="core-competencies">
           <CompetenciesSummary />
