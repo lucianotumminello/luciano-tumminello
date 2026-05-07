@@ -1,72 +1,69 @@
-
 import { Button } from "@/components/ui/button";
-import { ArrowDownIcon } from "lucide-react";
+import { memo } from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import TranslatedText from "./TranslatedText";
-import { memo, useCallback, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const HeroSection = memo(() => {
-  const { t } = useLanguage();
-  const isMobile = useIsMobile();
-  const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(false);
+  const { language } = useLanguage();
 
-  // Add visibility effect for smoother rendering
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsVisible(true);
-    }, 10);
-    return () => clearTimeout(timeoutId);
-  }, []);
-  
-  const scrollToCompetencies = useCallback(() => {
-    const competenciesSection = document.getElementById('core-competencies');
-    if (competenciesSection) {
-      competenciesSection.scrollIntoView({ behavior: "smooth" });
-    }
-  }, []);
+  const headline =
+    language === "it"
+      ? "Aiuto le organizzazioni a crescere, performare e trasformarsi attraverso marketing, operations e leadership digitale."
+      : "I help organizations grow, perform, and transform through marketing, operations, and digital leadership.";
 
-  const navigateToCareer = useCallback(() => {
-    navigate('/career');
-  }, [navigate]);
+  const subheadline =
+    language === "it"
+      ? "Oltre 15 anni in APAC. Fractional CMO, Marketing Consultant e Commercial Advisor per organizzazioni in APAC, Europa e oltre."
+      : "15+ years across APAC. Fractional CMO, Marketing Consultant, and Commercial Advisor for organizations across APAC, Europe, and beyond.";
+
+  const ctaPrimary = language === "it" ? "Discuti un'opportunità" : "Discuss an Opportunity";
+  const ctaExperience = language === "it" ? "Vedi la mia esperienza" : "View My Experience";
+  const ctaServices = language === "it" ? "Esplora i servizi" : "Explore Services";
 
   return (
-    <section 
-      className={`relative py-12 md:py-20 px-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+    <section
+      className="relative px-4 pt-10 pb-12 md:pt-16 md:pb-20"
       aria-labelledby="hero-heading"
-      style={{ willChange: "opacity" }}
     >
       <div className="container mx-auto max-w-5xl">
-        <div className="space-y-6">
-          <p className={`text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto ${isMobile ? 'text-center' : 'text-justify'}`}>
-            <TranslatedText textKey="home.subtitle" />
+        <div className="space-y-6 md:space-y-8 text-center">
+          <h1
+            id="hero-heading"
+            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight text-primary max-w-4xl mx-auto"
+          >
+            {headline}
+          </h1>
+
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            {subheadline}
           </p>
-          
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button 
-              onClick={scrollToCompetencies}
-              size="lg" 
-              className="min-w-[160px]"
-              aria-label={t("home.expertise")}
+
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="w-full sm:w-auto min-w-[200px] bg-[#0a1f44] text-white hover:bg-[#0a1f44]/90"
             >
-              <TranslatedText textKey="home.expertise" />
-              <ArrowDownIcon className="ml-2 h-4 w-4" />
+              <Link to="/contact">{ctaPrimary}</Link>
             </Button>
-            <Button 
-              onClick={navigateToCareer}
-              className="min-w-[160px]"
-              aria-label={t("home.professionalJourney")}
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto min-w-[200px] border-[#0a1f44] text-[#0a1f44] hover:bg-[#0a1f44]/5"
             >
-              <TranslatedText textKey="home.professionalJourney" />
+              <Link to="/experience">{ctaExperience}</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto min-w-[200px] border-[#0a1f44] text-[#0a1f44] hover:bg-[#0a1f44]/5"
+            >
+              <Link to="/services">{ctaServices}</Link>
             </Button>
           </div>
         </div>
-      </div>
-      
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-        <div className="h-16 w-px bg-gradient-to-b from-transparent to-gray-200"></div>
       </div>
     </section>
   );
