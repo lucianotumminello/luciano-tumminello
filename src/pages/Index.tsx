@@ -72,6 +72,7 @@ const Index = () => {
         <HeroSection />
         <ValuePropositionCards />
         <CredibilityStrip />
+        <OutcomesSection />
         <ProfileImage />
         <section id="core-competencies">
           <CompetenciesSummary />
