@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import ValuePropositionCards from "@/components/ValuePropositionCards";
 import CredibilityStrip from "@/components/CredibilityStrip";
+import OutcomesSection from "@/components/OutcomesSection";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
 import TranslatedText from "@/components/TranslatedText";
@@ -71,6 +72,7 @@ const Index = () => {
         <HeroSection />
         <ValuePropositionCards />
         <CredibilityStrip />
+        <OutcomesSection />
         <ProfileImage />
         <section id="core-competencies">
           <CompetenciesSummary />
