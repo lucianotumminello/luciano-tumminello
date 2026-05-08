@@ -5,6 +5,7 @@ import HeroSection from "@/components/HeroSection";
 import ValuePropositionCards from "@/components/ValuePropositionCards";
 import CredibilityStrip from "@/components/CredibilityStrip";
 import OutcomesSection from "@/components/OutcomesSection";
+import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
 import TranslatedText from "@/components/TranslatedText";
@@ -73,6 +74,7 @@ const Index = () => {
         <ValuePropositionCards />
         <CredibilityStrip />
         <OutcomesSection />
+        <SectorBreadth />
         <ProfileImage />
         <section id="core-competencies">
           <CompetenciesSummary />
