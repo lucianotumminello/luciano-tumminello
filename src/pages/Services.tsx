@@ -114,7 +114,9 @@ const Services = () => {
               ))}
             </div>
           </section>
-          <section className="mb-20">
+
+          {/* Ways of Working */}
+          <section className="mb-20 md:mb-24">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8 inline-block border-b-2 border-teal-600 pb-2">
               Ways of Working
             </h2>
@@ -122,7 +124,7 @@ const Services = () => {
               {waysOfWorking.map((w) => (
                 <div
                   key={w.title}
-                  className="p-6 md:p-7 md:grid md:grid-cols-[260px_1fr] md:gap-8 hover:bg-gray-50 transition-colors"
+                  className="p-7 md:p-8 md:grid md:grid-cols-[260px_1fr] md:gap-8 hover:bg-gray-50 transition-colors"
                 >
                   <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-2 md:mb-0">
                     {w.title}
