@@ -43,20 +43,20 @@ const CompetenciesSummary = () => {
   ];
 
   return (
-    <section className="py-16 px-4 bg-white">
+    <section className="py-16 md:py-20 px-4 bg-white">
       <div className="container mx-auto max-w-5xl">
-        <h2 className="text-2xl font-bold mb-8 flex items-center">
-          <CheckCircle className="mr-2 h-6 w-6 text-primary" />
+        <h2 className="text-3xl md:text-4xl font-bold mb-12 flex items-center">
+          <CheckCircle className="mr-3 h-7 w-7 text-primary" />
           <TranslatedText textKey="competencies.title" />
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
           {competencies.map((competency, index) => (
             <Card key={index} className="bg-gray-50 border-none shadow-sm hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
-                <h3 className="font-bold text-sm text-primary mb-1">
+              <CardContent className="p-7 md:p-8">
+                <h3 className="font-bold text-lg md:text-xl text-primary mb-3">
                   <TranslatedText textKey={competency.titleKey} />
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                   <TranslatedText textKey={competency.descriptionKey} />
                 </p>
               </CardContent>

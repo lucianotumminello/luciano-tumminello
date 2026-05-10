@@ -8,7 +8,7 @@ import OutcomesSection from "@/components/OutcomesSection";
 import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
-import TranslatedText from "@/components/TranslatedText";
+
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
@@ -71,55 +71,31 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <HeroSection />
+        <ProfileImage />
         <ValuePropositionCards />
         <CredibilityStrip />
         <OutcomesSection />
         <SectorBreadth />
-        <ProfileImage />
         <section id="core-competencies">
           <CompetenciesSummary />
         </section>
-        
-        {/* Explore More section with proper translations */}
-        <section className="py-8 px-4 bg-gray-50">
-          <div className="container mx-auto max-w-5xl">
-            <h2 className="text-2xl font-semibold mb-6 text-center">
-              <TranslatedText textKey="explore.title" />
+
+        {/* Conversion CTA block */}
+        <section className="py-16 md:py-20 px-4 bg-[#0a1f44]">
+          <div className="container mx-auto max-w-3xl text-center">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white leading-tight mb-5">
+              Let's discuss how I can help your organization grow.
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
-                <h3 className="text-xl font-medium mb-2">
-                  <TranslatedText textKey="explore.professional.title" />
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  <TranslatedText textKey="explore.professional.description" />
-                </p>
-                <Link to="/career" className="text-primary font-medium hover:underline">
-                  <TranslatedText textKey="explore.professional.cta" />
-                </Link>
-              </div>
-              <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
-                <h3 className="text-xl font-medium mb-2">
-                  <TranslatedText textKey="explore.education.title" />
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  <TranslatedText textKey="explore.education.description" />
-                </p>
-                <Link to="/education" className="text-primary font-medium hover:underline">
-                  <TranslatedText textKey="explore.education.cta" />
-                </Link>
-              </div>
-              <div className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
-                <h3 className="text-xl font-medium mb-2">
-                  <TranslatedText textKey="explore.insights.title" />
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  <TranslatedText textKey="explore.insights.description" />
-                </p>
-                <Link to="/blog" className="text-primary font-medium hover:underline">
-                  <TranslatedText textKey="explore.insights.cta" />
-                </Link>
-              </div>
+            <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+              Whether you're exploring a fractional CMO engagement, a consulting project, or a commercial advisory partnership, I'd be glad to talk.
+            </p>
+            <div className="flex justify-center">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center rounded-md bg-white text-[#0a1f44] hover:bg-gray-100 px-8 py-4 text-base font-semibold transition-colors min-w-[220px]"
+              >
+                Discuss an Opportunity
+              </Link>
             </div>
           </div>
         </section>
