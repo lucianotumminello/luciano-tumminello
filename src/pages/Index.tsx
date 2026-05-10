@@ -8,7 +8,7 @@ import OutcomesSection from "@/components/OutcomesSection";
 import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
-import TranslatedText from "@/components/TranslatedText";
+
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
