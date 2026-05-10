@@ -39,6 +39,34 @@ const deferScript = (url: string, callback?: Function) => {
   document.head.appendChild(script);
 };
 
+const clearLegacyServiceWorkerCaches = async (): Promise<boolean> => {
+  try {
+    if ('serviceWorker' in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((registration) => registration.unregister()));
+    }
+
+    if ('caches' in window) {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+    }
+
+    if (
+      'serviceWorker' in navigator &&
+      navigator.serviceWorker.controller &&
+      sessionStorage.getItem('legacy-sw-cache-cleared') !== 'true'
+    ) {
+      sessionStorage.setItem('legacy-sw-cache-cleared', 'true');
+      window.location.reload();
+      return true;
+    }
+  } catch (error) {
+    console.warn('Unable to clear legacy service worker caches:', error);
+  }
+
+  return false;
+};
+
 // Prioritize core app rendering first
 const initApp = async () => {
   // Use dynamic import for compatibility across React versions
@@ -85,44 +113,8 @@ const initApp = async () => {
   }, 3000);
 };
 
-// Register service worker for offline support - with proper error handling and update notification
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    // Defer service worker registration after main content loads
-    setTimeout(() => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(function(registration) {
-          console.log('Service worker registered successfully:', registration.scope);
-          
-          // Check for updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // New content is available, notify user if needed
-                  console.log('New content is available; please refresh.');
-                }
-              });
-            }
-          });
-        })
-        .catch(function(err) {
-          console.log('Service worker registration failed: ', err);
-          // Continue app function even if service worker fails
-        });
-      
-      // Handle updates when user returns to the app
-      let refreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-          refreshing = true;
-          window.location.reload();
-        }
-      });
-    }, 3000);
-  });
-}
-
-// Execute immediately
-initApp();
+clearLegacyServiceWorkerCaches().then((reloadStarted) => {
+  if (!reloadStarted) {
+    initApp();
+  }
+});
