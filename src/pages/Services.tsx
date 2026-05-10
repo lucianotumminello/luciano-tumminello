@@ -77,10 +77,10 @@ const Services = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <SEO title={seoTitle} description={seoDescription} path="/services" />
       <Header />
-      <main className="flex-1 py-16">
+      <main className="flex-1 pt-24 md:pt-32 pb-16">
         <div className="container mx-auto max-w-5xl px-4">
           {/* Intro */}
-          <header className="mb-14">
+          <header className="mb-20 md:mb-24">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               What I Do
             </h1>
@@ -94,15 +94,15 @@ const Services = () => {
           </header>
 
           {/* Services */}
-          <section className="mb-20">
+          <section className="mb-20 md:mb-24">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8 inline-block border-b-2 border-teal-600 pb-2">
               Services
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
               {services.map((s) => (
                 <article
                   key={s.title}
-                  className="bg-white border border-gray-200 border-l-4 border-l-teal-600 rounded-md p-6 md:p-7 shadow-sm hover:shadow-md transition-shadow"
+                  className="relative h-full bg-white border border-gray-200 rounded-md p-6 md:p-7 pl-7 md:pl-8 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-teal-600"
                 >
                   <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
                     {s.title}
@@ -116,7 +116,7 @@ const Services = () => {
           </section>
 
           {/* Ways of Working */}
-          <section className="mb-20">
+          <section className="mb-20 md:mb-24">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8 inline-block border-b-2 border-teal-600 pb-2">
               Ways of Working
             </h2>
@@ -124,7 +124,7 @@ const Services = () => {
               {waysOfWorking.map((w) => (
                 <div
                   key={w.title}
-                  className="p-6 md:p-7 md:grid md:grid-cols-[260px_1fr] md:gap-8 hover:bg-gray-50 transition-colors"
+                  className="p-7 md:p-8 md:grid md:grid-cols-[260px_1fr] md:gap-8 hover:bg-gray-50 transition-colors"
                 >
                   <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-2 md:mb-0">
                     {w.title}
