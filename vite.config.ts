@@ -10,8 +10,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     headers: {
-      // Enable compression
-      'Cache-Control': 'public, max-age=31536000',
+      'Cache-Control': 'no-store, max-age=0',
     }
   },
   plugins: [
@@ -83,6 +82,7 @@ export default defineConfig(({ mode }) => ({
     emptyOutDir: true, // Clean output directory before build
   },
   optimizeDeps: {
+    force: true,
     include: [
       'react',
       'react-dom',
@@ -100,8 +100,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     host: true,
     headers: {
-      // Enable compression and caching for previews
-      'Cache-Control': 'public, max-age=31536000',
+      'Cache-Control': 'no-store, max-age=0',
     },
   },
   // Add asset optimization

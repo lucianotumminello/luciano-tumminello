@@ -1,8 +1,8 @@
 
-// Enhanced service worker for caching and performance optimization
-const CACHE_NAME = 'blog-cache-v4';
-const STATIC_CACHE_NAME = 'static-cache-v3';
-const IMAGE_CACHE_NAME = 'image-cache-v3';
+// Lightweight service worker: avoid caching app code so React chunks cannot get out of sync.
+const CACHE_NAME = 'runtime-cache-v5';
+const STATIC_CACHE_NAME = 'static-cache-v5';
+const IMAGE_CACHE_NAME = 'image-cache-v5';
 
 // Assets to cache immediately on install
 const STATIC_ASSETS = [
@@ -52,12 +52,17 @@ self.addEventListener('fetch', event => {
   
   const url = new URL(event.request.url);
   
-  // Bypass caching for Vite dev server dependencies to avoid stale React copies
-  if (url.pathname.startsWith('/node_modules/.vite/')) {
+  // Bypass app code and Vite dependency chunks to avoid mixing stale React module instances.
+  if (
+    url.pathname.startsWith('/node_modules/.vite/') ||
+    url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/assets/') ||
+    url.pathname.match(/\.(js|css)$/)
+  ) {
     return; // Let the request pass through without SW handling
   }
   
-  // HTML navigation - network first, fallback to cache with 1-day max age
+  // HTML navigation - network only, fallback to cached shell only when offline.
   if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(event.request)
@@ -67,8 +72,7 @@ self.addEventListener('fetch', event => {
           caches.open(CACHE_NAME)
             .then(cache => {
               const headers = new Headers(responseClone.headers);
-              // Add cache control header for 1 day max age
-              headers.append('Cache-Control', 'max-age=86400');
+              headers.set('Cache-Control', 'no-store, max-age=0');
               const responseToCache = new Response(responseClone.body, {
                 status: responseClone.status,
                 statusText: responseClone.statusText,
@@ -119,40 +123,6 @@ self.addEventListener('fetch', event => {
             .catch(() => cachedResponse);
           
           // Return cached response immediately if available, otherwise wait for network
-          return cachedResponse || fetchPromise;
-        })
-    );
-    return;
-  }
-  
-  // JS/CSS assets - stale while revalidate with long cache
-  if (url.pathname.match(/\.(js|css)$/)) {
-    event.respondWith(
-      caches.match(event.request)
-        .then(cachedResponse => {
-          // Return cached response immediately while fetching updated version in background
-          const fetchPromise = fetch(event.request)
-            .then(networkResponse => {
-              if (networkResponse && networkResponse.status === 200) {
-                const responseToCache = networkResponse.clone();
-                caches.open(CACHE_NAME)
-                  .then(cache => {
-                    // Add cache control headers for 30 days
-                    const headers = new Headers(responseToCache.headers);
-                    headers.append('Cache-Control', 'max-age=2592000');
-                    const enhancedResponse = new Response(responseToCache.body, {
-                      status: responseToCache.status,
-                      statusText: responseToCache.statusText,
-                      headers
-                    });
-                    cache.put(event.request, enhancedResponse);
-                  });
-              }
-              return networkResponse;
-            })
-            .catch(() => cachedResponse);
-          
-          // Return the cached version or wait for network
           return cachedResponse || fetchPromise;
         })
     );
