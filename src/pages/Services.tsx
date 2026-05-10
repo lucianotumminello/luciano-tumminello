@@ -94,15 +94,15 @@ const Services = () => {
           </header>
 
           {/* Services */}
-          <section className="mb-20">
+          <section className="mb-20 md:mb-24">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8 inline-block border-b-2 border-teal-600 pb-2">
               Services
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
               {services.map((s) => (
                 <article
                   key={s.title}
-                  className="bg-white border border-gray-200 border-l-4 border-l-teal-600 rounded-md p-6 md:p-7 shadow-sm hover:shadow-md transition-shadow"
+                  className="relative h-full bg-white border border-gray-200 rounded-md p-6 md:p-7 pl-7 md:pl-8 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-teal-600"
                 >
                   <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
                     {s.title}
@@ -114,8 +114,6 @@ const Services = () => {
               ))}
             </div>
           </section>
-
-          {/* Ways of Working */}
           <section className="mb-20">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8 inline-block border-b-2 border-teal-600 pb-2">
               Ways of Working
