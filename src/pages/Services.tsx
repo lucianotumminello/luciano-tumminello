@@ -77,10 +77,10 @@ const Services = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <SEO title={seoTitle} description={seoDescription} path="/services" />
       <Header />
-      <main className="flex-1 py-16">
+      <main className="flex-1 pt-24 md:pt-32 pb-16">
         <div className="container mx-auto max-w-5xl px-4">
           {/* Intro */}
-          <header className="mb-14">
+          <header className="mb-20 md:mb-24">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               What I Do
             </h1>
