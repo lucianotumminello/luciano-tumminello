@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    dedupe: ["react", "react-dom", "react/jsx-runtime", "react-router", "react-router-dom"],
+    dedupe: ["react", "react-dom", "react/jsx-runtime", "react-router", "react-router-dom", "react-helmet-async"],
   },
   build: {
     target: 'es2015',
