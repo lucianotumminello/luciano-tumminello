@@ -8,6 +8,7 @@ import OutcomesSection from "@/components/OutcomesSection";
 import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
+import SelectedWorkPreview from "@/components/SelectedWorkPreview";
 
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
@@ -76,6 +77,7 @@ const Index = () => {
         <CredibilityStrip />
         <OutcomesSection />
         <SectorBreadth />
+        <SelectedWorkPreview />
         <section id="core-competencies">
           <CompetenciesSummary />
         </section>
