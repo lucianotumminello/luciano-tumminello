@@ -84,7 +84,7 @@ const Services = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               What I Do
             </h1>
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl">
+            <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl pb-6">
               I work at the intersection of marketing strategy, revenue growth,
               digital execution, and operational leadership. The engagement
               changes depending on the organization. The outcome is always the
@@ -94,7 +94,7 @@ const Services = () => {
           </header>
 
           {/* Services */}
-          <section className="mb-20 md:mb-24">
+          <section className="pt-12 mb-20 md:mb-24">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8 inline-block border-b-2 border-teal-600 pb-2">
               Services
             </h2>
