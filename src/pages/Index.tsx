@@ -9,6 +9,7 @@ import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
 import SelectedWorkPreview from "@/components/SelectedWorkPreview";
+import Testimonials from "@/components/Testimonials";
 
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
@@ -81,6 +82,8 @@ const Index = () => {
         <section id="core-competencies">
           <CompetenciesSummary />
         </section>
+
+        <Testimonials />
 
         {/* Conversion CTA block */}
         <section className="py-16 md:py-20 px-4 bg-[#0a1f44]">
