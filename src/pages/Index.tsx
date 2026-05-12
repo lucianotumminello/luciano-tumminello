@@ -83,6 +83,8 @@ const Index = () => {
           <CompetenciesSummary />
         </section>
 
+        <Testimonials />
+
         {/* Conversion CTA block */}
         <section className="py-16 md:py-20 px-4 bg-[#0a1f44]">
           <div className="container mx-auto max-w-3xl text-center">
