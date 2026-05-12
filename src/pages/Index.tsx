@@ -9,6 +9,7 @@ import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
 import CompetenciesSummary from "@/components/CompetenciesSummary";
 import SelectedWorkPreview from "@/components/SelectedWorkPreview";
+import Testimonials from "@/components/Testimonials";
 
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
