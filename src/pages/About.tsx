@@ -2,6 +2,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
+import CompetenciesSummary from "@/components/CompetenciesSummary";
 import { Briefcase, GraduationCap, Globe, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -66,29 +67,6 @@ const About = () => {
                   </span>
                 </div>
               </div>
-              
-              <div className="mt-6">
-                <Button 
-                  onClick={navigateToCareer}
-                  className="w-full"
-                >
-                  <TranslatedText textKey="about.viewResume" />
-                </Button>
-              </div>
-              
-              <div className="mt-6 space-y-6">
-                <img 
-                  src="/lovable-uploads/212b1e06-7d89-4391-a1db-16ed8c2249f1.png" 
-                  alt="Luciano Tumminello Office" 
-                  className="rounded-lg shadow-md w-full object-cover"
-                />
-                
-                <img 
-                  src="/lovable-uploads/c55bb2b1-05a5-45ac-bbbf-cc6b91fb736a.png" 
-                  alt="Luciano Tumminello Outdoors" 
-                  className="rounded-lg shadow-md w-full object-cover"
-                />
-              </div>
             </div>
             
             <div className="md:col-span-2 space-y-6">
@@ -112,6 +90,31 @@ const About = () => {
                 <TranslatedText textKey="about.me.para5" />
               </p>
             </div>
+          </div>
+
+          <CompetenciesSummary />
+
+          <div className="mt-8 mb-8">
+            <Button 
+              onClick={navigateToCareer}
+              className="w-full md:w-auto px-8"
+            >
+              <TranslatedText textKey="about.viewResume" />
+            </Button>
+          </div>
+
+          <div className="space-y-6">
+            <img 
+              src="/lovable-uploads/212b1e06-7d89-4391-a1db-16ed8c2249f1.png" 
+              alt="Luciano Tumminello Office" 
+              className="rounded-lg shadow-md w-full object-cover"
+            />
+            
+            <img 
+              src="/lovable-uploads/c55bb2b1-05a5-45ac-bbbf-cc6b91fb736a.png" 
+              alt="Luciano Tumminello Outdoors" 
+              className="rounded-lg shadow-md w-full object-cover"
+            />
           </div>
         </div>
       </main>
