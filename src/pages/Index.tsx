@@ -7,7 +7,6 @@ import CredibilityStrip from "@/components/CredibilityStrip";
 import OutcomesSection from "@/components/OutcomesSection";
 import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
-import CompetenciesSummary from "@/components/CompetenciesSummary";
 import SelectedWorkPreview from "@/components/SelectedWorkPreview";
 import Testimonials from "@/components/Testimonials";
 
@@ -79,10 +78,6 @@ const Index = () => {
         <OutcomesSection />
         <SectorBreadth />
         <SelectedWorkPreview />
-        <section id="core-competencies">
-          <CompetenciesSummary />
-        </section>
-
         <Testimonials />
 
         {/* Conversion CTA block */}
