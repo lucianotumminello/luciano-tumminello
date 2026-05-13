@@ -79,10 +79,6 @@ const Index = () => {
         <OutcomesSection />
         <SectorBreadth />
         <SelectedWorkPreview />
-        <section id="core-competencies">
-          <CompetenciesSummary />
-        </section>
-
         <Testimonials />
 
         {/* Conversion CTA block */}
