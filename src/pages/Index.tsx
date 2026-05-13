@@ -75,7 +75,6 @@ const Index = () => {
         <ValuePropositionCards />
         <CredibilityStrip />
         <OutcomesSection />
-        <SectorBreadth />
         <SelectedWorkPreview />
         <Testimonials />
 
