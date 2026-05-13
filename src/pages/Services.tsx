@@ -138,6 +138,8 @@ const Services = () => {
             </div>
           </section>
 
+          <SectorBreadth />
+
           {/* CTA */}
           <section className="bg-[#0f1b3d] text-white rounded-lg p-10 md:p-14 text-center">
             <h2 className="text-2xl md:text-3xl font-semibold mb-6">
