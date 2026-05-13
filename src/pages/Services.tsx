@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
+import SectorBreadth from "@/components/SectorBreadth";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -136,6 +137,8 @@ const Services = () => {
               ))}
             </div>
           </section>
+
+          <SectorBreadth />
 
           {/* CTA */}
           <section className="bg-[#0f1b3d] text-white rounded-lg p-10 md:p-14 text-center">
