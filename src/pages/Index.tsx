@@ -5,7 +5,6 @@ import HeroSection from "@/components/HeroSection";
 import ValuePropositionCards from "@/components/ValuePropositionCards";
 import CredibilityStrip from "@/components/CredibilityStrip";
 import OutcomesSection from "@/components/OutcomesSection";
-import SectorBreadth from "@/components/SectorBreadth";
 import ProfileImage from "@/components/ProfileImage";
 import SelectedWorkPreview from "@/components/SelectedWorkPreview";
 import Testimonials from "@/components/Testimonials";
