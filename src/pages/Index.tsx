@@ -87,20 +87,13 @@ const Index = () => {
             <p className="text-base md:text-lg text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
               Whether you need a fractional CMO, a consulting partner for a specific project, or a senior advisor for your leadership team, I take on a small number of engagements each year. This could be one of them.
             </p>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+            <div className="flex items-center justify-center gap-4">
               <Link
                 to="/contact"
                 className="inline-flex items-center justify-center rounded-md bg-white text-[#0a1f44] hover:bg-gray-100 px-8 py-4 text-base font-semibold transition-colors min-w-[220px]"
               >
                 Discuss an Opportunity
               </Link>
-              <a
-                href="/profile.pdf"
-                download
-                className="inline-flex items-center justify-center rounded-md border border-white text-white hover:bg-white/10 px-8 py-4 text-base font-semibold transition-colors min-w-[220px]"
-              >
-                Download Profile
-              </a>
             </div>
           </div>
         </section>
