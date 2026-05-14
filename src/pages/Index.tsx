@@ -78,22 +78,29 @@ const Index = () => {
         <SelectedWorkPreview />
         <Testimonials />
 
-        {/* Conversion CTA block */}
-        <section className="py-16 md:py-20 px-4 bg-[#0a1f44]">
+        {/* Final CTA */}
+        <section className="py-20 md:py-24 px-4 bg-[#0a1f44]">
           <div className="container mx-auto max-w-3xl text-center">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white leading-tight mb-5">
-              Let's discuss how I can help your organization grow.
+              Ready to discuss an opportunity?
             </h2>
-            <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Whether you're exploring a fractional CMO engagement, a consulting project, or a commercial advisory partnership, I'd be glad to talk.
+            <p className="text-base md:text-lg text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+              Whether you need a fractional CMO, a consulting partner for a specific project, or a senior advisor for your leadership team, I take on a small number of engagements each year. This could be one of them.
             </p>
-            <div className="flex justify-center">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
                 className="inline-flex items-center justify-center rounded-md bg-white text-[#0a1f44] hover:bg-gray-100 px-8 py-4 text-base font-semibold transition-colors min-w-[220px]"
               >
                 Discuss an Opportunity
               </Link>
+              <a
+                href="/profile.pdf"
+                download
+                className="inline-flex items-center justify-center rounded-md border border-white text-white hover:bg-white/10 px-8 py-4 text-base font-semibold transition-colors min-w-[220px]"
+              >
+                Download Profile
+              </a>
             </div>
           </div>
         </section>
